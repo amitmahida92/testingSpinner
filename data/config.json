@@ -1,0 +1,192 @@
+{
+  "status": "OK",
+  "messageCode": 0,
+  "message": "Successfully processed config data in 90 ms",
+  "data": {
+    "defaultStartDate": "2016-12-15",
+    "defaultEndDate": "2016-12-25",
+    "complainceLevel":95,
+    "specialists": [
+      {
+        "organisationId": 1,
+        "organisationName": "Specialist 1"
+      },
+      {
+        "organisationId": 2,
+        "organisationName": "Specialist 2"
+      },
+      {
+        "organisationId": 3,
+        "organisationName": "Specialist 3"
+      },
+      {
+        "organisationId": 4,
+        "organisationName": "Specialist 4"
+      },
+      {
+        "organisationId": 5,
+        "organisationName": "Specialist 5"
+      },
+      {
+        "organisationId": 6,
+        "organisationName": "Specialist 6"
+      },
+      {
+        "organisationId": 7,
+        "organisationName": "Specialist 7"
+      },
+      {
+        "organisationId": 8,
+        "organisationName": "Specialist 8"
+      },{
+        "organisationId": 9,
+        "organisationName": "Specialist 9"
+      }
+      ,{
+        "organisationId": 10,
+        "organisationName": "Specialist 10"
+      }
+      ,{
+        "organisationId": 11,
+        "organisationName": "Specialist 11"
+      }
+      ,{
+        "organisationId": 12,
+        "organisationName": "Specialist 12"
+      }
+    ],
+    "productFormats": [
+      {
+        "productFormatId": 1,
+        "productFormatName": "Product Format 1"
+      },
+      {
+        "productFormatId": 2,
+        "productFormatName": "Product Format 2"
+      },
+      {
+        "productFormatId": 3,
+        "productFormatName": "Product Format 3"
+      },
+      {
+        "productFormatId": 4,
+        "productFormatName": "Product Format 4"
+      },
+      {
+        "productFormatId": 5,
+        "productFormatName": "Product Format 5"
+      },
+      {
+        "productFormatId": 6,
+        "productFormatName": "Product Format 6"
+      },
+      {
+        "productFormatId": 7,
+        "productFormatName": "Product Format 7"
+      },
+      {
+        "productFormatId": 8,
+        "productFormatName": "Product Format 8"
+      },
+      {
+        "productFormatId": 9,
+        "productFormatName": "Product Format 9"
+      },
+      {
+        "productFormatId": 10,
+        "productFormatName": "Product Format 10"
+      }
+      ,
+      {
+        "productFormatId": 11,
+        "productFormatName": "Product Format 11"
+      }
+      
+    ],
+    	"userBundle": {
+			"popboard.frame.player.tooltip": "This graph shows the percentage of <strong>days</strong> in a campaign that meet the compliance threshold for that player, with the selected date range.\n\n If the value is 100% (i.e. compliant) then it is shown as blue.  If the value is less than 100% (i.e. non-compliant) then it is shown as red. \n\n Example:\n Date range for 5 days is selected.\n\n Campaign is selected in the Campaign Chart (title: % frame above threshold) that has 20 frames.\n\n All 20 players are returned in this chart.\n\n If a player is compliant for all hours for five days for this campaign (i.e. played out 95% or more of what was booked) then it is 100% compliant for all days, and a value of 100% is shown.\n\n If a player is non-compliant for 1 hour on 2 days, then it is compliant for 60% of the days and a value of 60% will be shown.",
+			"common.dateRange": "Select Date Range",
+			"popboard.frame.date.heading": "% hour above threshold",
+			"common.sot.label": "SOT",
+			"common.heading": "POP Dashboard",
+			"popboard.sot.player.tooltip": "This graph shows the performance of a <strong>player</strong> for a campaign.\n\n If the player played 95% or more of what was booked for that campaign (in the selected date range) for all hours then the player is compliant and is coloured blue.\n\n If the player played less than 95% of what was booked for that campaign in one or more hours, the player is non-compliant and coloured red.\n\nExample:\n If a player was booked to play 20,000 seconds for the selected campaign within the selected date range and plays out 22,000 seconds it will show 110% (22,000 is 110% of 20,000).",
+			"popboard.campaign.xAxis.label": "Compliance",
+			"popboard.sot.time.heading": "Hours - Average Performance - % played vs booked",
+			"popboard.player.yAxis.label": "Compliance",
+      "popboard.time.xAxis.label": "Time",
+			"popboard.date.xAxis.label": "Date",
+			"common.specialist.select": "Select Specialist",
+			"popboard.sot.time.tooltip": "This graph shows the performance of a <strong>player in a campaign for each hour of the selected day</strong>.\n\n If the player played 95% or more of what was booked for that campaign in that hour then the hour is compliant and is coloured blue.\n\n If the player played less than 95% of what was booked for that campaign in that hour then the hour is non-compliant and is coloured red.\n\n Example:\n If a player was booked to play 500 seconds for the selected campaign within an hour and played out 750 seconds it will show 150% (750 is 150% of 500).",
+			"popboard.sot.campaign.heading": "Campaigns - Average Performance - % played vs booked",
+			"popboard.player.xAxis.label": "Player",
+			"popboard.frame.campaign.heading": "% frame above threshold",
+			"common.specialist": "Specialist",
+			"common.productformat.select": "Select Product Format",
+			"popboard.frame.date.tooltip": "This graph shows the percentage of <strong>hours</strong> in a campaign that meet the compliance threshold for that player on each day within the selected range.\n\nIf the value is 100% (i.e. compliant) then it is shown as blue.\n\n If the value is less than 100% (i.e. non-compliant) then it is shown as red. \n\nExample:\n Date range for 5 days is selected.\n Campaign is selected in the Campaign Chart (title: % frame above threshold) that has 20 frames.\n\n A frame is selected.\n\nIn this chart, all days that the campaign was booked on this frame within the selected date range are shown.\n\n If a player is compliant for all hours on a day for this campaign (i.e. played out 95% or more of what was booked) then the day shows 100% compliant.\n\n If a player is compliant for half the hours on a day for this campaign (i.e. played out 95% or more of what was booked) then the day shows 50% compliant.",
+			"popboard.campaign.yAxis.label": "Campaigns",
+			"common.frame.label": "Frame",
+			"popboard.frame.player.heading": "% of days above threshold",
+			"popboard.frame.time.heading": "% played vs booked",
+			"common.gauge.tooltip": "Gauges show the % of compliant campaigns within that Business Area Group.\n\nExample, if within Rail there are 50 campaigns in the selected date range (after exclusions, see below), and 49 of them are compliant then the compliance value is 98% (49 is 98% of 50).,",
+			"common.title.label": "Dashboard",
+			"popboard.sot.player.heading": "Players - Average Performance - % played vs booked",
+			"popboard.time.yAxis.label": "Performance",
+			"common.selectType": "Select Type",
+			"popboard.sot.date.heading": "Days - Average Performance - % played vs booked",
+			"popboard.sot.date.tooltip": "This graph shows the performance of a <strong>day for a player</strong> in a campaign.\n\n If the player played 95% or more of what was booked for that campaign (in the selected date range) for all hours in that day then the player is compliant for that day and the day is coloured blue.\n\n If the player played less than 95% of what was booked for that campaign (in the selected date range) for one or more hours in that day then the player is non-compliant for that day and the day is coloured red.\n\n Example:\n If a player was booked to play 20,000 seconds in a day for the selected campaign within the selected date range and plays out 22,000 seconds it will show 110% (22,000 is 110% of 20,000).",
+			"popboard.frame.campaign.tooltip": "This graph shows the percentage of <strong>frames</strong> in a campaign that meet the compliance threshold.\n\n All (100% of) frames must meet the compliance threshold for the campaign to be determined to be compliant.\n\n If all frames are compliant, the campaign will be coloured blue and the value shown will be 100%\n\n If less than all frames are compliant, the campaign will be coloured red and the value shown will be less than 100%.\n\n Example:\n If a campaign has 100 frames, and 50% of them meet the definition of compliance, this graph will show 50%.",
+			"popboard.date.yAxis.label": "Compliance",
+			"popboard.frame.time.tooltip": "This graph shows the percentage of <strong>what played to what was booked</strong> for every booked hour in a selected day for the selected frame in a selected campaign.\n\n If the hour shows a value of 95% or more it is compliant and shows blue.\n\n If the hour shows a value of less than 95% it is non-compliant and shows red. \n\n Example:\n Campaign, Player, Day are selected.\n\n Each booked hour (for that day, for that player for that campaign) are shown with a performance value (%played vs booked).\n\n If 20% SOT was booked and 30% played out a value of 150% is shown (30% is 150% of 20%).\n\n If 20% SOT was booked and 10% played out a value of 50% is shown (10% is 50% of 20%).",
+			"common.productformat": "Product Format",
+			"common.dashboard.tooltip": "All graphs exclude values from manually scheduled players including:\n Digital Escalator Panels\nHEX Motion\n Old St Roundabout\n Cromwell Road\n Heathrow DAPS Pack A and B\n Heathrow Gateroom DAPS\n\n Compliance Definition:\n A player for a campaign is considered compliant if it has played 95% or more of what was booked for every hour it has been scheduled.\n A campaign is considered compliant if ALL players have played 95% or better of what was booked for every hour it has been scheduled.  Compliance definition has been determined by UK IT team.\n\n Data manipulation:\n Edinburgh Princes St D6s – slave data is discarded and data from master players is shown instead due to an issue with BroadSign not recording successful playout from slaves due to playout aborted message.\n A40 Spire – one player, two frames.  If 20% SOT is booked and played, playout report shows 40% and 0%.  Playout data is split across both frames. \n\nWaterloo Transvision – one player, two screens.  If 20% SOT is booked and played, playout report shows 20% and 0%.  Playout data is copied from one to the other.  Second screen is getting a separate player in Feb 2017 so this data manipulation will be removed.\n\n NOTE:\n The comparison is for what was played vs what was booked. If a campaign was not booked for an hour but still played, this will not be reported.",
+			"popboard.sot.campaign.tooltip": "This graph shows the performance of a <strong>campaign</strong>.\n\n If all players play 95% or more of what was booked for that campaign (in the selected date range) for all hours then the campaign is compliant and is coloured blue.\n\n If one or more players played less than 95% of what was booked for that campaign in one or more hours, the campaign is non-compliant and coloured red.\n\n Example:\n If a campaign was booked for 20,000 seconds of play within the selected date range and plays out 22,000 seconds it will show 110% (22,000 is 110% of 20,000).",
+      "popboard.impressions.campaign.heading":"Campaign - Average Performance by Impressions",
+      "popboard.impressions.player.heading":"Player - Average Performance by Impressions",
+      "popboard.impressions.date.heading":"Date - Average Performance by Impressions",
+      "popboard.impressions.time.heading":"Time - Average Performance by Impressions",
+      "popboard.impressions.campaign.tooltip":"Campaign - Average Performance by Impressions.\n\n Details for Campaign performance goes here",
+      "popboard.impressions.player.tooltip":"Player - Average Performance by Impressions.\n\n Details for Player performance goes here",
+      "popboard.impressions.date.tooltip":"Date - Average Performance by Impressions.\n\n Details for Day performance goes here",
+      "popboard.impressions.time.tooltip":"\nTime - Average Performance by Impressions.\n\n Details for Hour performance goes here",
+      "common.impressions.label": "Impressions"
+		},
+    "serviceCalls": {
+      "POP_SUMMARY": "data/summary_v0.2.json",
+      "SESSION_URL": "data/keepAlive.json"
+    },
+    "userData": {
+      "userName": "Brandon.Stubbs",
+      "fullName": "Stubbs, Brandon",
+      "initials": "BS",
+      "userGroups": [
+        "BricsCM",
+        "BricsSuperUser",
+        "DataPointCM",
+        "DataPointIT",
+        "StockManager",
+        "StockManagerAdmin",
+        "StockManagerBrics",
+        "StockManagerCaptain",
+        "StockManagerDatapoint",
+        "StockManagerDashboard"
+      ],
+      "timeZone": "Europe/London",
+      "locale": "en-gb",
+      "emailAddress": "brandon.stubbs@jcdecaux.com",
+      "tokens": [],
+      "internalAccess": true
+    },
+    "systemData": {
+      "version": "3.2.33",
+      "systemTitle": "JCDecaux Production",
+      "systemType": "Production",
+      "systemName": "StockManager",
+      "locale": "en_GB",
+      "bookingSystemEnabled": false,
+      "salesOrderEnabled": false,
+      "pipeEnabled": false,
+      "maxInactiveInterval": 50,
+      "currencySymbol": "£"
+    }
+  }
+}

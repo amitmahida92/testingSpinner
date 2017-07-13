@@ -1,0 +1,764 @@
+{
+  "data": {
+    "channelSummary": [
+      {
+        "id": 7,
+        "label": "Airports",
+        "value": "3.45"
+      },
+      {
+        "id": 1,
+        "label": "Large Format",
+        "value": "24.56"
+      },
+      {
+        "id": 4,
+        "label": "Malls",
+        "value": "4.05"
+      },
+      {
+        "id": 3,
+        "label": "Rail",
+        "value": "12.77"
+      },
+      {
+        "id": 6,
+        "label": "Street Furniture",
+        "value": "5.36"
+      },
+      {
+        "id": 9,
+        "label": "Tesco SmartScreen",
+        "value": "25.64"
+      },
+      {
+        "id": 19,
+        "label": "Total",
+        "value": "78.23"
+      }
+    ],
+    "campaignSummary": [
+      {
+        "id": 409,
+        "value": 0,
+        "failed": true,
+        "avgValue": 19.76,
+        "audienceValue": 28.89,
+        "label": "Gentry Meyer"
+      },
+      {
+        "id": 339,
+        "value": 1,
+        "failed": true,
+        "avgValue": 220.94,
+        "audienceValue": 20.03,
+        "label": "Louisa Rowland"
+      },
+      {
+        "id": 419,
+        "value": 2,
+        "failed": false,
+        "avgValue": 236.02,
+        "audienceValue": 251.56,
+        "label": "Whitehead Chase"
+      },
+      {
+        "id": 747,
+        "value": 3,
+        "failed": true,
+        "avgValue": 146.92,
+        "audienceValue": 68.13,
+        "label": "Myrtle Ayers"
+      },
+      {
+        "id": 702,
+        "value": 4,
+        "failed": true,
+        "avgValue": 29.05,
+        "audienceValue": 103.06,
+        "label": "Stanton Mcbride"
+      },
+      {
+        "id": 492,
+        "value": 5,
+        "failed": true,
+        "avgValue": 258.62,
+        "audienceValue": 261.37,
+        "label": "Nancy Hebert"
+      },
+      {
+        "id": 557,
+        "value": 6,
+        "failed": false,
+        "avgValue": 45.66,
+        "audienceValue": 100.18,
+        "label": "Ray Garcia"
+      },
+      {
+        "id": 979,
+        "value": 7,
+        "failed": false,
+        "avgValue": 244.31,
+        "audienceValue": 284.69,
+        "label": "Frances Leblanc"
+      },
+      {
+        "id": 771,
+        "value": 8,
+        "failed": false,
+        "avgValue": 245.06,
+        "audienceValue": 296.44,
+        "label": "Myrna Montoya"
+      },
+      {
+        "id": 582,
+        "value": 9,
+        "failed": false,
+        "avgValue": 274.83,
+        "audienceValue": 230.92,
+        "label": "Lynne Barnett"
+      },
+      {
+        "id": 517,
+        "value": 10,
+        "failed": true,
+        "avgValue": 55.45,
+        "audienceValue": 229.79,
+        "label": "Lydia Powers"
+      },
+      {
+        "id": 297,
+        "value": 11,
+        "failed": true,
+        "avgValue": 155.69,
+        "audienceValue": 229.57,
+        "label": "Hancock Flynn"
+      },
+      {
+        "id": 224,
+        "value": 12,
+        "failed": false,
+        "avgValue": 218.64,
+        "audienceValue": 158.9,
+        "label": "Katelyn Stone"
+      },
+      {
+        "id": 489,
+        "value": 13,
+        "failed": true,
+        "avgValue": 114.03,
+        "audienceValue": 260.63,
+        "label": "Chelsea Vaughn"
+      },
+      {
+        "id": 454,
+        "value": 14,
+        "failed": true,
+        "avgValue": 215.77,
+        "audienceValue": 264.32,
+        "label": "Small Vance"
+      },
+      {
+        "id": 612,
+        "value": 15,
+        "failed": false,
+        "avgValue": 125.87,
+        "audienceValue": 27.24,
+        "label": "Jeanette Hutchinson"
+      },
+      {
+        "id": 109,
+        "value": 16,
+        "failed": true,
+        "avgValue": 125.24,
+        "audienceValue": 174.34,
+        "label": "Vonda Hudson"
+      },
+      {
+        "id": 669,
+        "value": 17,
+        "failed": false,
+        "avgValue": 81.6,
+        "audienceValue": 89.14,
+        "label": "Kane Preston"
+      },
+      {
+        "id": 514,
+        "value": 18,
+        "failed": false,
+        "avgValue": 80.62,
+        "audienceValue": 132.14,
+        "label": "Abigail Pace"
+      },
+      {
+        "id": 730,
+        "value": 19,
+        "failed": true,
+        "avgValue": 196.18,
+        "audienceValue": 64.66,
+        "label": "Norris Shannon"
+      },
+      {
+        "id": 124,
+        "value": 20,
+        "failed": false,
+        "avgValue": 10.06,
+        "audienceValue": 174.59,
+        "label": "Emerson Rogers"
+      },
+      {
+        "id": 232,
+        "value": 21,
+        "failed": true,
+        "avgValue": 12.43,
+        "audienceValue": 34.13,
+        "label": "Nellie Alford"
+      },
+      {
+        "id": 768,
+        "value": 22,
+        "failed": true,
+        "avgValue": 76.27,
+        "audienceValue": 234.25,
+        "label": "Wheeler Peterson"
+      },
+      {
+        "id": 704,
+        "value": 23,
+        "failed": false,
+        "avgValue": 283.63,
+        "audienceValue": 203.29,
+        "label": "Ginger Conrad"
+      },
+      {
+        "id": 696,
+        "value": 24,
+        "failed": true,
+        "avgValue": 123.64,
+        "audienceValue": 281.26,
+        "label": "Kirby Lowe"
+      },
+      {
+        "id": 867,
+        "value": 25,
+        "failed": false,
+        "avgValue": 5.43,
+        "audienceValue": 281.27,
+        "label": "Knight Olson"
+      },
+      {
+        "id": 101,
+        "value": 26,
+        "failed": false,
+        "avgValue": 38.58,
+        "audienceValue": 110.65,
+        "label": "Laurie Savage"
+      },
+      {
+        "id": 727,
+        "value": 27,
+        "failed": false,
+        "avgValue": 77.19,
+        "audienceValue": 59.04,
+        "label": "Blake Haley"
+      },
+      {
+        "id": 187,
+        "value": 28,
+        "failed": true,
+        "avgValue": 36.05,
+        "audienceValue": 215.54,
+        "label": "Charmaine Mckay"
+      },
+      {
+        "id": 673,
+        "value": 29,
+        "failed": false,
+        "avgValue": 105.81,
+        "audienceValue": 285.47,
+        "label": "Norton Calderon"
+      },
+      {
+        "id": 568,
+        "value": 30,
+        "failed": false,
+        "avgValue": 23.2,
+        "audienceValue": 91.08,
+        "label": "Freeman Holland"
+      },
+      {
+        "id": 599,
+        "value": 31,
+        "failed": false,
+        "avgValue": 70.43,
+        "audienceValue": 85.98,
+        "label": "Cunningham Cantu"
+      },
+      {
+        "id": 130,
+        "value": 32,
+        "failed": true,
+        "avgValue": 298.55,
+        "audienceValue": 12.63,
+        "label": "Wilkinson Mcmillan"
+      }
+    ],
+    "spanSummary": [
+      {
+        "id": 607,
+        "value": 57,
+        "failed": false,
+        "avgValue": 201.83,
+        "audienceValue": 57.39,
+        "label": "Steve Garrison"
+      },
+      {
+        "id": 266,
+        "value": 58,
+        "failed": true,
+        "avgValue": 168.3,
+        "audienceValue": 265.79,
+        "label": "Melend Elliott"
+      },
+      {
+        "id": 208,
+        "value": 73,
+        "failed": true,
+        "avgValue": 118.79,
+        "audienceValue": 1.6,
+        "label": "Maur Guthrie"
+      },
+      {
+        "id": 163,
+        "value": 74,
+        "failed": true,
+        "avgValue": 38.8,
+        "audienceValue": 81.62,
+        "label": "Bush Mills"
+      },
+      {
+        "id": 474,
+        "value": 75,
+        "failed": true,
+        "avgValue": 288.23,
+        "audienceValue": 140.45,
+        "label": "Ryan Chandler"
+      },
+      {
+        "id": 217,
+        "value": 76,
+        "failed": true,
+        "avgValue": 220.55,
+        "audienceValue": 78.1,
+        "label": "Annette Rosario"
+      },
+      {
+        "id": 178,
+        "value": 77,
+        "failed": true,
+        "avgValue": 65.58,
+        "audienceValue": 126.35,
+        "label": "Reed Rich"
+      },
+      {
+        "id": 254,
+        "value": 78,
+        "failed": true,
+        "avgValue": 270.24,
+        "audienceValue": 293.34,
+        "label": "Hansen Rosales"
+      },
+      {
+        "id": 678,
+        "value": 79,
+        "failed": true,
+        "avgValue": 115.58,
+        "audienceValue": 178.01,
+        "label": "Emma Taylor"
+      },
+      {
+        "id": 295,
+        "value": 80,
+        "failed": true,
+        "avgValue": 231.56,
+        "audienceValue": 165.15,
+        "label": "Barbara Levy"
+      },
+      {
+        "id": 421,
+        "value": 81,
+        "failed": true,
+        "avgValue": 286.32,
+        "audienceValue": 212.21,
+        "label": "Silva Horne"
+      },
+      {
+        "id": 294,
+        "value": 82,
+        "failed": true,
+        "avgValue": 254.27,
+        "audienceValue": 156.8,
+        "label": "Beulah Carey"
+      },
+      {
+        "id": 780,
+        "value": 83,
+        "failed": true,
+        "avgValue": 177.75,
+        "audienceValue": 293.6,
+        "label": "Irene Bass"
+      },
+      {
+        "id": 876,
+        "value": 84,
+        "failed": false,
+        "avgValue": 22.42,
+        "audienceValue": 143.02,
+        "label": "Trina Aguilar"
+      },
+      {
+        "id": 212,
+        "value": 85,
+        "failed": false,
+        "avgValue": 163.59,
+        "audienceValue": 297.69,
+        "label": "Lessie Cox"
+      },
+      {
+        "id": 165,
+        "value": 86,
+        "failed": true,
+        "avgValue": 213.14,
+        "audienceValue": 171.19,
+        "label": "Lowery Dominguez"
+      },
+      {
+        "id": 502,
+        "value": 87,
+        "failed": true,
+        "avgValue": 75.37,
+        "audienceValue": 147.52,
+        "label": "Price Becker"
+      },
+      {
+        "id": 233,
+        "value": 88,
+        "failed": false,
+        "avgValue": 38.74,
+        "audienceValue": 156.5,
+        "label": "Lucas Donaldson"
+      },
+      {
+        "id": 739,
+        "value": 89,
+        "failed": false,
+        "avgValue": 18.82,
+        "audienceValue": 167.81,
+        "label": "Kathy Britt"
+      },
+      {
+        "id": 139,
+        "value": 90,
+        "failed": false,
+        "avgValue": 222.18,
+        "audienceValue": 192.55,
+        "label": "Fox Mckenzie"
+      },
+      {
+        "id": 406,
+        "value": 91,
+        "failed": true,
+        "avgValue": 221.6,
+        "audienceValue": 81.62,
+        "label": "Letitia Eaton"
+      }
+    ],
+    "daySummary": [
+      {
+        "id": 309,
+        "value": 0,
+        "failed": false,
+        "avgValue": 0,
+        "audienceValue": 154.77,
+        "label": "Constance Dunn"
+      },
+      {
+        "id": 807,
+        "value": 1,
+        "failed": false,
+        "avgValue": 87.14,
+        "audienceValue": 84.61,
+        "label": "Hilary Cooper"
+      },
+      {
+        "id": 676,
+        "value": 38,
+        "failed": false,
+        "avgValue": 286.67,
+        "audienceValue": 272.49,
+        "label": "Osborn Steele"
+      },
+      {
+        "id": 382,
+        "value": 44,
+        "failed": false,
+        "avgValue": 124.77,
+        "audienceValue": 139.36,
+        "label": "King Knight"
+      },
+      {
+        "id": 413,
+        "value": 222,
+        "failed": false,
+        "avgValue": 78.65,
+        "audienceValue": 119.27,
+        "label": "Andrews Bean"
+      },
+      {
+        "id": 363,
+        "value": 115,
+        "failed": true,
+        "avgValue": 51.73,
+        "audienceValue": 238.8,
+        "label": "Flowers Chaney"
+      },
+      {
+        "id": 349,
+        "value": 6,
+        "failed": true,
+        "avgValue": 73.18,
+        "audienceValue": 5.8,
+        "label": "Josefa Baxter"
+      },
+      {
+        "id": 183,
+        "value": 7,
+        "failed": false,
+        "avgValue": 215.94,
+        "audienceValue": 176.66,
+        "label": "Morrow Velazquez"
+      },
+      {
+        "id": 506,
+        "value": 8,
+        "failed": true,
+        "avgValue": 162.77,
+        "audienceValue": 141.87,
+        "label": "Colon Burke"
+      },
+      {
+        "id": 275,
+        "value": 9,
+        "failed": true,
+        "avgValue": 210.46,
+        "audienceValue": 201.75,
+        "label": "Carrillo Brennan"
+      },
+      {
+        "id": 901,
+        "value": 10,
+        "failed": false,
+        "avgValue": 53.07,
+        "audienceValue": 13.36,
+        "label": "Newton Walton"
+      },
+      {
+        "id": 533,
+        "value": 11,
+        "failed": false,
+        "avgValue": 109.13,
+        "audienceValue": 111.96,
+        "label": "Catherine Banks"
+      },
+      {
+        "id": 813,
+        "value": 12,
+        "failed": true,
+        "avgValue": 117.59,
+        "audienceValue": 102.78,
+        "label": "Warner Richmond"
+      },
+      {
+        "id": 488,
+        "value": 29,
+        "failed": true,
+        "avgValue": 36.18,
+        "audienceValue": 74.21,
+        "label": "Guerrero Wise"
+      },
+      {
+        "id": 133,
+        "value": 30,
+        "failed": true,
+        "avgValue": 12.83,
+        "audienceValue": 192.13,
+        "label": "Pierce Bray"
+      },
+      {
+        "id": 484,
+        "value": 31,
+        "failed": true,
+        "avgValue": 81.28,
+        "audienceValue": 178.92,
+        "label": "Helga Delgado"
+      },
+      {
+        "id": 479,
+        "value": 32,
+        "failed": false,
+        "avgValue": 53.16,
+        "audienceValue": 85.8,
+        "label": "Reyna Reynolds"
+      }
+    ],
+    "frameSummary": [
+      {
+        "id": 930,
+        "value": 0,
+        "failed": true,
+        "avgValue": 56.47,
+        "audienceValue": 244.67,
+        "label": "Peters Hess"
+      },
+      {
+        "id": 828,
+        "value": 1,
+        "failed": true,
+        "avgValue": 125.51,
+        "audienceValue": 49.07,
+        "label": "Myrtle Beasley"
+      },
+      {
+        "id": 189,
+        "value": 6,
+        "failed": false,
+        "avgValue": 192.14,
+        "audienceValue": 265.78,
+        "label": "Jefferson Prince"
+      },
+      {
+        "id": 301,
+        "value": 7,
+        "failed": true,
+        "avgValue": 29.66,
+        "audienceValue": 111.23,
+        "label": "Nichols Guy"
+      },
+      {
+        "id": 350,
+        "value": 8,
+        "failed": false,
+        "avgValue": 233.22,
+        "audienceValue": 165.43,
+        "label": "Montgomery Kelley"
+      },
+      {
+        "id": 324,
+        "value": 9,
+        "failed": false,
+        "avgValue": 31.23,
+        "audienceValue": 95.02,
+        "label": "Darlene Estes"
+      },
+      {
+        "id": 999,
+        "value": 10,
+        "failed": true,
+        "avgValue": 191.22,
+        "audienceValue": 5.76,
+        "label": "Kline Hodges"
+      },
+      {
+        "id": 584,
+        "value": 11,
+        "failed": false,
+        "avgValue": 217.46,
+        "audienceValue": 9.17,
+        "label": "Terrell Harrell"
+      },
+      {
+        "id": 990,
+        "value": 12,
+        "failed": false,
+        "avgValue": 86.27,
+        "audienceValue": 93.43,
+        "label": "Elise Boone"
+      },
+      {
+        "id": 519,
+        "value": 13,
+        "failed": true,
+        "avgValue": 77.35,
+        "audienceValue": 296.4,
+        "label": "Corinne Melendez"
+      },
+      {
+        "id": 213,
+        "value": 14,
+        "failed": false,
+        "avgValue": 216.88,
+        "audienceValue": 114.43,
+        "label": "Tasha Small"
+      },
+      {
+        "id": 434,
+        "value": 15,
+        "failed": true,
+        "avgValue": 214.53,
+        "audienceValue": 294.7,
+        "label": "Bettye Terrell"
+      },
+      {
+        "id": 307,
+        "value": 16,
+        "failed": true,
+        "avgValue": 148.92,
+        "audienceValue": 47.79,
+        "label": "Bryan Mcguire"
+      },
+      {
+        "id": 203,
+        "value": 17,
+        "failed": true,
+        "avgValue": 16.17,
+        "audienceValue": 75.34,
+        "label": "Charlotte Harrison"
+      },
+      {
+        "id": 253,
+        "value": 18,
+        "failed": true,
+        "avgValue": 106.57,
+        "audienceValue": 8.04,
+        "label": "Reva Benson"
+      },
+      {
+        "id": 442,
+        "value": 19,
+        "failed": false,
+        "avgValue": 185.09,
+        "audienceValue": 139.73,
+        "label": "Virginia Powell"
+      },
+      {
+        "id": 965,
+        "value": 20,
+        "failed": false,
+        "avgValue": 75.44,
+        "audienceValue": 33.14,
+        "label": "Alta Dyer"
+      },
+      {
+        "id": 247,
+        "value": 21,
+        "failed": true,
+        "avgValue": 17.76,
+        "audienceValue": 54.71,
+        "label": "Sharon Craig"
+      }
+    ]
+  },
+  "status": "OK",
+  "messageCode": 0,
+  "message": "Success"
+}

@@ -1,0 +1,308 @@
+<nav class="indigo darken-4">
+    <div class="nav-wrapper">
+        <div class="brand-logo capitalize">
+            <img src="images/logo0.png" alt="Logo">
+            <span ng-if="vm.isFrameDashbaord == 1">
+                    {{vm.userBundle['common.frame.label']}}
+            </span>
+            <span ng-if="vm.isFrameDashbaord == 2">
+                    {{vm.userBundle['common.sot.label']}}
+            </span>
+            <span ng-if="vm.isFrameDashbaord == 3">
+                    {{vm.userBundle['common.impressions.label']}}
+            </span>
+            <span>
+                {{vm.userBundle['common.title.label']}}
+            </span>
+        </div>
+
+        <!--<i class="material-icons routedropdown" id="my-drop-btn" data-beloworigin="true" href='#' data-activates='dropdown1'>expand_more</i>-->
+        <div class="col s6 center title">POP Dashboard</div>
+        <ul id='dropdown1' class='dropdown-content'>
+            <li ng-repeat="dashboardtype in vm.DASHBOARD_TYPES"><a href="{{'#!' + dashboardtype.routeURL}}"><img src="{{'images/' + dashboardtype.image}}" alt="Logo"> <span class="dropdownChildren">{{dashboardtype.name}}</span></a></li>
+        </ul>
+
+        <ul id="nav-mobile" class="right">
+            <li>
+                <a href="javascript:void(0)" ng-click="vm.showHideFilters()">
+                    <i ng-show="vm.showFilter" class="material-icons">expand_less</i>
+                    <i ng-show="!vm.showFilter" class="material-icons">expand_more</i>
+                </a>
+            </li>
+        </ul>
+
+    </div>
+</nav>
+<div class="white filter_block" id="filtersArea">
+    <div class="row">
+        <form class="col s12">
+            <div class="row no-margin">
+                <div class=" col s12 m3">
+                    <label for="">{{vm.userBundle['common.dateRange']}}</label>
+                    <!--<input placeholder="Select date range" id="first_name" type="text" class=" no-margin">-->
+                    <input date-range-picker id="dateRange" class="no-margin" type="text" placeholder="Select Date Range" ng-model="vm.datePicker.date"
+                        options="vm.datePickerOptions" ng-change="vm.dateChanged()" />
+                    <i class="material-icons inputicon">date_range</i>
+                </div>
+
+                <div class=" col s12 m3" style="z-index:2">
+                    <label for="">{{vm.userBundle['common.specialist']}}</label>
+                    <tags-input ng-model="vm.selectedSpecialists" on-tag-added="vm.onAddTags()" key-property="organisationId" display-property="organisationName"
+                        placeholder="Select Specialist" add-from-autocomplete-only="true">
+                        <auto-complete source="vm.loadSpecialist($query)" max-results-to-show="1000" load-on-focus="true" load-on-empty="true" template="my-custom-template"></auto-complete>
+                    </tags-input>
+                </div>
+                <div class=" col s12 m3" style="z-index:1">
+                    <label for="">{{vm.userBundle['common.productformat']}}</label>
+                    <tags-input ng-model="vm.selectedProductFormats" on-tag-added="vm.onAddTags()" class="no-margin" key-property="productFormatId"
+                        display-property="productFormatName" placeholder="Select Product Format" add-from-autocomplete-only="true">
+                        <auto-complete source="vm.loadProductFormat($query)" max-results-to-show="1000" load-on-focus="true" load-on-empty="true"
+                            template="my-custom-template"></auto-complete>
+                    </tags-input>
+                </div>
+
+                <div class="input-field col s12 m2">
+                    <!--<select>
+                        <option value="" disabled selected>Choose your option</option>
+                        <option value="1">Option 1</option>
+                        <option value="2">Option 2</option>
+                        <option value="3">Option 3</option>
+                    </select>-->
+                    <select id="Select9" ng-model="vm.isFrameDashbaord" ng-change="vm.selectDashBoardType()" ng-options="item.id as item.name for item in vm.graphOptions">
+                        <option value="" disabled selected>Choose your option</option>
+                    </select>
+                    <label> Select Graph for</label>
+                </div>
+                <div class="col s12 m1">
+                    <a id="dashBoardToolTip" class="btn-floating btn-flat blue-text right btn_popover" style="top: 10px; left: -4px;" data-html="true"
+                        data-position="bottom" data-delay="75"> <i class="material-icons blue-text">info_outline</i></a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="blue-grey lighten-5 filterselection" ng-if="vm.selectedSpecialists.length > 0  || vm.selectedProductFormats.length > 0">
+    <label class="filterlables"><b>{{vm.userBundle['common.specialist']}}: </b></label>
+    <div ng-repeat="specialist in vm.selectedSpecialists" class="chip">
+        {{specialist.organisationName}} <i ng-click="vm.removeTags($index, vm.selectedSpecialists)" class="close material-icons">close</i>
+    </div>
+
+
+    <label class="filterlables"><b>{{vm.userBundle['common.productformat']}}: </b></label>
+    <div ng-repeat="productFormat in vm.selectedProductFormats" class="chip">
+        {{productFormat.productFormatName}}<i ng-click="vm.removeTags($index, vm.selectedProductFormats)" class="close material-icons">close</i>
+    </div>
+</div>
+<div class="row meterchart_wrap">
+    <a id="gaugetooltip" class="btn-floating btn-flat blue-text right btn_popover gaugeinfo" data-position="bottom" data-delay="75"> <i class="material-icons blue-text" >info_outline</i></a>
+    <!--ng-style="{'max-width': (100 / vm.channelSummary.length) + '%'}"-->
+    <div class="col m7-col center" ng-style="{'max-width': (100 / vm.summary.length) + '%'}" ng-repeat="channel in vm.summary">
+        <canvas id="doughnut1" class="chart chart-doughnut" chart-data="[channel.value,100-channel.value]" chart-options="vm.sampleOptions"
+            chart-colors="channel.guageColors" ng-click="vm.onChannelClick(channel.id)">
+        </canvas>
+        <h5 class="gaugereader" ng-click="vm.onChannelClick(channel.id)">{{channel.value}}%</h5>
+        <div class="donut-inner">
+            <span>{{channel.label}}</span>
+        </div>
+    </div>
+</div>
+<div class="row" ng-hide="vm.hideWatermark">
+    <div class="col m12-col center">Please select any filter from sidebar to display charts.</div>
+</div>
+
+<div class="row">
+    <div class="col s12 m6 chart-container" ng-show="vm.showCampaign">
+        <div class="card">
+            <span class="card-title">
+                <span ng-if="vm.isFrameDashbaord == 1">
+                    {{vm.userBundle["popboard.frame.campaign.heading"]}}
+                </span>
+            <span ng-if="vm.isFrameDashbaord == 2">
+                    {{vm.userBundle["popboard.sot.campaign.heading"]}}
+                </span>
+            <span ng-if="vm.isFrameDashbaord == 3">
+                    {{vm.userBundle["popboard.impressions.campaign.heading"]}}
+                </span>
+
+            <a id="framecampaigntooltip" ng-show="vm.isFrameDashbaord == 1" class="btn-floating btn-flat blue-text right btn_popover"
+                data-html="true" data-position="bottom" data-delay="75"> 
+                    <i class="material-icons blue-text">info_outline</i>
+                </a>
+            <a id="sotcampaigntooltip" ng-show="vm.isFrameDashbaord == 2" class="btn-floating btn-flat blue-text right btn_popover" data-html="true"
+                data-position="bottom" data-delay="75"> 
+                    <i class="material-icons blue-text">info_outline</i>
+                </a>
+            <a id="impressionscampaigntooltip" ng-show="vm.isFrameDashbaord == 3" class="btn-floating btn-flat blue-text right btn_popover"
+                data-html="true" data-position="bottom" data-delay="75"> 
+                    <i class="material-icons blue-text">info_outline</i>
+                </a>
+            <span class="right">
+                    <input type="checkbox" class="filled-in" id="campaign_compaliant" ng-click="vm.compaliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign')" ng-model="vm.campaign.compaliant" />
+                    <label for="campaign_compaliant">Compliant ({{vm.campaign.compliantCount}})</label> &nbsp;&nbsp;
+                    <input type="checkbox" class="filled-in" id="campaign_non_compaliant" ng-model="vm.campaign.noncompaliant" ng-click="vm.compaliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign')" />
+                    <label for="campaign_non_compaliant">Non Compliant ({{vm.campaign.noncompliantCount}})</label> &nbsp;&nbsp;
+                </span>
+            </span>
+
+            <!--<span class="card-title" ng-if="vm.isFrameDashbaord">% frame above threshold </span>           
+             <a ng-if="vm.isFrameDashbaord"  class="customToolTip" data-position="bottom" data-delay="50" data-tooltip="{{vm.frame_CampaignInformation}}"  ng-model="vm.frameToolTip" > <i   class="material-icons" >info_outline</i></a>
+            <span class="card-title" ng-if="!vm.isFrameDashbaord">Campaigns - Average Performance - % played vs booked</span>
+             <a ng-if="!vm.isFrameDashbaord"  class="customToolTip" data-position="bottom" data-delay="50" data-tooltip="{{vm.sot_CampaignInformation}}"  ng-model="vm.frameToolTip" > <i   class="material-icons" >info_outline</i></a>-->
+
+            <!--style=" min-height: {{vm.campaignOptions.size.height + 'px'}}"-->
+            <div style="height: 100%;overflow-y: auto; min-height: 405px; max-height: 405px;">
+                <div class="card-content" ng-style='{"min-height":vm.campaignOptions.size.height}'>
+                    <canvas id="campaign" class="chart-horizontal-bar" chart-data="vm.campaignData.datasets[0].data" chart-options="vm.campaignOptions"
+                        chart-colors="vm.campaignData.datasets[0].backgroundColor" chart-labels="vm.campaignData.labels" chart-dataset-override="vm.campaignDetails"
+                        chart-click="vm.onCampaignClick">
+                </div>
+            </div>
+        </div>
+        <div class="compliance-tooltip" id="compliance-tooltip">
+            <i class="material-icons tooltip-close" ng-click="vm.closeTooltip('compliance-tooltip')">close</i>
+            <table></table>
+        </div>
+    </div>
+
+    <div class="col s12 m6 chart-container" ng-show="vm.showPlayer">
+        <div class="card cardwrapper">
+            <span class="card-title">
+                <span  ng-if="vm.isFrameDashbaord == 1">
+                    {{vm.userBundle["popboard.frame.player.heading"]}}
+                </span>
+            <span ng-if="vm.isFrameDashbaord == 2">
+                    {{vm.userBundle["popboard.sot.player.heading"]}}
+                </span>
+            <span ng-if="vm.isFrameDashbaord == 3">
+                    {{vm.userBundle["popboard.impressions.player.heading"]}}
+                </span>
+            <a id="frameplayertooltip" ng-show="vm.isFrameDashbaord == 1" class="btn-floating btn-flat blue-text right btn_popover" data-html="true"
+                data-position="bottom" data-delay="75"> 
+                      <i class="material-icons blue-text">info_outline</i>
+                  </a>
+            <a id="sotplayertooltip" ng-show="vm.isFrameDashbaord == 2" class="btn-floating btn-flat blue-text right btn_popover" data-html="true"
+                data-position="bottom" data-delay="75"> 
+                        <i class="material-icons blue-text">info_outline</i>
+                  </a>
+            <a id="impressionsplayertooltip" ng-show="vm.isFrameDashbaord == 3" class="btn-floating btn-flat blue-text right btn_popover"
+                data-html="true" data-position="bottom" data-delay="75"> 
+                        <i class="material-icons blue-text">info_outline</i>
+                  </a>
+            <span class="right">
+                    <input type="checkbox" class="filled-in" id="player_compaliant" ng-click="vm.compaliantcheck(vm.player.compaliant, vm.player.noncompaliant, 'player')" ng-model="vm.player.compaliant" />
+                    <label for="player_compaliant">Compliant ({{vm.player.compliantCount}})</label> &nbsp;&nbsp;
+                    <input type="checkbox" class="filled-in" id="player_non_compaliant" ng-click="vm.compaliantcheck(vm.player.compaliant, vm.player.noncompaliant, 'player')" ng-model="vm.player.noncompaliant"  />
+                    <label for="player_non_compaliant">Non Compliant ({{vm.player.noncompliantCount}})</label> &nbsp;&nbsp;
+                </span>
+            </span>
+            <div style="width: 100%;overflow-x: auto;float: left;bottom: -10px;position: relative;">
+                <!--style="width: {{vm.barOptions.size.width + 'px' }}; height: {{vm.barOptions.size.height + 'px'}}-->
+                <div class="card-content" ng-style='{"width": vm.barOptions.size.width,"height": vm.barOptions.size.height }'>
+                    <canvas id="player" class="chart chart-bar" chart-data="vm.playerData.datasets[0].data
+                " chart-options="vm.barOptions" chart-colors="vm.playerData.datasets[0].backgroundColor" chart-labels="vm.playerData.labels"
+                        chart-click="vm.onPlayerClick" chart-dataset-override="vm.playerDetails">
+                </div>
+            </div>
+        </div>
+
+        <div class="compliance-tooltip" id="player-tooltip">
+            <i class="material-icons tooltip-close" ng-click="vm.closeTooltip('player-tooltip')">close</i>
+            <table></table>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col s12 m6 chart-container" ng-show="vm.showDay">
+        <div class="card">
+            <span class="card-title">
+                <span ng-if="vm.isFrameDashbaord==1">
+                    {{vm.userBundle["popboard.frame.date.heading"]}}
+                </span>
+            <span ng-if="vm.isFrameDashbaord==2">
+                    {{vm.userBundle["popboard.sot.date.heading"]}}
+                </span>
+            <span ng-if="vm.isFrameDashbaord==3">
+                    {{vm.userBundle["popboard.impressions.date.heading"]}}
+                </span>
+            <a id="framedatetooltip" ng-show="vm.isFrameDashbaord==1" class="btn-floating btn-flat blue-text right btn_popover
+                " data-html="true" data-position="top" data-delay="75"> 
+                     <i class="material-icons blue-text">info_outline</i>
+                    </a>
+            <a id="sotdatetooltip" ng-show="vm.isFrameDashbaord==2" class="btn-floating btn-flat blue-text right btn_popover
+                " data-html="true" data-position="top" data-delay="75"> 
+                        <i class="material-icons blue-text">info_outline</i>
+                    </a>
+            <a id="impressionstdatetooltip" ng-show="vm.isFrameDashbaord==3" class="btn-floating btn-flat blue-text right
+                    btn_popover" data-html="true" data-position="top" data-delay="75"> 
+                        <i class="material-icons blue-text">info_outline</i>
+                    </a>
+            <span class="right">
+                        <input type="checkbox" class="filled-in" id="day_compaliant" ng-click="vm.compaliantcheck(vm.day.compaliant,
+                    vm.day.noncompaliant, 'day')" ng-model="vm.day.compaliant" />
+                        <label for="day_compaliant">Compliant ({{vm.day.compliantCount}})</label> &nbsp;&nbsp;
+                        <input type="checkbox" class="filled-in" id="day_non_compaliant" ng-click="vm.compaliantcheck(vm.day.compaliant,
+                    vm.day.noncompaliant, 'day')"  ng-model="vm.day.noncompaliant" />
+                        <label for="day_non_compaliant">Non Compliant ({{vm.day.noncompliantCount}})</label> &nbsp;&nbsp;
+                    </span>
+            </span>
+            <div class="card-content">
+                <canvas id="day" class="chart chart-bar" chart-data="vm.dayData.datasets[0].data" chart-options="vm.dayOptions" chart-colors="vm.dayData.datasets[0].backgroundColor"
+                    chart-labels="vm.dayData.labels" chart-click="vm.onDayClick" chart-dataset-override="vm.dayDetails">
+                </canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col s12 m6 chart-container" ng-show="vm.showHour">
+        <div class="card">
+            <span class="card-title">
+                <span ng-if="vm.isFrameDashbaord==1">
+                    {{vm.userBundle["popboard.frame.time.heading"]}}
+                </span>
+            <span ng-if="vm.isFrameDashbaord==2">
+                    {{vm.userBundle["popboard.sot.time.heading"]}}
+                </span>
+            <span ng-if="vm.isFrameDashbaord==3">
+					{{vm.userBundle["popboard.impressions.time.heading"]}}
+                </span>
+            <a id="frametimetooltip" ng-show="vm.isFrameDashbaord==1" class="btn-floating btn-flat blue-text right btn_popover
+                " data-html="true" data-position="top" data-delay="75"> 
+                    <i class="material-icons blue-text">info_outline</i>
+                </a>
+            <a id="sottimetooltip" ng-show="vm.isFrameDashbaord==2" class="btn-floating btn-flat blue-text right btn_popover
+                " data-html="true" data-position="top" data-delay="75"> 
+                    <i class="material-icons blue-text">info_outline</i>
+                </a>
+            <a id="impressionstimetooltip" ng-show="vm.isFrameDashbaord==3" class="btn-floating btn-flat blue-text right
+                    btn_popover" data-html="true" data-position="left" data-delay="75"> 
+                    <i class="material-icons blue-text">info_outline</i>
+                </a>
+            <span class="right">
+                    <input type="checkbox" class="filled-in" id="hour_compaliant" ng-model="vm.hour.compaliant"  ng-click="vm.compaliantcheck(vm.hour.compaliant, vm.hour.noncompaliant, 'hour')"  />
+                    <label for="hour_compaliant">Compliant ({{vm.hour.noncompliantCount}})</label> &nbsp;&nbsp;
+                    <input type="checkbox" class="filled-in" id="hour_non_compaliant" ng-model="vm.hour.noncompaliant" ng-click="vm.compaliantcheck(vm.hour.compaliant, vm.hour.noncompaliant, 'hour')" />
+                    <label for="hour_non_compaliant">Non Compliant ({{vm.hour.compliantCount}})</label> &nbsp;&nbsp;
+                </span>
+            </span>
+
+            <div class="card-content">
+                <canvas id="hour" class="chart chart-bar" chart-data="vm.hourData.datasets[0].data" chart-options="vm.hourOptions" chart-colors="vm.hourData.datasets[0].backgroundColor" chart-labels="vm.hourData.labels">
+                </canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col s12 m12 footer">
+        Back End Version {{vm.configData.systemData.version}} | Front End Version {{vm.frontEndVersion}}
+    </div>
+</div>
+
+<script type="text/ng-template" id="my-custom-template">
+    <span class="collection-item"> <input type="checkbox" id="test6" /><label for="test6"><i class="material-icons">done</i></label>
+         <label ng-bind-html="$highlight($getDisplayText())">
+             <!--do not put any text/html here, it will not reflect-->
+        </label>
+     </span>
+</script>
