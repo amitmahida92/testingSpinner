@@ -1,0 +1,27 @@
+{
+  "name": "reporting-dashboard",
+  "description": "Single page application which displays different graphs data.",
+  "main": "",
+  "authors": [
+    "Yuvraj Chauhan"
+  ],
+  "license": "MIT",
+  "homepage": "index.html",
+  "dependencies": {
+    "angular-route": "^1.5.9",
+    "angular-chart.js": "^1.0.3",
+    "lodash": "^4.17.2",
+    "ng-tags-input": "^3.1.1",
+    "ng-webworker": "^0.2.3",
+    "angular-loading-bar": "^0.6.0",
+    "angular-daterangepicker": "^0.2.2",
+    "materialize": "^0.97.8",
+    "components-font-awesome": "^4.7.0",
+    "angular-materialize": "^0.2.2"
+  },
+  "appPath": "app",
+  "moduleName": "reportingDashboard",
+  "resolutions": {
+    "jquery": "1.9.1 - 2"
+  }
+}

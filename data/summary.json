@@ -1,0 +1,3442 @@
+{
+  "data": {
+    "channelSummary": [
+      {
+        "id": 7,
+        "label": "Airports",
+        "value": "3.45"
+      },
+      {
+        "id": 1,
+        "label": "Large Format",
+        "value": "24.56"
+      },
+      {
+        "id": 4,
+        "label": "Malls",
+        "value": "4.05"
+      },
+      {
+        "id": 3,
+        "label": "Rail",
+        "value": "12.77"
+      },
+      {
+        "id": 6,
+        "label": "Street Furniture",
+        "value": "5.36"
+      },
+      {
+        "id": 9,
+        "label": "Tesco SmartScreen",
+        "value": "25.64"
+      },
+      {
+        "id": 19,
+        "label": "Total",
+        "value": "78.23"
+      }
+    ],
+    "campaignSummary": [
+      {
+        "id": 269681,
+        "label": "LVMH SA SM093867",
+        "value": "100.00",
+        "avgValue": "128.0",
+        "failed": false
+      },
+      {
+        "id": 366771,
+        "label": "Sky UK Ltd SM100247",
+        "value": "0.00",
+        "avgValue": "28.000000000000004",
+        "failed": true
+      },
+      {
+        "id": 471369,
+        "label": "Transport for London SM106953",
+        "value": "0.00",
+        "avgValue": "17.0",
+        "failed": true
+      },
+      {
+        "id": 475963,
+        "label": "AB InBev UK Ltd SM107523",
+        "value": "25.00",
+        "avgValue": "105.0",
+        "failed": true
+      },
+      {
+        "id": 478955,
+        "label": "Facebook SM107740",
+        "value": "100.00",
+        "avgValue": "123.0",
+        "failed": false
+      },
+      {
+        "id": 486994,
+        "label": "Lowry Outlet Mall SM108298",
+        "value": "100.00",
+        "avgValue": "110.00000000000001",
+        "failed": false
+      },
+      {
+        "id": 493263,
+        "label": "Facebook SM108830",
+        "value": "0.00",
+        "avgValue": "33.0",
+        "failed": true
+      },
+      {
+        "id": 500337,
+        "label": "AO Retail Ltd SM109389",
+        "value": "50.00",
+        "avgValue": "128.0",
+        "failed": true
+      },
+      {
+        "id": 500762,
+        "label": "AO Retail Ltd SM109425",
+        "value": "100.00",
+        "avgValue": "109.00000000000001",
+        "failed": false
+      },
+      {
+        "id": 505363,
+        "label": "AO Retail Ltd SM109754",
+        "value": "40.00",
+        "avgValue": "118.0",
+        "failed": true
+      },
+      {
+        "id": 508305,
+        "label": "JCDecaux Street Furniture New York LLC SM110521",
+        "value": "0.00",
+        "avgValue": "27.0",
+        "failed": true
+      },
+      {
+        "id": 510123,
+        "label": "Sky UK Ltd SM110701",
+        "value": "72.09",
+        "avgValue": "127.0",
+        "failed": true
+      },
+      {
+        "id": 510178,
+        "label": "Facebook SM110727",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 510204,
+        "label": "Facebook SM110741",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 510431,
+        "label": "Odds Farm Park Ltd SM110825",
+        "value": "0.00",
+        "avgValue": "122.0",
+        "failed": true
+      },
+      {
+        "id": 510507,
+        "label": "Twentieth Century Fox Film Company Ltd SM110851",
+        "value": "70.65",
+        "avgValue": "127.0",
+        "failed": true
+      },
+      {
+        "id": 511759,
+        "label": "Michael Kors (UK) Ltd SM111003",
+        "value": "67.89",
+        "avgValue": "129.0",
+        "failed": true
+      },
+      {
+        "id": 513519,
+        "label": "Cancer Research UK SM111198",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 518760,
+        "label": "Malta Tourism Authority SM111574",
+        "value": "54.55",
+        "avgValue": "123.0",
+        "failed": true
+      },
+      {
+        "id": 521586,
+        "label": "Thomas Cook Group Plc SM111850",
+        "value": "0.00",
+        "avgValue": "14.000000000000002",
+        "failed": true
+      },
+      {
+        "id": 529387,
+        "label": "Norwegian Air Shuttle ASA SM114568",
+        "value": "0.00",
+        "avgValue": "28.000000000000004",
+        "failed": true
+      },
+      {
+        "id": 535649,
+        "label": "McDonald's Restaurants Ltd SM115042",
+        "value": "0.00",
+        "avgValue": "18.0",
+        "failed": true
+      },
+      {
+        "id": 535830,
+        "label": "McDonald's Restaurants Ltd SM115101",
+        "value": "0.00",
+        "avgValue": "16.0",
+        "failed": true
+      },
+      {
+        "id": 538194,
+        "label": "easyJet Airline Company Ltd SM115315",
+        "value": "1.47",
+        "avgValue": "48.0",
+        "failed": true
+      },
+      {
+        "id": 538630,
+        "label": "South West Trains Ltd SM115343",
+        "value": "0.00",
+        "avgValue": "28.999999999999996",
+        "failed": true
+      },
+      {
+        "id": 547061,
+        "label": "Nicocigs Ltd SM115980",
+        "value": "83.33",
+        "avgValue": "112.99999999999999",
+        "failed": true
+      },
+      {
+        "id": 548197,
+        "label": "Facebook SM116058",
+        "value": "0.00",
+        "avgValue": "19.0",
+        "failed": true
+      },
+      {
+        "id": 548298,
+        "label": "British Telecommunications Plc SM116103",
+        "value": "0.00",
+        "avgValue": "32.0",
+        "failed": true
+      },
+      {
+        "id": 548969,
+        "label": "British Telecommunications Plc SM116124",
+        "value": "0.00",
+        "avgValue": "27.0",
+        "failed": true
+      },
+      {
+        "id": 549485,
+        "label": "Vodafone UK Ltd SM116167",
+        "value": "0.00",
+        "avgValue": "21.0",
+        "failed": true
+      },
+      {
+        "id": 551336,
+        "label": "American Express Services Europe Ltd SM116303",
+        "value": "5.18",
+        "avgValue": "40.0",
+        "failed": true
+      },
+      {
+        "id": 551722,
+        "label": "Crown Commercial Service SM116324",
+        "value": "0.00",
+        "avgValue": "30.0",
+        "failed": true
+      },
+      {
+        "id": 551814,
+        "label": "Crown Commercial Service SM116335",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 554304,
+        "label": "Birmingham Hippodrome Theatre Trust Ltd SM116534",
+        "value": "71.43",
+        "avgValue": "122.0",
+        "failed": true
+      },
+      {
+        "id": 554558,
+        "label": "JD Sports Fashion Plc SM116548",
+        "value": "0.00",
+        "avgValue": "19.0",
+        "failed": true
+      },
+      {
+        "id": 554558,
+        "label": "JD Sports Fashion Plc SM116549",
+        "value": "0.00",
+        "avgValue": "21.0",
+        "failed": true
+      },
+      {
+        "id": 555958,
+        "label": "Center Parcs (UK) Group Ltd SM116668",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 557226,
+        "label": "Lighter Life SM116771",
+        "value": "0.00",
+        "avgValue": "17.0",
+        "failed": true
+      },
+      {
+        "id": 565249,
+        "label": "Suntory Europe Plc SM117388",
+        "value": "0.00",
+        "avgValue": "15.0",
+        "failed": true
+      },
+      {
+        "id": 567681,
+        "label": "Church & Dwight UK Ltd SM117566",
+        "value": "72.46",
+        "avgValue": "118.0",
+        "failed": true
+      },
+      {
+        "id": 572027,
+        "label": "Tourism Ireland Ltd SM117948",
+        "value": "0.00",
+        "avgValue": "28.000000000000004",
+        "failed": true
+      },
+      {
+        "id": 573891,
+        "label": "Paramount Pictures UK SM118031",
+        "value": "70.28",
+        "avgValue": "121.0",
+        "failed": true
+      },
+      {
+        "id": 579506,
+        "label": "ITV Plc SM118425",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 584995,
+        "label": "Toyota (GB) Plc SM118822",
+        "value": "0.00",
+        "avgValue": "14.000000000000002",
+        "failed": true
+      },
+      {
+        "id": 585264,
+        "label": "Jet2.com Ltd SM118844",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 585709,
+        "label": "Fiat Group Automobiles UK Ltd SM118876",
+        "value": "0.00",
+        "avgValue": "8.0",
+        "failed": true
+      },
+      {
+        "id": 585763,
+        "label": "Fiat Group Automobiles UK Ltd SM118878",
+        "value": "0.00",
+        "avgValue": "22.0",
+        "failed": true
+      },
+      {
+        "id": 586451,
+        "label": "Universal Pictures Subscription Television Ltd SM118983",
+        "value": "100.00",
+        "avgValue": "110.00000000000001",
+        "failed": false
+      },
+      {
+        "id": 586464,
+        "label": "Universal Pictures Subscription Television Ltd SM118985",
+        "value": "100.00",
+        "avgValue": "140.0",
+        "failed": false
+      },
+      {
+        "id": 587951,
+        "label": "Thomas Cook Group Plc SM119109",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 589088,
+        "label": "Telefónica O2 UK Ltd SM119190",
+        "value": "61.29",
+        "avgValue": "134.0",
+        "failed": true
+      },
+      {
+        "id": 589243,
+        "label": "Channel Four Television Company Ltd SM119206",
+        "value": "0.00",
+        "avgValue": "61.0",
+        "failed": true
+      },
+      {
+        "id": 590807,
+        "label": "JCDecaux Street Furniture New York LLC SM119345",
+        "value": "0.00",
+        "avgValue": "31.0",
+        "failed": true
+      },
+      {
+        "id": 591449,
+        "label": "Google UK Ltd SM119388",
+        "value": "67.70",
+        "avgValue": "130.0",
+        "failed": true
+      },
+      {
+        "id": 591795,
+        "label": "Starbucks Coffee Company (UK) Ltd SM119405",
+        "value": "0.00",
+        "avgValue": "19.0",
+        "failed": true
+      },
+      {
+        "id": 591795,
+        "label": "Starbucks Coffee Company (UK) Ltd SM119406",
+        "value": "0.00",
+        "avgValue": "19.0",
+        "failed": true
+      },
+      {
+        "id": 592355,
+        "label": "ITV Plc SM119450",
+        "value": "0.00",
+        "avgValue": "82.0",
+        "failed": true
+      },
+      {
+        "id": 592372,
+        "label": "ITV Plc SM119452",
+        "value": "0.00",
+        "avgValue": "34.0",
+        "failed": true
+      },
+      {
+        "id": 593318,
+        "label": "British American Tobacco Plc SM119549",
+        "value": "100.00",
+        "avgValue": "103.0",
+        "failed": false
+      },
+      {
+        "id": 593866,
+        "label": "American Express Services Europe Ltd SM119602",
+        "value": "0.00",
+        "avgValue": "15.0",
+        "failed": true
+      },
+      {
+        "id": 595299,
+        "label": "Hyundai Motor UK Ltd SM119724",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 596581,
+        "label": "Go Ape Ltd SM119830",
+        "value": "100.00",
+        "avgValue": "111.00000000000001",
+        "failed": false
+      },
+      {
+        "id": 596871,
+        "label": "GoCompare.com Ltd SM119851",
+        "value": "17.26",
+        "avgValue": "80.0",
+        "failed": true
+      },
+      {
+        "id": 597588,
+        "label": "Go Ape Ltd SM119911",
+        "value": "100.00",
+        "avgValue": "132.0",
+        "failed": false
+      },
+      {
+        "id": 597852,
+        "label": "HMV UK Ltd SM119934",
+        "value": "68.89",
+        "avgValue": "123.0",
+        "failed": true
+      },
+      {
+        "id": 600695,
+        "label": "Virgin Holidays Ltd SM120153",
+        "value": "0.00",
+        "avgValue": "39.0",
+        "failed": true
+      },
+      {
+        "id": 600751,
+        "label": "Virgin Holidays Ltd SM120159",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 600815,
+        "label": "Virgin Holidays Ltd SM120176",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 600831,
+        "label": "Virgin Holidays Ltd SM120181",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 602152,
+        "label": "Israel Government Tourist Office SM120329",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 603542,
+        "label": "Norwegian Air Shuttle ASA SM120430",
+        "value": "0.00",
+        "avgValue": "36.0",
+        "failed": true
+      },
+      {
+        "id": 605173,
+        "label": "The Foundation For a Better Life t/a Values.com SM120574",
+        "value": "0.00",
+        "avgValue": "25.0",
+        "failed": true
+      },
+      {
+        "id": 606791,
+        "label": "K.L.M Royal Dutch Airlines SM120725",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 607352,
+        "label": "UK PRS Lettings I LLP SM120777",
+        "value": "0.00",
+        "avgValue": "27.0",
+        "failed": true
+      },
+      {
+        "id": 608262,
+        "label": "Cotswold Outdoor Ltd SM120984",
+        "value": "0.00",
+        "avgValue": "40.0",
+        "failed": true
+      },
+      {
+        "id": 608382,
+        "label": "Procter & Gamble Holdings (UK) Ltd SM121096",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 608410,
+        "label": "Channel 5 Broadcasting Ltd SM121120",
+        "value": "66.33",
+        "avgValue": "114.99999999999999",
+        "failed": true
+      },
+      {
+        "id": 608425,
+        "label": "The Ambassador Theatre Group Ltd SM121134",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 608580,
+        "label": "Warner Bros. Entertainment UK Ltd SM121293",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 608859,
+        "label": "Tesco Stores Ltd SM121574",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 608967,
+        "label": "Omega Pharma Ltd SM121683",
+        "value": "65.38",
+        "avgValue": "148.0",
+        "failed": true
+      },
+      {
+        "id": 608970,
+        "label": "Orion Media Ltd SM121686",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 608991,
+        "label": "Toyota (GB) Plc SM121705",
+        "value": "100.00",
+        "avgValue": "179.0",
+        "failed": false
+      },
+      {
+        "id": 609018,
+        "label": "Gateshead Council SM121728",
+        "value": "0.00",
+        "avgValue": "28.999999999999996",
+        "failed": true
+      },
+      {
+        "id": 609059,
+        "label": "Sony Computer Entertainment Europe Ltd SM121767",
+        "value": "100.00",
+        "avgValue": "123.0",
+        "failed": false
+      },
+      {
+        "id": 609065,
+        "label": "Armed Forces Careers Office SM121776",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 609066,
+        "label": "Sony Computer Entertainment Europe Ltd SM121777",
+        "value": "61.13",
+        "avgValue": "108.0",
+        "failed": true
+      },
+      {
+        "id": 609170,
+        "label": "NHS SM121871",
+        "value": "0.00",
+        "avgValue": "26.0",
+        "failed": true
+      },
+      {
+        "id": 609182,
+        "label": "Toyota (GB) Plc SM121888",
+        "value": "0.00",
+        "avgValue": "15.0",
+        "failed": true
+      },
+      {
+        "id": 609233,
+        "label": "JCDecaux Street Furniture New York LLC SM121932",
+        "value": "100.00",
+        "avgValue": "202.0",
+        "failed": false
+      },
+      {
+        "id": 609239,
+        "label": "Virgin Holidays Ltd SM121936",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 609282,
+        "label": "AEG Europe SM121986",
+        "value": "100.00",
+        "avgValue": "109.00000000000001",
+        "failed": false
+      },
+      {
+        "id": 609298,
+        "label": "The Ambassador Theatre Group Ltd SM121999",
+        "value": "0.00",
+        "avgValue": "20.0",
+        "failed": true
+      },
+      {
+        "id": 609315,
+        "label": "Vision Express (UK) Ltd SM122019",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 609326,
+        "label": "Barbados Tourist Board SM122033",
+        "value": "0.00",
+        "avgValue": "25.0",
+        "failed": true
+      },
+      {
+        "id": 609341,
+        "label": "Birmingham Airport Ltd SM122046",
+        "value": "0.00",
+        "avgValue": "28.000000000000004",
+        "failed": true
+      },
+      {
+        "id": 609564,
+        "label": "Telefónica O2 UK Ltd SM122276",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 609794,
+        "label": "Leicestershire Police SM122531",
+        "value": "50.00",
+        "avgValue": "112.99999999999999",
+        "failed": true
+      },
+      {
+        "id": 609902,
+        "label": "Thomas Cook Group Plc SM122631",
+        "value": "0.00",
+        "avgValue": "28.000000000000004",
+        "failed": true
+      },
+      {
+        "id": 610025,
+        "label": "DFS Furniture Company Ltd SM122760",
+        "value": "75.00",
+        "avgValue": "121.0",
+        "failed": true
+      },
+      {
+        "id": 610100,
+        "label": "Glasgow Clyde College SM122828",
+        "value": "0.00",
+        "avgValue": "13.0",
+        "failed": true
+      },
+      {
+        "id": 610186,
+        "label": "easyJet Airline Company Ltd SM122919",
+        "value": "14.29",
+        "avgValue": "40.0",
+        "failed": true
+      },
+      {
+        "id": 610283,
+        "label": "Sony Computer Entertainment Europe Ltd SM123022",
+        "value": "100.00",
+        "avgValue": "103.0",
+        "failed": false
+      },
+      {
+        "id": 610302,
+        "label": "Sky UK Ltd SM123043",
+        "value": "0.00",
+        "avgValue": "19.0",
+        "failed": true
+      },
+      {
+        "id": 610311,
+        "label": "Sky UK Ltd SM123053",
+        "value": "0.00",
+        "avgValue": "21.0",
+        "failed": true
+      },
+      {
+        "id": 610322,
+        "label": "DFS Furniture Company Ltd SM123064",
+        "value": "100.00",
+        "avgValue": "117.0",
+        "failed": false
+      },
+      {
+        "id": 610367,
+        "label": "Thomas Cook Group Plc SM123144",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 610562,
+        "label": "CV-Library Ltd SM123304",
+        "value": "0.00",
+        "avgValue": "17.0",
+        "failed": true
+      },
+      {
+        "id": 610580,
+        "label": "BBC Worldwide Ltd SM123320",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 610596,
+        "label": "BBC Worldwide Ltd SM123336",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 610612,
+        "label": "Suntory Europe Plc SM123354",
+        "value": "100.00",
+        "avgValue": "101.0",
+        "failed": false
+      },
+      {
+        "id": 610703,
+        "label": "Intu Properties Plc SM123452",
+        "value": "0.00",
+        "avgValue": "17.0",
+        "failed": true
+      },
+      {
+        "id": 610723,
+        "label": "Intu Properties Plc SM123470",
+        "value": "18.75",
+        "avgValue": "104.0",
+        "failed": true
+      },
+      {
+        "id": 269681,
+        "label": "LVMH SA SM093867",
+        "value": "100.00",
+        "avgValue": "128.0",
+        "failed": false
+      },
+      {
+        "id": 366771,
+        "label": "Sky UK Ltd SM100247",
+        "value": "0.00",
+        "avgValue": "28.000000000000004",
+        "failed": true
+      },
+      {
+        "id": 471369,
+        "label": "Transport for London SM106953",
+        "value": "0.00",
+        "avgValue": "17.0",
+        "failed": true
+      },
+      {
+        "id": 475963,
+        "label": "AB InBev UK Ltd SM107523",
+        "value": "25.00",
+        "avgValue": "105.0",
+        "failed": true
+      },
+      {
+        "id": 478955,
+        "label": "Facebook SM107740",
+        "value": "100.00",
+        "avgValue": "123.0",
+        "failed": false
+      },
+      {
+        "id": 486994,
+        "label": "Lowry Outlet Mall SM108298",
+        "value": "100.00",
+        "avgValue": "110.00000000000001",
+        "failed": false
+      },
+      {
+        "id": 493263,
+        "label": "Facebook SM108830",
+        "value": "0.00",
+        "avgValue": "33.0",
+        "failed": true
+      },
+      {
+        "id": 500337,
+        "label": "AO Retail Ltd SM109389",
+        "value": "50.00",
+        "avgValue": "128.0",
+        "failed": true
+      },
+      {
+        "id": 500762,
+        "label": "AO Retail Ltd SM109425",
+        "value": "100.00",
+        "avgValue": "109.00000000000001",
+        "failed": false
+      },
+      {
+        "id": 505363,
+        "label": "AO Retail Ltd SM109754",
+        "value": "40.00",
+        "avgValue": "118.0",
+        "failed": true
+      },
+      {
+        "id": 508305,
+        "label": "JCDecaux Street Furniture New York LLC SM110521",
+        "value": "0.00",
+        "avgValue": "27.0",
+        "failed": true
+      },
+      {
+        "id": 510123,
+        "label": "Sky UK Ltd SM110701",
+        "value": "72.09",
+        "avgValue": "127.0",
+        "failed": true
+      },
+      {
+        "id": 510178,
+        "label": "Facebook SM110727",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 510204,
+        "label": "Facebook SM110741",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 510431,
+        "label": "Odds Farm Park Ltd SM110825",
+        "value": "0.00",
+        "avgValue": "122.0",
+        "failed": true
+      },
+      {
+        "id": 510507,
+        "label": "Twentieth Century Fox Film Company Ltd SM110851",
+        "value": "70.65",
+        "avgValue": "127.0",
+        "failed": true
+      },
+      {
+        "id": 511759,
+        "label": "Michael Kors (UK) Ltd SM111003",
+        "value": "67.89",
+        "avgValue": "129.0",
+        "failed": true
+      },
+      {
+        "id": 513519,
+        "label": "Cancer Research UK SM111198",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 518760,
+        "label": "Malta Tourism Authority SM111574",
+        "value": "54.55",
+        "avgValue": "123.0",
+        "failed": true
+      },
+      {
+        "id": 521586,
+        "label": "Thomas Cook Group Plc SM111850",
+        "value": "0.00",
+        "avgValue": "14.000000000000002",
+        "failed": true
+      },
+      {
+        "id": 529387,
+        "label": "Norwegian Air Shuttle ASA SM114568",
+        "value": "0.00",
+        "avgValue": "28.000000000000004",
+        "failed": true
+      },
+      {
+        "id": 535649,
+        "label": "McDonald's Restaurants Ltd SM115042",
+        "value": "0.00",
+        "avgValue": "18.0",
+        "failed": true
+      },
+      {
+        "id": 535830,
+        "label": "McDonald's Restaurants Ltd SM115101",
+        "value": "0.00",
+        "avgValue": "16.0",
+        "failed": true
+      },
+      {
+        "id": 538194,
+        "label": "easyJet Airline Company Ltd SM115315",
+        "value": "1.47",
+        "avgValue": "48.0",
+        "failed": true
+      },
+      {
+        "id": 538630,
+        "label": "South West Trains Ltd SM115343",
+        "value": "0.00",
+        "avgValue": "28.999999999999996",
+        "failed": true
+      },
+      {
+        "id": 547061,
+        "label": "Nicocigs Ltd SM115980",
+        "value": "83.33",
+        "avgValue": "112.99999999999999",
+        "failed": true
+      },
+      {
+        "id": 548197,
+        "label": "Facebook SM116058",
+        "value": "0.00",
+        "avgValue": "19.0",
+        "failed": true
+      },
+      {
+        "id": 548298,
+        "label": "British Telecommunications Plc SM116103",
+        "value": "0.00",
+        "avgValue": "32.0",
+        "failed": true
+      },
+      {
+        "id": 548969,
+        "label": "British Telecommunications Plc SM116124",
+        "value": "0.00",
+        "avgValue": "27.0",
+        "failed": true
+      },
+      {
+        "id": 549485,
+        "label": "Vodafone UK Ltd SM116167",
+        "value": "0.00",
+        "avgValue": "21.0",
+        "failed": true
+      },
+      {
+        "id": 551336,
+        "label": "American Express Services Europe Ltd SM116303",
+        "value": "5.18",
+        "avgValue": "40.0",
+        "failed": true
+      },
+      {
+        "id": 551722,
+        "label": "Crown Commercial Service SM116324",
+        "value": "0.00",
+        "avgValue": "30.0",
+        "failed": true
+      },
+      {
+        "id": 551814,
+        "label": "Crown Commercial Service SM116335",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 554304,
+        "label": "Birmingham Hippodrome Theatre Trust Ltd SM116534",
+        "value": "71.43",
+        "avgValue": "122.0",
+        "failed": true
+      },
+      {
+        "id": 554558,
+        "label": "JD Sports Fashion Plc SM116548",
+        "value": "0.00",
+        "avgValue": "19.0",
+        "failed": true
+      },
+      {
+        "id": 554558,
+        "label": "JD Sports Fashion Plc SM116549",
+        "value": "0.00",
+        "avgValue": "21.0",
+        "failed": true
+      },
+      {
+        "id": 555958,
+        "label": "Center Parcs (UK) Group Ltd SM116668",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 557226,
+        "label": "Lighter Life SM116771",
+        "value": "0.00",
+        "avgValue": "17.0",
+        "failed": true
+      },
+      {
+        "id": 565249,
+        "label": "Suntory Europe Plc SM117388",
+        "value": "0.00",
+        "avgValue": "15.0",
+        "failed": true
+      },
+      {
+        "id": 567681,
+        "label": "Church & Dwight UK Ltd SM117566",
+        "value": "72.46",
+        "avgValue": "118.0",
+        "failed": true
+      },
+      {
+        "id": 572027,
+        "label": "Tourism Ireland Ltd SM117948",
+        "value": "0.00",
+        "avgValue": "28.000000000000004",
+        "failed": true
+      },
+      {
+        "id": 573891,
+        "label": "Paramount Pictures UK SM118031",
+        "value": "70.28",
+        "avgValue": "121.0",
+        "failed": true
+      },
+      {
+        "id": 579506,
+        "label": "ITV Plc SM118425",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 584995,
+        "label": "Toyota (GB) Plc SM118822",
+        "value": "0.00",
+        "avgValue": "14.000000000000002",
+        "failed": true
+      },
+      {
+        "id": 585264,
+        "label": "Jet2.com Ltd SM118844",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 585709,
+        "label": "Fiat Group Automobiles UK Ltd SM118876",
+        "value": "0.00",
+        "avgValue": "8.0",
+        "failed": true
+      },
+      {
+        "id": 585763,
+        "label": "Fiat Group Automobiles UK Ltd SM118878",
+        "value": "0.00",
+        "avgValue": "22.0",
+        "failed": true
+      },
+      {
+        "id": 586451,
+        "label": "Universal Pictures Subscription Television Ltd SM118983",
+        "value": "100.00",
+        "avgValue": "110.00000000000001",
+        "failed": false
+      },
+      {
+        "id": 586464,
+        "label": "Universal Pictures Subscription Television Ltd SM118985",
+        "value": "100.00",
+        "avgValue": "140.0",
+        "failed": false
+      },
+      {
+        "id": 587951,
+        "label": "Thomas Cook Group Plc SM119109",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 589088,
+        "label": "Telefónica O2 UK Ltd SM119190",
+        "value": "61.29",
+        "avgValue": "134.0",
+        "failed": true
+      },
+      {
+        "id": 589243,
+        "label": "Channel Four Television Company Ltd SM119206",
+        "value": "0.00",
+        "avgValue": "61.0",
+        "failed": true
+      },
+      {
+        "id": 590807,
+        "label": "JCDecaux Street Furniture New York LLC SM119345",
+        "value": "0.00",
+        "avgValue": "31.0",
+        "failed": true
+      },
+      {
+        "id": 591449,
+        "label": "Google UK Ltd SM119388",
+        "value": "67.70",
+        "avgValue": "130.0",
+        "failed": true
+      },
+      {
+        "id": 591795,
+        "label": "Starbucks Coffee Company (UK) Ltd SM119405",
+        "value": "0.00",
+        "avgValue": "19.0",
+        "failed": true
+      },
+      {
+        "id": 591795,
+        "label": "Starbucks Coffee Company (UK) Ltd SM119406",
+        "value": "0.00",
+        "avgValue": "19.0",
+        "failed": true
+      },
+      {
+        "id": 592355,
+        "label": "ITV Plc SM119450",
+        "value": "0.00",
+        "avgValue": "82.0",
+        "failed": true
+      },
+      {
+        "id": 592372,
+        "label": "ITV Plc SM119452",
+        "value": "0.00",
+        "avgValue": "34.0",
+        "failed": true
+      },
+      {
+        "id": 593318,
+        "label": "British American Tobacco Plc SM119549",
+        "value": "100.00",
+        "avgValue": "103.0",
+        "failed": false
+      },
+      {
+        "id": 593866,
+        "label": "American Express Services Europe Ltd SM119602",
+        "value": "0.00",
+        "avgValue": "15.0",
+        "failed": true
+      },
+      {
+        "id": 595299,
+        "label": "Hyundai Motor UK Ltd SM119724",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 596581,
+        "label": "Go Ape Ltd SM119830",
+        "value": "100.00",
+        "avgValue": "111.00000000000001",
+        "failed": false
+      },
+      {
+        "id": 596871,
+        "label": "GoCompare.com Ltd SM119851",
+        "value": "17.26",
+        "avgValue": "80.0",
+        "failed": true
+      },
+      {
+        "id": 597588,
+        "label": "Go Ape Ltd SM119911",
+        "value": "100.00",
+        "avgValue": "132.0",
+        "failed": false
+      },
+      {
+        "id": 597852,
+        "label": "HMV UK Ltd SM119934",
+        "value": "68.89",
+        "avgValue": "123.0",
+        "failed": true
+      },
+      {
+        "id": 600695,
+        "label": "Virgin Holidays Ltd SM120153",
+        "value": "0.00",
+        "avgValue": "39.0",
+        "failed": true
+      },
+      {
+        "id": 600751,
+        "label": "Virgin Holidays Ltd SM120159",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 600815,
+        "label": "Virgin Holidays Ltd SM120176",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 600831,
+        "label": "Virgin Holidays Ltd SM120181",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 602152,
+        "label": "Israel Government Tourist Office SM120329",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 603542,
+        "label": "Norwegian Air Shuttle ASA SM120430",
+        "value": "0.00",
+        "avgValue": "36.0",
+        "failed": true
+      },
+      {
+        "id": 605173,
+        "label": "The Foundation For a Better Life t/a Values.com SM120574",
+        "value": "0.00",
+        "avgValue": "25.0",
+        "failed": true
+      },
+      {
+        "id": 606791,
+        "label": "K.L.M Royal Dutch Airlines SM120725",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 607352,
+        "label": "UK PRS Lettings I LLP SM120777",
+        "value": "0.00",
+        "avgValue": "27.0",
+        "failed": true
+      },
+      {
+        "id": 608262,
+        "label": "Cotswold Outdoor Ltd SM120984",
+        "value": "0.00",
+        "avgValue": "40.0",
+        "failed": true
+      },
+      {
+        "id": 608382,
+        "label": "Procter & Gamble Holdings (UK) Ltd SM121096",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 608410,
+        "label": "Channel 5 Broadcasting Ltd SM121120",
+        "value": "66.33",
+        "avgValue": "114.99999999999999",
+        "failed": true
+      },
+      {
+        "id": 608425,
+        "label": "The Ambassador Theatre Group Ltd SM121134",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 608580,
+        "label": "Warner Bros. Entertainment UK Ltd SM121293",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 608859,
+        "label": "Tesco Stores Ltd SM121574",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 608967,
+        "label": "Omega Pharma Ltd SM121683",
+        "value": "65.38",
+        "avgValue": "148.0",
+        "failed": true
+      },
+      {
+        "id": 608970,
+        "label": "Orion Media Ltd SM121686",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 608991,
+        "label": "Toyota (GB) Plc SM121705",
+        "value": "100.00",
+        "avgValue": "179.0",
+        "failed": false
+      },
+      {
+        "id": 609018,
+        "label": "Gateshead Council SM121728",
+        "value": "0.00",
+        "avgValue": "28.999999999999996",
+        "failed": true
+      },
+      {
+        "id": 609059,
+        "label": "Sony Computer Entertainment Europe Ltd SM121767",
+        "value": "100.00",
+        "avgValue": "123.0",
+        "failed": false
+      },
+      {
+        "id": 609065,
+        "label": "Armed Forces Careers Office SM121776",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 609066,
+        "label": "Sony Computer Entertainment Europe Ltd SM121777",
+        "value": "61.13",
+        "avgValue": "108.0",
+        "failed": true
+      },
+      {
+        "id": 609170,
+        "label": "NHS SM121871",
+        "value": "0.00",
+        "avgValue": "26.0",
+        "failed": true
+      },
+      {
+        "id": 609182,
+        "label": "Toyota (GB) Plc SM121888",
+        "value": "0.00",
+        "avgValue": "15.0",
+        "failed": true
+      },
+      {
+        "id": 609233,
+        "label": "JCDecaux Street Furniture New York LLC SM121932",
+        "value": "100.00",
+        "avgValue": "202.0",
+        "failed": false
+      },
+      {
+        "id": 609239,
+        "label": "Virgin Holidays Ltd SM121936",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 609282,
+        "label": "AEG Europe SM121986",
+        "value": "100.00",
+        "avgValue": "109.00000000000001",
+        "failed": false
+      },
+      {
+        "id": 609298,
+        "label": "The Ambassador Theatre Group Ltd SM121999",
+        "value": "0.00",
+        "avgValue": "20.0",
+        "failed": true
+      },
+      {
+        "id": 609315,
+        "label": "Vision Express (UK) Ltd SM122019",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 609326,
+        "label": "Barbados Tourist Board SM122033",
+        "value": "0.00",
+        "avgValue": "25.0",
+        "failed": true
+      },
+      {
+        "id": 609341,
+        "label": "Birmingham Airport Ltd SM122046",
+        "value": "0.00",
+        "avgValue": "28.000000000000004",
+        "failed": true
+      },
+      {
+        "id": 609564,
+        "label": "Telefónica O2 UK Ltd SM122276",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 609794,
+        "label": "Leicestershire Police SM122531",
+        "value": "50.00",
+        "avgValue": "112.99999999999999",
+        "failed": true
+      },
+      {
+        "id": 609902,
+        "label": "Thomas Cook Group Plc SM122631",
+        "value": "0.00",
+        "avgValue": "28.000000000000004",
+        "failed": true
+      },
+      {
+        "id": 610025,
+        "label": "DFS Furniture Company Ltd SM122760",
+        "value": "75.00",
+        "avgValue": "121.0",
+        "failed": true
+      },
+      {
+        "id": 610100,
+        "label": "Glasgow Clyde College SM122828",
+        "value": "0.00",
+        "avgValue": "13.0",
+        "failed": true
+      },
+      {
+        "id": 610186,
+        "label": "easyJet Airline Company Ltd SM122919",
+        "value": "14.29",
+        "avgValue": "40.0",
+        "failed": true
+      },
+      {
+        "id": 610283,
+        "label": "Sony Computer Entertainment Europe Ltd SM123022",
+        "value": "100.00",
+        "avgValue": "103.0",
+        "failed": false
+      },
+      {
+        "id": 610302,
+        "label": "Sky UK Ltd SM123043",
+        "value": "0.00",
+        "avgValue": "19.0",
+        "failed": true
+      },
+      {
+        "id": 610311,
+        "label": "Sky UK Ltd SM123053",
+        "value": "0.00",
+        "avgValue": "21.0",
+        "failed": true
+      },
+      {
+        "id": 610322,
+        "label": "DFS Furniture Company Ltd SM123064",
+        "value": "100.00",
+        "avgValue": "117.0",
+        "failed": false
+      },
+      {
+        "id": 610367,
+        "label": "Thomas Cook Group Plc SM123144",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 610562,
+        "label": "CV-Library Ltd SM123304",
+        "value": "0.00",
+        "avgValue": "17.0",
+        "failed": true
+      },
+      {
+        "id": 610580,
+        "label": "BBC Worldwide Ltd SM123320",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 610596,
+        "label": "BBC Worldwide Ltd SM123336",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 610612,
+        "label": "Suntory Europe Plc SM123354",
+        "value": "100.00",
+        "avgValue": "101.0",
+        "failed": false
+      },
+      {
+        "id": 269681,
+        "label": "LVMH SA SM093867",
+        "value": "100.00",
+        "avgValue": "128.0",
+        "failed": false
+      },
+      {
+        "id": 366771,
+        "label": "Sky UK Ltd SM100247",
+        "value": "0.00",
+        "avgValue": "28.000000000000004",
+        "failed": true
+      },
+      {
+        "id": 471369,
+        "label": "Transport for London SM106953",
+        "value": "0.00",
+        "avgValue": "17.0",
+        "failed": true
+      },
+      {
+        "id": 475963,
+        "label": "AB InBev UK Ltd SM107523",
+        "value": "25.00",
+        "avgValue": "105.0",
+        "failed": true
+      },
+      {
+        "id": 478955,
+        "label": "Facebook SM107740",
+        "value": "100.00",
+        "avgValue": "123.0",
+        "failed": false
+      },
+      {
+        "id": 486994,
+        "label": "Lowry Outlet Mall SM108298",
+        "value": "100.00",
+        "avgValue": "110.00000000000001",
+        "failed": false
+      },
+      {
+        "id": 493263,
+        "label": "Facebook SM108830",
+        "value": "0.00",
+        "avgValue": "33.0",
+        "failed": true
+      },
+      {
+        "id": 500337,
+        "label": "AO Retail Ltd SM109389",
+        "value": "50.00",
+        "avgValue": "128.0",
+        "failed": true
+      },
+      {
+        "id": 500762,
+        "label": "AO Retail Ltd SM109425",
+        "value": "100.00",
+        "avgValue": "109.00000000000001",
+        "failed": false
+      },
+      {
+        "id": 505363,
+        "label": "AO Retail Ltd SM109754",
+        "value": "40.00",
+        "avgValue": "118.0",
+        "failed": true
+      },
+      {
+        "id": 508305,
+        "label": "JCDecaux Street Furniture New York LLC SM110521",
+        "value": "0.00",
+        "avgValue": "27.0",
+        "failed": true
+      },
+      {
+        "id": 510123,
+        "label": "Sky UK Ltd SM110701",
+        "value": "72.09",
+        "avgValue": "127.0",
+        "failed": true
+      },
+      {
+        "id": 510178,
+        "label": "Facebook SM110727",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 510204,
+        "label": "Facebook SM110741",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 510431,
+        "label": "Odds Farm Park Ltd SM110825",
+        "value": "0.00",
+        "avgValue": "122.0",
+        "failed": true
+      },
+      {
+        "id": 510507,
+        "label": "Twentieth Century Fox Film Company Ltd SM110851",
+        "value": "70.65",
+        "avgValue": "127.0",
+        "failed": true
+      },
+      {
+        "id": 511759,
+        "label": "Michael Kors (UK) Ltd SM111003",
+        "value": "67.89",
+        "avgValue": "129.0",
+        "failed": true
+      },
+      {
+        "id": 513519,
+        "label": "Cancer Research UK SM111198",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 518760,
+        "label": "Malta Tourism Authority SM111574",
+        "value": "54.55",
+        "avgValue": "123.0",
+        "failed": true
+      },
+      {
+        "id": 521586,
+        "label": "Thomas Cook Group Plc SM111850",
+        "value": "0.00",
+        "avgValue": "14.000000000000002",
+        "failed": true
+      },
+      {
+        "id": 529387,
+        "label": "Norwegian Air Shuttle ASA SM114568",
+        "value": "0.00",
+        "avgValue": "28.000000000000004",
+        "failed": true
+      },
+      {
+        "id": 535649,
+        "label": "McDonald's Restaurants Ltd SM115042",
+        "value": "0.00",
+        "avgValue": "18.0",
+        "failed": true
+      },
+      {
+        "id": 535830,
+        "label": "McDonald's Restaurants Ltd SM115101",
+        "value": "0.00",
+        "avgValue": "16.0",
+        "failed": true
+      },
+      {
+        "id": 538194,
+        "label": "easyJet Airline Company Ltd SM115315",
+        "value": "1.47",
+        "avgValue": "48.0",
+        "failed": true
+      },
+      {
+        "id": 538630,
+        "label": "South West Trains Ltd SM115343",
+        "value": "0.00",
+        "avgValue": "28.999999999999996",
+        "failed": true
+      },
+      {
+        "id": 547061,
+        "label": "Nicocigs Ltd SM115980",
+        "value": "83.33",
+        "avgValue": "112.99999999999999",
+        "failed": true
+      },
+      {
+        "id": 548197,
+        "label": "Facebook SM116058",
+        "value": "0.00",
+        "avgValue": "19.0",
+        "failed": true
+      },
+      {
+        "id": 548298,
+        "label": "British Telecommunications Plc SM116103",
+        "value": "0.00",
+        "avgValue": "32.0",
+        "failed": true
+      },
+      {
+        "id": 548969,
+        "label": "British Telecommunications Plc SM116124",
+        "value": "0.00",
+        "avgValue": "27.0",
+        "failed": true
+      },
+      {
+        "id": 549485,
+        "label": "Vodafone UK Ltd SM116167",
+        "value": "0.00",
+        "avgValue": "21.0",
+        "failed": true
+      },
+      {
+        "id": 551336,
+        "label": "American Express Services Europe Ltd SM116303",
+        "value": "5.18",
+        "avgValue": "40.0",
+        "failed": true
+      },
+      {
+        "id": 551722,
+        "label": "Crown Commercial Service SM116324",
+        "value": "0.00",
+        "avgValue": "30.0",
+        "failed": true
+      },
+      {
+        "id": 551814,
+        "label": "Crown Commercial Service SM116335",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 554304,
+        "label": "Birmingham Hippodrome Theatre Trust Ltd SM116534",
+        "value": "71.43",
+        "avgValue": "122.0",
+        "failed": true
+      },
+      {
+        "id": 554558,
+        "label": "JD Sports Fashion Plc SM116548",
+        "value": "0.00",
+        "avgValue": "19.0",
+        "failed": true
+      },
+      {
+        "id": 554558,
+        "label": "JD Sports Fashion Plc SM116549",
+        "value": "0.00",
+        "avgValue": "21.0",
+        "failed": true
+      },
+      {
+        "id": 555958,
+        "label": "Center Parcs (UK) Group Ltd SM116668",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 557226,
+        "label": "Lighter Life SM116771",
+        "value": "0.00",
+        "avgValue": "17.0",
+        "failed": true
+      },
+      {
+        "id": 565249,
+        "label": "Suntory Europe Plc SM117388",
+        "value": "0.00",
+        "avgValue": "15.0",
+        "failed": true
+      },
+      {
+        "id": 567681,
+        "label": "Church & Dwight UK Ltd SM117566",
+        "value": "72.46",
+        "avgValue": "118.0",
+        "failed": true
+      },
+      {
+        "id": 572027,
+        "label": "Tourism Ireland Ltd SM117948",
+        "value": "0.00",
+        "avgValue": "28.000000000000004",
+        "failed": true
+      },
+      {
+        "id": 573891,
+        "label": "Paramount Pictures UK SM118031",
+        "value": "70.28",
+        "avgValue": "121.0",
+        "failed": true
+      },
+      {
+        "id": 579506,
+        "label": "ITV Plc SM118425",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 584995,
+        "label": "Toyota (GB) Plc SM118822",
+        "value": "0.00",
+        "avgValue": "14.000000000000002",
+        "failed": true
+      },
+      {
+        "id": 585264,
+        "label": "Jet2.com Ltd SM118844",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 585709,
+        "label": "Fiat Group Automobiles UK Ltd SM118876",
+        "value": "0.00",
+        "avgValue": "8.0",
+        "failed": true
+      },
+      {
+        "id": 585763,
+        "label": "Fiat Group Automobiles UK Ltd SM118878",
+        "value": "0.00",
+        "avgValue": "22.0",
+        "failed": true
+      },
+      {
+        "id": 586451,
+        "label": "Universal Pictures Subscription Television Ltd SM118983",
+        "value": "100.00",
+        "avgValue": "110.00000000000001",
+        "failed": false
+      },
+      {
+        "id": 586464,
+        "label": "Universal Pictures Subscription Television Ltd SM118985",
+        "value": "100.00",
+        "avgValue": "140.0",
+        "failed": false
+      },
+      {
+        "id": 587951,
+        "label": "Thomas Cook Group Plc SM119109",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 589088,
+        "label": "Telefónica O2 UK Ltd SM119190",
+        "value": "61.29",
+        "avgValue": "134.0",
+        "failed": true
+      },
+      {
+        "id": 589243,
+        "label": "Channel Four Television Company Ltd SM119206",
+        "value": "0.00",
+        "avgValue": "61.0",
+        "failed": true
+      },
+      {
+        "id": 590807,
+        "label": "JCDecaux Street Furniture New York LLC SM119345",
+        "value": "0.00",
+        "avgValue": "31.0",
+        "failed": true
+      },
+      {
+        "id": 591449,
+        "label": "Google UK Ltd SM119388",
+        "value": "67.70",
+        "avgValue": "130.0",
+        "failed": true
+      },
+      {
+        "id": 591795,
+        "label": "Starbucks Coffee Company (UK) Ltd SM119405",
+        "value": "0.00",
+        "avgValue": "19.0",
+        "failed": true
+      },
+      {
+        "id": 591795,
+        "label": "Starbucks Coffee Company (UK) Ltd SM119406",
+        "value": "0.00",
+        "avgValue": "19.0",
+        "failed": true
+      },
+      {
+        "id": 592355,
+        "label": "ITV Plc SM119450",
+        "value": "0.00",
+        "avgValue": "82.0",
+        "failed": true
+      },
+      {
+        "id": 592372,
+        "label": "ITV Plc SM119452",
+        "value": "0.00",
+        "avgValue": "34.0",
+        "failed": true
+      },
+      {
+        "id": 593318,
+        "label": "British American Tobacco Plc SM119549",
+        "value": "100.00",
+        "avgValue": "103.0",
+        "failed": false
+      },
+      {
+        "id": 593866,
+        "label": "American Express Services Europe Ltd SM119602",
+        "value": "0.00",
+        "avgValue": "15.0",
+        "failed": true
+      },
+      {
+        "id": 595299,
+        "label": "Hyundai Motor UK Ltd SM119724",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 596581,
+        "label": "Go Ape Ltd SM119830",
+        "value": "100.00",
+        "avgValue": "111.00000000000001",
+        "failed": false
+      },
+      {
+        "id": 596871,
+        "label": "GoCompare.com Ltd SM119851",
+        "value": "17.26",
+        "avgValue": "80.0",
+        "failed": true
+      },
+      {
+        "id": 597588,
+        "label": "Go Ape Ltd SM119911",
+        "value": "100.00",
+        "avgValue": "132.0",
+        "failed": false
+      },
+      {
+        "id": 597852,
+        "label": "HMV UK Ltd SM119934",
+        "value": "68.89",
+        "avgValue": "123.0",
+        "failed": true
+      },
+      {
+        "id": 600695,
+        "label": "Virgin Holidays Ltd SM120153",
+        "value": "0.00",
+        "avgValue": "39.0",
+        "failed": true
+      },
+      {
+        "id": 600751,
+        "label": "Virgin Holidays Ltd SM120159",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 600815,
+        "label": "Virgin Holidays Ltd SM120176",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 600831,
+        "label": "Virgin Holidays Ltd SM120181",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 602152,
+        "label": "Israel Government Tourist Office SM120329",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 603542,
+        "label": "Norwegian Air Shuttle ASA SM120430",
+        "value": "0.00",
+        "avgValue": "36.0",
+        "failed": true
+      },
+      {
+        "id": 605173,
+        "label": "The Foundation For a Better Life t/a Values.com SM120574",
+        "value": "0.00",
+        "avgValue": "25.0",
+        "failed": true
+      },
+      {
+        "id": 606791,
+        "label": "K.L.M Royal Dutch Airlines SM120725",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 607352,
+        "label": "UK PRS Lettings I LLP SM120777",
+        "value": "0.00",
+        "avgValue": "27.0",
+        "failed": true
+      },
+      {
+        "id": 608262,
+        "label": "Cotswold Outdoor Ltd SM120984",
+        "value": "0.00",
+        "avgValue": "40.0",
+        "failed": true
+      },
+      {
+        "id": 608382,
+        "label": "Procter & Gamble Holdings (UK) Ltd SM121096",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 608410,
+        "label": "Channel 5 Broadcasting Ltd SM121120",
+        "value": "66.33",
+        "avgValue": "114.99999999999999",
+        "failed": true
+      },
+      {
+        "id": 608425,
+        "label": "The Ambassador Theatre Group Ltd SM121134",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 608580,
+        "label": "Warner Bros. Entertainment UK Ltd SM121293",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 608859,
+        "label": "Tesco Stores Ltd SM121574",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 608967,
+        "label": "Omega Pharma Ltd SM121683",
+        "value": "65.38",
+        "avgValue": "148.0",
+        "failed": true
+      },
+      {
+        "id": 608970,
+        "label": "Orion Media Ltd SM121686",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 608991,
+        "label": "Toyota (GB) Plc SM121705",
+        "value": "100.00",
+        "avgValue": "179.0",
+        "failed": false
+      },
+      {
+        "id": 609018,
+        "label": "Gateshead Council SM121728",
+        "value": "0.00",
+        "avgValue": "28.999999999999996",
+        "failed": true
+      },
+      {
+        "id": 609059,
+        "label": "Sony Computer Entertainment Europe Ltd SM121767",
+        "value": "100.00",
+        "avgValue": "123.0",
+        "failed": false
+      },
+      {
+        "id": 609065,
+        "label": "Armed Forces Careers Office SM121776",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 609066,
+        "label": "Sony Computer Entertainment Europe Ltd SM121777",
+        "value": "61.13",
+        "avgValue": "108.0",
+        "failed": true
+      },
+      {
+        "id": 609170,
+        "label": "NHS SM121871",
+        "value": "0.00",
+        "avgValue": "26.0",
+        "failed": true
+      },
+      {
+        "id": 609182,
+        "label": "Toyota (GB) Plc SM121888",
+        "value": "0.00",
+        "avgValue": "15.0",
+        "failed": true
+      },
+      {
+        "id": 609233,
+        "label": "JCDecaux Street Furniture New York LLC SM121932",
+        "value": "100.00",
+        "avgValue": "202.0",
+        "failed": false
+      },
+      {
+        "id": 609239,
+        "label": "Virgin Holidays Ltd SM121936",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 609282,
+        "label": "AEG Europe SM121986",
+        "value": "100.00",
+        "avgValue": "109.00000000000001",
+        "failed": false
+      },
+      {
+        "id": 609298,
+        "label": "The Ambassador Theatre Group Ltd SM121999",
+        "value": "0.00",
+        "avgValue": "20.0",
+        "failed": true
+      },
+      {
+        "id": 609315,
+        "label": "Vision Express (UK) Ltd SM122019",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 609326,
+        "label": "Barbados Tourist Board SM122033",
+        "value": "0.00",
+        "avgValue": "25.0",
+        "failed": true
+      },
+      {
+        "id": 609341,
+        "label": "Birmingham Airport Ltd SM122046",
+        "value": "0.00",
+        "avgValue": "28.000000000000004",
+        "failed": true
+      },
+      {
+        "id": 609564,
+        "label": "Telefónica O2 UK Ltd SM122276",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 609794,
+        "label": "Leicestershire Police SM122531",
+        "value": "50.00",
+        "avgValue": "112.99999999999999",
+        "failed": true
+      },
+      {
+        "id": 609902,
+        "label": "Thomas Cook Group Plc SM122631",
+        "value": "0.00",
+        "avgValue": "28.000000000000004",
+        "failed": true
+      },
+      {
+        "id": 610025,
+        "label": "DFS Furniture Company Ltd SM122760",
+        "value": "75.00",
+        "avgValue": "121.0",
+        "failed": true
+      },
+      {
+        "id": 610100,
+        "label": "Glasgow Clyde College SM122828",
+        "value": "0.00",
+        "avgValue": "13.0",
+        "failed": true
+      },
+      {
+        "id": 610186,
+        "label": "easyJet Airline Company Ltd SM122919",
+        "value": "14.29",
+        "avgValue": "40.0",
+        "failed": true
+      },
+      {
+        "id": 610283,
+        "label": "Sony Computer Entertainment Europe Ltd SM123022",
+        "value": "100.00",
+        "avgValue": "103.0",
+        "failed": false
+      },
+      {
+        "id": 610302,
+        "label": "Sky UK Ltd SM123043",
+        "value": "0.00",
+        "avgValue": "19.0",
+        "failed": true
+      },
+      {
+        "id": 610311,
+        "label": "Sky UK Ltd SM123053",
+        "value": "0.00",
+        "avgValue": "21.0",
+        "failed": true
+      },
+      {
+        "id": 610322,
+        "label": "DFS Furniture Company Ltd SM123064",
+        "value": "100.00",
+        "avgValue": "117.0",
+        "failed": false
+      },
+      {
+        "id": 610367,
+        "label": "Thomas Cook Group Plc SM123144",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 610562,
+        "label": "CV-Library Ltd SM123304",
+        "value": "0.00",
+        "avgValue": "17.0",
+        "failed": true
+      },
+      {
+        "id": 610580,
+        "label": "BBC Worldwide Ltd SM123320",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 610596,
+        "label": "BBC Worldwide Ltd SM123336",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 610612,
+        "label": "Suntory Europe Plc SM123354",
+        "value": "100.00",
+        "avgValue": "101.0",
+        "failed": false
+      },
+      {
+        "id": 269681,
+        "label": "LVMH SA SM093867",
+        "value": "100.00",
+        "avgValue": "128.0",
+        "failed": false
+      },
+      {
+        "id": 366771,
+        "label": "Sky UK Ltd SM100247",
+        "value": "0.00",
+        "avgValue": "28.000000000000004",
+        "failed": true
+      },
+      {
+        "id": 471369,
+        "label": "Transport for London SM106953",
+        "value": "0.00",
+        "avgValue": "17.0",
+        "failed": true
+      },
+      {
+        "id": 475963,
+        "label": "AB InBev UK Ltd SM107523",
+        "value": "25.00",
+        "avgValue": "105.0",
+        "failed": true
+      },
+      {
+        "id": 478955,
+        "label": "Facebook SM107740",
+        "value": "100.00",
+        "avgValue": "123.0",
+        "failed": false
+      },
+      {
+        "id": 486994,
+        "label": "Lowry Outlet Mall SM108298",
+        "value": "100.00",
+        "avgValue": "110.00000000000001",
+        "failed": false
+      },
+      {
+        "id": 493263,
+        "label": "Facebook SM108830",
+        "value": "0.00",
+        "avgValue": "33.0",
+        "failed": true
+      },
+      {
+        "id": 500337,
+        "label": "AO Retail Ltd SM109389",
+        "value": "50.00",
+        "avgValue": "128.0",
+        "failed": true
+      },
+      {
+        "id": 500762,
+        "label": "AO Retail Ltd SM109425",
+        "value": "100.00",
+        "avgValue": "109.00000000000001",
+        "failed": false
+      },
+      {
+        "id": 505363,
+        "label": "AO Retail Ltd SM109754",
+        "value": "40.00",
+        "avgValue": "118.0",
+        "failed": true
+      },
+      {
+        "id": 508305,
+        "label": "JCDecaux Street Furniture New York LLC SM110521",
+        "value": "0.00",
+        "avgValue": "27.0",
+        "failed": true
+      },
+      {
+        "id": 510123,
+        "label": "Sky UK Ltd SM110701",
+        "value": "72.09",
+        "avgValue": "127.0",
+        "failed": true
+      },
+      {
+        "id": 510178,
+        "label": "Facebook SM110727",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 510204,
+        "label": "Facebook SM110741",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 510431,
+        "label": "Odds Farm Park Ltd SM110825",
+        "value": "0.00",
+        "avgValue": "122.0",
+        "failed": true
+      },
+      {
+        "id": 510507,
+        "label": "Twentieth Century Fox Film Company Ltd SM110851",
+        "value": "70.65",
+        "avgValue": "127.0",
+        "failed": true
+      },
+      {
+        "id": 511759,
+        "label": "Michael Kors (UK) Ltd SM111003",
+        "value": "67.89",
+        "avgValue": "129.0",
+        "failed": true
+      },
+      {
+        "id": 513519,
+        "label": "Cancer Research UK SM111198",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 518760,
+        "label": "Malta Tourism Authority SM111574",
+        "value": "54.55",
+        "avgValue": "123.0",
+        "failed": true
+      },
+      {
+        "id": 521586,
+        "label": "Thomas Cook Group Plc SM111850",
+        "value": "0.00",
+        "avgValue": "14.000000000000002",
+        "failed": true
+      },
+      {
+        "id": 529387,
+        "label": "Norwegian Air Shuttle ASA SM114568",
+        "value": "0.00",
+        "avgValue": "28.000000000000004",
+        "failed": true
+      },
+      {
+        "id": 535649,
+        "label": "McDonald's Restaurants Ltd SM115042",
+        "value": "0.00",
+        "avgValue": "18.0",
+        "failed": true
+      },
+      {
+        "id": 535830,
+        "label": "McDonald's Restaurants Ltd SM115101",
+        "value": "0.00",
+        "avgValue": "16.0",
+        "failed": true
+      },
+      {
+        "id": 538194,
+        "label": "easyJet Airline Company Ltd SM115315",
+        "value": "1.47",
+        "avgValue": "48.0",
+        "failed": true
+      },
+      {
+        "id": 538630,
+        "label": "South West Trains Ltd SM115343",
+        "value": "0.00",
+        "avgValue": "28.999999999999996",
+        "failed": true
+      },
+      {
+        "id": 547061,
+        "label": "Nicocigs Ltd SM115980",
+        "value": "83.33",
+        "avgValue": "112.99999999999999",
+        "failed": true
+      },
+      {
+        "id": 548197,
+        "label": "Facebook SM116058",
+        "value": "0.00",
+        "avgValue": "19.0",
+        "failed": true
+      },
+      {
+        "id": 548298,
+        "label": "British Telecommunications Plc SM116103",
+        "value": "0.00",
+        "avgValue": "32.0",
+        "failed": true
+      },
+      {
+        "id": 548969,
+        "label": "British Telecommunications Plc SM116124",
+        "value": "0.00",
+        "avgValue": "27.0",
+        "failed": true
+      },
+      {
+        "id": 549485,
+        "label": "Vodafone UK Ltd SM116167",
+        "value": "0.00",
+        "avgValue": "21.0",
+        "failed": true
+      },
+      {
+        "id": 551336,
+        "label": "American Express Services Europe Ltd SM116303",
+        "value": "5.18",
+        "avgValue": "40.0",
+        "failed": true
+      },
+      {
+        "id": 551722,
+        "label": "Crown Commercial Service SM116324",
+        "value": "0.00",
+        "avgValue": "30.0",
+        "failed": true
+      },
+      {
+        "id": 551814,
+        "label": "Crown Commercial Service SM116335",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 554304,
+        "label": "Birmingham Hippodrome Theatre Trust Ltd SM116534",
+        "value": "71.43",
+        "avgValue": "122.0",
+        "failed": true
+      },
+      {
+        "id": 554558,
+        "label": "JD Sports Fashion Plc SM116548",
+        "value": "0.00",
+        "avgValue": "19.0",
+        "failed": true
+      },
+      {
+        "id": 554558,
+        "label": "JD Sports Fashion Plc SM116549",
+        "value": "0.00",
+        "avgValue": "21.0",
+        "failed": true
+      },
+      {
+        "id": 555958,
+        "label": "Center Parcs (UK) Group Ltd SM116668",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 557226,
+        "label": "Lighter Life SM116771",
+        "value": "0.00",
+        "avgValue": "17.0",
+        "failed": true
+      },
+      {
+        "id": 565249,
+        "label": "Suntory Europe Plc SM117388",
+        "value": "0.00",
+        "avgValue": "15.0",
+        "failed": true
+      },
+      {
+        "id": 567681,
+        "label": "Church & Dwight UK Ltd SM117566",
+        "value": "72.46",
+        "avgValue": "118.0",
+        "failed": true
+      },
+      {
+        "id": 572027,
+        "label": "Tourism Ireland Ltd SM117948",
+        "value": "0.00",
+        "avgValue": "28.000000000000004",
+        "failed": true
+      },
+      {
+        "id": 573891,
+        "label": "Paramount Pictures UK SM118031",
+        "value": "70.28",
+        "avgValue": "121.0",
+        "failed": true
+      },
+      {
+        "id": 579506,
+        "label": "ITV Plc SM118425",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 584995,
+        "label": "Toyota (GB) Plc SM118822",
+        "value": "0.00",
+        "avgValue": "14.000000000000002",
+        "failed": true
+      },
+      {
+        "id": 585264,
+        "label": "Jet2.com Ltd SM118844",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 585709,
+        "label": "Fiat Group Automobiles UK Ltd SM118876",
+        "value": "0.00",
+        "avgValue": "8.0",
+        "failed": true
+      },
+      {
+        "id": 585763,
+        "label": "Fiat Group Automobiles UK Ltd SM118878",
+        "value": "0.00",
+        "avgValue": "22.0",
+        "failed": true
+      },
+      {
+        "id": 586451,
+        "label": "Universal Pictures Subscription Television Ltd SM118983",
+        "value": "100.00",
+        "avgValue": "110.00000000000001",
+        "failed": false
+      },
+      {
+        "id": 586464,
+        "label": "Universal Pictures Subscription Television Ltd SM118985",
+        "value": "100.00",
+        "avgValue": "140.0",
+        "failed": false
+      },
+      {
+        "id": 587951,
+        "label": "Thomas Cook Group Plc SM119109",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 589088,
+        "label": "Telefónica O2 UK Ltd SM119190",
+        "value": "61.29",
+        "avgValue": "134.0",
+        "failed": true
+      },
+      {
+        "id": 589243,
+        "label": "Channel Four Television Company Ltd SM119206",
+        "value": "0.00",
+        "avgValue": "61.0",
+        "failed": true
+      },
+      {
+        "id": 590807,
+        "label": "JCDecaux Street Furniture New York LLC SM119345",
+        "value": "0.00",
+        "avgValue": "31.0",
+        "failed": true
+      },
+      {
+        "id": 591449,
+        "label": "Google UK Ltd SM119388",
+        "value": "67.70",
+        "avgValue": "130.0",
+        "failed": true
+      },
+      {
+        "id": 591795,
+        "label": "Starbucks Coffee Company (UK) Ltd SM119405",
+        "value": "0.00",
+        "avgValue": "19.0",
+        "failed": true
+      },
+      {
+        "id": 591795,
+        "label": "Starbucks Coffee Company (UK) Ltd SM119406",
+        "value": "0.00",
+        "avgValue": "19.0",
+        "failed": true
+      },
+      {
+        "id": 592355,
+        "label": "ITV Plc SM119450",
+        "value": "0.00",
+        "avgValue": "82.0",
+        "failed": true
+      },
+      {
+        "id": 592372,
+        "label": "ITV Plc SM119452",
+        "value": "0.00",
+        "avgValue": "34.0",
+        "failed": true
+      },
+      {
+        "id": 593318,
+        "label": "British American Tobacco Plc SM119549",
+        "value": "100.00",
+        "avgValue": "103.0",
+        "failed": false
+      },
+      {
+        "id": 593866,
+        "label": "American Express Services Europe Ltd SM119602",
+        "value": "0.00",
+        "avgValue": "15.0",
+        "failed": true
+      },
+      {
+        "id": 595299,
+        "label": "Hyundai Motor UK Ltd SM119724",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 596581,
+        "label": "Go Ape Ltd SM119830",
+        "value": "100.00",
+        "avgValue": "111.00000000000001",
+        "failed": false
+      },
+      {
+        "id": 596871,
+        "label": "GoCompare.com Ltd SM119851",
+        "value": "17.26",
+        "avgValue": "80.0",
+        "failed": true
+      },
+      {
+        "id": 597588,
+        "label": "Go Ape Ltd SM119911",
+        "value": "100.00",
+        "avgValue": "132.0",
+        "failed": false
+      },
+      {
+        "id": 597852,
+        "label": "HMV UK Ltd SM119934",
+        "value": "68.89",
+        "avgValue": "123.0",
+        "failed": true
+      },
+      {
+        "id": 600695,
+        "label": "Virgin Holidays Ltd SM120153",
+        "value": "0.00",
+        "avgValue": "39.0",
+        "failed": true
+      },
+      {
+        "id": 600751,
+        "label": "Virgin Holidays Ltd SM120159",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 600815,
+        "label": "Virgin Holidays Ltd SM120176",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 600831,
+        "label": "Virgin Holidays Ltd SM120181",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 602152,
+        "label": "Israel Government Tourist Office SM120329",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 603542,
+        "label": "Norwegian Air Shuttle ASA SM120430",
+        "value": "0.00",
+        "avgValue": "36.0",
+        "failed": true
+      },
+      {
+        "id": 605173,
+        "label": "The Foundation For a Better Life t/a Values.com SM120574",
+        "value": "0.00",
+        "avgValue": "25.0",
+        "failed": true
+      },
+      {
+        "id": 606791,
+        "label": "K.L.M Royal Dutch Airlines SM120725",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 607352,
+        "label": "UK PRS Lettings I LLP SM120777",
+        "value": "0.00",
+        "avgValue": "27.0",
+        "failed": true
+      },
+      {
+        "id": 608262,
+        "label": "Cotswold Outdoor Ltd SM120984",
+        "value": "0.00",
+        "avgValue": "40.0",
+        "failed": true
+      },
+      {
+        "id": 608382,
+        "label": "Procter & Gamble Holdings (UK) Ltd SM121096",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 608410,
+        "label": "Channel 5 Broadcasting Ltd SM121120",
+        "value": "66.33",
+        "avgValue": "114.99999999999999",
+        "failed": true
+      },
+      {
+        "id": 608425,
+        "label": "The Ambassador Theatre Group Ltd SM121134",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 608580,
+        "label": "Warner Bros. Entertainment UK Ltd SM121293",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 608859,
+        "label": "Tesco Stores Ltd SM121574",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 608967,
+        "label": "Omega Pharma Ltd SM121683",
+        "value": "65.38",
+        "avgValue": "148.0",
+        "failed": true
+      },
+      {
+        "id": 608970,
+        "label": "Orion Media Ltd SM121686",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 608991,
+        "label": "Toyota (GB) Plc SM121705",
+        "value": "100.00",
+        "avgValue": "179.0",
+        "failed": false
+      },
+      {
+        "id": 609018,
+        "label": "Gateshead Council SM121728",
+        "value": "0.00",
+        "avgValue": "28.999999999999996",
+        "failed": true
+      },
+      {
+        "id": 609059,
+        "label": "Sony Computer Entertainment Europe Ltd SM121767",
+        "value": "100.00",
+        "avgValue": "123.0",
+        "failed": false
+      },
+      {
+        "id": 609065,
+        "label": "Armed Forces Careers Office SM121776",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 609066,
+        "label": "Sony Computer Entertainment Europe Ltd SM121777",
+        "value": "61.13",
+        "avgValue": "108.0",
+        "failed": true
+      },
+      {
+        "id": 609170,
+        "label": "NHS SM121871",
+        "value": "0.00",
+        "avgValue": "26.0",
+        "failed": true
+      },
+      {
+        "id": 609182,
+        "label": "Toyota (GB) Plc SM121888",
+        "value": "0.00",
+        "avgValue": "15.0",
+        "failed": true
+      },
+      {
+        "id": 609233,
+        "label": "JCDecaux Street Furniture New York LLC SM121932",
+        "value": "100.00",
+        "avgValue": "202.0",
+        "failed": false
+      },
+      {
+        "id": 609239,
+        "label": "Virgin Holidays Ltd SM121936",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 609282,
+        "label": "AEG Europe SM121986",
+        "value": "100.00",
+        "avgValue": "109.00000000000001",
+        "failed": false
+      },
+      {
+        "id": 609298,
+        "label": "The Ambassador Theatre Group Ltd SM121999",
+        "value": "0.00",
+        "avgValue": "20.0",
+        "failed": true
+      },
+      {
+        "id": 609315,
+        "label": "Vision Express (UK) Ltd SM122019",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 609326,
+        "label": "Barbados Tourist Board SM122033",
+        "value": "0.00",
+        "avgValue": "25.0",
+        "failed": true
+      },
+      {
+        "id": 609341,
+        "label": "Birmingham Airport Ltd SM122046",
+        "value": "0.00",
+        "avgValue": "28.000000000000004",
+        "failed": true
+      },
+      {
+        "id": 609564,
+        "label": "Telefónica O2 UK Ltd SM122276",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 609794,
+        "label": "Leicestershire Police SM122531",
+        "value": "50.00",
+        "avgValue": "112.99999999999999",
+        "failed": true
+      },
+      {
+        "id": 609902,
+        "label": "Thomas Cook Group Plc SM122631",
+        "value": "0.00",
+        "avgValue": "28.000000000000004",
+        "failed": true
+      },
+      {
+        "id": 610025,
+        "label": "DFS Furniture Company Ltd SM122760",
+        "value": "75.00",
+        "avgValue": "121.0",
+        "failed": true
+      },
+      {
+        "id": 610100,
+        "label": "Glasgow Clyde College SM122828",
+        "value": "0.00",
+        "avgValue": "13.0",
+        "failed": true
+      },
+      {
+        "id": 610186,
+        "label": "easyJet Airline Company Ltd SM122919",
+        "value": "14.29",
+        "avgValue": "40.0",
+        "failed": true
+      },
+      {
+        "id": 610283,
+        "label": "Sony Computer Entertainment Europe Ltd SM123022",
+        "value": "100.00",
+        "avgValue": "103.0",
+        "failed": false
+      },
+      {
+        "id": 610302,
+        "label": "Sky UK Ltd SM123043",
+        "value": "0.00",
+        "avgValue": "19.0",
+        "failed": true
+      },
+      {
+        "id": 610311,
+        "label": "Sky UK Ltd SM123053",
+        "value": "0.00",
+        "avgValue": "21.0",
+        "failed": true
+      },
+      {
+        "id": 610322,
+        "label": "DFS Furniture Company Ltd SM123064",
+        "value": "100.00",
+        "avgValue": "117.0",
+        "failed": false
+      },
+      {
+        "id": 610367,
+        "label": "Thomas Cook Group Plc SM123144",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 610562,
+        "label": "CV-Library Ltd SM123304",
+        "value": "0.00",
+        "avgValue": "17.0",
+        "failed": true
+      },
+      {
+        "id": 610580,
+        "label": "BBC Worldwide Ltd SM123320",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 610596,
+        "label": "BBC Worldwide Ltd SM123336",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 610612,
+        "label": "Suntory Europe Plc SM123354",
+        "value": "100.00",
+        "avgValue": "101.0",
+        "failed": false
+      },
+      {
+        "id": 610703,
+        "label": "Intu Properties Plc SM123452",
+        "value": "0.00",
+        "avgValue": "17.0",
+        "failed": true
+      },
+      {
+        "id": 610703,
+        "label": "Intu Properties Plc SM123452",
+        "value": "0.00",
+        "avgValue": "17.0",
+        "failed": true
+      },
+      {
+        "id": 610703,
+        "label": "Intu Properties Plc SM123452",
+        "value": "0.00",
+        "avgValue": "17.0",
+        "failed": true
+      },
+      {
+        "id": 610729,
+        "label": "JCDecaux Street Furniture New York LLC SM123478",
+        "value": "0.00",
+        "avgValue": "15.0",
+        "failed": true
+      },
+      {
+        "id": 610839,
+        "label": "University of Essex SM123602",
+        "value": "0.00",
+        "avgValue": "22.0",
+        "failed": true
+      },
+      {
+        "id": 610845,
+        "label": "Telefónica O2 UK Ltd SM123607",
+        "value": "0.00",
+        "avgValue": "19.0",
+        "failed": true
+      },
+      {
+        "id": 610851,
+        "label": "Warner Bros. Entertainment UK Ltd SM123614",
+        "value": "0.00",
+        "avgValue": "18.0",
+        "failed": true
+      },
+      {
+        "id": 610859,
+        "label": "CV-Library Ltd SM123624",
+        "value": "100.00",
+        "avgValue": "103.0",
+        "failed": false
+      },
+      {
+        "id": 610933,
+        "label": "Breitling UK Ltd SM123696",
+        "value": "0.00",
+        "avgValue": "25.0",
+        "failed": true
+      },
+      {
+        "id": 610940,
+        "label": "Breitling UK Ltd SM123703",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 610942,
+        "label": "Virgin Holidays Ltd SM123705",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 610957,
+        "label": "British American Tobacco Plc SM123721",
+        "value": "66.67",
+        "avgValue": "112.00000000000001",
+        "failed": true
+      },
+      {
+        "id": 610960,
+        "label": "Samsung Electronics Ltd SM123725",
+        "value": "1.79",
+        "avgValue": "25.0",
+        "failed": true
+      },
+      {
+        "id": 610968,
+        "label": "Samsung Electronics Ltd SM123731",
+        "value": "0.00",
+        "avgValue": "51.0",
+        "failed": true
+      },
+      {
+        "id": 610973,
+        "label": "Unicef UK Enterprises Ltd SM123738",
+        "value": "84.21",
+        "avgValue": "122.0",
+        "failed": true
+      },
+      {
+        "id": 611017,
+        "label": "Virgin Holidays Ltd SM123783",
+        "value": "0.00",
+        "avgValue": "6.0",
+        "failed": true
+      },
+      {
+        "id": 611038,
+        "label": "JCDecaux Filler Content SM123806",
+        "value": "0.00",
+        "avgValue": "335.0",
+        "failed": true
+      },
+      {
+        "id": 611044,
+        "label": "JC Decaux Digital Content SM123812",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 611115,
+        "label": "Intu Properties Plc SM123883",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 611130,
+        "label": "JCDecaux Filler Content SM123898",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      },
+      {
+        "id": 611148,
+        "label": "Twentieth Century Fox Film Company Ltd SM123924",
+        "value": "0.00",
+        "avgValue": "0.0",
+        "failed": true
+      }
+    ],
+    "spanSummary": [
+      {
+        "id": 0,
+        "label": "00:00:00",
+        "value": "129.17"
+      },
+      {
+        "id": 18000,
+        "label": "05:00:00",
+        "value": "121.11"
+      },
+      {
+        "id": 21600,
+        "label": "06:00:00",
+        "value": "128.89"
+      },
+      {
+        "id": 25200,
+        "label": "07:00:00",
+        "value": "129.17"
+      },
+      {
+        "id": 28800,
+        "label": "08:00:00",
+        "value": "129.17"
+      },
+      {
+        "id": 32400,
+        "label": "09:00:00",
+        "value": "129.17"
+      },
+      {
+        "id": 36000,
+        "label": "10:00:00",
+        "value": "129.17"
+      },
+      {
+        "id": 39600,
+        "label": "11:00:00",
+        "value": "128.89"
+      },
+      {
+        "id": 43200,
+        "label": "12:00:00",
+        "value": "128.06"
+      },
+      {
+        "id": 46800,
+        "label": "13:00:00",
+        "value": "128.47"
+      },
+      {
+        "id": 50400,
+        "label": "14:00:00",
+        "value": "129.17"
+      },
+      {
+        "id": 54000,
+        "label": "15:00:00",
+        "value": "129.17"
+      },
+      {
+        "id": 57600,
+        "label": "16:00:00",
+        "value": "129.17"
+      },
+      {
+        "id": 61200,
+        "label": "17:00:00",
+        "value": "129.17"
+      },
+      {
+        "id": 64800,
+        "label": "18:00:00",
+        "value": "127.22"
+      },
+      {
+        "id": 68400,
+        "label": "19:00:00",
+        "value": "129.03"
+      },
+      {
+        "id": 72000,
+        "label": "20:00:00",
+        "value": "129.17"
+      },
+      {
+        "id": 75600,
+        "label": "21:00:00",
+        "value": "129.17"
+      },
+      {
+        "id": 79200,
+        "label": "22:00:00",
+        "value": "129.17"
+      },
+      {
+        "id": 82800,
+        "label": "23:00:00",
+        "value": "129.17"
+      }
+    ],
+    "daySummary": [
+      {
+        "id": "160-64",
+        "label": "2017-01-01",
+        "value": "100.00",
+        "avgValue": "129.0",
+        "failed": false
+      }
+    ],
+    "frameSummary": [
+      {
+        "id": 339830,
+        "label": "068015.BL-01",
+        "value": "92.00",
+        "avgValue": "129.0",
+        "failed": false
+      },
+      {
+        "id": 339923,
+        "label": "068016.BL-01",
+        "value": "100.00",
+        "avgValue": "128.0",
+        "failed": false
+      }
+    ]
+  },
+  "status": "OK",
+  "messageCode": 0,
+  "message": "Success"
+}

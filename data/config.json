@@ -1,0 +1,167 @@
+{
+  "status": "OK",
+  "messageCode": 0,
+  "message": "Successfully processed config data in 90 ms",
+  "data": {
+    "defaultStartDate": "2016-12-15",
+    "defaultEndDate": "2016-12-25",
+    "complainceLevel":95,
+    "specialists": [
+      {
+        "organisationId": 1,
+        "organisationName": "Specialist 1"
+      },
+      {
+        "organisationId": 2,
+        "organisationName": "Specialist 2"
+      },
+      {
+        "organisationId": 3,
+        "organisationName": "Specialist 3"
+      },
+      {
+        "organisationId": 4,
+        "organisationName": "Specialist 4"
+      },
+      {
+        "organisationId": 5,
+        "organisationName": "Specialist 5"
+      },
+      {
+        "organisationId": 6,
+        "organisationName": "Specialist 6"
+      },
+      {
+        "organisationId": 7,
+        "organisationName": "Specialist 7"
+      },
+      {
+        "organisationId": 8,
+        "organisationName": "Specialist 8"
+      },{
+        "organisationId": 9,
+        "organisationName": "Specialist 9"
+      }
+      ,{
+        "organisationId": 10,
+        "organisationName": "Specialist 10"
+      }
+      ,{
+        "organisationId": 11,
+        "organisationName": "Specialist 11"
+      }
+      ,{
+        "organisationId": 12,
+        "organisationName": "Specialist 12"
+      }
+    ],
+    "productFormats": [
+      {
+        "productFormatId": 1,
+        "productFormatName": "Product Format 1"
+      },
+      {
+        "productFormatId": 2,
+        "productFormatName": "Product Format 2"
+      },
+      {
+        "productFormatId": 3,
+        "productFormatName": "Product Format 3"
+      },
+      {
+        "productFormatId": 4,
+        "productFormatName": "Product Format 4"
+      },
+      {
+        "productFormatId": 5,
+        "productFormatName": "Product Format 5"
+      },
+      {
+        "productFormatId": 6,
+        "productFormatName": "Product Format 6"
+      },
+      {
+        "productFormatId": 7,
+        "productFormatName": "Product Format 7"
+      },
+      {
+        "productFormatId": 8,
+        "productFormatName": "Product Format 8"
+      },
+      {
+        "productFormatId": 9,
+        "productFormatName": "Product Format 9"
+      },
+      {
+        "productFormatId": 10,
+        "productFormatName": "Product Format 10"
+      }
+      ,
+      {
+        "productFormatId": 11,
+        "productFormatName": "Product Format 11"
+      }
+      
+    ],
+    "userBundle": {
+      "popboard.campaignPerformance": "Average Performance by Campaign",
+      "common.heading": "POP ડેશબોર્ડ",
+      "common.dateRange":"તારીખ શ્રેણી પસંદ",
+      "common.specialist":"નિષ્ણાત",
+      "common.productformat":"ઉત્પાદન ફોર્મેટ",
+      "common.specialist.select":"નિષ્ણાત પસંદ કરો",
+      "common.productformat.select":"ઉત્પાદન ફોર્મેટ પસંદ કરો",
+      "common.selectType": "પ્રકાર પસંદ કરો",
+      "popboard.frame.heading":"થ્રેશોલ્ડ ઉપર % ફ્રેમ",
+      "popboard.player.heading":"% થ્રેશોલ્ડ ઉપર દિવસ",
+      "popboard.date.heading":"% થ્રેશોલ્ડ ઉપર% કલાક",
+      "popboard.time.heading":"% વિ નક્કી ભજવી",
+      "popboard.frame.xAxis.label":"પાલન",
+      "popboard.frame.yAxis.label":"ઝુંબેશ",
+      "popboard.player.xAxis.label":"ખેલાડી",
+      "popboard.player.yAxis.label":"પાલન",
+      "popboard.date.xAxis.label":"તારીખ",
+      "popboard.date.yAxis.label":"પાલન",
+      "popboard.time.xAxis.label":"સમય",
+      "popboard.time.yAxis.label":"ઊપજ"
+    },
+    "serviceCalls": {
+      "POP_SUMMARY": "data/summary.json",
+      "SESSION_URL": "data/keepAlive.json"
+    },
+    "userData": {
+      "userName": "Brandon.Stubbs",
+      "fullName": "Stubbs, Brandon",
+      "initials": "BS",
+      "userGroups": [
+        "BricsCM",
+        "BricsSuperUser",
+        "DataPointCM",
+        "DataPointIT",
+        "StockManager",
+        "StockManagerAdmin",
+        "StockManagerBrics",
+        "StockManagerCaptain",
+        "StockManagerDatapoint",
+        "StockManagerDashboard"
+      ],
+      "timeZone": "Europe/London",
+      "locale": "en-gb",
+      "emailAddress": "brandon.stubbs@jcdecaux.com",
+      "tokens": [],
+      "internalAccess": true
+    },
+    "systemData": {
+      "version": "3.2.33",
+      "systemTitle": "JCDecaux Production",
+      "systemType": "Production",
+      "systemName": "StockManager",
+      "locale": "en_GB",
+      "bookingSystemEnabled": false,
+      "salesOrderEnabled": false,
+      "pipeEnabled": false,
+      "maxInactiveInterval": 25,
+      "currencySymbol": "£"
+    }
+  }
+}

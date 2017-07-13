@@ -1,0 +1,5 @@
+{
+  "port": 4444,
+  "files": ["./app/**/*.{html,htm,css,js}", "./data/**/*.{json}"],
+  "server": { "baseDir": "./" }
+}
