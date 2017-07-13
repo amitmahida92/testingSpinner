@@ -1,5 +1,11 @@
 # PoP Dashboard
 
+## Important Note
+
+For PoP Dashboard release make changes in *internationalisation_v0.1* branch and provide release
+
+For Campaign Compliance release make changes in *internationalisation_v0.2_campaign_complaince* branch and provide release
+
 ## Development server
 
 Follow below steps to run this project
@@ -21,4 +27,5 @@ Run `grunt build` to build the project. The build artifacts will be stored in th
 ## Further help
 
 Nishit Parekh
+
 Shreni Shah
