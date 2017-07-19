@@ -77,7 +77,7 @@
         vm.selectedProductFormats = [];
         vm.selectedSpecialists = [];
         vm.selectedChannel = [];
-        vm.isFrameDashbaord = 3; // default selection for 
+        vm.isFrameDashbaord = 3; // default selection for graph
 
         vm.campaign = {
             compaliant: true,
@@ -350,7 +350,7 @@
 
                 var frameId = points[0]['_chart'].config.data.datasets[points[0]['_datasetIndex']].playerDetails[points[0]['_index']].id; // Value of particluar bar
                 vm.selectedFrame = frameId
-                //-- Clear the Children Graph and Children Request Parameters//                
+                //-- Clear the Children Graph and Children Request Parameters
                 vm.selectedDay = null
                 //-----------------------------------------------------------//
                 vm.dayData = [];
@@ -555,13 +555,15 @@
 
 
                 if (vm.configData.complainceLevel)
-                    COMPLAINCE_PERCENTAGE = vm.configData.complainceLevel
+                    COMPLAINCE_PERCENTAGE = vm.configData.complainceLevel;
+
                 vm.datePicker = {
                     date: {
                         startDate: vm.configData.defaultStartDate,
                         endDate: vm.configData.defaultEndDate
                     }
                 };
+
                 if (vm.configData.serviceCalls)
                     loadServiceCallKeys(vm.configData.serviceCalls)
                 if (vm.configData.specialists)
@@ -786,6 +788,10 @@
                         chartData = _.sortBy(chartData, 'audienceValue').reverse();
 
                     _.forEach(chartData, function (obj) {
+
+                        var n = obj.label.split(":");
+                        obj.label = n[0];
+
                         vm.playerData.labels.push(obj.label);
 
                         if (vm.isFrameDashbaord == 1)
@@ -1323,7 +1329,7 @@
                     //if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
                     //    callback(xmlHttp.responseText);
                 }
-                xmlHttp.open("GET", url, true); // true for asynchronous 
+                xmlHttp.open("GET", url, true); // true for asynchronous
                 xmlHttp.setRequestHeader("Bos-SessionId", bosSessionId);
                 console.log("Keep alive called");
                 xmlHttp.send(null);
@@ -1385,7 +1391,7 @@
 
 
         //------------------------------------------------------------------------------------------------------------------
-        //                                            Date Range Configuration 
+        //                                            Date Range Configuration
         //------------------------------------------------------------------------------------------------------------------
 
         var DATERANGEPICKER = {

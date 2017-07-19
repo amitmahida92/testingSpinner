@@ -69,7 +69,8 @@
 			"failed": false,
 			"failedAudience": false
 		}],
-		"channelSummaryByAudience": [{
+		"channelSummaryByAudience": [
+			{
 			"value": "47.37",
 			"id": "7",
 			"label": "Airports",
@@ -2854,19 +2855,19 @@
 		}],
 		"frameSummary": [{
 			"value": "100",
-			"id": "1235257053",
-			"label": "068103.BL",
+			"id": "1235257053:SM322773",
+			"label": "068103.BL:SM322773,SM386887",
 			"avgValue": "172",
 			"audienceValue": "110.00",
 			"advertiserName": null,
 			"productFormatCode": null,
-			"failed": false,
-			"failedAudience": false
+			"failed": true,
+			"failedAudience": true
 		},
 		{
 			"value": "100",
-			"id": "1235257054",
-			"label": "068111.BL",
+			"id": "1235257054:SM322553",
+			"label": "068111.BL:SM322553",
 			"avgValue": "172",
 			"audienceValue": "110.00",
 			"advertiserName": null,
