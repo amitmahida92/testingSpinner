@@ -789,9 +789,6 @@
 
                     _.forEach(chartData, function (obj) {
 
-                        var n = obj.label.split(":");
-                        obj.label = n[0];
-
                         vm.playerData.labels.push(obj.label);
 
                         if (vm.isFrameDashbaord == 1)
@@ -845,7 +842,7 @@
                                 var chart = this._chart;
                                 if (getCampaignId(tooltipModel.title[0]) != campaignId) {
                                     var params = {
-                                        "id": getCampaignId(tooltipModel.title[0]),
+                                        "id": tooltipModel.title[0],
                                         "startDate": vm.datePicker.date.startDate
                                     };
                                     campaignId = params.id;
@@ -1386,7 +1383,7 @@
 
         function calculateWidthForCampaign(defaultWidth, totalRecords) {
             var _defaultWidth = defaultWidth;
-            return ((totalRecords * 28) < _defaultWidth ? _defaultWidth : defaultWidth += (totalRecords * 30)) // Nishit, CCP-291
+            return ((totalRecords * 28) < _defaultWidth ? _defaultWidth : defaultWidth += (totalRecords * 38)) // Nishit, CCP-291
         }
 
 
