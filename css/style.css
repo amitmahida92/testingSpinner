@@ -251,7 +251,6 @@ input:not([type]):focus:not([readonly]), input[type=text]:focus:not([readonly]),
   margin-left: 10px;
   border-radius: 50%;
   opacity: 1;
-  h;
   height: 28px;
   margin-top: 2px;
   line-height: 28px;
@@ -282,7 +281,6 @@ input:not([type]):focus:not([readonly]), input[type=text]:focus:not([readonly]),
 .card .card-title {
   font-size: 14px;
   line-height: 40px;
-  vertical-align: middle;
   border-bottom: 1px solid #dee4ea;
   padding: 0 15px;
   display: block;
