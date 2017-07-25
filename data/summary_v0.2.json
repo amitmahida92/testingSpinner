@@ -5,17 +5,6 @@
 	"data": {
 		"channelSummary": [
 			{
-				"value": "76.32",
-				"id": "7",
-				"label": "Airports",
-				"avgValue": "0.00",
-				"audienceValue": "0.00",
-				"advertiserName": null,
-				"productFormatCode": null,
-				"failed": false,
-				"failedAudience": false
-			},
-			{
 				"value": "81.82",
 				"id": "1",
 				"label": "Large Format",
@@ -72,17 +61,6 @@
 			}
 		],
 		"channelSummaryByAudience": [
-			{
-				"value": "47.37",
-				"id": "7",
-				"label": "Airports",
-				"avgValue": "0.0",
-				"audienceValue": "0.0",
-				"advertiserName": null,
-				"productFormatCode": null,
-				"failed": false,
-				"failedAudience": false
-			},
 			{
 				"value": "90.91",
 				"id": "1",

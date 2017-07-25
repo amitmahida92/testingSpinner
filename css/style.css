@@ -268,7 +268,8 @@ input:not([type]):focus:not([readonly]), input[type=text]:focus:not([readonly]),
 }
 
 .m7-col {
-  width: 14.285%;
+  /* width: 14.285%; */
+  width: 19.85%;
   height: 130px;
 }
 
