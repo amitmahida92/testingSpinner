@@ -128,7 +128,7 @@
 			"popboard.frame.player.heading": "% of days above threshold",
 			"popboard.frame.time.heading": "% played vs booked",
       "common.gauge.tooltip": "Gauges show the % of compliant campaigns within that Business Area Group.\n\nExample, if within Rail there are 50 campaigns in the selected date range (after exclusions, see below), and 49 of them are compliant then the compliance value is 98% (49 is 98% of 50).,",
-      "common.gauge.tooltip.audience" : "Gauges show the % of compliant campaigns within that Business Area Group.\n\nExample, if within Rail there are 50 campaigns in the selected date range (after exclusions, see below), and 49 of them are compliant then the compliance value is 98% (49 is 98% of 50).,",
+      "common.gauge.tooltip.audience" : "Campaigns Audience impressions delivered (<=100% planned) on all campaigns Vs Planned Audience impressions  to be delivered \n\nThe gauges show a maximum of 100% with the actual value within the gauge.",
       "common.campaign.compliance.summary" : "Campaign Compliance Summary",
       "common.audience.compliance.summary" : "Audience Compliance Summary",
 			"common.title.label": "Dashboard",

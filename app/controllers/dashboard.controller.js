@@ -1090,7 +1090,15 @@
                     });
 
                     vm.channelSummaryByImpression = _.map(vm.channelSummaryByImpression, function (obj) {
-                        var percentage = parseFloat(((obj.audienceValue * 100) / obj.value).toFixed(2));
+                        var percentage;
+                        debugger
+                        if (parseFloat(obj.value)) {
+                            percentage = parseFloat(((obj.audienceValue * 100) / obj.value).toFixed(2));
+                            percentage = (isNaN(percentage) ? 0.00 : percentage);
+                        } else {
+                            percentage = 0.00;
+                        }
+
                         var moreData = {
                             percentageDisplay: _.cloneDeep(percentage),
                             percentage: (percentage > 100 ? 100 : percentage),
