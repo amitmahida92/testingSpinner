@@ -30,20 +30,11 @@
                         labelString: 'Performance'
                     },
                     position: 'top'
-                },
-                // {
-                //     scaleLabel: {
-                //         display: true,
-                //         labelString: 'Performance'
-                //     },
-                //     position: 'bottom'
-                // }
-                ],
+                }],
                 yAxes: [{
                     scaleLabel: {
                         display: true,
-                        labelString: 'Campaign',
-                       
+                        labelString: 'Campaign'
                     },
                     ticks: {
                         suggestedMin: 0,
@@ -61,6 +52,9 @@
         BAR_PLAYER: {
             responsive: true,
             maintainAspectRatio: false,
+            tooltips: {
+                
+            },
             legend: {
                 display: false
             },

@@ -314,7 +314,10 @@
                 }
 
                 var campaignId = points[0]['_chart'].config.data.datasets[points[0]['_datasetIndex']].campaignDetails[points[0]['_index']].id; // Value of particluar bar
-                vm.selectedCampaign = campaignId
+                debugger
+                vm.selectedCampaign = campaignId;
+                vm.brandName = points[0]['_chart'].config.data.datasets[points[0]['_datasetIndex']].campaignDetails[points[0]['_index']].brandName;
+                vm.advertiserName = points[0]['_chart'].config.data.datasets[points[0]['_datasetIndex']].campaignDetails[points[0]['_index']].advertiserName;
                 //-- Clear the Children Graph and Children Request Parameters//
                 vm.selectedFrame = null
                 vm.selectedDay = null
@@ -410,10 +413,10 @@
                 // vm.channelSummaryByAudience = _.map(vm.channelSummaryByAudience, function (obj) {
                 //     return ((vm.selectedChannel.indexOf(obj.id) === -1) ? angular.extend(obj, { guageColors: vm.defaultGuageColors }) : angular.extend(obj, { guageColors: vm.selectedGuageColors }));
                 // });
-
                 vm.summary = vm.channelSummaryByAudience;
-
             }
+
+            vm.channelSummaryByImpression = vm.channelSummaryByImpression
 
             if (vm.campaignSummary)
                 vm.compaliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign');
@@ -485,6 +488,9 @@
 
             $("#gaugetooltip").attr("data-tooltip", vm.userBundle['common.gauge.tooltip']);
             $("#gaugetooltip").tooltip();
+
+            $("#gaugetooltip_audience").attr("data-tooltip", vm.userBundle['common.gauge.tooltip.audience']);
+            $("#gaugetooltip_audience").tooltip();
 
             // campaign
             $("#framecampaigntooltip").attr("data-tooltip", vm.userBundle['popboard.frame.campaign.tooltip']);
@@ -756,7 +762,15 @@
 
                                 }
                             }
-                        }
+                        },
+                        // callbacks: {
+                        //     title: function (tooltipItem) {
+                        //         return 'Nishit'
+                        //     },
+                        //     label: function (tooltipItem, data) {
+                        //         return "Nishit Test"
+                        //     }
+                        // }
                     };
 
                     break;
@@ -1065,6 +1079,7 @@
 
                     vm.channelSummary = data.channelSummary;
                     vm.channelSummaryByAudience = data.channelSummaryByAudience;
+                    vm.channelSummaryByImpression = data.channelSummaryByImpression;
 
                     vm.channelSummary = _.map(vm.channelSummary, function (obj) {
                         return ((vm.selectedChannel.indexOf(obj.id) === -1) ? angular.extend(obj, { guageColors: vm.defaultGuageColors }) : angular.extend(obj, { guageColors: vm.selectedGuageColors }));
@@ -1072,6 +1087,15 @@
 
                     vm.channelSummaryByAudience = _.map(vm.channelSummaryByAudience, function (obj) {
                         return ((vm.selectedChannel.indexOf(obj.id) === -1) ? angular.extend(obj, { guageColors: vm.defaultGuageColors }) : angular.extend(obj, { guageColors: vm.selectedGuageColors }));
+                    });
+
+                    vm.channelSummaryByImpression = _.map(vm.channelSummaryByImpression, function (obj) {
+                        var percentage = parseFloat(((obj.audienceValue * 100) / obj.value).toFixed(2));
+                        var moreData = {
+                            percentageDisplay: _.cloneDeep(percentage),
+                            percentage: (percentage > 100 ? 100 : percentage),
+                        }
+                        return (angular.extend(obj, { guageColors: vm.impressionGaugeColors }, moreData));
                     });
 
                     if (vm.isFrameDashbaord != 3)

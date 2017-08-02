@@ -127,7 +127,10 @@
 			"common.frame.label": "Frame",
 			"popboard.frame.player.heading": "% of days above threshold",
 			"popboard.frame.time.heading": "% played vs booked",
-			"common.gauge.tooltip": "Gauges show the % of compliant campaigns within that Business Area Group.\n\nExample, if within Rail there are 50 campaigns in the selected date range (after exclusions, see below), and 49 of them are compliant then the compliance value is 98% (49 is 98% of 50).,",
+      "common.gauge.tooltip": "Gauges show the % of compliant campaigns within that Business Area Group.\n\nExample, if within Rail there are 50 campaigns in the selected date range (after exclusions, see below), and 49 of them are compliant then the compliance value is 98% (49 is 98% of 50).,",
+      "common.gauge.tooltip.audience" : "Gauges show the % of compliant campaigns within that Business Area Group.\n\nExample, if within Rail there are 50 campaigns in the selected date range (after exclusions, see below), and 49 of them are compliant then the compliance value is 98% (49 is 98% of 50).,",
+      "common.campaign.compliance.summary" : "Campaign Compliance Summary",
+      "common.audience.compliance.summary" : "Audience Compliance Summary",
 			"common.title.label": "Dashboard",
 			"popboard.sot.player.heading": "Players - Average Performance - % played vs booked",
 			"popboard.time.yAxis.label": "Performance",
@@ -151,7 +154,7 @@
       "common.impressions.label": "Impressions"
 		},
     "serviceCalls": {
-      "POP_SUMMARY": "data/summary_v0.2.json",
+      "POP_SUMMARY": "data/channelSummaryByImpression.json",
       "SESSION_URL": "data/keepAlive.json"
     },
     "userData": {
