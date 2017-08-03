@@ -1190,7 +1190,6 @@
         }
 
         function highlightSelectedBar() {
-debugger
             if (!_.isUndefined(vm.selectedCampaign) && !_.isNull(vm.selectedCampaign)) {
                 if (!_.isEmpty(vm.campaignData)) {
                     vm.campaignData.datasets[0].backgroundColor = [];
@@ -1220,7 +1219,6 @@ debugger
                     var index = _.findIndex(vm.campaignDetails.campaignDetails, function (o) { return o.id == vm.selectedCampaign; });
                     if (index > -1){
                         vm.campaignData.datasets[0].backgroundColor[index] = GREEN_COLOR;
-                        debugger
                     } else {
                         vm.campaignBar.selectedCampaign = null;
                         vm.campaignBar.brandName = null;
