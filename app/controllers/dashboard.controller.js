@@ -354,7 +354,7 @@
                 }
 
                 vm.selectedFrame = points[0]['_chart'].config.data.datasets[points[0]['_datasetIndex']].playerDetails[points[0]['_index']].id; // Value of particluar bar
-                vm.campaignBar.vm.selectedFrame = _.cloneDeep(vm.selectedFrame);
+                vm.campaignBar.selectedFrame = _.cloneDeep(vm.selectedFrame);
                 //-- Clear the Children Graph and Children Request Parameters
                 vm.selectedDay = null
                 //-----------------------------------------------------------//
@@ -851,7 +851,7 @@
                         enabled: true,
                         mode: 'index',
                         position: 'nearest',
-                        custom: function (tooltipModel, data) {
+                        custom: function (tooltipModel) {
 
                             if (tooltipModel.title && tooltipModel.dataPoints.length > 0
                                 && vm.playerData.datasets[0].compaliantcheck[tooltipModel.dataPoints[0].index] === false) {
@@ -1219,10 +1219,12 @@
                     var index = _.findIndex(vm.campaignDetails.campaignDetails, function (o) { return o.id == vm.selectedCampaign; });
                     if (index > -1){
                         vm.campaignData.datasets[0].backgroundColor[index] = GREEN_COLOR;
+                        vm.campaignBar.selectedCampaign = vm.selectedCampaign;
                     } else {
                         vm.campaignBar.selectedCampaign = null;
                         vm.campaignBar.brandName = null;
                         vm.campaignBar.advertiserName = null;
+                        vm.campaignBar.selectedFrame = null; // when no campaign is selected no frame should be selected
                     }
 
                 }
@@ -1252,10 +1254,12 @@
 
                     });
                     var index = _.findIndex(vm.playerDetails.playerDetails, function (o) { return o.id == vm.selectedFrame; });
-                    if (index > -1)
+                    if (index > -1){
                         vm.playerData.datasets[0].backgroundColor[index] = GREEN_COLOR;
-                    else
+                        vm.campaignBar.selectedFrame = vm.selectedFrame;
+                    } else{
                         vm.campaignBar.selectedFrame = null;
+                    }
                 }
 
             }
