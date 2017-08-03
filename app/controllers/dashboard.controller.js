@@ -74,7 +74,7 @@
         vm.sampleOptions = configureOptions.DOUGHNUT;
 
         // Filter data selected by User//
-        vm.selectedProductFormats = [];
+        vm.selectedMarketingNames = [];
         vm.selectedSpecialists = [];
         vm.selectedChannel = [];
         vm.isFrameDashbaord = 3; // default selection for graph
@@ -104,6 +104,9 @@
             compliantCount: 0,
             noncompliantCount: 0
         };
+
+        // For selected campaign bottom section
+        vm.campaignBar = {};
 
         //------------------------------------------------------------------------------------------------------------------
         //                                              Chart Click Events
@@ -313,11 +316,10 @@
                     return false;
                 }
 
-                var campaignId = points[0]['_chart'].config.data.datasets[points[0]['_datasetIndex']].campaignDetails[points[0]['_index']].id; // Value of particluar bar
-                debugger
-                vm.selectedCampaign = campaignId;
-                vm.brandName = points[0]['_chart'].config.data.datasets[points[0]['_datasetIndex']].campaignDetails[points[0]['_index']].brandName;
-                vm.advertiserName = points[0]['_chart'].config.data.datasets[points[0]['_datasetIndex']].campaignDetails[points[0]['_index']].advertiserName;
+                vm.selectedCampaign = points[0]['_chart'].config.data.datasets[points[0]['_datasetIndex']].campaignDetails[points[0]['_index']].id;
+                vm.campaignBar.selectedCampaign = _.cloneDeep(vm.selectedCampaign);
+                vm.campaignBar.brandName = points[0]['_chart'].config.data.datasets[points[0]['_datasetIndex']].campaignDetails[points[0]['_index']].brandName;
+                vm.campaignBar.advertiserName = points[0]['_chart'].config.data.datasets[points[0]['_datasetIndex']].campaignDetails[points[0]['_index']].advertiserName;
                 //-- Clear the Children Graph and Children Request Parameters//
                 vm.selectedFrame = null
                 vm.selectedDay = null
@@ -351,8 +353,8 @@
                     return false;
                 }
 
-                var frameId = points[0]['_chart'].config.data.datasets[points[0]['_datasetIndex']].playerDetails[points[0]['_index']].id; // Value of particluar bar
-                vm.selectedFrame = frameId
+                vm.selectedFrame = points[0]['_chart'].config.data.datasets[points[0]['_datasetIndex']].playerDetails[points[0]['_index']].id; // Value of particluar bar
+                vm.campaignBar.vm.selectedFrame = _.cloneDeep(vm.selectedFrame);
                 //-- Clear the Children Graph and Children Request Parameters
                 vm.selectedDay = null
                 //-----------------------------------------------------------//
@@ -438,12 +440,12 @@
         //------------------------------------------------------------------------------------------------------------------
         //                                              Code to fill the drop downs
         //------------------------------------------------------------------------------------------------------------------
-        vm.loadProductFormat = function ($query) {
+        vm.loadmarketingNames = function ($query) {
             if ($query == '')
-                return vm.productFormats;
+                return vm.marketingNames;
             else {
-                return vm.productFormats.filter(function (productFormat) {
-                    return productFormat.productFormatName.toLowerCase().indexOf($query.toLowerCase()) != -1;
+                return vm.marketingNames.filter(function (marketingName) {
+                    return marketingName.marketingName.toLowerCase().indexOf($query.toLowerCase()) != -1;
                 });
             }
         }
@@ -574,8 +576,8 @@
                     loadServiceCallKeys(vm.configData.serviceCalls)
                 if (vm.configData.specialists)
                     vm.specialists = vm.configData.specialists;
-                if (vm.configData.productFormats)
-                    vm.productFormats = vm.configData.productFormats;
+                if (vm.configData.marketingNames)
+                    vm.marketingNames = vm.configData.marketingNames;
 
                 MAX_INACTIVE_INTERVAL = vm.configData.systemData.maxInactiveInterval || MAX_INACTIVE_INTERVAL;
                 startKeepAliveService();
@@ -1056,8 +1058,8 @@
             }
             if (vm.filterObject.specialists)
                 requestParameter["specialists"] = JSON.stringify(vm.filterObject.specialists);
-            if (vm.filterObject.productFormats)
-                requestParameter["productFormats"] = JSON.stringify(vm.filterObject.productFormats);
+            if (vm.filterObject.marketingNames)
+                requestParameter["marketingNames"] = JSON.stringify(vm.filterObject.marketingNames);
             if (vm.filterObject.channels)
                 requestParameter["channels"] = JSON.stringify(vm.filterObject.channels);
 
@@ -1091,12 +1093,12 @@
 
                     vm.channelSummaryByImpression = _.map(vm.channelSummaryByImpression, function (obj) {
                         var percentage;
-                        debugger
+
                         if (parseFloat(obj.value)) {
                             percentage = parseFloat(((obj.audienceValue * 100) / obj.value).toFixed(2));
-                            percentage = (isNaN(percentage) ? 0.00 : percentage);
+                            percentage = (isNaN(percentage) ? "0.00" : percentage);
                         } else {
-                            percentage = 0.00;
+                            percentage = "0.00";
                         }
 
                         var moreData = {
@@ -1188,7 +1190,7 @@
         }
 
         function highlightSelectedBar() {
-
+debugger
             if (!_.isUndefined(vm.selectedCampaign) && !_.isNull(vm.selectedCampaign)) {
                 if (!_.isEmpty(vm.campaignData)) {
                     vm.campaignData.datasets[0].backgroundColor = [];
@@ -1216,8 +1218,15 @@
                     });
 
                     var index = _.findIndex(vm.campaignDetails.campaignDetails, function (o) { return o.id == vm.selectedCampaign; });
-                    if (index > -1)
+                    if (index > -1){
                         vm.campaignData.datasets[0].backgroundColor[index] = GREEN_COLOR;
+                        debugger
+                    } else {
+                        vm.campaignBar.selectedCampaign = null;
+                        vm.campaignBar.brandName = null;
+                        vm.campaignBar.advertiserName = null;
+                    }
+
                 }
             }
             if (!_.isUndefined(vm.selectedFrame) && !_.isNull(vm.selectedFrame)) {
@@ -1247,6 +1256,8 @@
                     var index = _.findIndex(vm.playerDetails.playerDetails, function (o) { return o.id == vm.selectedFrame; });
                     if (index > -1)
                         vm.playerData.datasets[0].backgroundColor[index] = GREEN_COLOR;
+                    else
+                        vm.campaignBar.selectedFrame = null;
                 }
 
             }
@@ -1378,7 +1389,7 @@
 
         function createFilterOject() {
             //vm.datePicker
-            //vm.selectedProductFormats = [];
+            //vm.selectedMarketingNames = [];
             //vm.selectedSpecialists = [];
             //vm.selectedChannel = [];
             vm.filterObject = {}
@@ -1394,12 +1405,12 @@
                 })
                 vm.filterObject["specialists"] = specialists
             }
-            if (vm.selectedProductFormats && vm.selectedProductFormats.length > 0) {
-                var productFormats = [];
-                _.forEach(vm.selectedProductFormats, function (obj) {
-                    productFormats.push(obj.productFormatId);
+            if (vm.selectedMarketingNames && vm.selectedMarketingNames.length > 0) {
+                var marketingNames = [];
+                _.forEach(vm.selectedMarketingNames, function (obj) {
+                    marketingNames.push(obj.marketingNameId);
                 })
-                vm.filterObject["productFormats"] = productFormats
+                vm.filterObject["marketingNames"] = marketingNames;
             }
             if (vm.selectedChannel && vm.selectedChannel.length > 0)
                 vm.filterObject["channels"] = vm.selectedChannel

@@ -55,51 +55,51 @@
         "organisationName": "Specialist 12"
       }
     ],
-    "productFormats": [
+    "marketingNames": [
       {
-        "productFormatId": 1,
-        "productFormatName": "Product Format 1"
+        "marketingNameId": 1,
+        "marketingName": "Marketing Name 1"
       },
       {
-        "productFormatId": 2,
-        "productFormatName": "Product Format 2"
+        "marketingNameId": 2,
+        "marketingName": "Marketing Name 2"
       },
       {
-        "productFormatId": 3,
-        "productFormatName": "Product Format 3"
+        "marketingNameId": 3,
+        "marketingName": "Marketing Name 3"
       },
       {
-        "productFormatId": 4,
-        "productFormatName": "Product Format 4"
+        "marketingNameId": 4,
+        "marketingName": "Marketing Name 4"
       },
       {
-        "productFormatId": 5,
-        "productFormatName": "Product Format 5"
+        "marketingNameId": 5,
+        "marketingName": "Marketing Name 5"
       },
       {
-        "productFormatId": 6,
-        "productFormatName": "Product Format 6"
+        "marketingNameId": 6,
+        "marketingName": "Marketing Name 6"
       },
       {
-        "productFormatId": 7,
-        "productFormatName": "Product Format 7"
+        "marketingNameId": 7,
+        "marketingName": "Marketing Name 7"
       },
       {
-        "productFormatId": 8,
-        "productFormatName": "Product Format 8"
+        "marketingNameId": 8,
+        "marketingName": "Marketing Name 8"
       },
       {
-        "productFormatId": 9,
-        "productFormatName": "Product Format 9"
+        "marketingNameId": 9,
+        "marketingName": "Marketing Name 9"
       },
       {
-        "productFormatId": 10,
-        "productFormatName": "Product Format 10"
+        "marketingNameId": 10,
+        "marketingName": "Marketing Name 10"
       }
       ,
       {
-        "productFormatId": 11,
-        "productFormatName": "Product Format 11"
+        "marketingNameId": 11,
+        "marketingName": "Marketing Name 11"
       }
       
     ],
@@ -121,7 +121,8 @@
 			"popboard.player.xAxis.label": "Player",
 			"popboard.frame.campaign.heading": "% frame above threshold",
 			"common.specialist": "Specialist",
-			"common.productformat.select": "Select Product Format",
+      "common.marketingname.select": "Select Marketing Name",
+      "common.marketingname": "Marketing Name",
 			"popboard.frame.date.tooltip": "This graph shows the percentage of <strong>hours</strong> in a campaign that meet the compliance threshold for that player on each day within the selected range.\n\nIf the value is 100% (i.e. compliant) then it is shown as blue.\n\n If the value is less than 100% (i.e. non-compliant) then it is shown as red. \n\nExample:\n Date range for 5 days is selected.\n Campaign is selected in the Campaign Chart (title: % frame above threshold) that has 20 frames.\n\n A frame is selected.\n\nIn this chart, all days that the campaign was booked on this frame within the selected date range are shown.\n\n If a player is compliant for all hours on a day for this campaign (i.e. played out 95% or more of what was booked) then the day shows 100% compliant.\n\n If a player is compliant for half the hours on a day for this campaign (i.e. played out 95% or more of what was booked) then the day shows 50% compliant.",
 			"popboard.campaign.yAxis.label": "Campaigns",
 			"common.frame.label": "Frame",
@@ -140,7 +141,6 @@
 			"popboard.frame.campaign.tooltip": "This graph shows the percentage of <strong>frames</strong> in a campaign that meet the compliance threshold.\n\n All (100% of) frames must meet the compliance threshold for the campaign to be determined to be compliant.\n\n If all frames are compliant, the campaign will be coloured blue and the value shown will be 100%\n\n If less than all frames are compliant, the campaign will be coloured red and the value shown will be less than 100%.\n\n Example:\n If a campaign has 100 frames, and 50% of them meet the definition of compliance, this graph will show 50%.",
 			"popboard.date.yAxis.label": "Compliance",
 			"popboard.frame.time.tooltip": "This graph shows the percentage of <strong>what played to what was booked</strong> for every booked hour in a selected day for the selected frame in a selected campaign.\n\n If the hour shows a value of 95% or more it is compliant and shows blue.\n\n If the hour shows a value of less than 95% it is non-compliant and shows red. \n\n Example:\n Campaign, Player, Day are selected.\n\n Each booked hour (for that day, for that player for that campaign) are shown with a performance value (%played vs booked).\n\n If 20% SOT was booked and 30% played out a value of 150% is shown (30% is 150% of 20%).\n\n If 20% SOT was booked and 10% played out a value of 50% is shown (10% is 50% of 20%).",
-			"common.productformat": "Product Format",
 			"common.dashboard.tooltip": "All graphs exclude values from manually scheduled players including:\n Digital Escalator Panels\nHEX Motion\n Old St Roundabout\n Cromwell Road\n Heathrow DAPS Pack A and B\n Heathrow Gateroom DAPS\n\n Compliance Definition:\n A player for a campaign is considered compliant if it has played 95% or more of what was booked for every hour it has been scheduled.\n A campaign is considered compliant if ALL players have played 95% or better of what was booked for every hour it has been scheduled.  Compliance definition has been determined by UK IT team.\n\n Data manipulation:\n Edinburgh Princes St D6s – slave data is discarded and data from master players is shown instead due to an issue with BroadSign not recording successful playout from slaves due to playout aborted message.\n A40 Spire – one player, two frames.  If 20% SOT is booked and played, playout report shows 40% and 0%.  Playout data is split across both frames. \n\nWaterloo Transvision – one player, two screens.  If 20% SOT is booked and played, playout report shows 20% and 0%.  Playout data is copied from one to the other.  Second screen is getting a separate player in Feb 2017 so this data manipulation will be removed.\n\n NOTE:\n The comparison is for what was played vs what was booked. If a campaign was not booked for an hour but still played, this will not be reported.",
 			"popboard.sot.campaign.tooltip": "This graph shows the performance of a <strong>campaign</strong>.\n\n If all players play 95% or more of what was booked for that campaign (in the selected date range) for all hours then the campaign is compliant and is coloured blue.\n\n If one or more players played less than 95% of what was booked for that campaign in one or more hours, the campaign is non-compliant and coloured red.\n\n Example:\n If a campaign was booked for 20,000 seconds of play within the selected date range and plays out 22,000 seconds it will show 110% (22,000 is 110% of 20,000).",
       "popboard.impressions.campaign.heading":"Campaign - Average Performance by Impressions",
@@ -154,7 +154,7 @@
       "common.impressions.label": "Impressions"
 		},
     "serviceCalls": {
-      "POP_SUMMARY": "data/channelSummaryByImpression.json",
+      "POP_SUMMARY": "data/summary_v0.2.json",
       "SESSION_URL": "data/keepAlive.json"
     },
     "userData": {

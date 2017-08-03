@@ -53,10 +53,10 @@
                     </tags-input>
                 </div>
                 <div class=" col s12 m3" style="z-index:1">
-                    <label for="">{{vm.userBundle['common.productformat']}}</label>
-                    <tags-input ng-model="vm.selectedProductFormats" on-tag-added="vm.onAddTags()" class="no-margin" key-property="productFormatId"
-                        display-property="productFormatName" placeholder="Select Product Format" add-from-autocomplete-only="true">
-                        <auto-complete source="vm.loadProductFormat($query)" max-results-to-show="1000" load-on-focus="true" load-on-empty="true"
+                    <label for="">{{vm.userBundle['common.marketingname']}}</label>
+                    <tags-input ng-model="vm.selectedMarketingNames" on-tag-added="vm.onAddTags()" class="no-margin" key-property="marketingNameId"
+                        display-property="marketingName" placeholder="Select Marketing Name" add-from-autocomplete-only="true">
+                        <auto-complete source="vm.loadmarketingNames($query)" max-results-to-show="1000" load-on-focus="true" load-on-empty="true"
                             template="my-custom-template"></auto-complete>
                     </tags-input>
                 </div>
@@ -81,16 +81,16 @@
         </form>
     </div>
 </div>
-<div class="blue-grey lighten-5 filterselection" ng-if="vm.selectedSpecialists.length > 0  || vm.selectedProductFormats.length > 0">
+<div class="blue-grey lighten-5 filterselection" ng-if="vm.selectedSpecialists.length > 0  || vm.selectedMarketingNames.length > 0">
     <label class="filterlables"><b>{{vm.userBundle['common.specialist']}}: </b></label>
     <div ng-repeat="specialist in vm.selectedSpecialists" class="chip">
         {{specialist.organisationName}} <i ng-click="vm.removeTags($index, vm.selectedSpecialists)" class="close material-icons">close</i>
     </div>
 
 
-    <label class="filterlables"><b>{{vm.userBundle['common.productformat']}}: </b></label>
-    <div ng-repeat="productFormat in vm.selectedProductFormats" class="chip">
-        {{productFormat.productFormatName}}<i ng-click="vm.removeTags($index, vm.selectedProductFormats)" class="close material-icons">close</i>
+    <label class="filterlables"><b>{{vm.userBundle['common.marketingname']}}: </b></label>
+    <div ng-repeat="data in vm.selectedMarketingNames" class="chip">
+        {{data.marketingName}}<i ng-click="vm.removeTags($index, vm.selectedMarketingNames)" class="close material-icons">close</i>
     </div>
 </div>
 
@@ -110,11 +110,12 @@
         <h5 class="gaugereader" ng-click="vm.onChannelClick(channel.id)">{{channel.value}}%</h5>
         <div class="donut-inner">
             <span>{{channel.label}}</span>
-        </div>    </div>
+        </div>    
+    </div>
 </div>
 <div class="row"> 
     &nbsp;
-    </div>
+</div>
 <div class="row"> 
      <span class="card-title col s12">{{vm.userBundle['common.audience.compliance.summary']}} </span>
 </div>
@@ -248,22 +249,22 @@
                 </span>
             <span ng-if="vm.isFrameDashbaord==2">
                     {{vm.userBundle["popboard.sot.date.heading"]}}
-                </span>
+            </span>
             <span ng-if="vm.isFrameDashbaord==3">
                     {{vm.userBundle["popboard.impressions.date.heading"]}}
-                </span>
+            </span>
             <a id="framedatetooltip" ng-show="vm.isFrameDashbaord==1" class="btn-floating btn-flat blue-text right btn_popover
                 " data-html="true" data-position="top" data-delay="75"> 
                      <i class="material-icons blue-text">info_outline</i>
-                    </a>
+            </a>
             <a id="sotdatetooltip" ng-show="vm.isFrameDashbaord==2" class="btn-floating btn-flat blue-text right btn_popover
                 " data-html="true" data-position="top" data-delay="75"> 
                         <i class="material-icons blue-text">info_outline</i>
-                    </a>
+            </a>
             <a id="impressionstdatetooltip" ng-show="vm.isFrameDashbaord==3" class="btn-floating btn-flat blue-text right
                     btn_popover" data-html="true" data-position="top" data-delay="75"> 
                         <i class="material-icons blue-text">info_outline</i>
-                    </a>
+            </a>
             <span class="right">
                         <input type="checkbox" class="filled-in" id="day_compaliant" ng-click="vm.compaliantcheck(vm.day.compaliant,
                     vm.day.noncompaliant, 'day')" ng-model="vm.day.compaliant" />
@@ -271,7 +272,7 @@
                         <input type="checkbox" class="filled-in" id="day_non_compaliant" ng-click="vm.compaliantcheck(vm.day.compaliant,
                     vm.day.noncompaliant, 'day')"  ng-model="vm.day.noncompaliant" />
                         <label for="day_non_compaliant">Non Compliant ({{vm.day.noncompliantCount}})</label> &nbsp;&nbsp;
-                    </span>
+             </span>
             </span>
             <div class="card-content">
                 <canvas id="day" class="chart chart-bar" chart-data="vm.dayData.datasets[0].data" chart-options="vm.dayOptions" chart-colors="vm.dayData.datasets[0].backgroundColor"
@@ -286,7 +287,7 @@
                 <span ng-if="vm.isFrameDashbaord==1">
                     {{vm.userBundle["popboard.frame.time.heading"]}}
                 </span>
-            <span ng-if="vm.isFrameDashbaord==2">
+                <span ng-if="vm.isFrameDashbaord==2">
                     {{vm.userBundle["popboard.sot.time.heading"]}}
                 </span>
             <span ng-if="vm.isFrameDashbaord==3">
@@ -326,10 +327,10 @@
     <div class="card">
         <div class="card-content indigo lighten-1 campainbar">
             <div class="row">
-                <div class=" col s12 m2 "> <input id="dateRange" ng-model="vm.selectedCampaign" class="no-margin" type="text" ng-disabled="true" placeholder="Selected Campaign"> </div>
-                <div class=" col s12 m2"> <input id="Frame" ng-model="vm.selectedFrame" class="no-margin" type="text" ng-disabled="true" placeholder="Frame"> </div>
-                <div class=" col s12 m2"> <input id="Advertiser" ng-model="vm.advertiserName" class="no-margin" type="text" ng-disabled="true" placeholder="Advertiser"> </div>
-                <div class=" col s12 m2"> <input id="Brand" ng-model="vm.brandName" class="no-margin" type="text" ng-disabled="true" placeholder="Brand"> </div>
+                <div class=" col s12 m2 "> <input id="dateRange" ng-model="vm.campaignBar.selectedCampaign" class="no-margin" type="text" ng-disabled="true" placeholder="Selected Campaign"> </div>
+                <div class=" col s12 m2"> <input id="Frame" ng-model="vm.campaignBar.selectedFrame" class="no-margin" type="text" ng-disabled="true" placeholder="Frame"> </div>
+                <div class=" col s12 m2"> <input id="Advertiser" ng-model="vm.campaignBar.advertiserName" class="no-margin" type="text" ng-disabled="true" placeholder="Advertiser"> </div>
+                <div class=" col s12 m2"> <input id="Brand" ng-model="vm.campaignBar.brandName" class="no-margin" type="text" ng-disabled="true" placeholder="Brand"> </div>
                 <nav class="optionlist">
                     <div class="nav-wrapper">
                         <ul class="right hide-on-med-and-down">
