@@ -37,7 +37,7 @@
     <div class="row">
         <form class="col s12">
             <div class="row no-margin">
-                <div class=" col s12 m3">
+                <div class=" col s12 m2">
                     <label for="">{{vm.userBundle['common.dateRange']}}</label>
                     <!--<input placeholder="Select date range" id="first_name" type="text" class=" no-margin">-->
                     <input date-range-picker id="dateRange" class="no-margin" type="text" placeholder="Select Date Range" ng-model="vm.datePicker.date"
@@ -45,14 +45,14 @@
                     <i class="material-icons inputicon">date_range</i>
                 </div>
 
-                <div class=" col s12 m3" style="z-index:2">
+                <div class=" col s12 m2" style="z-index:2">
                     <label for="">{{vm.userBundle['common.specialist']}}</label>
                     <tags-input ng-model="vm.selectedSpecialists" on-tag-added="vm.onAddTags()" key-property="organisationId" display-property="organisationName"
                         placeholder="Select Specialist" add-from-autocomplete-only="true">
                         <auto-complete source="vm.loadSpecialist($query)" max-results-to-show="1000" load-on-focus="true" load-on-empty="true" template="my-custom-template"></auto-complete>
                     </tags-input>
                 </div>
-                <div class=" col s12 m3" style="z-index:1">
+                <div class=" col s12 m2" style="z-index:1">
                     <label for="">{{vm.userBundle['common.marketingname']}}</label>
                     <tags-input ng-model="vm.selectedMarketingNames" on-tag-added="vm.onAddTags()" class="no-margin" key-property="marketingNameId"
                         display-property="marketingName" placeholder="Select Marketing Name" add-from-autocomplete-only="true">
@@ -60,19 +60,17 @@
                             template="my-custom-template"></auto-complete>
                     </tags-input>
                 </div>
-
+                 <div class=" col s12 m2" style="z-index:1">
+                     <label for="">{{vm.userBundle['common.specialist']}}</label>
+                     <input id="Search" class="no-margin" type="text" placeholder="Campaign Ref" />
+                 </div>
                 <div class="input-field col s12 m2">
-                    <!--<select>
-                        <option value="" disabled selected>Choose your option</option>
-                        <option value="1">Option 1</option>
-                        <option value="2">Option 2</option>
-                        <option value="3">Option 3</option>
-                    </select>-->
                     <select id="Select9" ng-model="vm.isFrameDashbaord" ng-change="vm.selectDashBoardType()" ng-options="item.id as item.name for item in vm.graphOptions">
                         <option value="" disabled selected>Choose your option</option>
                     </select>
                     <label> Select Graph for</label>
                 </div>
+
                 <div class="col s12 m1">
                     <a id="dashBoardToolTip" class="btn-floating btn-flat blue-text right btn_popover" style="top: 10px; left: -4px;" data-html="true"
                         data-position="bottom" data-delay="75"> <i class="material-icons blue-text">info_outline</i></a>

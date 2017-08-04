@@ -617,7 +617,9 @@
                         datasets: [{
                             backgroundColor: [],
                             data: [],
-                            compaliantcheck: []
+                            compaliantcheck: [],
+                            brandName : [],
+                            advertiserName : []
                         }]
                     };
                     vm.campaign.compliantCount = 0;
@@ -638,6 +640,8 @@
 
                     _.forEach(chartData, function (obj) {
                         vm.campaignData.labels.push(obj.label);
+                         vm.campaignData.datasets[0].advertiserName.push(obj.advertiserName);
+                         vm.campaignData.datasets[0].brandName.push(obj.brandName);
 
                         if (vm.isFrameDashbaord == 1)
                             vm.campaignData.datasets[0].data.push(obj.value);
@@ -1217,14 +1221,16 @@
                     });
 
                     var index = _.findIndex(vm.campaignDetails.campaignDetails, function (o) { return o.id == vm.selectedCampaign; });
+                    vm.campaignBar.selectedFrame = null; // when no campaign is selected no frame should be selected
                     if (index > -1){
                         vm.campaignData.datasets[0].backgroundColor[index] = GREEN_COLOR;
                         vm.campaignBar.selectedCampaign = vm.selectedCampaign;
+                        vm.campaignBar.brandName = vm.campaignData.datasets[0].brandName[index];
+                        vm.campaignBar.advertiserName =  vm.campaignData.datasets[0].advertiserName[index];
                     } else {
                         vm.campaignBar.selectedCampaign = null;
                         vm.campaignBar.brandName = null;
                         vm.campaignBar.advertiserName = null;
-                        vm.campaignBar.selectedFrame = null; // when no campaign is selected no frame should be selected
                     }
 
                 }

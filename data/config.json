@@ -154,7 +154,7 @@
       "common.impressions.label": "Impressions"
 		},
     "serviceCalls": {
-      "POP_SUMMARY": "data/summary_v0.2.json",
+      "POP_SUMMARY": "data/channelSummaryByImpression.json",
       "SESSION_URL": "data/keepAlive.json"
     },
     "userData": {
