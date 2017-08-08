@@ -203,15 +203,15 @@
             <span ng-if="vm.isFrameDashbaord == 3">
                     {{vm.userBundle["popboard.impressions.player.heading"]}}
                 </span>
-            <a id="frameplayertooltip" ng-show="vm.isFrameDashbaord == 1" class="btn-floating btn-flat blue-text right btn_popover" data-html="true"
+                <a id="frameplayertooltip" ng-show="vm.isFrameDashbaord == 1" class="btn-floating btn-flat blue-text right btn_popover" data-html="true"
                 data-position="bottom" data-delay="75"> 
                       <i class="material-icons blue-text">info_outline</i>
                   </a>
-            <a id="sotplayertooltip" ng-show="vm.isFrameDashbaord == 2" class="btn-floating btn-flat blue-text right btn_popover" data-html="true"
+                <a id="sotplayertooltip" ng-show="vm.isFrameDashbaord == 2" class="btn-floating btn-flat blue-text right btn_popover" data-html="true"
                 data-position="bottom" data-delay="75"> 
                         <i class="material-icons blue-text">info_outline</i>
                   </a>
-            <a id="impressionsplayertooltip" ng-show="vm.isFrameDashbaord == 3" class="btn-floating btn-flat blue-text right btn_popover"
+                 <a id="impressionsplayertooltip" ng-show="vm.isFrameDashbaord == 3" class="btn-floating btn-flat blue-text right btn_popover"
                 data-html="true" data-position="bottom" data-delay="75"> 
                         <i class="material-icons blue-text">info_outline</i>
                   </a>
@@ -225,8 +225,8 @@
             <div style="width: 100%;overflow-x: auto;float: left;bottom: -10px;position: relative;">
                 <!--style="width: {{vm.barOptions.size.width + 'px' }}; height: {{vm.barOptions.size.height + 'px'}}-->
                 <div class="card-content" ng-style='{"width": vm.barOptions.size.width,"height": vm.barOptions.size.height }'>
-                    <canvas id="player" class="chart chart-bar" chart-data="vm.playerData.datasets[0].data
-                " chart-options="vm.barOptions" chart-colors="vm.playerData.datasets[0].backgroundColor" chart-labels="vm.playerData.labels"
+                    <canvas id="player" class="chart chart-bar" chart-data="vm.playerData.datasets[0].data" chart-options="vm.barOptions" 
+                    chart-colors="vm.playerData.datasets[0].backgroundColor" chart-labels="vm.playerData.labels"
                         chart-click="vm.onPlayerClick" chart-dataset-override="vm.playerDetails">
                 </div>
             </div>
@@ -238,7 +238,7 @@
         </div>
 
          <div id="frame-tooltip" class="compliance-tooltip">
-            <i class="material-icons tooltip-close" ng-click="vm.closeTooltip('player-tooltip')">close</i>
+            <i class="material-icons tooltip-close" ng-click="vm.closeTooltip('frame-tooltip')">close</i>
             <table></table>
         </div>
     </div>
