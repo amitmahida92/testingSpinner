@@ -78,6 +78,7 @@
         vm.selectedSpecialists = [];
         vm.selectedChannel = [];
         vm.isFrameDashbaord = 3; // default selection for graph
+        vm.searchCampaign = null;
 
         vm.campaign = {
             compaliant: true,
@@ -469,6 +470,31 @@
             checkAllcheckBoxes();
             getSummaries();
         }
+
+        vm.searchCampaignRef = function () {
+            if (vm.searchCampaign && vm.searchCampaign.trim().length > 6) {
+                var substringArray = _.map(['SM', 'SB'], function (substring) {
+                    return vm.searchCampaign.toUpperCase().indexOf(substring) > -1;
+                });
+
+                if (substringArray.indexOf(true) > -1) {
+
+                    var campaignSummary = _.cloneDeep(vm.campaignSummary);
+
+                    var data = campaignSummary.filter(function (obj) {
+                        return obj.id.indexOf(vm.searchCampaign.toUpperCase()) > -1
+                    });
+
+                    generateChart('campaign', data, false);
+                } else {
+                    console.log('Please enter valid campaign Reference')
+                }
+
+            } else {
+                generateChart('campaign', vm.campaignSummary, false);
+                return false;
+            }
+        }
         //------------------------------------------------------------------------------------------------------------------
 
         function checkAllcheckBoxes() {
@@ -618,8 +644,8 @@
                             backgroundColor: [],
                             data: [],
                             compaliantcheck: [],
-                            brandName : [],
-                            advertiserName : []
+                            brandName: [],
+                            advertiserName: []
                         }]
                     };
                     vm.campaign.compliantCount = 0;
@@ -640,8 +666,8 @@
 
                     _.forEach(chartData, function (obj) {
                         vm.campaignData.labels.push(obj.label);
-                         vm.campaignData.datasets[0].advertiserName.push(obj.advertiserName);
-                         vm.campaignData.datasets[0].brandName.push(obj.brandName);
+                        vm.campaignData.datasets[0].advertiserName.push(obj.advertiserName);
+                        vm.campaignData.datasets[0].brandName.push(obj.brandName);
 
                         if (vm.isFrameDashbaord == 1)
                             vm.campaignData.datasets[0].data.push(obj.value);
@@ -924,578 +950,615 @@
                                     });
 
                                 }
+                            } else if (tooltipModel.dataPoints) {
+
+                                var tooltipData = vm.frameSummary[tooltipModel.dataPoints[0].index].tooltipData;
+
+                                var tooltipEl = document.getElementById('frame-tooltip');
+
+                                function getBody(bodyItem) {
+                                    return bodyItem.lines;
+                                }
+
+                                // Set Text
+                                if (tooltipModel.body) {
+                                    var titleLines = "Campaign" + campaignId; //tooltipModel.title || [];
+                                    var bodyLines = tooltipModel.body.map(getBody);
+
+                                    var innerHtml = ' ';
+
+                                    tooltipData.forEach(function (body) {
+                                        var colors = tooltipModel.labelColors[0];
+                                        var style = 'background:' + colors.backgroundColor;
+                                        style += '; border-color:' + colors.borderColor;
+                                        style += '; border-width: 2px';
+                                        var span = '<span class="chartjs-tooltip-key" style="' + style + '"></span>';
+                                        innerHtml += '<tr><td style="color: rgba(255, 0, 0, 1);font-weight:600; width: 22%;">' + body['key'] + ' </td><td>' + body['value'] + '</a></td></tr>';
+                                });
+                                innerHtml += '</tbody>';
+
+                                var tableRoot = tooltipEl.querySelector('table');
+                                tableRoot.innerHTML = innerHtml;
                             }
+
+                            // Display, position, and set styles for font
+                            tooltipEl.style.opacity = 1;
+                            tooltipEl.style.display = 'block';
+                            tooltipEl.style.height = 160 + 'px';
+                            tooltipEl.style.fontFamily = tooltipModel._fontFamily;
+                            tooltipEl.style.fontSize = tooltipModel.fontSize;
+                            tooltipEl.style.fontStyle = tooltipModel._fontStyle;
+                            tooltipEl.style.padding = tooltipModel.yPadding + 'px ' + tooltipModel.xPadding + 'px';
+
                         }
-                    };
-                    break;
+                    }
+            };
+            break;
                 case 'day':
-                    vm.dayData = {
-                        labels: [],
-                        datasets: [{
-                            backgroundColor: [],
-                            borderWidth: 1,
-                            data: []
-                        }]
-                    };
-                    vm.day.compliantCount = 0;
-                    vm.day.noncompliantCount = 0;
+            vm.dayData = {
+                labels: [],
+                datasets: [{
+                    backgroundColor: [],
+                    borderWidth: 1,
+                    data: []
+                }]
+            };
+            vm.day.compliantCount = 0;
+            vm.day.noncompliantCount = 0;
 
-                    vm.dayDetails = {
-                        dayDetails: []
-                    }
-
-                    vm.dayOptions.size.width = calculateWidthForCampaign(vm.dayOptions.size.width, chartData.length);
-                    _.forEach(chartData, function (obj) {
-                        vm.dayData.labels.push(obj.label);
-
-
-                        if (vm.isFrameDashbaord == 1)
-                            vm.dayData.datasets[0].data.push(obj.value);
-                        else if (vm.isFrameDashbaord == 2)
-                            vm.dayData.datasets[0].data.push(obj.avgValue);
-                        else
-                            vm.dayData.datasets[0].data.push(obj.audienceValue);
-
-                        if (vm.isFrameDashbaord != 3) {
-
-                            if (obj.failed) {
-                                vm.dayData.datasets[0].backgroundColor.push(RED_COLOR);
-                                vm.day.noncompliantCount++;
-                            } else {
-                                vm.dayData.datasets[0].backgroundColor.push(BLUE_COLOR);
-                                vm.day.compliantCount++;
-                            }
-                        } else {
-
-                            if (obj.failedAudience) {
-                                vm.dayData.datasets[0].backgroundColor.push(RED_COLOR);
-                                vm.day.noncompliantCount++;
-                            } else {
-                                vm.dayData.datasets[0].backgroundColor.push(BLUE_COLOR);
-                                vm.day.compliantCount++;
-                            }
-                        }
-
-
-                        vm.dayDetails.dayDetails.push(obj);
-                    });
-
-                    if (toggleOtherCharts) {
-                        vm.showDay = true;
-                        vm.showHour = false;
-                    }
-
-                    break;
-                case 'hour':
-                    vm.hourData = {
-                        labels: [],
-                        datasets: [{
-                            backgroundColor: [],
-                            borderWidth: 1,
-                            data: []
-                        }]
-                    };
-                    vm.hour.compliantCount = 0;
-                    vm.hour.noncompliantCount = 0;
-
-                    vm.hourDetails = {
-                        hourDetails: []
-                    }
-
-                    // Commented the below code based on Ravi R confirmation as he wanted sorting by Hour
-                    // chartData = _.sortBy(chartData, 'value').reverse(); // for hour data we will not get avgValue, Nishit, CCP-290
-
-                    _.forEach(chartData, function (obj) {
-                        vm.hourData.labels.push(obj.label);
-
-                        if (vm.isFrameDashbaord != 3)
-                            vm.hourData.datasets[0].data.push(obj.value);
-                        else
-                            vm.hourData.datasets[0].data.push(obj.audienceValue);
-
-                        if (vm.isFrameDashbaord != 3) {
-                            if (obj.failed) {
-                                vm.hourData.datasets[0].backgroundColor.push(RED_COLOR);
-                                ++vm.hour.compliantCount;
-                            }
-                            else {
-                                vm.hourData.datasets[0].backgroundColor.push(BLUE_COLOR);
-                                if (!angular.isUndefined(obj.failed))
-                                    ++vm.hour.noncompliantCount;
-                            }
-                        } else {
-
-                            if (obj.failedAudience) {
-                                vm.hourData.datasets[0].backgroundColor.push(RED_COLOR);
-                                ++vm.hour.compliantCount;
-                            }
-                            else {
-                                vm.hourData.datasets[0].backgroundColor.push(BLUE_COLOR);
-                                if (!angular.isUndefined(obj.failedAudience))
-                                    ++vm.hour.noncompliantCount;
-                            }
-                        }
-                        vm.hourDetails.hourDetails.push(obj)
-                    });
-
-                    if (toggleOtherCharts)
-                        vm.showHour = true;
-
-                    break;
-            }
-        }
-
-        vm.closeTooltip = function (id) {
-            $('#' + id).hide();
-        }
-
-        function getSummaries() {
-
-            createFilterOject()
-            var filterChanged = isFilterChanged();
-            var requestParameter = {}
-
-
-            if (vm.datePicker.date) {
-                requestParameter["startDate"] = vm.filterObject.startDate;
-                requestParameter["endDate"] = vm.filterObject.endDate;
-            }
-            if (vm.filterObject.specialists)
-                requestParameter["specialists"] = JSON.stringify(vm.filterObject.specialists);
-            if (vm.filterObject.marketingNames)
-                requestParameter["marketingNames"] = JSON.stringify(vm.filterObject.marketingNames);
-            if (vm.filterObject.channels)
-                requestParameter["channels"] = JSON.stringify(vm.filterObject.channels);
-
-            requestParameter["filterChange"] = filterChanged;
-
-            if (vm.selectedCampaign != null)
-                requestParameter["campaignId"] = vm.selectedCampaign;
-            if (vm.selectedFrame != null)
-                requestParameter["extendedCodeId"] = vm.selectedFrame;
-            if (vm.selectedDay != null)
-                requestParameter["dayId"] = vm.selectedDay;
-
-
-            filterService.getSummaries(requestParameter).then(function (data) {
-                vm.cachedFilterObject = _.cloneDeep(vm.filterObject);
-                var data = data.data;
-
-                if (data.channelSummary && data.channelSummary.length > 0) {
-
-                    vm.channelSummary = data.channelSummary;
-                    vm.channelSummaryByAudience = data.channelSummaryByAudience;
-                    vm.channelSummaryByImpression = data.channelSummaryByImpression;
-
-                    vm.channelSummary = _.map(vm.channelSummary, function (obj) {
-                        return ((vm.selectedChannel.indexOf(obj.id) === -1) ? angular.extend(obj, { guageColors: vm.defaultGuageColors }) : angular.extend(obj, { guageColors: vm.selectedGuageColors }));
-                    });
-
-                    vm.channelSummaryByAudience = _.map(vm.channelSummaryByAudience, function (obj) {
-                        return ((vm.selectedChannel.indexOf(obj.id) === -1) ? angular.extend(obj, { guageColors: vm.defaultGuageColors }) : angular.extend(obj, { guageColors: vm.selectedGuageColors }));
-                    });
-
-                    vm.channelSummaryByImpression = _.map(vm.channelSummaryByImpression, function (obj) {
-                        var percentage;
-
-                        if (parseFloat(obj.value)) {
-                            percentage = parseFloat(((obj.audienceValue * 100) / obj.value).toFixed(2));
-                            percentage = (isNaN(percentage) ? "0.00" : percentage);
-                        } else {
-                            percentage = "0.00";
-                        }
-
-                        var moreData = {
-                            percentageDisplay: _.cloneDeep(percentage),
-                            percentage: (percentage > 100 ? 100 : percentage),
-                        }
-                        return (angular.extend(obj, { guageColors: vm.impressionGaugeColors }, moreData));
-                    });
-
-                    if (vm.isFrameDashbaord != 3)
-                        vm.summary = vm.channelSummary;
-                    else
-                        vm.summary = vm.channelSummaryByAudience;
-
-                }
-
-
-                if (data.campaignSummary) {
-                    if (data.campaignSummary.length > 0) {
-                        vm.campaignOptions.size = _.clone(configureOptions.HORIZONTAL_BAR.size); // after change in filter need to reset size
-                        vm.campaignSummary = _.map(data.campaignSummary, function (obj) {
-                            obj.value = parseFloat(obj.value);
-                            obj.avgValue = parseFloat(obj.avgValue);
-                            obj.audienceValue = parseFloat(obj.audienceValue);
-                            return obj;
-                        });
-
-                        generateChart('campaign', vm.campaignSummary, true);
-                    }
-                    else {
-                        vm.campaignData = {};
-                        vm.showCampaign = false;
-                    }
-                }
-                if (data.frameSummary) {
-                    if (data.frameSummary.length > 0) {
-                        vm.barOptions.size = _.clone(configureOptions.BAR_PLAYER.size); // after change in filter need to reset size
-                        vm.frameSummary = _.map(data.frameSummary, function (obj) {
-                            obj.value = parseFloat(obj.value);
-                            obj.avgValue = parseFloat(obj.avgValue);
-                            obj.audienceValue = parseFloat(obj.audienceValue);
-                            return obj;
-                        });
-
-                        generateChart('player', vm.frameSummary, true);
-                    }
-                    else {
-                        vm.playerData = {};
-                        vm.showPlayer = false
-                    }
-                }
-                if (data.daySummary) {
-                    if (data.daySummary.length > 0) {
-                        vm.dayOptions.size = _.clone(configureOptions.BAR_DAY.size);
-                        vm.daySummary = _.map(data.daySummary, function (obj) {
-                            obj.value = parseFloat(obj.value);
-                            obj.avgValue = parseFloat(obj.avgValue);
-                            obj.audienceValue = parseFloat(obj.audienceValue);
-                            return obj;
-                        });
-                        generateChart('day', vm.daySummary, true);
-                    }
-                    else {
-                        vm.dayData = {};
-                        vm.showDay = false;
-                    }
-
-                }
-                if (data.spanSummary) {
-                    if (data.spanSummary.length > 0) {
-                        vm.dayOptions.size = _.clone(configureOptions.BAR_DAY.size);
-                        vm.spanSummary = _.map(data.spanSummary, function (obj) {
-                            obj.value = parseFloat(obj.value);
-                            obj.avgValue = parseFloat(obj.avgValue);
-                            obj.audienceValue = parseFloat(obj.audienceValue);
-                            return obj;
-                        });
-                        generateChart('hour', vm.spanSummary, true);
-                    }
-                    else {
-                        vm.hourData = {}
-                        vm.showHour = false
-                    }
-                }
-                highlightSelectedBar();
-            });
-
-
-        }
-
-        function highlightSelectedBar() {
-            if (!_.isUndefined(vm.selectedCampaign) && !_.isNull(vm.selectedCampaign)) {
-                if (!_.isEmpty(vm.campaignData)) {
-                    vm.campaignData.datasets[0].backgroundColor = [];
-                    _.forEach(vm.campaignDetails.campaignDetails, function (obj, key) {
-
-                        if (vm.isFrameDashbaord != 3) {
-                            if (obj.failed) {
-                                vm.campaignData.datasets[0].backgroundColor.push(RED_COLOR);
-                                vm.campaignData.datasets[0].compaliantcheck.push(false);
-                            }
-                            else {
-                                vm.campaignData.datasets[0].backgroundColor.push(BLUE_COLOR);
-                                vm.campaignData.datasets[0].compaliantcheck.push(true);
-                            }
-                        } else {
-                            if (obj.failedAudience) {
-                                vm.campaignData.datasets[0].compaliantcheck.push(false);
-                                vm.campaignData.datasets[0].backgroundColor.push(RED_COLOR);
-                            }
-                            else {
-                                vm.campaignData.datasets[0].backgroundColor.push(BLUE_COLOR);
-                                vm.campaignData.datasets[0].compaliantcheck.push(true);
-                            }
-                        }
-                    });
-
-                    var index = _.findIndex(vm.campaignDetails.campaignDetails, function (o) { return o.id == vm.selectedCampaign; });
-                    vm.campaignBar.selectedFrame = null; // when no campaign is selected no frame should be selected
-                    if (index > -1){
-                        vm.campaignData.datasets[0].backgroundColor[index] = GREEN_COLOR;
-                        vm.campaignBar.selectedCampaign = vm.selectedCampaign;
-                        vm.campaignBar.brandName = vm.campaignData.datasets[0].brandName[index];
-                        vm.campaignBar.advertiserName =  vm.campaignData.datasets[0].advertiserName[index];
-                    } else {
-                        vm.campaignBar.selectedCampaign = null;
-                        vm.campaignBar.brandName = null;
-                        vm.campaignBar.advertiserName = null;
-                    }
-
-                }
-            }
-            if (!_.isUndefined(vm.selectedFrame) && !_.isNull(vm.selectedFrame)) {
-                if (!_.isEmpty(vm.playerData)) {
-                    vm.playerData.datasets[0].backgroundColor = [];
-                    _.forEach(vm.playerDetails.playerDetails, function (obj, key) {
-
-                        if (vm.isFrameDashbaord != 3) {
-                            if (obj.failed) {
-                                vm.playerData.datasets[0].backgroundColor.push(RED_COLOR);
-                                vm.playerData.datasets[0].compaliantcheck.push(false);
-                            } else {
-                                vm.playerData.datasets[0].backgroundColor.push(BLUE_COLOR);
-                                vm.playerData.datasets[0].compaliantcheck.push(true);
-                            }
-                        } else {
-                            if (obj.failedAudience) {
-                                vm.playerData.datasets[0].backgroundColor.push(RED_COLOR);
-                                vm.playerData.datasets[0].compaliantcheck.push(false);
-                            } else {
-                                vm.playerData.datasets[0].backgroundColor.push(BLUE_COLOR);
-                                vm.playerData.datasets[0].compaliantcheck.push(true);
-                            }
-                        }
-
-                    });
-                    var index = _.findIndex(vm.playerDetails.playerDetails, function (o) { return o.id == vm.selectedFrame; });
-                    if (index > -1){
-                        vm.playerData.datasets[0].backgroundColor[index] = GREEN_COLOR;
-                        vm.campaignBar.selectedFrame = vm.selectedFrame;
-                    } else{
-                        vm.campaignBar.selectedFrame = null;
-                    }
-                }
-
-            }
-            if (!_.isUndefined(vm.selectedDay) && !_.isNull(vm.selectedDay)) {
-                if (!_.isEmpty(vm.dayData)) {
-                    vm.dayData.datasets[0].backgroundColor = [];
-                    _.forEach(vm.dayDetails.dayDetails, function (obj, key) {
-
-                        if (vm.isFrameDashbaord != 3) {
-
-                            if (obj.failed) {
-                                vm.dayData.datasets[0].backgroundColor.push(RED_COLOR);
-
-                            } else {
-                                vm.dayData.datasets[0].backgroundColor.push(BLUE_COLOR);
-
-                            }
-                        } else {
-
-                            if (obj.failedAudience) {
-                                vm.dayData.datasets[0].backgroundColor.push(RED_COLOR);
-
-                            } else {
-                                vm.dayData.datasets[0].backgroundColor.push(BLUE_COLOR);
-
-                            }
-                        }
-
-
-                    });
-                    var index = _.findIndex(vm.dayDetails.dayDetails, function (o) { return o.id == vm.selectedDay; });
-                    if (index > -1)
-                        vm.dayData.datasets[0].backgroundColor[index] = GREEN_COLOR;
-                }
+            vm.dayDetails = {
+                dayDetails: []
             }
 
-            if (!_.isUndefined(vm.selectedDay) && !_.isNull(vm.selectedDay)) {
-                if (!_.isEmpty(vm.dayData)) {
-                    vm.dayData.datasets[0].backgroundColor = [];
-                    _.forEach(vm.dayDetails.dayDetails, function (obj, key) {
-
-                        if (vm.isFrameDashbaord != 3) {
-
-                            if (obj.failed) {
-                                vm.dayData.datasets[0].backgroundColor.push(RED_COLOR);
-
-                            } else {
-                                vm.dayData.datasets[0].backgroundColor.push(BLUE_COLOR);
-
-                            }
-                        } else {
-
-                            if (obj.failedAudience) {
-                                vm.dayData.datasets[0].backgroundColor.push(RED_COLOR);
-
-                            } else {
-                                vm.dayData.datasets[0].backgroundColor.push(BLUE_COLOR);
-
-                            }
-                        }
+            vm.dayOptions.size.width = calculateWidthForCampaign(vm.dayOptions.size.width, chartData.length);
+            _.forEach(chartData, function (obj) {
+                vm.dayData.labels.push(obj.label);
 
 
-                    });
-                    var index = _.findIndex(vm.dayDetails.dayDetails, function (o) { return o.id == vm.selectedDay; });
-                    if (index > -1)
-                        vm.dayData.datasets[0].backgroundColor[index] = GREEN_COLOR;
-                }
-            }
-        }
-
-
-        function clearChartData() {
-            vm.campaignData = {};
-            vm.playerData = {};
-            vm.dayData = {};
-            vm.hourData = {};
-        }
-
-        function isFilterChanged() {
-
-            if (Object.keys(vm.cachedFilterObject).length > 0) {
-                if (JSON.stringify(vm.filterObject) == JSON.stringify(vm.cachedFilterObject))
-                    return false;
+                if (vm.isFrameDashbaord == 1)
+                    vm.dayData.datasets[0].data.push(obj.value);
+                else if (vm.isFrameDashbaord == 2)
+                    vm.dayData.datasets[0].data.push(obj.avgValue);
                 else
-                    return true;
-            }
-            else
-                return true;
-        }
+                    vm.dayData.datasets[0].data.push(obj.audienceValue);
 
-        function startKeepAliveService() {
-            // Webworker.create(keepAlive, { async: true })
-            //     .run(MAX_INACTIVE_INTERVAL, BOS_SESSIONID, calculateURL())
-            //     .then(function (result) {
-            //     });
+                if (vm.isFrameDashbaord != 3) {
 
-            requireWorker = Webworker.create(keepAlive, {
-                async: true
+                    if (obj.failed) {
+                        vm.dayData.datasets[0].backgroundColor.push(RED_COLOR);
+                        vm.day.noncompliantCount++;
+                    } else {
+                        vm.dayData.datasets[0].backgroundColor.push(BLUE_COLOR);
+                        vm.day.compliantCount++;
+                    }
+                } else {
+
+                    if (obj.failedAudience) {
+                        vm.dayData.datasets[0].backgroundColor.push(RED_COLOR);
+                        vm.day.noncompliantCount++;
+                    } else {
+                        vm.dayData.datasets[0].backgroundColor.push(BLUE_COLOR);
+                        vm.day.compliantCount++;
+                    }
+                }
+
+
+                vm.dayDetails.dayDetails.push(obj);
             });
-            requireWorker.run(MAX_INACTIVE_INTERVAL, BOS_SESSIONID, calculateURL()).then(function (result) { });
 
-        }
+            if (toggleOtherCharts) {
+                vm.showDay = true;
+                vm.showHour = false;
+            }
 
-        function keepAlive(interval, bosSessionId, url) {
-            setInterval(function () {
-                var xmlHttp = new XMLHttpRequest();
-                xmlHttp.onreadystatechange = function () {
+            break;
+                case 'hour':
+            vm.hourData = {
+                labels: [],
+                datasets: [{
+                    backgroundColor: [],
+                    borderWidth: 1,
+                    data: []
+                }]
+            };
+            vm.hour.compliantCount = 0;
+            vm.hour.noncompliantCount = 0;
 
-                    //if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-                    //    callback(xmlHttp.responseText);
+            vm.hourDetails = {
+                hourDetails: []
+            }
+
+            // Commented the below code based on Ravi R confirmation as he wanted sorting by Hour
+            // chartData = _.sortBy(chartData, 'value').reverse(); // for hour data we will not get avgValue, Nishit, CCP-290
+
+            _.forEach(chartData, function (obj) {
+                vm.hourData.labels.push(obj.label);
+
+                if (vm.isFrameDashbaord != 3)
+                    vm.hourData.datasets[0].data.push(obj.value);
+                else
+                    vm.hourData.datasets[0].data.push(obj.audienceValue);
+
+                if (vm.isFrameDashbaord != 3) {
+                    if (obj.failed) {
+                        vm.hourData.datasets[0].backgroundColor.push(RED_COLOR);
+                        ++vm.hour.compliantCount;
+                    }
+                    else {
+                        vm.hourData.datasets[0].backgroundColor.push(BLUE_COLOR);
+                        if (!angular.isUndefined(obj.failed))
+                            ++vm.hour.noncompliantCount;
+                    }
+                } else {
+
+                    if (obj.failedAudience) {
+                        vm.hourData.datasets[0].backgroundColor.push(RED_COLOR);
+                        ++vm.hour.compliantCount;
+                    }
+                    else {
+                        vm.hourData.datasets[0].backgroundColor.push(BLUE_COLOR);
+                        if (!angular.isUndefined(obj.failedAudience))
+                            ++vm.hour.noncompliantCount;
+                    }
                 }
-                xmlHttp.open("GET", url, true); // true for asynchronous
-                xmlHttp.setRequestHeader("Bos-SessionId", bosSessionId);
-                console.log("Keep alive called");
-                xmlHttp.send(null);
-            }, interval * 1000);
+                vm.hourDetails.hourDetails.push(obj)
+            });
 
+            if (toggleOtherCharts)
+                vm.showHour = true;
+
+            break;
         }
+    }
 
-        function calculateURL() {
-            var generatedURL = "";
-            if (parseInt(window.location.pathname.indexOf('StockManager')) > 0) {
-                generatedURL = window.location.origin + '/StockManager' + SESSION_URL.split(".").join("");
-            } else {
-                generatedURL = window.location.origin + '/' + SESSION_URL;
+    vm.closeTooltip = function (id) {
+        $('#' + id).hide();
+    }
+
+    function getSummaries() {
+
+        createFilterOject()
+        var filterChanged = isFilterChanged();
+        var requestParameter = {}
+
+
+        if (vm.datePicker.date) {
+            requestParameter["startDate"] = vm.filterObject.startDate;
+            requestParameter["endDate"] = vm.filterObject.endDate;
+        }
+        if (vm.filterObject.specialists)
+            requestParameter["specialists"] = JSON.stringify(vm.filterObject.specialists);
+        if (vm.filterObject.marketingNames)
+            requestParameter["marketingNames"] = JSON.stringify(vm.filterObject.marketingNames);
+        if (vm.filterObject.channels)
+            requestParameter["channels"] = JSON.stringify(vm.filterObject.channels);
+
+        requestParameter["filterChange"] = filterChanged;
+
+        if (vm.selectedCampaign != null)
+            requestParameter["campaignId"] = vm.selectedCampaign;
+        if (vm.selectedFrame != null)
+            requestParameter["extendedCodeId"] = vm.selectedFrame;
+        if (vm.selectedDay != null)
+            requestParameter["dayId"] = vm.selectedDay;
+
+
+        filterService.getSummaries(requestParameter).then(function (data) {
+            vm.cachedFilterObject = _.cloneDeep(vm.filterObject);
+            var data = data.data;
+
+            if (data.channelSummary && data.channelSummary.length > 0) {
+
+                vm.channelSummary = data.channelSummary;
+                vm.channelSummaryByAudience = data.channelSummaryByAudience;
+                vm.channelSummaryByImpression = data.channelSummaryByImpression;
+
+                vm.channelSummary = _.map(vm.channelSummary, function (obj) {
+                    return ((vm.selectedChannel.indexOf(obj.id) === -1) ? angular.extend(obj, { guageColors: vm.defaultGuageColors }) : angular.extend(obj, { guageColors: vm.selectedGuageColors }));
+                });
+
+                vm.channelSummaryByAudience = _.map(vm.channelSummaryByAudience, function (obj) {
+                    return ((vm.selectedChannel.indexOf(obj.id) === -1) ? angular.extend(obj, { guageColors: vm.defaultGuageColors }) : angular.extend(obj, { guageColors: vm.selectedGuageColors }));
+                });
+
+                vm.channelSummaryByImpression = _.map(vm.channelSummaryByImpression, function (obj) {
+                    var percentage;
+
+                    if (parseFloat(obj.value)) {
+                        percentage = parseFloat(((obj.audienceValue * 100) / obj.value).toFixed(2));
+                        percentage = (isNaN(percentage) ? "0.00" : percentage);
+                    } else {
+                        percentage = "0.00";
+                    }
+
+                    var moreData = {
+                        percentageDisplay: _.cloneDeep(percentage),
+                        percentage: (percentage > 100 ? 100 : percentage),
+                    }
+                    return (angular.extend(obj, { guageColors: vm.impressionGaugeColors }, moreData));
+                });
+
+                if (vm.isFrameDashbaord != 3)
+                    vm.summary = vm.channelSummary;
+                else
+                    vm.summary = vm.channelSummaryByAudience;
+
             }
-            return generatedURL;
-        }
-
-        function createFilterOject() {
-            //vm.datePicker
-            //vm.selectedMarketingNames = [];
-            //vm.selectedSpecialists = [];
-            //vm.selectedChannel = [];
-            vm.filterObject = {}
-
-            if (vm.datePicker.date) {
-                vm.filterObject["startDate"] = vm.datePicker.date.startDate;
-                vm.filterObject["endDate"] = vm.datePicker.date.endDate;
-            }
-            if (vm.selectedSpecialists && vm.selectedSpecialists.length > 0) {
-                var specialists = [];
-                _.forEach(vm.selectedSpecialists, function (obj) {
-                    specialists.push(obj.organisationId);
-                })
-                vm.filterObject["specialists"] = specialists
-            }
-            if (vm.selectedMarketingNames && vm.selectedMarketingNames.length > 0) {
-                var marketingNames = [];
-                _.forEach(vm.selectedMarketingNames, function (obj) {
-                    marketingNames.push(obj.marketingNameId);
-                })
-                vm.filterObject["marketingNames"] = marketingNames;
-            }
-            if (vm.selectedChannel && vm.selectedChannel.length > 0)
-                vm.filterObject["channels"] = vm.selectedChannel
-        }
 
 
+            if (data.campaignSummary) {
+                if (data.campaignSummary.length > 0) {
+                    vm.campaignOptions.size = _.clone(configureOptions.HORIZONTAL_BAR.size); // after change in filter need to reset size
+                    vm.campaignSummary = _.map(data.campaignSummary, function (obj) {
+                        obj.value = parseFloat(obj.value);
+                        obj.avgValue = parseFloat(obj.avgValue);
+                        obj.audienceValue = parseFloat(obj.audienceValue);
+                        return obj;
+                    });
 
-
-        function calculateHeightForCampaign(defaultHeight, totalRecords) {
-            var _defaultHeight = defaultHeight;
-            return ((totalRecords * 18) < _defaultHeight ? _defaultHeight : defaultHeight += (totalRecords * 22))
-        }
-
-        function calculateWidthForCampaign(defaultWidth, totalRecords) {
-            var _defaultWidth = defaultWidth;
-            return ((totalRecords * 28) < _defaultWidth ? _defaultWidth : defaultWidth += (totalRecords * 38)) // Nishit, CCP-291
-        }
-
-
-        //------------------------------------------------------------------------------------------------------------------
-        //                                            Date Range Configuration
-        //------------------------------------------------------------------------------------------------------------------
-
-        var DATERANGEPICKER = {
-            locale: {
-                separator: ' : ',
-                format: DATE_FORMAT
-            },
-            ranges: {
-                'Today': [moment(), moment()],
-                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                'This Month': [moment().startOf('month'), moment().endOf('month')],
-                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-            },
-            alwaysShowCalendars: true,
-            opens: 'center',
-            eventHandlers: {
-                'apply.daterangepicker': function (ev, picker) {
-                    vm.datePicker = {
-                        date: {
-                            startDate: (typeof vm.datePicker.date.startDate == 'string' ? vm.datePicker.date.startDate : vm.datePicker.date.startDate.format(DATE_FORMAT)),
-                            endDate: (typeof vm.datePicker.date.endDate == 'string' ? vm.datePicker.date.endDate : vm.datePicker.date.endDate.format(DATE_FORMAT))
-                        }
-                    };
-
-                    getSummaries();
+                    generateChart('campaign', vm.campaignSummary, true);
+                }
+                else {
+                    vm.campaignData = {};
+                    vm.showCampaign = false;
                 }
             }
-        }
-        // Configuration for DateRangePicker
+            if (data.frameSummary) {
+                if (data.frameSummary.length > 0) {
+                    vm.barOptions.size = _.clone(configureOptions.BAR_PLAYER.size); // after change in filter need to reset size
+                    vm.frameSummary = _.map(data.frameSummary, function (obj) {
+                        obj.value = parseFloat(obj.value);
+                        obj.avgValue = parseFloat(obj.avgValue);
+                        obj.audienceValue = parseFloat(obj.audienceValue);
+                        return obj;
+                    });
 
-        vm.datePickerOptions = DATERANGEPICKER;
-
-        vm.datePicker = {
-            date: {
-                startDate: moment.Today,
-                endDate: moment.Today
+                    generateChart('player', vm.frameSummary, true);
+                }
+                else {
+                    vm.playerData = {};
+                    vm.showPlayer = false
+                }
             }
-        };
+            if (data.daySummary) {
+                if (data.daySummary.length > 0) {
+                    vm.dayOptions.size = _.clone(configureOptions.BAR_DAY.size);
+                    vm.daySummary = _.map(data.daySummary, function (obj) {
+                        obj.value = parseFloat(obj.value);
+                        obj.avgValue = parseFloat(obj.avgValue);
+                        obj.audienceValue = parseFloat(obj.audienceValue);
+                        return obj;
+                    });
+                    generateChart('day', vm.daySummary, true);
+                }
+                else {
+                    vm.dayData = {};
+                    vm.showDay = false;
+                }
 
-        vm.showHideFilters = function () {
-            if (vm.showFilter) {
-                $('#filtersArea').slideUp();
-                vm.showFilter = false;
-            } else {
-                $('#filtersArea').slideDown("slow");
-                vm.showFilter = true;
             }
-        }
-
-        //------------------------------------------------------------------------------------------------------------------------
-
-        getInitialConfig();
-
+            if (data.spanSummary) {
+                if (data.spanSummary.length > 0) {
+                    vm.dayOptions.size = _.clone(configureOptions.BAR_DAY.size);
+                    vm.spanSummary = _.map(data.spanSummary, function (obj) {
+                        obj.value = parseFloat(obj.value);
+                        obj.avgValue = parseFloat(obj.avgValue);
+                        obj.audienceValue = parseFloat(obj.audienceValue);
+                        return obj;
+                    });
+                    generateChart('hour', vm.spanSummary, true);
+                }
+                else {
+                    vm.hourData = {}
+                    vm.showHour = false
+                }
+            }
+            highlightSelectedBar();
+        });
 
 
     }
+
+    function highlightSelectedBar() {
+        if (!_.isUndefined(vm.selectedCampaign) && !_.isNull(vm.selectedCampaign)) {
+            if (!_.isEmpty(vm.campaignData)) {
+                vm.campaignData.datasets[0].backgroundColor = [];
+                _.forEach(vm.campaignDetails.campaignDetails, function (obj, key) {
+
+                    if (vm.isFrameDashbaord != 3) {
+                        if (obj.failed) {
+                            vm.campaignData.datasets[0].backgroundColor.push(RED_COLOR);
+                            vm.campaignData.datasets[0].compaliantcheck.push(false);
+                        }
+                        else {
+                            vm.campaignData.datasets[0].backgroundColor.push(BLUE_COLOR);
+                            vm.campaignData.datasets[0].compaliantcheck.push(true);
+                        }
+                    } else {
+                        if (obj.failedAudience) {
+                            vm.campaignData.datasets[0].compaliantcheck.push(false);
+                            vm.campaignData.datasets[0].backgroundColor.push(RED_COLOR);
+                        }
+                        else {
+                            vm.campaignData.datasets[0].backgroundColor.push(BLUE_COLOR);
+                            vm.campaignData.datasets[0].compaliantcheck.push(true);
+                        }
+                    }
+                });
+
+                var index = _.findIndex(vm.campaignDetails.campaignDetails, function (o) { return o.id == vm.selectedCampaign; });
+                vm.campaignBar.selectedFrame = null; // when no campaign is selected no frame should be selected
+                if (index > -1) {
+                    vm.campaignData.datasets[0].backgroundColor[index] = GREEN_COLOR;
+                    vm.campaignBar.selectedCampaign = vm.selectedCampaign;
+                    vm.campaignBar.brandName = vm.campaignData.datasets[0].brandName[index];
+                    vm.campaignBar.advertiserName = vm.campaignData.datasets[0].advertiserName[index];
+                } else {
+                    vm.campaignBar.selectedCampaign = null;
+                    vm.campaignBar.brandName = null;
+                    vm.campaignBar.advertiserName = null;
+                }
+
+            }
+        }
+        if (!_.isUndefined(vm.selectedFrame) && !_.isNull(vm.selectedFrame)) {
+            if (!_.isEmpty(vm.playerData)) {
+                vm.playerData.datasets[0].backgroundColor = [];
+                _.forEach(vm.playerDetails.playerDetails, function (obj, key) {
+
+                    if (vm.isFrameDashbaord != 3) {
+                        if (obj.failed) {
+                            vm.playerData.datasets[0].backgroundColor.push(RED_COLOR);
+                            vm.playerData.datasets[0].compaliantcheck.push(false);
+                        } else {
+                            vm.playerData.datasets[0].backgroundColor.push(BLUE_COLOR);
+                            vm.playerData.datasets[0].compaliantcheck.push(true);
+                        }
+                    } else {
+                        if (obj.failedAudience) {
+                            vm.playerData.datasets[0].backgroundColor.push(RED_COLOR);
+                            vm.playerData.datasets[0].compaliantcheck.push(false);
+                        } else {
+                            vm.playerData.datasets[0].backgroundColor.push(BLUE_COLOR);
+                            vm.playerData.datasets[0].compaliantcheck.push(true);
+                        }
+                    }
+
+                });
+                var index = _.findIndex(vm.playerDetails.playerDetails, function (o) { return o.id == vm.selectedFrame; });
+                if (index > -1) {
+                    vm.playerData.datasets[0].backgroundColor[index] = GREEN_COLOR;
+                    vm.campaignBar.selectedFrame = vm.selectedFrame;
+                } else {
+                    vm.campaignBar.selectedFrame = null;
+                }
+            }
+
+        }
+        if (!_.isUndefined(vm.selectedDay) && !_.isNull(vm.selectedDay)) {
+            if (!_.isEmpty(vm.dayData)) {
+                vm.dayData.datasets[0].backgroundColor = [];
+                _.forEach(vm.dayDetails.dayDetails, function (obj, key) {
+
+                    if (vm.isFrameDashbaord != 3) {
+
+                        if (obj.failed) {
+                            vm.dayData.datasets[0].backgroundColor.push(RED_COLOR);
+
+                        } else {
+                            vm.dayData.datasets[0].backgroundColor.push(BLUE_COLOR);
+
+                        }
+                    } else {
+
+                        if (obj.failedAudience) {
+                            vm.dayData.datasets[0].backgroundColor.push(RED_COLOR);
+
+                        } else {
+                            vm.dayData.datasets[0].backgroundColor.push(BLUE_COLOR);
+
+                        }
+                    }
+
+
+                });
+                var index = _.findIndex(vm.dayDetails.dayDetails, function (o) { return o.id == vm.selectedDay; });
+                if (index > -1)
+                    vm.dayData.datasets[0].backgroundColor[index] = GREEN_COLOR;
+            }
+        }
+
+        if (!_.isUndefined(vm.selectedDay) && !_.isNull(vm.selectedDay)) {
+            if (!_.isEmpty(vm.dayData)) {
+                vm.dayData.datasets[0].backgroundColor = [];
+                _.forEach(vm.dayDetails.dayDetails, function (obj, key) {
+
+                    if (vm.isFrameDashbaord != 3) {
+
+                        if (obj.failed) {
+                            vm.dayData.datasets[0].backgroundColor.push(RED_COLOR);
+
+                        } else {
+                            vm.dayData.datasets[0].backgroundColor.push(BLUE_COLOR);
+
+                        }
+                    } else {
+
+                        if (obj.failedAudience) {
+                            vm.dayData.datasets[0].backgroundColor.push(RED_COLOR);
+
+                        } else {
+                            vm.dayData.datasets[0].backgroundColor.push(BLUE_COLOR);
+
+                        }
+                    }
+
+
+                });
+                var index = _.findIndex(vm.dayDetails.dayDetails, function (o) { return o.id == vm.selectedDay; });
+                if (index > -1)
+                    vm.dayData.datasets[0].backgroundColor[index] = GREEN_COLOR;
+            }
+        }
+    }
+
+
+    function clearChartData() {
+        vm.campaignData = {};
+        vm.playerData = {};
+        vm.dayData = {};
+        vm.hourData = {};
+    }
+
+    function isFilterChanged() {
+
+        if (Object.keys(vm.cachedFilterObject).length > 0) {
+            if (JSON.stringify(vm.filterObject) == JSON.stringify(vm.cachedFilterObject))
+                return false;
+            else
+                return true;
+        }
+        else
+            return true;
+    }
+
+    function startKeepAliveService() {
+        // Webworker.create(keepAlive, { async: true })
+        //     .run(MAX_INACTIVE_INTERVAL, BOS_SESSIONID, calculateURL())
+        //     .then(function (result) {
+        //     });
+
+        requireWorker = Webworker.create(keepAlive, {
+            async: true
+        });
+        requireWorker.run(MAX_INACTIVE_INTERVAL, BOS_SESSIONID, calculateURL()).then(function (result) { });
+
+    }
+
+    function keepAlive(interval, bosSessionId, url) {
+        setInterval(function () {
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.onreadystatechange = function () {
+
+                //if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+                //    callback(xmlHttp.responseText);
+            }
+            xmlHttp.open("GET", url, true); // true for asynchronous
+            xmlHttp.setRequestHeader("Bos-SessionId", bosSessionId);
+            console.log("Keep alive called");
+            xmlHttp.send(null);
+        }, interval * 1000);
+
+    }
+
+    function calculateURL() {
+        var generatedURL = "";
+        if (parseInt(window.location.pathname.indexOf('StockManager')) > 0) {
+            generatedURL = window.location.origin + '/StockManager' + SESSION_URL.split(".").join("");
+        } else {
+            generatedURL = window.location.origin + '/' + SESSION_URL;
+        }
+        return generatedURL;
+    }
+
+    function createFilterOject() {
+        //vm.datePicker
+        //vm.selectedMarketingNames = [];
+        //vm.selectedSpecialists = [];
+        //vm.selectedChannel = [];
+        vm.filterObject = {}
+
+        if (vm.datePicker.date) {
+            vm.filterObject["startDate"] = vm.datePicker.date.startDate;
+            vm.filterObject["endDate"] = vm.datePicker.date.endDate;
+        }
+        if (vm.selectedSpecialists && vm.selectedSpecialists.length > 0) {
+            var specialists = [];
+            _.forEach(vm.selectedSpecialists, function (obj) {
+                specialists.push(obj.organisationId);
+            })
+            vm.filterObject["specialists"] = specialists
+        }
+        if (vm.selectedMarketingNames && vm.selectedMarketingNames.length > 0) {
+            var marketingNames = [];
+            _.forEach(vm.selectedMarketingNames, function (obj) {
+                marketingNames.push(obj.marketingNameId);
+            })
+            vm.filterObject["marketingNames"] = marketingNames;
+        }
+        if (vm.selectedChannel && vm.selectedChannel.length > 0)
+            vm.filterObject["channels"] = vm.selectedChannel
+    }
+
+    function calculateHeightForCampaign(defaultHeight, totalRecords) {
+        var _defaultHeight = defaultHeight;
+        return ((totalRecords * 18) < _defaultHeight ? _defaultHeight : defaultHeight += (totalRecords * 22))
+    }
+
+    function calculateWidthForCampaign(defaultWidth, totalRecords) {
+        var _defaultWidth = defaultWidth;
+        return ((totalRecords * 28) < _defaultWidth ? _defaultWidth : defaultWidth += (totalRecords * 38)) // Nishit, CCP-291
+    }
+
+
+    //------------------------------------------------------------------------------------------------------------------
+    //                                            Date Range Configuration
+    //------------------------------------------------------------------------------------------------------------------
+
+    var DATERANGEPICKER = {
+        locale: {
+            separator: ' : ',
+            format: DATE_FORMAT
+        },
+        ranges: {
+            'Today': [moment(), moment()],
+            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+            'This Month': [moment().startOf('month'), moment().endOf('month')],
+            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        },
+        alwaysShowCalendars: true,
+        opens: 'center',
+        eventHandlers: {
+            'apply.daterangepicker': function (ev, picker) {
+                vm.datePicker = {
+                    date: {
+                        startDate: (typeof vm.datePicker.date.startDate == 'string' ? vm.datePicker.date.startDate : vm.datePicker.date.startDate.format(DATE_FORMAT)),
+                        endDate: (typeof vm.datePicker.date.endDate == 'string' ? vm.datePicker.date.endDate : vm.datePicker.date.endDate.format(DATE_FORMAT))
+                    }
+                };
+
+                getSummaries();
+            }
+        }
+    }
+    // Configuration for DateRangePicker
+
+    vm.datePickerOptions = DATERANGEPICKER;
+
+    vm.datePicker = {
+        date: {
+            startDate: moment.Today,
+            endDate: moment.Today
+        }
+    };
+
+    vm.showHideFilters = function () {
+        if (vm.showFilter) {
+            $('#filtersArea').slideUp();
+            vm.showFilter = false;
+        } else {
+            $('#filtersArea').slideDown("slow");
+            vm.showFilter = true;
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------------------------------
+
+    getInitialConfig();
+
+
+
+}
 })();

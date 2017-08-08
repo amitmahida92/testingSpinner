@@ -61,8 +61,9 @@
                     </tags-input>
                 </div>
                  <div class=" col s12 m2" style="z-index:1">
-                     <label for="">{{vm.userBundle['common.specialist']}}</label>
-                     <input id="Search" class="no-margin" type="text" placeholder="Campaign Ref" />
+                     <label for="">Search Campaign</label>
+                     <input id="Search" class="no-margin" ng-model="vm.searchCampaign" ng-change="vm.searchCampaignRef()" type="text" 
+                     placeholder="Search Campaign"  ng-model-options='{ debounce: 750 }' />
                  </div>
                 <div class="input-field col s12 m2">
                     <select id="Select9" ng-model="vm.isFrameDashbaord" ng-change="vm.selectDashBoardType()" ng-options="item.id as item.name for item in vm.graphOptions">
@@ -71,7 +72,7 @@
                     <label> Select Graph for</label>
                 </div>
 
-                <div class="col s12 m1">
+                <div class="col s12 m2">
                     <a id="dashBoardToolTip" class="btn-floating btn-flat blue-text right btn_popover" style="top: 10px; left: -4px;" data-html="true"
                         data-position="bottom" data-delay="75"> <i class="material-icons blue-text">info_outline</i></a>
                 </div>
@@ -232,6 +233,11 @@
         </div>
 
         <div class="compliance-tooltip" id="player-tooltip">
+            <i class="material-icons tooltip-close" ng-click="vm.closeTooltip('player-tooltip')">close</i>
+            <table></table>
+        </div>
+
+         <div id="frame-tooltip" class="compliance-tooltip">
             <i class="material-icons tooltip-close" ng-click="vm.closeTooltip('player-tooltip')">close</i>
             <table></table>
         </div>
