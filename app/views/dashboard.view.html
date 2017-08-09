@@ -104,20 +104,37 @@
     
     
     <!-- Switch -->
-  <div class="switch col s12 right">
+  <!-- <div class="switch col s12 right">
     <label>
-      <span class="card-title active">{{vm.userBundle['common.campaign.compliance.summary']}}<a id="gaugetooltip" class="btn-floating btn-flat blue-text right btn_popover gaugeinfo" data-position="bottom" data-delay="75"> <i class="material-icons blue-text" >info_outline</i></a></span> 
+      <span class="card-title active">{{vm.userBundle['common.campaign.compliance.summary']}}
+          <a id="gaugetooltip" class="btn-floating btn-flat blue-text right btn_popover gaugeinfo" data-position="bottom" data-delay="75">
+               <i class="material-icons blue-text" >info_outline</i>
+        </a>
+     </span> 
         
       <input type="checkbox">
       <span class="lever"></span>
       <span class="card-title">{{vm.userBundle['common.audience.compliance.summary']}}<a id="gaugetooltip_audience" class="btn-floating btn-flat blue-text right btn_popover gaugeinfo" data-position="bottom" data-delay="75"> <i class="material-icons blue-text" >info_outline</i></a></span>
     </label>
-  </div>
+  </div> -->
+
+  <div class="switch col s12 right">
+            <label>
+                <span class="card-title active">{{vm.userBundle['common.campaign.compliance.summary']}}
+                    <a id="gaugetooltip" class="btn-floating btn-flat blue-text right btn_popover gaugeinfo" data-position="bottom" data-delay="75">
+                        <i class="material-icons blue-text" >info_outline</i>
+                    </a>
+                </span> 
+                <input type="checkbox" ng-model="vm.campaignSummaryCheck" />
+                    <span class="lever"></span>
+                    <span class="card-title">{{vm.userBundle['common.audience.compliance.summary']}}<a id="gaugetooltip_audience" class="btn-floating btn-flat blue-text right btn_popover gaugeinfo" data-position="bottom" data-delay="75"> <i class="material-icons blue-text" >info_outline</i></a></span>
+            </label>
+ </div>
     
     <!--<span class="card-title col s12">{{vm.userBundle['common.campaign.compliance.summary']}}</span>-->
 </div>
-<div class="row meterchart_wrap">
-   
+<div class="row meterchart_wrap" ng-if="!vm.campaignSummaryCheck">
+
     <!--ng-style="{'max-width': (100 / vm.channelSummary.length) + '%'}"-->
     <div class="col m7-col center" ng-style="{'max-width': (100 / vm.summary.length) + '%'}" ng-repeat="channel in vm.summary">
         <canvas id="doughnut1" class="chart chart-doughnut" chart-data="[channel.value,100-channel.value]" chart-options="vm.sampleOptions"
@@ -129,14 +146,8 @@
         </div>    
     </div>
 </div>
-<div class="row"> 
-    &nbsp;
-</div>
-<div class="row"> 
-     
-</div>
 
-<div class="row meterchart_wrap">
+<div class="row meterchart_wrap" ng-if="vm.campaignSummaryCheck">
     
     <!--ng-style="{'max-width': (100 / vm.channelSummary.length) + '%'}"-->
     <div class="col m7-col center" ng-style="{'max-width': (100 / vm.channelSummaryByImpression.length) + '%'}" ng-repeat="channel in vm.channelSummaryByImpression">
