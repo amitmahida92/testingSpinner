@@ -164,9 +164,9 @@
                         });
                     }
 
-                    if (vm.searchCampaign && vm.searchCampaign.length > 0){
-                         vm.searchCampaignRef();
-                         return false;
+                    if (vm.searchCampaign && vm.searchCampaign.length > 0) {
+                        vm.searchCampaignRef();
+                        return false;
                     }
 
                 }
@@ -491,13 +491,13 @@
                         return obj.id.indexOf(vm.searchCampaign.toUpperCase()) > -1
                     });
 
-                    generateChart('campaign', data, false);
+                    generateChart('campaign', data, true);
                 } else {
                     console.log('Please enter valid campaign Reference');
                 }
 
             } else {
-                generateChart('campaign', vm.campaignSummary, false);
+                generateChart('campaign', vm.campaignSummary, true);
                 return false;
             }
         }
@@ -888,10 +888,10 @@
                         mode: 'index',
                         position: 'nearest',
                         custom: function (tooltipModel) {
-
+                            var chart = this._chart;
                             if (tooltipModel.title && tooltipModel.dataPoints.length > 0
                                 && vm.playerData.datasets[0].compaliantcheck[tooltipModel.dataPoints[0].index] === false) {
-                                var chart = this._chart;
+
                                 if (getCampaignId(tooltipModel.title[0]) != campaignId) {
                                     var params = {
                                         "id": tooltipModel.title[0],
@@ -902,101 +902,17 @@
 
                                         campaignData = response.data[campaignId];
                                         if (campaignData && campaignData.length > 0) {
-                                            // Tooltip Element
-                                            var tooltipEl = document.getElementById('player-tooltip');
-
-                                            function getBody(bodyItem) {
-                                                return bodyItem.lines;
-                                            }
-
-                                            // Set Text
-                                            if (tooltipModel.body) {
-                                                var titleLines = "Campaign" + campaignId; //tooltipModel.title || [];
-                                                var bodyLines = tooltipModel.body.map(getBody);
-
-                                                var innerHtml = '<thead>';
-                                                innerHtml += '<tr><th>Player</th><th>' + campaignId + '</th></tr>';
-                                                innerHtml += '</thead><tbody>';
-
-                                                campaignData.forEach(function (body, i) {
-                                                    var colors = tooltipModel.labelColors[0];
-                                                    var style = 'background:' + colors.backgroundColor;
-                                                    style += '; border-color:' + colors.borderColor;
-                                                    style += '; border-width: 2px';
-                                                    var span = '<span class="chartjs-tooltip-key" style="' + style + '"></span>';
-                                                    var buildBody = Object.keys(body);
-                                                    buildBody.forEach(function (inBody, inIndex) {
-                                                        if (inBody != 'url') {
-                                                            innerHtml += '<tr><td style="color: rgba(255, 0, 0, 1);font-weight:600;">' + inBody + ' </td><td> ' + body[inBody] + '</td></tr>';
-                                                        } else {
-                                                            innerHtml += '<tr><td style="color: rgba(255, 0, 0, 1);font-weight:600;">' + inBody + ' </td><td><a target="_blank" href="' + body[inBody] + '"> ' + body[inBody] + '</a></td></tr>';
-                                                        }
-
-                                                    });
-                                                });
-                                                innerHtml += '</tbody>';
-
-                                                var tableRoot = tooltipEl.querySelector('table');
-                                                tableRoot.innerHTML = innerHtml;
-                                            }
-
-                                            // Display, position, and set styles for font
-                                            tooltipEl.style.opacity = 1;
-                                            tooltipEl.style.display = 'block';
-                                            tooltipEl.style.fontFamily = tooltipModel._fontFamily;
-                                            tooltipEl.style.fontSize = tooltipModel.fontSize;
-                                            tooltipEl.style.fontStyle = tooltipModel._fontStyle;
-                                            tooltipEl.style.padding = tooltipModel.yPadding + 'px ' + tooltipModel.xPadding + 'px';
-
+                                            frameTooltip(tooltipModel, chart);
                                         } else {
                                             $('#player-tooltip').hide();
                                             Materialize.toast(response.message, TOASTER_TIME_INTERVAL, 'rounded');
+                                            frameTooltip(tooltipModel, chart);
                                         }
-
                                     });
-
                                 }
                             } else if (tooltipModel.dataPoints) {
 
-                                var tooltipData = vm.frameSummary[tooltipModel.dataPoints[0].index].tooltipData;
-
-                                var tooltipEl = document.getElementById('frame-tooltip');
-
-                                function getBody(bodyItem) {
-                                    return bodyItem.lines;
-                                }
-
-                                // Set Text
-                                if (tooltipModel.body) {
-                                    var titleLines = "Campaign" + campaignId; //tooltipModel.title || [];
-                                    var bodyLines = tooltipModel.body.map(getBody);
-
-                                    var innerHtml = ' ';
-
-                                    tooltipData.forEach(function (body) {
-                                        var colors = tooltipModel.labelColors[0];
-                                        var style = 'background:' + colors.backgroundColor;
-                                        style += '; border-color:' + colors.borderColor;
-                                        style += '; border-width: 2px';
-                                        var span = '<span class="chartjs-tooltip-key" style="' + style + '"></span>';
-                                        innerHtml += '<tr><td style="color: rgba(255, 0, 0, 1);font-weight:600; width: 22%;">' + body['key'] + ' </td><td>' + body['value'] + '</a></td></tr>';
-                                    });
-                                    innerHtml += '</tbody>';
-
-                                    var tableRoot = tooltipEl.querySelector('table');
-                                    tableRoot.innerHTML = innerHtml;
-                                }
-                                var position = this._chart.canvas.getBoundingClientRect();
-                                // Display, position, and set styles for font
-                                tooltipEl.style.opacity = 1;
-                                tooltipEl.style.left = position.left + tooltipModel.caretX + 'px';
-                                tooltipEl.style.top = position.top + tooltipModel.caretY + 'px';
-                                tooltipEl.style.fontFamily = tooltipModel._fontFamily;
-                                tooltipEl.style.fontSize = tooltipModel.fontSize;
-                                tooltipEl.style.fontStyle = tooltipModel._fontStyle;
-                                tooltipEl.style.padding = tooltipModel.yPadding + 'px ' + tooltipModel.xPadding + 'px';
-                                tooltipEl.style.display = 'block';
-                                tooltipEl.style.height = 160 + 'px';
+                                frameTooltip(tooltipModel, chart);
 
                             }
                         }
@@ -1213,6 +1129,7 @@
                     else {
                         vm.campaignData = {};
                         vm.showCampaign = false;
+                        vm.campaignBar = {};
                     }
                 }
                 if (data.frameSummary) {
@@ -1269,6 +1186,48 @@
             });
 
 
+        }
+
+        function frameTooltip(tooltipModel, chart) {
+            var tooltipData = vm.frameSummary[tooltipModel.dataPoints[0].index].tooltipData;
+
+            var tooltipEl = document.getElementById('frame-tooltip');
+
+            function getBody(bodyItem) {
+                return bodyItem.lines;
+            }
+
+            // Set Text
+            if (tooltipModel.body) {
+                var titleLines = "Campaign" + tooltipModel.title[0]; //tooltipModel.title || [];
+                var bodyLines = tooltipModel.body.map(getBody);
+
+                var innerHtml = ' ';
+
+                tooltipData.forEach(function (body) {
+                    var colors = tooltipModel.labelColors[0];
+                    var style = 'background:' + colors.backgroundColor;
+                    style += '; border-color:' + colors.borderColor;
+                    style += '; border-width: 2px';
+                    var span = '<span class="chartjs-tooltip-key" style="' + style + '"></span>';
+                    innerHtml += '<tr><td style="color: rgba(255, 0, 0, 1);font-weight:600; width: 22%;">' + body['key'] + ' </td><td>' + body['value'] + '</a></td></tr>';
+                });
+                innerHtml += '</tbody>';
+
+                var tableRoot = tooltipEl.querySelector('table');
+                tableRoot.innerHTML = innerHtml;
+            }
+            var position = chart.canvas.getBoundingClientRect();
+            // Display, position, and set styles for font
+            tooltipEl.style.opacity = 1;
+            tooltipEl.style.left = position.left + tooltipModel.caretX + 'px';
+            tooltipEl.style.top = position.top + tooltipModel.caretY + 'px';
+            tooltipEl.style.fontFamily = tooltipModel._fontFamily;
+            tooltipEl.style.fontSize = tooltipModel.fontSize;
+            tooltipEl.style.fontStyle = tooltipModel._fontStyle;
+            tooltipEl.style.padding = tooltipModel.yPadding + 'px ' + tooltipModel.xPadding + 'px';
+            tooltipEl.style.display = 'block';
+            tooltipEl.style.height = 160 + 'px';
         }
 
         function highlightSelectedBar() {
