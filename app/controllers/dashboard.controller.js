@@ -163,6 +163,12 @@
                             return obj.failedAudience == false;
                         });
                     }
+
+                    if (vm.searchCampaign && vm.searchCampaign.length > 0){
+                         vm.searchCampaignRef();
+                         return false;
+                    }
+
                 }
 
                 if (!compaliant && !noncompaliant) {
@@ -487,7 +493,7 @@
 
                     generateChart('campaign', data, false);
                 } else {
-                    console.log('Please enter valid campaign Reference')
+                    console.log('Please enter valid campaign Reference');
                 }
 
             } else {
@@ -990,7 +996,7 @@
                                 tooltipEl.style.fontStyle = tooltipModel._fontStyle;
                                 tooltipEl.style.padding = tooltipModel.yPadding + 'px ' + tooltipModel.xPadding + 'px';
                                 tooltipEl.style.display = 'block';
-                                tooltipEl.style.height = 160+ 'px';
+                                tooltipEl.style.height = 160 + 'px';
 
                             }
                         }
@@ -1187,7 +1193,6 @@
 
                 }
 
-
                 if (data.campaignSummary) {
                     if (data.campaignSummary.length > 0) {
                         vm.campaignOptions.size = _.clone(configureOptions.HORIZONTAL_BAR.size); // after change in filter need to reset size
@@ -1198,7 +1203,12 @@
                             return obj;
                         });
 
-                        generateChart('campaign', vm.campaignSummary, true);
+                        // if condition to check if there is search criteria added, then it should filter out 
+                        if (vm.searchCampaign && vm.searchCampaign.length > 0) {
+                            vm.searchCampaignRef();
+                        } else {
+                            generateChart('campaign', vm.campaignSummary, true);
+                        }
                     }
                     else {
                         vm.campaignData = {};

@@ -94,44 +94,19 @@
     </div>
 </div>
 
-
-
 <div class="switching_chart_wrapper">
 
 <div class="row center switch_chart-row"> 
-     
-    
-    
-    
-    <!-- Switch -->
-  <!-- <div class="switch col s12 right">
-    <label>
-      <span class="card-title active">{{vm.userBundle['common.campaign.compliance.summary']}}
-          <a id="gaugetooltip" class="btn-floating btn-flat blue-text right btn_popover gaugeinfo" data-position="bottom" data-delay="75">
-               <i class="material-icons blue-text" >info_outline</i>
-        </a>
-     </span> 
-        
-      <input type="checkbox">
-      <span class="lever"></span>
-      <span class="card-title">{{vm.userBundle['common.audience.compliance.summary']}}<a id="gaugetooltip_audience" class="btn-floating btn-flat blue-text right btn_popover gaugeinfo" data-position="bottom" data-delay="75"> <i class="material-icons blue-text" >info_outline</i></a></span>
-    </label>
-  </div> -->
 
-  <div class="switch col s12 right">
+    <div class="switch col s12 right">
             <label>
-                <span class="card-title active">{{vm.userBundle['common.campaign.compliance.summary']}}
-                    <a id="gaugetooltip" class="btn-floating btn-flat blue-text right btn_popover gaugeinfo" data-position="bottom" data-delay="75">
-                        <i class="material-icons blue-text" >info_outline</i>
-                    </a>
-                </span> 
-                <input type="checkbox" ng-model="vm.campaignSummaryCheck" />
+                <span class="card-title active">{{vm.userBundle['common.campaign.compliance.summary']}}<a id="gaugetooltip" class="btn-floating btn-flat blue-text right btn_popover gaugeinfo" data-position="bottom" data-delay="75"><i class="material-icons blue-text" >info_outline</i></a></span> 
+                    <input type="checkbox" ng-model="vm.campaignSummaryCheck" />
                     <span class="lever"></span>
-                    <span class="card-title">{{vm.userBundle['common.audience.compliance.summary']}}<a id="gaugetooltip_audience" class="btn-floating btn-flat blue-text right btn_popover gaugeinfo" data-position="bottom" data-delay="75"> <i class="material-icons blue-text" >info_outline</i></a></span>
+                <span class="card-title">{{vm.userBundle['common.audience.compliance.summary']}}<a id="gaugetooltip_audience" class="btn-floating btn-flat blue-text right btn_popover gaugeinfo" data-position="bottom" data-delay="75"> <i class="material-icons blue-text" >info_outline</i></a></span>
             </label>
- </div>
+    </div>
     
-    <!--<span class="card-title col s12">{{vm.userBundle['common.campaign.compliance.summary']}}</span>-->
 </div>
 <div class="row meterchart_wrap" ng-if="!vm.campaignSummaryCheck">
 
