@@ -164,10 +164,10 @@
                         });
                     }
 
-                    if (vm.searchCampaign && vm.searchCampaign.length > 0) {
-                        vm.searchCampaignRef();
-                        return false;
-                    }
+                    // if (vm.searchCampaign && vm.searchCampaign.length > 0) {
+                    //     vm.searchCampaignRef();
+                    //     return false;
+                    // }
 
                 }
 
