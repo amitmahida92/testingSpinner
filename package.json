@@ -26,7 +26,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "lite-server"
+    "start": "http-server -o",
+    "prestart": "bower install && npm install"
   },
   "author": "Yuvraj Chauhan",
   "license": "ISC"

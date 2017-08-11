@@ -976,7 +976,7 @@ canvas {
   table-layout: fixed;
 }
 
-.compliance-tooltip {
+/* .compliance-tooltip {
   height: 254px;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
@@ -989,6 +989,23 @@ canvas {
     border-color: #2e62a4;
     border-radius: 0;
         border-width: 2px;
+} */
+
+.compliance-tooltip {
+    height: 254px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border: 1px solid;
+    display: none;
+    position: fixed;
+    background: black;
+    opacity: 0.6 !important;
+    color: white;
+    transition: all .3s ease;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 8px 5px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.14);
+    border-color: #2e62a4;
+    border-radius: 0;
+    border-width: 2px;
 }
 
 .compliance-tooltip .tooltip-close {

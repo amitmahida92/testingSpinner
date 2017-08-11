@@ -130,8 +130,8 @@
             }
 
             getSummaries();
-            checkAllcheckBoxes(); //CCP-308, Nishit
-        }
+            checkAllcheckBoxes(); // CCP-308, Nishit
+        };
 
         vm.compaliantcheck = function (compaliant, noncompaliant, chart) {
 
@@ -141,25 +141,25 @@
 
                 if (vm.isFrameDashbaord != 3) {
                     if (!compaliant) {
-                        var data = vm.campaignSummary.filter(function (obj) {
+                        data = vm.campaignSummary.filter(function (obj) {
                             return obj.failed == true;
                         });
                     }
 
                     if (!noncompaliant) {
-                        var data = vm.campaignSummary.filter(function (obj) {
+                        data = vm.campaignSummary.filter(function (obj) {
                             return obj.failed == false;
                         });
                     }
                 } else {
                     if (!compaliant) {
-                        var data = vm.campaignSummary.filter(function (obj) {
+                        data = vm.campaignSummary.filter(function (obj) {
                             return obj.failedAudience == true;
                         });
                     }
 
                     if (!noncompaliant) {
-                        var data = vm.campaignSummary.filter(function (obj) {
+                        data = vm.campaignSummary.filter(function (obj) {
                             return obj.failedAudience == false;
                         });
                     }
@@ -172,7 +172,7 @@
                 }
 
                 if (!compaliant && !noncompaliant) {
-                    var data = [];
+                    data = [];
                 }
 
                 generateChart('campaign', data, false);
@@ -407,7 +407,6 @@
         //Select Dashboard Type//
 
         vm.selectDashBoardType = function () {
-
 
             if (vm.isFrameDashbaord != 3) {
 
@@ -680,7 +679,7 @@
                         else if (vm.isFrameDashbaord == 2)
                             vm.campaignData.datasets[0].data.push(obj.avgValue);
                         else
-                            vm.campaignData.datasets[0].data.push(obj.audienceValue);
+                            vm.campaignData.datasets[0].data.push(obj.avgValue);
 
                         if (vm.isFrameDashbaord != 3) {
                             if (obj.failed) {
@@ -706,7 +705,6 @@
                             }
                         }
                         vm.campaignDetails.campaignDetails.push(obj);
-
                     });
 
                     if (toggleOtherCharts) {
@@ -883,38 +881,118 @@
 
 
                     var campaignId = '', campaignData = '';
+
+                    // vm.barOptions['tooltipData'] = chartData;
                     vm.barOptions.tooltips = {
-                        enabled: true,
+                        enabled: false,
                         mode: 'index',
-                        position: 'nearest',
+                        position: 'average',
                         custom: function (tooltipModel) {
                             var chart = this._chart;
-                            if (tooltipModel.title && tooltipModel.dataPoints.length > 0
-                                && vm.playerData.datasets[0].compaliantcheck[tooltipModel.dataPoints[0].index] === false) {
+                            frameTooltip(tooltipModel, chart);
+                            // var filteredObj = _.filter(chartData, { label: tooltipModel.title[0] });
+                            // var tooltipData = filteredObj[0].tooltipData;                            
+                            // debugger
 
-                                if (getCampaignId(tooltipModel.title[0]) != campaignId) {
-                                    var params = {
-                                        "id": tooltipModel.title[0],
-                                        "startDate": vm.datePicker.date.startDate
-                                    };
-                                    campaignId = params.id;
-                                    filterService.getTooltipData(params).then(function (response) {
+                            // // Tooltip Element
+                            // var tooltipEl = document.getElementById('player-tooltip');
 
-                                        campaignData = response.data[campaignId];
-                                        if (campaignData && campaignData.length > 0) {
-                                            frameTooltip(tooltipModel, chart);
-                                        } else {
-                                            $('#player-tooltip').hide();
-                                            Materialize.toast(response.message, TOASTER_TIME_INTERVAL, 'rounded');
-                                            frameTooltip(tooltipModel, chart);
-                                        }
-                                    });
-                                }
-                            } else if (tooltipModel.dataPoints) {
+                            // // Create element on first render
+                            // if (!tooltipEl) {
+                            //     tooltipEl = document.createElement('div');
+                            //     tooltipEl.id = 'player-tooltip';
+                            //     tooltipEl.innerHTML = "<table></table>"
+                            //     document.body.appendChild(tooltipEl);
+                            // }
 
-                                frameTooltip(tooltipModel, chart);
+                            // // Hide if no tooltip
+                            // if (tooltipModel.opacity === 0) {
+                            //     tooltipEl.style.opacity = 0;
+                            //     return;
+                            // }
 
-                            }
+                            // // Set caret Position
+                            // tooltipEl.classList.remove('above', 'below', 'no-transform');
+                            // if (tooltipModel.yAlign) {
+                            //     tooltipEl.classList.add(tooltipModel.yAlign);
+                            // } else {
+                            //     tooltipEl.classList.add('no-transform');
+                            // }
+
+                            // function getBody(bodyItem) {
+                            //     return bodyItem.lines;
+                            // }
+
+                            // // Set Text
+                            // if (tooltipModel.body) {
+                            //     var titleLines = tooltipModel.title || [];
+                            //     var bodyLines = tooltipModel.body.map(getBody);
+
+                            //     var innerHtml = '';
+
+
+
+                            //     // titleLines.forEach(function (title) {
+                            //     //     innerHtml += '<tr><th>' + title + '</th></tr>';
+                            //     // });
+                            //     innerHtml += '<tbody>';
+                            //     tooltipData.forEach(function (data) {
+                            //         debugger
+                            //         innerHtml += '<tr>'
+                            //         +'<td>' + data.key + ' :</td>'+
+                            //         +'<td>' + data.value + '</td>'+
+                            //            +'</tr>';
+                            //     })
+
+                            //     // bodyLines.forEach(function (body, i) {
+                            //     //     var colors = tooltipModel.labelColors[i];
+                            //     //     var style = 'background:' + colors.backgroundColor;
+                            //     //     style += '; border-color:' + colors.borderColor;
+                            //     //     style += '; border-width: 2px';
+                            //     //     var span = '<span class="chartjs-tooltip-key" style="' + style + '"></span>';
+                            //     //     innerHtml += '<tr><td>' + span + body + '</td></tr>';
+                            //     // });
+                            //     innerHtml += '</tbody>';
+
+                            //     var tableRoot = tooltipEl.querySelector('table');
+                            //     tableRoot.innerHTML = innerHtml;
+                            // }
+
+                            // // `this` will be the overall tooltip
+                            // var position = this._chart.canvas.getBoundingClientRect();
+
+                            // // Display, position, and set styles for font
+                            // tooltipEl.style.opacity = 1;
+                            // tooltipEl.style.left = position.left + tooltipModel.caretX + 'px';
+                            // tooltipEl.style.top = position.top + tooltipModel.caretY + 'px';
+                            // tooltipEl.style.fontFamily = tooltipModel._fontFamily;
+                            // tooltipEl.style.fontSize = tooltipModel.fontSize;
+                            // tooltipEl.style.fontStyle = tooltipModel._fontStyle;
+                            // tooltipEl.style.padding = tooltipModel.yPadding + 'px ' + tooltipModel.xPadding + 'px';
+                            // if (tooltipModel.title && tooltipModel.dataPoints.length > 0
+                            //     && vm.playerData.datasets[0].compaliantcheck[tooltipModel.dataPoints[0].index] === false) {
+
+                            //     if (getCampaignId(tooltipModel.title[0]) != campaignId) {
+                            //         var params = {
+                            //             "id": tooltipModel.title[0],
+                            //             "startDate": vm.datePicker.date.startDate
+                            //         };
+                            //         campaignId = params.id;
+                            //         filterService.getTooltipData(params).then(function (response) {
+
+                            //             campaignData = response.data[campaignId];
+                            //             if (campaignData && campaignData.length > 0) {
+                            //                 frameTooltip(tooltipModel, chart);
+                            //             } else {
+                            //                 $('#player-tooltip').hide();
+                            //                 Materialize.toast(response.message, TOASTER_TIME_INTERVAL, 'rounded');
+                            //                 frameTooltip(tooltipModel, chart);
+                            //             }
+                            //         });
+                            //     }
+                            // } else if (tooltipModel.dataPoints) {
+                            //     frameTooltip(tooltipModel, chart);
+                            // }
                         }
                     };
                     break;
@@ -1041,10 +1119,9 @@
 
         function getSummaries() {
 
-            createFilterOject()
+            createFilterOject();
             var filterChanged = isFilterChanged();
-            var requestParameter = {}
-
+            var requestParameter = {};
 
             if (vm.datePicker.date) {
                 requestParameter["startDate"] = vm.filterObject.startDate;
@@ -1133,6 +1210,7 @@
                     }
                 }
                 if (data.frameSummary) {
+                    debugger
                     if (data.frameSummary.length > 0) {
                         vm.barOptions.size = _.clone(configureOptions.BAR_PLAYER.size); // after change in filter need to reset size
                         vm.frameSummary = _.map(data.frameSummary, function (obj) {
@@ -1189,45 +1267,55 @@
         }
 
         function frameTooltip(tooltipModel, chart) {
-            var tooltipData = vm.frameSummary[tooltipModel.dataPoints[0].index].tooltipData;
+            debugger
+            if (tooltipModel.dataPoints) {
+                var tooltipData = vm.frameSummary[tooltipModel.dataPoints[0].index].tooltipData;
 
-            var tooltipEl = document.getElementById('frame-tooltip');
+                var tooltipEl = document.getElementById('player-tooltip');
 
-            function getBody(bodyItem) {
-                return bodyItem.lines;
+                function getBody(bodyItem) {
+                    return bodyItem.lines;
+                }
+
+                // Set Text
+                if (tooltipModel.body) {
+                    var titleLines = "Campaign" + tooltipModel.title[0]; //tooltipModel.title || [];
+                    var bodyLines = tooltipModel.body.map(getBody);
+
+                    var innerHtml = ' ';
+
+                    tooltipData.forEach(function (body) {
+                        var colors = tooltipModel.labelColors[0];
+                        var style = 'background:' + colors.backgroundColor;
+                        style += '; border-color:' + colors.borderColor;
+                        style += '; border-width: 2px';
+                        var span = '<span class="chartjs-tooltip-key" style="' + style + '"></span>';
+                        innerHtml += '<tr><td style="font-weight:600;">' + body['key'] + ' </td></tr>';
+                        innerHtml += '<tr><td>' + body['value'] + ' </td></tr>';
+                        // <td>' + body['value'] + '</td>
+                    });
+                    innerHtml += '</tbody>';
+
+                    var tableRoot = tooltipEl.querySelector('table');
+                    tableRoot.innerHTML = innerHtml;
+                }
+                var position = chart.canvas.getBoundingClientRect();
+                // Display, position, and set styles for font
+                tooltipEl.style.opacity = 1;
+                tooltipEl.style.left = position.left + tooltipModel.caretX - 360 + 'px';
+                tooltipEl.style.top = position.top + tooltipModel.caretY + 20 + 'px';
+                tooltipEl.style.fontFamily = tooltipModel._fontFamily;
+                tooltipEl.style.fontSize = tooltipModel.fontSize;
+                tooltipEl.style.fontStyle = tooltipModel._fontStyle;
+                tooltipEl.style.padding = tooltipModel.yPadding + 'px ' + tooltipModel.xPadding + 'px';
+                tooltipEl.style.display = 'block';
+                tooltipEl.style.height = 'auto';
+
+            } else {
+                var tooltipEl = document.getElementById('player-tooltip');
+                tooltipEl.style.display = 'none';
             }
 
-            // Set Text
-            if (tooltipModel.body) {
-                var titleLines = "Campaign" + tooltipModel.title[0]; //tooltipModel.title || [];
-                var bodyLines = tooltipModel.body.map(getBody);
-
-                var innerHtml = ' ';
-
-                tooltipData.forEach(function (body) {
-                    var colors = tooltipModel.labelColors[0];
-                    var style = 'background:' + colors.backgroundColor;
-                    style += '; border-color:' + colors.borderColor;
-                    style += '; border-width: 2px';
-                    var span = '<span class="chartjs-tooltip-key" style="' + style + '"></span>';
-                    innerHtml += '<tr><td style="color: rgba(255, 0, 0, 1);font-weight:600; width: 22%;">' + body['key'] + ' </td><td>' + body['value'] + '</a></td></tr>';
-                });
-                innerHtml += '</tbody>';
-
-                var tableRoot = tooltipEl.querySelector('table');
-                tableRoot.innerHTML = innerHtml;
-            }
-            var position = chart.canvas.getBoundingClientRect();
-            // Display, position, and set styles for font
-            tooltipEl.style.opacity = 1;
-            tooltipEl.style.left = position.left + tooltipModel.caretX + 'px';
-            tooltipEl.style.top = position.top + tooltipModel.caretY + 'px';
-            tooltipEl.style.fontFamily = tooltipModel._fontFamily;
-            tooltipEl.style.fontSize = tooltipModel.fontSize;
-            tooltipEl.style.fontStyle = tooltipModel._fontStyle;
-            tooltipEl.style.padding = tooltipModel.yPadding + 'px ' + tooltipModel.xPadding + 'px';
-            tooltipEl.style.display = 'block';
-            tooltipEl.style.height = 160 + 'px';
         }
 
         function highlightSelectedBar() {
