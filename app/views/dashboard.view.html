@@ -15,14 +15,14 @@
                 {{vm.userBundle['common.title.label']}}
             </span>
         </div>
- 
+
         <!--<i class="material-icons routedropdown" id="my-drop-btn" data-beloworigin="true" href='#' data-activates='dropdown1'>expand_more</i>-->
         <div class="col s6 center title">POP Dashboard</div>
-        
+
         <ul id='dropdown1' class='dropdown-content'>
             <li ng-repeat="dashboardtype in vm.DASHBOARD_TYPES"><a href="{{'#!' + dashboardtype.routeURL}}"><img src="{{'images/' + dashboardtype.image}}" alt="Logo"> <span class="dropdownChildren">{{dashboardtype.name}}</span></a></li>
         </ul>
-        
+
         <ul id="nav-mobile" class="right">
             <li>
                 <a href="javascript:void(0)" ng-click="vm.showHideFilters()">
@@ -32,9 +32,9 @@
             </li>
         </ul>
         <div class="col s12 m2">
-                    <a id="dashBoardToolTip" class="btn-floating btn-flat blue-text right btn_popover" style="top: 12px;left: -4px;color: #fff !important;text-transform: capitalize;font-size: 16px;letter-spacing: 1px;" data-html="true"
-                        data-position="bottom" data-delay="75"> <i class="material-icons blue-text">help_outline</i></a>
-                </div>
+            <a id="dashBoardToolTip" class="btn-floating btn-flat blue-text right btn_popover" style="top: 12px;left: -4px;color: #fff !important;text-transform: capitalize;font-size: 16px;letter-spacing: 1px;"
+                data-html="true" data-position="bottom" data-delay="75"> <i class="material-icons blue-text">help_outline</i></a>
+        </div>
     </div>
 </nav>
 <div class="white filter_block" id="filtersArea">
@@ -64,19 +64,19 @@
                             template="my-custom-template"></auto-complete>
                     </tags-input>
                 </div>
-                 <div class=" col s12 m2" style="z-index:1">
-                     <label for="">Search Campaign</label>
-                     <input id="Search" class="no-margin" ng-model="vm.searchCampaign" ng-change="vm.searchCampaignRef()" type="text" 
-                     placeholder="Search Campaign"  ng-model-options='{ debounce: 750 }' />
-                 </div>
-                <div class="input-field col s12 m2">
+                <div class=" col s12 m2" style="z-index:1">
+                    <label for="">Search Campaign</label>
+                    <input id="Search" class="no-margin" ng-model="vm.searchCampaign" ng-change="vm.searchCampaignRef()" type="text" placeholder="Search Campaign"
+                        ng-model-options='{ debounce: 750 }' />
+                </div>
+                <!-- <div class="input-field col s12 m2">
                     <select id="Select9" ng-model="vm.isFrameDashbaord" ng-change="vm.selectDashBoardType()" ng-options="item.id as item.name for item in vm.graphOptions">
                         <option value="" disabled selected>Choose your option</option>
                     </select>
                     <label> Select Graph for</label>
-                </div>
+                </div> -->
 
-                
+
             </div>
         </form>
     </div>
@@ -96,49 +96,49 @@
 
 <div class="switching_chart_wrapper">
 
-<div class="row center switch_chart-row"> 
+    <div class="row center switch_chart-row">
 
-    <div class="switch col s12 right">
+        <div class="switch col s12 right">
             <label>
                 <span class="card-title active">{{vm.userBundle['common.campaign.compliance.summary']}}<a id="gaugetooltip" class="btn-floating btn-flat blue-text right btn_popover gaugeinfo" data-position="bottom" data-delay="75"><i class="material-icons blue-text" >info_outline</i></a></span> 
                     <input type="checkbox" ng-model="vm.campaignSummaryCheck" />
                     <span class="lever"></span>
                 <span class="card-title">{{vm.userBundle['common.audience.compliance.summary']}}<a id="gaugetooltip_audience" class="btn-floating btn-flat blue-text right btn_popover gaugeinfo" data-position="bottom" data-delay="75"> <i class="material-icons blue-text" >info_outline</i></a></span>
             </label>
-    </div>
-    
-</div>
-<div class="row meterchart_wrap" ng-if="!vm.campaignSummaryCheck">
+        </div>
 
-    <!--ng-style="{'max-width': (100 / vm.channelSummary.length) + '%'}"-->
-    <div class="col m7-col center" ng-style="{'max-width': (100 / vm.summary.length) + '%'}" ng-repeat="channel in vm.summary">
-        <canvas id="doughnut1" class="chart chart-doughnut" chart-data="[channel.value,100-channel.value]" chart-options="vm.sampleOptions"
-            chart-colors="channel.guageColors" ng-click="vm.onChannelClick(channel.id)">
-        </canvas>
-        <h5 class="gaugereader" ng-click="vm.onChannelClick(channel.id)">{{channel.value}}%</h5>
-        <div class="donut-inner">
-            <span>{{channel.label}}</span>
-        </div>    
     </div>
-</div>
+    <div class="row meterchart_wrap" ng-if="!vm.campaignSummaryCheck">
 
-<div class="row meterchart_wrap" ng-if="vm.campaignSummaryCheck">
-    
-    <!--ng-style="{'max-width': (100 / vm.channelSummary.length) + '%'}"-->
-    <div class="col m7-col center" ng-style="{'max-width': (100 / vm.channelSummaryByImpression.length) + '%'}" ng-repeat="channel in vm.channelSummaryByImpression">
-        <canvas id="doughnut12" class="chart chart-doughnut" chart-data="[channel.percentage,100-channel.percentage]" chart-options="vm.sampleOptions"
-            chart-colors="['#222222','#888888']">
-        </canvas>
-        <h5 class="gaugereader">{{channel.percentageDisplay}}%</h5>
-        <div class="donut-inner">
-            <span>{{channel.label}}</span>
+        <!--ng-style="{'max-width': (100 / vm.channelSummary.length) + '%'}"-->
+        <div class="col m7-col center" ng-style="{'max-width': (100 / vm.summary.length) + '%'}" ng-repeat="channel in vm.summary">
+            <canvas id="doughnut1" class="chart chart-doughnut" chart-data="[channel.value,100-channel.value]" chart-options="vm.sampleOptions"
+                chart-colors="channel.guageColors" ng-click="vm.onChannelClick(channel.id)">
+            </canvas>
+            <h5 class="gaugereader" ng-click="vm.onChannelClick(channel.id)">{{channel.value}}%</h5>
+            <div class="donut-inner">
+                <span>{{channel.label}}</span>
+            </div>
         </div>
     </div>
-</div>
+
+    <div class="row meterchart_wrap" ng-if="vm.campaignSummaryCheck">
+
+        <!--ng-style="{'max-width': (100 / vm.channelSummary.length) + '%'}"-->
+        <div class="col m7-col center" ng-style="{'max-width': (100 / vm.channelSummaryByImpression.length) + '%'}" ng-repeat="channel in vm.channelSummaryByImpression">
+            <canvas id="doughnut12" class="chart chart-doughnut" chart-data="[channel.percentage,100-channel.percentage]" chart-options="vm.sampleOptions"
+                chart-colors="['#222222','#888888']">
+            </canvas>
+            <h5 class="gaugereader">{{channel.percentageDisplay}}%</h5>
+            <div class="donut-inner">
+                <span>{{channel.label}}</span>
+            </div>
+        </div>
+    </div>
 
 </div>
-    
-    
+
+
 <div class="row" ng-hide="vm.hideWatermark">
     <div class="col m12-col center">Please select any filter from sidebar to display charts.</div>
 </div>
@@ -157,8 +157,8 @@
                     {{vm.userBundle["popboard.impressions.campaign.heading"]}}
                 </span>
 
-            <a id="framecampaigntooltip" ng-show="vm.isFrameDashbaord == 1" class="btn-floating btn-flat blue-text btn_popover"
-                data-html="true" data-position="bottom" data-delay="75"> 
+            <a id="framecampaigntooltip" ng-show="vm.isFrameDashbaord == 1" class="btn-floating btn-flat blue-text btn_popover" data-html="true"
+                data-position="bottom" data-delay="75"> 
                     <i class="material-icons blue-text">info_outline</i>
                 </a>
             <a id="sotcampaigntooltip" ng-show="vm.isFrameDashbaord == 2" class="btn-floating btn-flat blue-text btn_popover" data-html="true"
@@ -187,7 +187,7 @@
                 <div class="card-content" ng-style='{"min-height":vm.campaignOptions.size.height}'>
                     <canvas id="campaign" class="chart-horizontal-bar" chart-data="vm.campaignData.datasets[0].data" chart-options="vm.campaignOptions"
                         chart-colors="vm.campaignData.datasets[0].backgroundColor" chart-labels="vm.campaignData.labels" chart-dataset-override="vm.campaignDetails"
-                            chart-click="vm.onCampaignClick"></canvas>
+                        chart-click="vm.onCampaignClick"></canvas>
                 </div>
             </div>
         </div>
@@ -209,16 +209,16 @@
             <span ng-if="vm.isFrameDashbaord == 3">
                     {{vm.userBundle["popboard.impressions.player.heading"]}}
                 </span>
-                <a id="frameplayertooltip" ng-show="vm.isFrameDashbaord == 1" class="btn-floating btn-flat blue-text btn_popover" data-html="true"
+            <a id="frameplayertooltip" ng-show="vm.isFrameDashbaord == 1" class="btn-floating btn-flat blue-text btn_popover" data-html="true"
                 data-position="bottom" data-delay="75"> 
                       <i class="material-icons blue-text">info_outline</i>
                   </a>
-                <a id="sotplayertooltip" ng-show="vm.isFrameDashbaord == 2" class="btn-floating btn-flat blue-text btn_popover" data-html="true"
+            <a id="sotplayertooltip" ng-show="vm.isFrameDashbaord == 2" class="btn-floating btn-flat blue-text btn_popover" data-html="true"
                 data-position="bottom" data-delay="75"> 
                         <i class="material-icons blue-text">info_outline</i>
                   </a>
-                 <a id="impressionsplayertooltip" ng-show="vm.isFrameDashbaord == 3" class="btn-floating btn-flat blue-text btn_popover"
-                data-html="true" data-position="bottom" data-delay="75"> 
+            <a id="impressionsplayertooltip" ng-show="vm.isFrameDashbaord == 3" class="btn-floating btn-flat blue-text btn_popover" data-html="true"
+                data-position="bottom" data-delay="75"> 
                         <i class="material-icons blue-text">info_outline</i>
                   </a>
             <span class="right">
@@ -231,19 +231,25 @@
             <div style="width: 100%;overflow-x: auto;float: left;bottom: -10px;position: relative; min-height: 405px; max-height: 405px;">
                 <!--style="width: {{vm.barOptions.size.width + 'px' }}; height: {{vm.barOptions.size.height + 'px'}}-->
                 <div class="card-content" ng-style='{"width": vm.barOptions.size.width,"height": vm.barOptions.size.height }'>
-                    <canvas id="player" class="chart chart-bar" chart-data="vm.playerData.datasets[0].data" chart-options="vm.barOptions" 
-                    chart-colors="vm.playerData.datasets[0].backgroundColor" chart-labels="vm.playerData.labels"
-                            chart-click="vm.onPlayerClick" chart-dataset-override="vm.playerDetails"></canvas>
+                    <canvas id="player" class="chart chart-bar" chart-data="vm.playerData.datasets[0].data" chart-options="vm.barOptions" chart-colors="vm.playerData.datasets[0].backgroundColor"
+                        chart-labels="vm.playerData.labels" chart-click="vm.onPlayerClick" chart-dataset-override="vm.playerDetails"></canvas>
                 </div>
             </div>
         </div>
 
-         <div class="compliance-tooltip" id="player-tooltip">
-            <!-- <i class="material-icons tooltip-close" ng-click="vm.closeTooltip('player-tooltip')">close</i> -->
-            <table></table>
-        </div> 
+        <div class="compliance-tooltip tooltip_custom" id="player-tooltip">
+            <div>
+                <table></table>                
+            </div>            
+        </div>
+        <!-- <div>
+            <div class="tooltip_custom">
+                <div>dsfdsfsdfd fdfdfds dsfdsfsdf dfdfdfdsd sfdsfsdfd fdfdfdsdsfdsfsd fdfdfdfds sfdsfsdfdf dfdf dsdsfdsfsd fdfdf
+                    dfdsdsfdsfsdfdfdf dfdsdsf dsfsdfdfdf </div>
+            </div>
+        </div> -->
 
-         <!-- <div id="frame-tooltip" class="compliance-tooltip">
+        <!-- <div id="frame-tooltip" class="compliance-tooltip">
             <i class="material-icons tooltip-close" ng-click="vm.closeTooltip('frame-tooltip')">close</i>
             <table></table>
         </div>  -->
@@ -297,7 +303,7 @@
                 <span ng-if="vm.isFrameDashbaord==1">
                     {{vm.userBundle["popboard.frame.time.heading"]}}
                 </span>
-                <span ng-if="vm.isFrameDashbaord==2">
+            <span ng-if="vm.isFrameDashbaord==2">
                     {{vm.userBundle["popboard.sot.time.heading"]}}
                 </span>
             <span ng-if="vm.isFrameDashbaord==3">
@@ -333,27 +339,31 @@
 </div>
 
 <div class="row data-display-row">
-<div class="col s12 m12 chart-container">
-    <div class="card">
-        <div class="card-content campainbar">
-            <div class="row">
-                <div class=" col s12 m2 "> <input id="dateRange" ng-model="vm.campaignBar.selectedCampaign" class="no-margin" type="text" ng-disabled="true" placeholder="Selected Campaign"> </div>
-                <div class=" col s12 m2"> <input id="Frame" ng-model="vm.campaignBar.selectedFrame" class="no-margin" type="text" ng-disabled="true" placeholder="Frame"> </div>
-                <div class=" col s12 m2"> <input id="Advertiser" ng-model="vm.campaignBar.advertiserName" class="no-margin" type="text" ng-disabled="true" placeholder="Advertiser"> </div>
-                <div class=" col s12 m2"> <input id="Brand" ng-model="vm.campaignBar.brandName" class="no-margin" type="text" ng-disabled="true" placeholder="Brand"> </div>
-                <nav class="optionlist">
-                    <div class="nav-wrapper">
-                        <ul class="right hide-on-med-and-down">
-                            <li><a href="#" class="waves-effect waves-light btn">Support Ticket<i class="material-icons right">help_outline</i></a></li>
-                            <li><a href="#" class="waves-effect waves-light btn">Campaign Portal<i class="material-icons right">present_to_all</i></a></li>
-                            <li><a href="#" class="waves-effect waves-light btn"><i class="material-icons right">important_devices</i>SmartContent</a></li>
-                        </ul>
-                    </div>
-                </nav>
+    <div class="col s12 m12 chart-container">
+        <div class="card">
+            <div class="card-content campainbar">
+                <div class="row">
+                    <div class=" col s12 m2 "> <input id="dateRange" ng-model="vm.campaignBar.selectedCampaign" class="no-margin" type="text" ng-disabled="true"
+                            placeholder="Selected Campaign"> </div>
+                    <div class=" col s12 m2"> <input id="Frame" ng-model="vm.campaignBar.selectedFrame" class="no-margin" type="text" ng-disabled="true"
+                            placeholder="Frame"> </div>
+                    <div class=" col s12 m2"> <input id="Advertiser" ng-model="vm.campaignBar.advertiserName" class="no-margin" type="text" ng-disabled="true"
+                            placeholder="Advertiser"> </div>
+                    <div class=" col s12 m2"> <input id="Brand" ng-model="vm.campaignBar.brandName" class="no-margin" type="text" ng-disabled="true"
+                            placeholder="Brand"> </div>
+                    <nav class="optionlist">
+                        <div class="nav-wrapper">
+                            <ul class="right hide-on-med-and-down">
+                                <li><a href="#" class="waves-effect waves-light btn">Support Ticket<i class="material-icons right">help_outline</i></a></li>
+                                <li><a ng-disabled="!vm.campaignBar.selectedCampaign" target="_blank" href="{{vm.ccpLink}}{{vm.campaignBar.selectedCampaign}}" class="waves-effect waves-light btn">Campaign Portal<i class="material-icons right">present_to_all</i></a></li>
+                                <li><a href="#" class="waves-effect waves-light btn"><i class="material-icons right">important_devices</i>SmartContent</a></li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
             </div>
         </div>
     </div>
-</div>
 </div>
 
 <div class="row">
