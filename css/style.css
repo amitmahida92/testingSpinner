@@ -274,7 +274,7 @@ input:not([type]):focus:not([readonly]), input[type=text]:focus:not([readonly]),
 }
 
 .meterchart_wrap {
-  padding-top: 25px;
+  padding-top: 15px;
   padding-bottom: 45px;
   position: relative
 }
@@ -1042,7 +1042,7 @@ canvas {
   bottom: -10px;
   left: 50%;
   right: 50%;
-  transform: translate(-50%, 0);  
+  transform: translate(-50%, 0);
   border-style: solid;
   border-width: 10px 7.5px 0 7.5px;
   border-color: #424242 transparent transparent transparent;
@@ -1117,7 +1117,7 @@ span.card-title.active {
 }
 
 .switch_chart-row {
-  padding-bottom: 25px;
+  padding-bottom: 0px;
   text-align: left;
 }
 
@@ -1147,7 +1147,7 @@ span.card-title.active {
   margin: 10px;
   /*box-shadow: 0 2px 2px 0 rgba(100, 100, 100, 0.14), 0 8px 5px 0 rgba(100,100,100,0.14), 0 3px 1px -2px rgba(100,100,100,0.14);*/
   box-shadow: 0 2px 2px 0 rgba(100, 100, 100, 0.14);
-  padding: 20px 0 50px;
+  padding: 15px 0 15px;
 }
 
 .card {
@@ -1303,4 +1303,25 @@ inspector-stylesheet:1 .material-tooltip .backdrop {
 
 .btn-floating i:hover, .btn-floating i:focus {
   color: #2e62a4 !important;
+}
+
+.chartWrapper {
+  position: relative;
+}
+
+.chartWrapper > canvas {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+}
+
+.chartAreaWrapper {
+  width: 600px;
+  overflow-x: scroll;
+}
+
+.modal-table {
+  width: 825px;
+  overflow-x: scroll;
 }

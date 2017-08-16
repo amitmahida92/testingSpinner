@@ -8,8 +8,20 @@
     function DashboardCtrl(filterService, configureOptions, Webworker) {
         var vm = this;
         var requireWorker;
+        vm.clonnedChannelSummaryByImpression = [];
+        vm.clonnedSummary = [];
+        vm.clonnedCamapaignSummary = [];
+        vm.isZendeskTicketAvailable = false;       
 
         vm.ccpLink = "/Service/popboard/ccplink?campaignId=";
+
+        vm.chips = [{
+            tag: 'Apple',
+        }, {
+            tag: 'Microsoft',
+        }, {
+            tag: 'Google',
+        }];
 
         vm.frontEndVersion = frontEndVersion;
         vm.DASHBOARD_TYPES = [
@@ -140,7 +152,6 @@
             if (chart === 'campaign') {
 
                 var data = _.cloneDeep(vm.campaignSummary);
-
                 if (vm.isFrameDashbaord != 3) {
                     if (!compaliant) {
                         data = vm.campaignSummary.filter(function (obj) {
@@ -180,7 +191,6 @@
                 generateChart('campaign', data, false);
 
             }
-
 
             if (chart == "player") {
 
@@ -303,7 +313,7 @@
 
             highlightSelectedBar();
             setToolTips();
-        }
+        };
 
 
         // First Chart
@@ -325,7 +335,8 @@
                     return false;
                 }
 
-                vm.selectedCampaign = points[0]['_chart'].config.data.datasets[points[0]['_datasetIndex']].campaignDetails[points[0]['_index']].id;                                
+                vm.selectedCampaign = points[0]['_chart'].config.data.datasets[points[0]['_datasetIndex']].campaignDetails[points[0]['_index']].id;
+                
                 vm.campaignBar.selectedCampaign = _.cloneDeep(vm.selectedCampaign);
                 vm.campaignBar.brandName = points[0]['_chart'].config.data.datasets[points[0]['_datasetIndex']].campaignDetails[points[0]['_index']].brandName;
                 vm.campaignBar.advertiserName = points[0]['_chart'].config.data.datasets[points[0]['_datasetIndex']].campaignDetails[points[0]['_index']].advertiserName;
@@ -337,7 +348,34 @@
                 vm.playerData = {};
                 vm.player.compaliant = true;
                 vm.player.noncompaliant = true;
-                getSummaries();
+                getSummaries();                
+                var campaignId = vm.selectedCampaign.split(':')[1];
+
+                if (campaignId) {
+                    var params = {
+                        "id": campaignId,
+                        "startDate": vm.datePicker.date.startDate
+                    };                    
+                    filterService.getTooltipData(params).then(function (response) {
+
+                        if (response) {
+                            var campaignData = response.data[campaignId];                            
+                            if (campaignData && campaignData.length > 0) {                                
+                                vm.isZendeskTicketAvailable = true;
+                                vm.zendeskTableHeaders = Object.keys(campaignData[0]);
+                                vm.zendeskTableBody = campaignData;                                                            
+                            } else {
+                                $('#compliance-tooltip').hide();
+                                vm.isZendeskTicketAvailable = false;
+                                Materialize.toast(response.message, TOASTER_TIME_INTERVAL, 'rounded');
+                            }
+                        } else {
+                            $('#compliance-tooltip').hide();
+                            vm.isZendeskTicketAvailable = false;
+                            Materialize.toast(response.message, TOASTER_TIME_INTERVAL, 'rounded');
+                        }
+                    });
+                }
             } else {
                 return false;
             }
@@ -478,26 +516,83 @@
             getSummaries();
         }
 
-        vm.searchCampaignRef = function () {
+        function filterSummaries(data) {
+
+            var totalCampaigns = _.groupBy(data, 'businessAreaCode');
+            // console.log(totalCampaigns);
+            var compliantCampaignsForBusinessArea, totalCampaignsForBusinessArea;
+
+            // black charts (Audience Compliance)
+            for (var index = 0; index < vm.channelSummaryByImpression.length; index++) {
+                var inelement = vm.channelSummaryByImpression[index];
+
+                if (totalCampaigns[inelement['id']]) {
+                    totalCampaignsForBusinessArea = totalCampaigns[inelement['id']];
+                    var sumOfActual = 0, sumOfTarget = 0;
+
+                    if (totalCampaignsForBusinessArea.length > 0) {
+                        for (var index2 = 0; index2 < totalCampaignsForBusinessArea.length; index2++) {
+                            var inelement1 = totalCampaignsForBusinessArea[index2];
+                            sumOfActual += inelement1['audienceValue'];
+                            sumOfTarget += inelement1['value'];
+                        }
+                    }
+                    var percentage = (sumOfActual / sumOfTarget) * 100;
+                    vm.channelSummaryByImpression[index].percentage = percentage;
+                    vm.channelSummaryByImpression[index].percentageDisplay = parseFloat(percentage).toFixed(2);
+                } else {
+                    vm.channelSummaryByImpression[index].percentage = 0;
+                    vm.channelSummaryByImpression[index].percentageDisplay = 0;
+                }
+            }
+
+            // blue charts (Campaign Compliance)
+            for (var index1 = 0; index1 < vm.summary.length; index1++) {
+                var inelement1 = vm.summary[index1];
+                if (totalCampaigns[inelement1['id']]) {
+                    totalCampaignsForBusinessArea = totalCampaigns[inelement1['id']];
+
+                    compliantCampaignsForBusinessArea = totalCampaignsForBusinessArea.filter(function (obj) {
+                        return obj.failedAudience == false;
+                    });
+                    var percentage = (compliantCampaignsForBusinessArea.length / totalCampaignsForBusinessArea.length) * 100;
+                    vm.summary[index1].value = parseFloat(percentage).toFixed(2);
+                } else {
+                    vm.summary[index1].value = 0;
+                }
+            }
+
+
+        }
+
+        vm.searchCampaignRef = function () {            
             if (vm.searchCampaign && vm.searchCampaign.trim().length > 6) {
                 var substringArray = _.map(['SM', 'SB'], function (substring) {
                     return vm.searchCampaign.toUpperCase().indexOf(substring) > -1;
                 });
 
-                if (substringArray.indexOf(true) > -1) {
+                vm.clonnedCamapaignSummary = _.cloneDeep(vm.campaignSummary);
 
-                    var campaignSummary = _.cloneDeep(vm.campaignSummary);
+                if (substringArray.indexOf(true) > -1) {
+                    var campaignSummary = _.cloneDeep(vm.campaignSummary);                   
 
                     var data = campaignSummary.filter(function (obj) {
                         return obj.id.indexOf(vm.searchCampaign.toUpperCase()) > -1
                     });
-
+                    vm.campaignSummary = _.cloneDeep(data);                    
+                    vm.clonnedSummary = _.cloneDeep(vm.summary);
+                    vm.clonnedChannelSummaryByImpression = _.cloneDeep(vm.channelSummaryByImpression);
+                    filterSummaries(data);
                     generateChart('campaign', data, true);
                 } else {
                     console.log('Please enter valid campaign Reference');
                 }
-
             } else {
+                if (vm.searchCampaign.trim().length == 0) {
+                    vm.campaignSummary = _.cloneDeep(vm.clonnedCamapaignSummary);                    
+                    vm.summary = _.cloneDeep(vm.clonnedSummary);
+                    vm.channelSummaryByImpression = _.cloneDeep(vm.clonnedChannelSummaryByImpression);
+                }
                 generateChart('campaign', vm.campaignSummary, true);
                 return false;
             }
@@ -669,7 +764,7 @@
                     else if (vm.isFrameDashbaord == 2)
                         chartData = _.sortBy(chartData, 'avgValue').reverse();
                     else
-                        chartData = _.sortBy(chartData, 'audienceValue').reverse();
+                        chartData = _.sortBy(chartData, 'avgValue').reverse();
 
                     _.forEach(chartData, function (obj) {
                         vm.campaignData.labels.push(obj.label);
@@ -681,7 +776,7 @@
                         else if (vm.isFrameDashbaord == 2)
                             vm.campaignData.datasets[0].data.push(obj.avgValue);
                         else
-                            vm.campaignData.datasets[0].data.push(obj.audienceValue);
+                            vm.campaignData.datasets[0].data.push(obj.avgValue);
 
                         if (vm.isFrameDashbaord != 3) {
                             if (obj.failed) {
@@ -728,77 +823,77 @@
                         position: 'nearest',
                         custom: function (tooltipModel) {
 
-                            if (tooltipModel.title && tooltipModel.dataPoints.length > 0
-                                && vm.campaignData.datasets[0].compaliantcheck[tooltipModel.dataPoints[0].index] === false) {
-                                var chart = this._chart;
-                                if (getCampaignId(tooltipModel.title[0]) != campaignId) {
-                                    var params = {
-                                        "id": getCampaignId(tooltipModel.title[0]),
-                                        "startDate": vm.datePicker.date.startDate
-                                    };
-                                    campaignId = params.id;
-                                    filterService.getTooltipData(params).then(function (response) {
+                            // if (tooltipModel.title && tooltipModel.dataPoints.length > 0
+                            //     && vm.campaignData.datasets[0].compaliantcheck[tooltipModel.dataPoints[0].index] === false) {
+                            //     var chart = this._chart;
+                            //     if (getCampaignId(tooltipModel.title[0]) != campaignId) {                                    
+                            //         var params = {
+                            //             "id": getCampaignId(tooltipModel.title[0]),
+                            //             "startDate": vm.datePicker.date.startDate
+                            //         };
+                            //         campaignId = params.id;
+                                    // filterService.getTooltipData(params).then(function (response) {
 
-                                        if (response) {
-                                            campaignData = response.data[campaignId];
-                                            if (campaignData && campaignData.length > 0) {
-                                                // Tooltip Element
-                                                var tooltipEl = document.getElementById('compliance-tooltip');
+                                    //     if (response) {
+                                    //         campaignData = response.data[campaignId];
+                                    //         if (campaignData && campaignData.length > 0) {
+                                    //             // Tooltip Element
+                                    //             var tooltipEl = document.getElementById('compliance-tooltip');
 
-                                                function getBody(bodyItem) {
-                                                    return bodyItem.lines;
-                                                }
+                                    //             function getBody(bodyItem) {
+                                    //                 return bodyItem.lines;
+                                    //             }
 
-                                                // Set Text
-                                                if (tooltipModel.body) {
-                                                    var titleLines = "Campaign" + campaignId; //tooltipModel.title || [];
-                                                    var bodyLines = tooltipModel.body.map(getBody);
+                                    //             // Set Text
+                                    //             if (tooltipModel.body) {
+                                    //                 var titleLines = "Campaign" + campaignId; //tooltipModel.title || [];
+                                    //                 var bodyLines = tooltipModel.body.map(getBody);
 
-                                                    var innerHtml = '<thead>';
-                                                    innerHtml += '<tr><th>Campaign</th><th>' + campaignId + '</th></tr>';
-                                                    innerHtml += '</thead><tbody>';
+                                    //                 var innerHtml = '<thead>';
+                                    //                 innerHtml += '<tr><th>Campaign</th><th>' + campaignId + '</th></tr>';
+                                    //                 innerHtml += '</thead><tbody>';
 
-                                                    campaignData.forEach(function (body, i) {
-                                                        var colors = tooltipModel.labelColors[0];
-                                                        var style = 'background:' + colors.backgroundColor;
-                                                        style += '; border-color:' + colors.borderColor;
-                                                        style += '; border-width: 2px';
-                                                        var span = '<span class="chartjs-tooltip-key" style="' + style + '"></span>';
-                                                        var buildBody = Object.keys(body);
-                                                        buildBody.forEach(function (inBody, inIndex) {
-                                                            if (inBody != 'url') {
-                                                                innerHtml += '<tr><td style="color: rgba(255, 0, 0, 1);font-weight:600;">' + inBody + ' </td><td> ' + body[inBody] + '</td></tr>';
-                                                            } else {
-                                                                innerHtml += '<tr><td style="color: rgba(255, 0, 0, 1);font-weight:600;">' + inBody + ' </td><td><a target="_blank" href="' + body[inBody] + '"> ' + body[inBody] + '</a></td></tr>';
-                                                            }
-                                                        });
-                                                    });
-                                                    innerHtml += '</tbody>';
+                                    //                 campaignData.forEach(function (body, i) {
+                                    //                     var colors = tooltipModel.labelColors[0];
+                                    //                     var style = 'background:' + colors.backgroundColor;
+                                    //                     style += '; border-color:' + colors.borderColor;
+                                    //                     style += '; border-width: 2px';
+                                    //                     var span = '<span class="chartjs-tooltip-key" style="' + style + '"></span>';
+                                    //                     var buildBody = Object.keys(body);
+                                    //                     buildBody.forEach(function (inBody, inIndex) {
+                                    //                         if (inBody != 'url') {
+                                    //                             innerHtml += '<tr><td style="color: rgba(255, 0, 0, 1);font-weight:600;">' + inBody + ' </td><td> ' + body[inBody] + '</td></tr>';
+                                    //                         } else {
+                                    //                             innerHtml += '<tr><td style="color: rgba(255, 0, 0, 1);font-weight:600;">' + inBody + ' </td><td><a target="_blank" href="' + body[inBody] + '"> ' + body[inBody] + '</a></td></tr>';
+                                    //                         }
+                                    //                     });
+                                    //                 });
+                                    //                 innerHtml += '</tbody>';
 
-                                                    var tableRoot = tooltipEl.querySelector('table');
-                                                    tableRoot.innerHTML = innerHtml;
-                                                }
+                                    //                 var tableRoot = tooltipEl.querySelector('table');
+                                    //                 tableRoot.innerHTML = innerHtml;
+                                    //             }
 
-                                                // Display, position, and set styles for font
-                                                tooltipEl.style.opacity = 1;
-                                                tooltipEl.style.display = 'block';
-                                                tooltipEl.style.fontFamily = tooltipModel._fontFamily;
-                                                tooltipEl.style.fontSize = tooltipModel.fontSize;
-                                                tooltipEl.style.fontStyle = tooltipModel._fontStyle;
-                                                tooltipEl.style.padding = tooltipModel.yPadding + 'px ' + tooltipModel.xPadding + 'px';
+                                    //             // Display, position, and set styles for font
+                                    //             tooltipEl.style.opacity = 1;
+                                    //             tooltipEl.style.display = 'block';
+                                    //             tooltipEl.style.fontFamily = tooltipModel._fontFamily;
+                                    //             tooltipEl.style.fontSize = tooltipModel.fontSize;
+                                    //             tooltipEl.style.fontStyle = tooltipModel._fontStyle;
+                                    //             tooltipEl.style.padding = tooltipModel.yPadding + 'px ' + tooltipModel.xPadding + 'px';
 
-                                            } else {
-                                                $('#compliance-tooltip').hide();
-                                                Materialize.toast(response.message, TOASTER_TIME_INTERVAL, 'rounded');
-                                            }
-                                        } else {
-                                            $('#compliance-tooltip').hide();
-                                            Materialize.toast(response.message, TOASTER_TIME_INTERVAL, 'rounded');
-                                        }
-                                    });
+                                    //         } else {
+                                    //             $('#compliance-tooltip').hide();
+                                    //             Materialize.toast(response.message, TOASTER_TIME_INTERVAL, 'rounded');
+                                    //         }
+                                    //     } else {
+                                    //         $('#compliance-tooltip').hide();
+                                    //         Materialize.toast(response.message, TOASTER_TIME_INTERVAL, 'rounded');
+                                    //     }
+                                    // });
 
-                                }
-                            }
+                            //     }
+                            // }
                         },
                         // callbacks: {
                         //     title: function (tooltipItem) {
@@ -1160,12 +1255,16 @@
                 highlightSelectedBar();
             });
 
-
         }
 
         function frameTooltip(tooltipModel, chart) {
             if (tooltipModel.dataPoints) {
-                var tooltipData = vm.frameSummary[tooltipModel.dataPoints[0].index].tooltipData;
+                var tooltipData = vm.frameSummary.filter(function (obj) {
+                    return obj.label == tooltipModel.dataPoints[0].xLabel;
+                });
+                if (tooltipData) {
+                    tooltipData = tooltipData[0].tooltipData;
+                }
 
                 var tooltipEl = document.getElementById('player-tooltip');
 
@@ -1296,22 +1395,16 @@
                     _.forEach(vm.dayDetails.dayDetails, function (obj, key) {
 
                         if (vm.isFrameDashbaord != 3) {
-
                             if (obj.failed) {
                                 vm.dayData.datasets[0].backgroundColor.push(RED_COLOR);
-
                             } else {
                                 vm.dayData.datasets[0].backgroundColor.push(BLUE_COLOR);
-
                             }
                         } else {
-
                             if (obj.failedAudience) {
                                 vm.dayData.datasets[0].backgroundColor.push(RED_COLOR);
-
                             } else {
                                 vm.dayData.datasets[0].backgroundColor.push(BLUE_COLOR);
-
                             }
                         }
 

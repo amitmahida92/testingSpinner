@@ -41,7 +41,7 @@
     <div class="row">
         <form class="col s12">
             <div class="row no-margin input-row">
-                <div class=" col s12 m2">
+                <div class=" col s12 m3">
                     <label for="">{{vm.userBundle['common.dateRange']}}</label>
                     <!--<input placeholder="Select date range" id="first_name" type="text" class=" no-margin">-->
                     <input date-range-picker id="dateRange" class="no-margin" type="text" placeholder="Select Date Range" ng-model="vm.datePicker.date"
@@ -49,14 +49,20 @@
                     <i class="material-icons inputicon">date_range</i>
                 </div>
 
-                <div class=" col s12 m2" style="z-index:2">
+                <div class=" col s12 m3" style="z-index:2">
                     <label for="">{{vm.userBundle['common.specialist']}}</label>
+
+                    <!-- <div input-field>
+                        <select class="" ng-model="vm.selectedSpecialists" material-select multiple watch>
+                            <option ng-repeat="value in vm.specialists">{{value.organisationName}}</option>
+                        </select>
+                    </div> -->
                     <tags-input ng-model="vm.selectedSpecialists" on-tag-added="vm.onAddTags()" key-property="organisationId" display-property="organisationName"
                         placeholder="Select Specialist" add-from-autocomplete-only="true">
                         <auto-complete source="vm.loadSpecialist($query)" max-results-to-show="1000" load-on-focus="true" load-on-empty="true" template="my-custom-template"></auto-complete>
                     </tags-input>
                 </div>
-                <div class=" col s12 m2" style="z-index:1">
+                <div class=" col s12 m3" style="z-index:1">
                     <label for="">{{vm.userBundle['common.marketingname']}}</label>
                     <tags-input ng-model="vm.selectedMarketingNames" on-tag-added="vm.onAddTags()" class="no-margin" key-property="marketingNameId"
                         display-property="marketingName" placeholder="Select Marketing Name" add-from-autocomplete-only="true">
@@ -64,11 +70,12 @@
                             template="my-custom-template"></auto-complete>
                     </tags-input>
                 </div>
-                <div class=" col s12 m2" style="z-index:1">
+                <div class="col s12 m3" style="z-index:1">
                     <label for="">Search Campaign</label>
                     <input id="Search" class="no-margin" ng-model="vm.searchCampaign" ng-change="vm.searchCampaignRef()" type="text" placeholder="Search Campaign"
                         ng-model-options='{ debounce: 750 }' />
                 </div>
+
                 <!-- <div class="input-field col s12 m2">
                     <select id="Select9" ng-model="vm.isFrameDashbaord" ng-change="vm.selectDashBoardType()" ng-options="item.id as item.name for item in vm.graphOptions">
                         <option value="" disabled selected>Choose your option</option>
@@ -109,7 +116,7 @@
 
     </div>
     <div class="row meterchart_wrap" ng-if="!vm.campaignSummaryCheck">
-
+        <!-- blue chart -->
         <!--ng-style="{'max-width': (100 / vm.channelSummary.length) + '%'}"-->
         <div class="col m7-col center" ng-style="{'max-width': (100 / vm.summary.length) + '%'}" ng-repeat="channel in vm.summary">
             <canvas id="doughnut1" class="chart chart-doughnut" chart-data="[channel.value,100-channel.value]" chart-options="vm.sampleOptions"
@@ -123,7 +130,7 @@
     </div>
 
     <div class="row meterchart_wrap" ng-if="vm.campaignSummaryCheck">
-
+        <!-- black chart -->
         <!--ng-style="{'max-width': (100 / vm.channelSummary.length) + '%'}"-->
         <div class="col m7-col center" ng-style="{'max-width': (100 / vm.channelSummaryByImpression.length) + '%'}" ng-repeat="channel in vm.channelSummaryByImpression">
             <canvas id="doughnut12" class="chart chart-doughnut" chart-data="[channel.percentage,100-channel.percentage]" chart-options="vm.sampleOptions"
@@ -184,6 +191,16 @@
 
             <!--style=" min-height: {{vm.campaignOptions.size.height + 'px'}}"-->
             <div style="height: 100%;overflow-y: auto; min-height: 405px; max-height: 405px;">
+                <!-- <div class="chartWrapper">
+                <div class="chartAreaWrapper">
+                    <canvas id="campaign" height="300" width="1200"
+                    class="chart-horizontal-bar" chart-data="vm.campaignData.datasets[0].data" chart-options="vm.campaignOptions"
+                    chart-colors="vm.campaignData.datasets[0].backgroundColor" chart-labels="vm.campaignData.labels" chart-dataset-override="vm.campaignDetails"
+                    chart-click="vm.onCampaignClick"></canvas>
+                </div>
+                <canvas id="campaignAxis" height="300" width="0"></canvas>
+            </div> -->
+
                 <div class="card-content" ng-style='{"min-height":vm.campaignOptions.size.height}'>
                     <canvas id="campaign" class="chart-horizontal-bar" chart-data="vm.campaignData.datasets[0].data" chart-options="vm.campaignOptions"
                         chart-colors="vm.campaignData.datasets[0].backgroundColor" chart-labels="vm.campaignData.labels" chart-dataset-override="vm.campaignDetails"
@@ -239,15 +256,9 @@
 
         <div class="compliance-tooltip tooltip_custom" id="player-tooltip">
             <div>
-                <table></table>                
-            </div>            
-        </div>
-        <!-- <div>
-            <div class="tooltip_custom">
-                <div>dsfdsfsdfd fdfdfds dsfdsfsdf dfdfdfdsd sfdsfsdfd fdfdfdsdsfdsfsd fdfdfdfds sfdsfsdfdf dfdf dsdsfdsfsd fdfdf
-                    dfdsdsfdsfsdfdfdf dfdsdsf dsfsdfdfdf </div>
+                <table></table>
             </div>
-        </div> -->
+        </div>
 
         <!-- <div id="frame-tooltip" class="compliance-tooltip">
             <i class="material-icons tooltip-close" ng-click="vm.closeTooltip('frame-tooltip')">close</i>
@@ -354,8 +365,9 @@
                     <nav class="optionlist">
                         <div class="nav-wrapper">
                             <ul class="right hide-on-med-and-down">
-                                <li><a href="#" class="waves-effect waves-light btn">Support Ticket<i class="material-icons right">help_outline</i></a></li>
-                                <li><a ng-disabled="!vm.campaignBar.selectedCampaign" target="_blank" href="{{vm.ccpLink}}{{vm.campaignBar.selectedCampaign}}" class="waves-effect waves-light btn">Campaign Portal<i class="material-icons right">present_to_all</i></a></li>
+                                <li><a data-target='demoModal' modal ng-disabled="!vm.isZendeskTicketAvailable" class="waves-effect waves-light btn">Support Ticket<i class="material-icons right">help_outline</i></a></li>
+                                <li><a ng-disabled="!vm.campaignBar.selectedCampaign" target="_blank" href="{{vm.ccpLink}}{{vm.campaignBar.selectedCampaign}}"
+                                        class="waves-effect waves-light btn">Campaign Portal<i class="material-icons right">present_to_all</i></a></li>
                                 <li><a href="#" class="waves-effect waves-light btn"><i class="material-icons right">important_devices</i>SmartContent</a></li>
                             </ul>
                         </div>
@@ -381,3 +393,35 @@
         </label>
      </span>
 </script>
+
+<!-- Modal Structure -->
+<div id="demoModal" class="modal">
+    <div class="modal-content">
+        <h4>Booking Id : {{vm.selectedCampaign}}</h4>
+        <div class="modal-table">
+            <table class="table table-responsive">
+                <thead>
+                    <tr>
+                        <th ng-repeat="header in vm.zendeskTableHeaders">
+                            {{header}}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="items in vm.zendeskTableBody">
+                        <td ng-repeat="header in vm.zendeskTableHeaders" ng-if="header != 'url'">{{items[header]}}</td>
+                        <td ng-repeat="header in vm.zendeskTableHeaders" ng-if="header == 'url'">
+                            <a target="_blank" ng-href="{{items[header]}}"> {{items[header]}}</a> 
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <a class=" modal-action modal-close waves-effect waves-green btn-flat"> Close </a>
+    </div>
+</div>
