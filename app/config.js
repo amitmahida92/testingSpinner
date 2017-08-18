@@ -1,5 +1,5 @@
 
-var DEBUG = false;
+var DEBUG = true;
 var BOS_SESSIONID = 0;
 var MAX_INACTIVE_INTERVAL = 5;
 var DATE_FORMAT = 'YYYY-MM-DD';
@@ -15,4 +15,4 @@ var CHART_HOVER_TOOLTIP = DEBUG ? 'data/hover_tooltip.json' : '../../Service/pop
 
 var HTTP_METHOD = DEBUG ? "GET" : "POST";
 var CONFIG_URL = SERVICE_BASE_URL + (DEBUG ? INITIAL_CONFIG_URL : INITIAL_CONFIG_URL_BOS);
-var frontEndVersion = "1.0.1.19 campaign compliance";
+var frontEndVersion = "1.0.1.20 campaign compliance";

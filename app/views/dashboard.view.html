@@ -41,7 +41,7 @@
     <div class="row">
         <form class="col s12">
             <div class="row no-margin input-row">
-                <div class=" col s12 m3">
+                <div class=" col s12 m2">
                     <label for="">{{vm.userBundle['common.dateRange']}}</label>
                     <!--<input placeholder="Select date range" id="first_name" type="text" class=" no-margin">-->
                     <input date-range-picker id="dateRange" class="no-margin" type="text" placeholder="Select Date Range" ng-model="vm.datePicker.date"
@@ -49,7 +49,7 @@
                     <i class="material-icons inputicon">date_range</i>
                 </div>
 
-                <div class=" col s12 m3" style="z-index:2">
+                <div class=" col s12 m2" style="z-index:2">
                     <label for="">{{vm.userBundle['common.specialist']}}</label>
 
                     <!-- <div input-field>
@@ -62,7 +62,7 @@
                         <auto-complete source="vm.loadSpecialist($query)" max-results-to-show="1000" load-on-focus="true" load-on-empty="true" template="my-custom-template"></auto-complete>
                     </tags-input>
                 </div>
-                <div class=" col s12 m3" style="z-index:1">
+                <div class=" col s12 m2" style="z-index:1">
                     <label for="">{{vm.userBundle['common.marketingname']}}</label>
                     <tags-input ng-model="vm.selectedMarketingNames" on-tag-added="vm.onAddTags()" class="no-margin" key-property="marketingNameId"
                         display-property="marketingName" placeholder="Select Marketing Name" add-from-autocomplete-only="true">
@@ -70,19 +70,26 @@
                             template="my-custom-template"></auto-complete>
                     </tags-input>
                 </div>
-                <div class="col s12 m3" style="z-index:1">
+                <div class="col s12 m2" style="z-index:1">
                     <label for="">Search Campaign</label>
                     <input id="Search" class="no-margin" ng-model="vm.searchCampaign" ng-change="vm.searchCampaignRef()" type="text" placeholder="Search Campaign"
                         ng-model-options='{ debounce: 750 }' />
                 </div>
 
-                <!-- <div class="input-field col s12 m2">
-                    <select id="Select9" ng-model="vm.isFrameDashbaord" ng-change="vm.selectDashBoardType()" ng-options="item.id as item.name for item in vm.graphOptions">
+                 <div class="input-field col s12 m2">
+                    <!-- <select id="Select9" ng-model="vm.isFrameDashbaord" ng-change="vm.selectDashBoardType()" ng-options="item.id as item.name for item in vm.graphOptions">
                         <option value="" disabled selected>Choose your option</option>
                     </select>
-                    <label> Select Graph for</label>
-                </div> -->
-
+                    <label> Select Graph for</label> -->
+                    <div class="switch col s12 right">
+                        <label>
+                            <span class="active"><!-- {{vm.userBundle['common.campaign.compliance.summary']}}-->Campaign<a id="gaugetooltip" class="btn-floating btn-flat blue-text right btn_popover gaugeinfo" data-position="bottom" data-delay="75"><i class="material-icons blue-text" >info_outline</i></a></span> 
+                                <input type="checkbox" ng-model="vm.campaignSummaryCheck" />
+                                <span class="lever"></span>
+                            <span class=""><!-- {{vm.userBundle['common.audience.compliance.summary']}} --> Audience<a id="gaugetooltip_audience" class="btn-floating btn-flat blue-text right btn_popover gaugeinfo" data-position="bottom" data-delay="75"> <i class="material-icons blue-text" >info_outline</i></a></span>
+                        </label>
+                    </div>
+                </div> 
 
             </div>
         </form>
@@ -102,19 +109,6 @@
 </div>
 
 <div class="switching_chart_wrapper">
-
-    <div class="row center switch_chart-row">
-
-        <div class="switch col s12 right">
-            <label>
-                <span class="card-title active">{{vm.userBundle['common.campaign.compliance.summary']}}<a id="gaugetooltip" class="btn-floating btn-flat blue-text right btn_popover gaugeinfo" data-position="bottom" data-delay="75"><i class="material-icons blue-text" >info_outline</i></a></span> 
-                    <input type="checkbox" ng-model="vm.campaignSummaryCheck" />
-                    <span class="lever"></span>
-                <span class="card-title">{{vm.userBundle['common.audience.compliance.summary']}}<a id="gaugetooltip_audience" class="btn-floating btn-flat blue-text right btn_popover gaugeinfo" data-position="bottom" data-delay="75"> <i class="material-icons blue-text" >info_outline</i></a></span>
-            </label>
-        </div>
-
-    </div>
     <div class="row meterchart_wrap" ng-if="!vm.campaignSummaryCheck">
         <!-- blue chart -->
         <!--ng-style="{'max-width': (100 / vm.channelSummary.length) + '%'}"-->
@@ -215,7 +209,7 @@
     </div>
 
     <div class="col s12 m6 chart-container" ng-show="vm.showPlayer">
-        <div class="card cardwrapper">
+        <div class="card">
             <span class="card-title">
                 <span  ng-if="vm.isFrameDashbaord == 1">
                     {{vm.userBundle["popboard.frame.player.heading"]}}
@@ -245,7 +239,7 @@
                     <label for="player_non_compaliant">Non Compliant ({{vm.player.noncompliantCount}})</label> &nbsp;&nbsp;
                 </span>
             </span>
-            <div style="width: 100%;overflow-x: auto;float: left;bottom: -10px;position: relative; min-height: 405px; max-height: 405px;">
+            <div style="height: 100%;overflow-y: auto; min-height: 405px; max-height: 405px;">
                 <!--style="width: {{vm.barOptions.size.width + 'px' }}; height: {{vm.barOptions.size.height + 'px'}}-->
                 <div class="card-content" ng-style='{"width": vm.barOptions.size.width,"height": vm.barOptions.size.height }'>
                     <canvas id="player" class="chart chart-bar" chart-data="vm.playerData.datasets[0].data" chart-options="vm.barOptions" chart-colors="vm.playerData.datasets[0].backgroundColor"

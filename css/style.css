@@ -274,7 +274,7 @@ input:not([type]):focus:not([readonly]), input[type=text]:focus:not([readonly]),
 }
 
 .meterchart_wrap {
-  padding-top: 15px;
+  /* padding-top: 15px; */
   padding-bottom: 45px;
   position: relative
 }
@@ -287,7 +287,7 @@ input:not([type]):focus:not([readonly]), input[type=text]:focus:not([readonly]),
   display: block;
   width: 100%;
   font-weight: 600;
-  margin-bottom: 15px;
+  /* margin-bottom: 15px; */
   opacity: 1;
 }
 
@@ -1098,10 +1098,10 @@ label {
   color: #828282;
 }
 
-.input-row .m2 {
+ .input-row .m2 {
   width: 20% !important;
   float: left;
-}
+} 
 
 span.card-title {
   font-size: 18px;
@@ -1119,6 +1119,14 @@ span.card-title.active {
 .switch_chart-row {
   padding-bottom: 0px;
   text-align: left;
+}
+
+.switch span {
+    margin-right: 35px;
+}
+
+.switch span a {
+    top: -9px;
 }
 
 .gaugeinfo {
@@ -1142,12 +1150,12 @@ span.card-title.active {
   color: #2e64a5 !important;
 }
 
-.switching_chart_wrapper.ng-scope {
+.switching_chart_wrapper {
   background: #f1f1f1;
   margin: 10px;
   /*box-shadow: 0 2px 2px 0 rgba(100, 100, 100, 0.14), 0 8px 5px 0 rgba(100,100,100,0.14), 0 3px 1px -2px rgba(100,100,100,0.14);*/
   box-shadow: 0 2px 2px 0 rgba(100, 100, 100, 0.14);
-  padding: 15px 0 15px;
+  padding: 0px 0 5px;
 }
 
 .card {

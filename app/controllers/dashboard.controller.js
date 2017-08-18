@@ -130,6 +130,10 @@
         // Doughnut Chart Click
 
         vm.onChannelClick = function (channelid) {
+            // below condition added for CC-135
+            if (vm.searchCampaign && vm.searchCampaign.trim().length > 6)
+                return;
+
             if (vm.selectedChannel.length > 0) {
                 if (_.includes(vm.selectedChannel, channelid)) {
                     var index = _.indexOf(vm.selectedChannel, channelid);
@@ -318,7 +322,7 @@
 
         // First Chart
         vm.onCampaignClick = function (points, evt) {
-            if (points.length > 0) {
+            if (points.length > 0 && (vm.campaign.compaliant || vm.campaign.noncompaliant)) { // condition added for CC-115
 
                 $('#compliance-tooltip').hide();
 
@@ -588,8 +592,8 @@
                     console.log('Please enter valid campaign Reference');
                 }
             } else {
-                if (vm.searchCampaign.trim().length == 0) {
-                    vm.campaignSummary = _.cloneDeep(vm.clonnedCamapaignSummary);                    
+                if (vm.searchCampaign.trim().length == 0 && vm.clonnedSummary.length > 0) {
+                    vm.campaignSummary = _.cloneDeep(vm.clonnedCamapaignSummary);
                     vm.summary = _.cloneDeep(vm.clonnedSummary);
                     vm.channelSummaryByImpression = _.cloneDeep(vm.clonnedChannelSummaryByImpression);
                 }
@@ -1197,6 +1201,7 @@
                         }
                     }
                     else {
+                        vm.campaignSummary = [];
                         vm.campaignData = {};
                         vm.showCampaign = false;
                         vm.campaignBar = {};
