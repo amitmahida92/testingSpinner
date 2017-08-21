@@ -11,7 +11,7 @@
         vm.clonnedChannelSummaryByImpression = [];
         vm.clonnedSummary = [];
         vm.clonnedCamapaignSummary = [];
-        vm.isZendeskTicketAvailable = false;       
+        vm.isZendeskTicketAvailable = false;
 
         vm.ccpLink = "/Service/popboard/ccplink?campaignId=";
 
@@ -371,12 +371,12 @@
                             } else {
                                 $('#compliance-tooltip').hide();
                                 vm.isZendeskTicketAvailable = false;
-                                Materialize.toast(response.message, TOASTER_TIME_INTERVAL, 'rounded');
+                               // Materialize.toast(response.message, TOASTER_TIME_INTERVAL, 'rounded');
                             }
                         } else {
                             $('#compliance-tooltip').hide();
                             vm.isZendeskTicketAvailable = false;
-                            Materialize.toast(response.message, TOASTER_TIME_INTERVAL, 'rounded');
+                            // Materialize.toast(response.message, TOASTER_TIME_INTERVAL, 'rounded');
                         }
                     });
                 }
@@ -592,7 +592,8 @@
                     console.log('Please enter valid campaign Reference');
                 }
             } else {
-                if (vm.searchCampaign.trim().length == 0 && vm.clonnedSummary.length > 0) {
+                // and condition added for CC-136
+                if (vm.searchCampaign.trim().length == 0 && vm.clonnedSummary.length > 0) { 
                     vm.campaignSummary = _.cloneDeep(vm.clonnedCamapaignSummary);
                     vm.summary = _.cloneDeep(vm.clonnedSummary);
                     vm.channelSummaryByImpression = _.cloneDeep(vm.clonnedChannelSummaryByImpression);
