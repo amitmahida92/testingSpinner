@@ -543,6 +543,11 @@
             getSummaries();
         }
 
+        /**
+         * @desc This function filters both summary charts based on selected filters
+         * @author Amit Mahida
+         * @param {*} data 
+         */    
         function filterSummaries(data) {
 
             var totalCampaigns = _.groupBy(data, 'businessAreaCode');

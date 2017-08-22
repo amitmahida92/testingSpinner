@@ -49,14 +49,15 @@
                     <i class="material-icons inputicon">date_range</i>
                 </div>
 
-                <div class=" col s12 m2" style="z-index:2">
-                    <label for="">{{vm.userBundle['common.specialist']}}</label>
-
+                <div class="section col s12 m2" style="z-index:2">
+                    <label for="">{{vm.userBundle['common.specialist']}}</label>                   
+                    
                     <!-- <div input-field>
                         <select class="" ng-model="vm.selectedSpecialists" material-select multiple watch>
                             <option ng-repeat="value in vm.specialists">{{value.organisationName}}</option>
                         </select>
                     </div> -->
+                    <!-- {{vm.selectedSpecialists}} -->
                     <tags-input ng-model="vm.selectedSpecialists" on-tag-added="vm.onAddTags()" key-property="organisationId" display-property="organisationName"
                         placeholder="Select Specialist" add-from-autocomplete-only="true">
                         <auto-complete source="vm.loadSpecialist($query)" max-results-to-show="1000" load-on-focus="true" load-on-empty="true" template="my-custom-template"></auto-complete>
@@ -81,7 +82,7 @@
                         <option value="" disabled selected>Choose your option</option>
                     </select>
                     <label> Select Graph for</label> -->
-                    <div class="switch col s12 right">
+                    <div class="switch right">
                         <label>
                             <span class="active"><!-- {{vm.userBundle['common.campaign.compliance.summary']}}-->Campaign<a id="gaugetooltip" class="btn-floating btn-flat blue-text right btn_popover gaugeinfo" data-position="bottom" data-delay="75"><i class="material-icons blue-text" >info_outline</i></a></span> 
                                 <input type="checkbox" ng-model="vm.campaignSummaryCheck" />
