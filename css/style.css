@@ -221,9 +221,12 @@ tags-input .autocomplete .suggestion-item label {
 .fullscreen-chart {
   width: 100% !important;
   display: block;
+  transform: scale(1);
 }
 .hide-chart {
   display: none;
+  transform: scale(0);
+  transition: transform .8s cubic-bezier(.5,0,.3,1);
 }
 
 /* li.disabled span {
@@ -1244,6 +1247,10 @@ inspector-stylesheet:1 .material-tooltip .backdrop {
 
 .compliance-tooltip table tbody tr td:first-child {
   /* color: rgb(45, 95, 170) !important; */
+}
+
+div {  
+  transition: display 0.5s;  
 }
 
 .data-display-row .card {
