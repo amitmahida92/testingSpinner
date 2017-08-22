@@ -8,6 +8,7 @@
     function DashboardCtrl(filterService, configureOptions, Webworker) {
         var vm = this;
         var requireWorker;
+        vm.fullscreenFor = '';
         vm.clonnedChannelSummaryByImpression = [];
         vm.clonnedSummary = [];
         vm.clonnedCamapaignSummary = [];
@@ -534,20 +535,29 @@
         }
 
         vm.removeTags = function (index, arr) {
-            arr.splice(index, 1);
             checkAllcheckBoxes();
             getSummaries();
-        }
+            setTimeout(function () {                             
+                if(arr === "selectedMarketingNames") {
+                    $("#" + arr + " li").filter(function () { return $.text([this]) === vm[arr][index].marketingName; }).trigger('click');                
+                } else {
+                    $("#" + arr + " li").filter(function () { return $.text([this]) === vm[arr][index].organisationName; }).trigger('click');
+                }
+                
+                $("body").trigger('click');
+            }.bind(this), 0);
+        };
+
         vm.onAddTags = function (data) {
             checkAllcheckBoxes();
             getSummaries();
-        }
+        };
 
         /**
          * @desc This function filters both summary charts based on selected filters
          * @author Amit Mahida
          * @param {*} data 
-         */    
+         */
         function filterSummaries(data) {
 
             var totalCampaigns = _.groupBy(data, 'businessAreaCode');
@@ -558,8 +568,8 @@
             for (var index = 0; index < vm.channelSummaryByImpression.length; index++) {
                 var inelement = vm.channelSummaryByImpression[index];
 
-                if (totalCampaigns[inelement['id']]) {
-                    totalCampaignsForBusinessArea = totalCampaigns[inelement['id']];
+                if (totalCampaigns[inelement.id]) {
+                    totalCampaignsForBusinessArea = totalCampaigns.inelement.id;
                     var sumOfActual = 0, sumOfTarget = 0;
 
                     if (totalCampaignsForBusinessArea.length > 0) {
@@ -1226,9 +1236,9 @@
                         // if condition to check if there is search criteria added, then it should filter out 
                         if (vm.searchCampaign && vm.searchCampaign.length > 0) {
                             vm.searchCampaignRef();
-                        } else {                            
-                             vm.compaliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign' , true);
-                           // generateChart('campaign', vm.campaignSummary, true);
+                        } else {
+                            vm.compaliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign', true);
+                            // generateChart('campaign', vm.campaignSummary, true);
                         }
                     }
                     else {

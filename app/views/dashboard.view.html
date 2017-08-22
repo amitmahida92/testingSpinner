@@ -49,27 +49,31 @@
                     <i class="material-icons inputicon">date_range</i>
                 </div>
 
-                <div class="section col s12 m2" style="z-index:2">
-                    <label for="">{{vm.userBundle['common.specialist']}}</label>                   
-                    
-                    <!-- <div input-field>
-                        <select class="" ng-model="vm.selectedSpecialists" material-select multiple watch>
-                            <option ng-repeat="value in vm.specialists">{{value.organisationName}}</option>
-                        </select>
-                    </div> -->
+                <div class="section col s12 m2" style="z-index:2" id="selectedSpecialists">
+                    <label for="">{{vm.userBundle['common.specialist']}}</label>
+                    <select class="" ng-model="vm.selectedSpecialists" material-select multiple watch>
+                        <option value="" disabled selected>Select Specialist</option>    
+                        <option ng-value="value" ng-repeat="value in vm.specialists">{{value.organisationName}}</option>
+                    </select>
+
                     <!-- {{vm.selectedSpecialists}} -->
-                    <tags-input ng-model="vm.selectedSpecialists" on-tag-added="vm.onAddTags()" key-property="organisationId" display-property="organisationName"
+                    <!-- <tags-input ng-model="vm.selectedSpecialists" on-tag-added="vm.onAddTags()" key-property="organisationId" display-property="organisationName"
                         placeholder="Select Specialist" add-from-autocomplete-only="true">
                         <auto-complete source="vm.loadSpecialist($query)" max-results-to-show="1000" load-on-focus="true" load-on-empty="true" template="my-custom-template"></auto-complete>
-                    </tags-input>
+                    </tags-input> -->
                 </div>
-                <div class=" col s12 m2" style="z-index:1">
+                <div class=" col s12 m2" style="z-index:1" id="selectedMarketingNames">
                     <label for="">{{vm.userBundle['common.marketingname']}}</label>
-                    <tags-input ng-model="vm.selectedMarketingNames" on-tag-added="vm.onAddTags()" class="no-margin" key-property="marketingNameId"
+
+                    <select class="" ng-model="vm.selectedMarketingNames" material-select multiple watch>
+                        <option value="" disabled selected>Select Marketing Name</option>    
+                        <option ng-value="value" ng-repeat="value in vm.marketingNames">{{value.marketingName}}</option>
+                    </select>
+                    <!-- <tags-input ng-model="vm.selectedMarketingNames" on-tag-added="vm.onAddTags()" class="no-margin" key-property="marketingNameId"
                         display-property="marketingName" placeholder="Select Marketing Name" add-from-autocomplete-only="true">
                         <auto-complete source="vm.loadmarketingNames($query)" max-results-to-show="1000" load-on-focus="true" load-on-empty="true"
                             template="my-custom-template"></auto-complete>
-                    </tags-input>
+                    </tags-input> -->
                 </div>
                 <div class="col s12 m2" style="z-index:1">
                     <label for="">Search Campaign</label>
@@ -77,7 +81,7 @@
                         ng-model-options='{ debounce: 750 }' />
                 </div>
 
-                 <div class="input-field col s12 m2">
+                <div class="input-field col s12 m2">
                     <!-- <select id="Select9" ng-model="vm.isFrameDashbaord" ng-change="vm.selectDashBoardType()" ng-options="item.id as item.name for item in vm.graphOptions">
                         <option value="" disabled selected>Choose your option</option>
                     </select>
@@ -90,7 +94,7 @@
                             <span class=""><!-- {{vm.userBundle['common.audience.compliance.summary']}} --> Audience<a id="gaugetooltip_audience" class="btn-floating btn-flat blue-text right btn_popover gaugeinfo" data-position="bottom" data-delay="75"> <i class="material-icons blue-text" >info_outline</i></a></span>
                         </label>
                     </div>
-                </div> 
+                </div>
 
             </div>
         </form>
@@ -99,13 +103,13 @@
 <div class="blue-grey lighten-5 filterselection" ng-if="vm.selectedSpecialists.length > 0  || vm.selectedMarketingNames.length > 0">
     <label class="filterlables"><b>{{vm.userBundle['common.specialist']}}: </b></label>
     <div ng-repeat="specialist in vm.selectedSpecialists" class="chip">
-        {{specialist.organisationName}} <i ng-click="vm.removeTags($index, vm.selectedSpecialists)" class="close material-icons">close</i>
+        {{specialist.organisationName}} <i ng-click="vm.removeTags($index, 'selectedSpecialists')" class="close material-icons">close</i>
     </div>
 
 
     <label class="filterlables"><b>{{vm.userBundle['common.marketingname']}}: </b></label>
     <div ng-repeat="data in vm.selectedMarketingNames" class="chip">
-        {{data.marketingName}}<i ng-click="vm.removeTags($index, vm.selectedMarketingNames)" class="close material-icons">close</i>
+        {{data.marketingName}}<i ng-click="vm.removeTags($index, 'selectedMarketingNames')" class="close material-icons">close</i>
     </div>
 </div>
 
@@ -146,7 +150,7 @@
 </div>
 
 <div class="row">
-    <div class="col s12 m6 chart-container" ng-show="vm.showCampaign">
+    <div class="col s12 m6 chart-container" ng-show="vm.showCampaign" ng-class="{'fullscreen-chart' : vm.fullscreenFor == 'campaign', 'hide-chart' : vm.fullscreenFor != 'campaign' && vm.fullscreenFor != ''}">
         <div class="card">
             <span class="card-title">
                 <span ng-if="vm.isFrameDashbaord == 1">
@@ -176,6 +180,7 @@
                     <label for="campaign_compaliant">Compliant ({{vm.campaign.compliantCount}})</label> &nbsp;&nbsp;
                     <input type="checkbox" class="filled-in" id="campaign_non_compaliant" ng-model="vm.campaign.noncompaliant" ng-click="vm.compaliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign')" />
                     <label for="campaign_non_compaliant">Non Compliant ({{vm.campaign.noncompliantCount}})</label> &nbsp;&nbsp;
+                    <span><i ng-click="vm.fullscreenFor == 'campaign' ? vm.fullscreenFor = '' :  vm.fullscreenFor = 'campaign'" class="small material-icons fullscreen-icon">{{ vm.fullscreenFor == 'campaign' ? 'fullscreen_exit' : 'fullscreen' }}</i></span> 
                 </span>
             </span>
 
@@ -209,7 +214,7 @@
         </div> -->
     </div>
 
-    <div class="col s12 m6 chart-container" ng-show="vm.showPlayer">
+    <div class="col s12 m6 chart-container" ng-show="vm.showPlayer" ng-class="{'fullscreen-chart' : vm.fullscreenFor == 'player', 'hide-chart' : vm.fullscreenFor != 'player' && vm.fullscreenFor != ''}">
         <div class="card">
             <span class="card-title">
                 <span  ng-if="vm.isFrameDashbaord == 1">
@@ -238,6 +243,7 @@
                     <label for="player_compaliant">Compliant ({{vm.player.compliantCount}})</label> &nbsp;&nbsp;
                     <input type="checkbox" class="filled-in" id="player_non_compaliant" ng-click="vm.compaliantcheck(vm.player.compaliant, vm.player.noncompaliant, 'player')" ng-model="vm.player.noncompaliant"  />
                     <label for="player_non_compaliant">Non Compliant ({{vm.player.noncompliantCount}})</label> &nbsp;&nbsp;
+                    <span><i ng-click="vm.fullscreenFor == 'player' ? vm.fullscreenFor = '' :  vm.fullscreenFor = 'player'" class="small material-icons fullscreen-icon">{{ vm.fullscreenFor == 'player' ? 'fullscreen_exit' : 'fullscreen' }}</i></span> 
                 </span>
             </span>
             <div style="height: 100%;overflow-y: auto; min-height: 405px; max-height: 405px;">
@@ -263,7 +269,7 @@
 </div>
 
 <div class="row">
-    <div class="col s12 m6 chart-container" ng-show="vm.showDay">
+    <div class="col s12 m6 chart-container" ng-show="vm.showDay" ng-class="{'fullscreen-chart' : vm.fullscreenFor == 'day', 'hide-chart' : vm.fullscreenFor != 'day' && vm.fullscreenFor != ''}">
         <div class="card">
             <span class="card-title">
                 <span ng-if="vm.isFrameDashbaord==1">
@@ -294,6 +300,7 @@
                         <input type="checkbox" class="filled-in" id="day_non_compaliant" ng-click="vm.compaliantcheck(vm.day.compaliant,
                     vm.day.noncompaliant, 'day')"  ng-model="vm.day.noncompaliant" />
                         <label for="day_non_compaliant">Non Compliant ({{vm.day.noncompliantCount}})</label> &nbsp;&nbsp;
+                        <span><i ng-click="vm.fullscreenFor == 'day' ? vm.fullscreenFor = '' :  vm.fullscreenFor = 'day'" class="small material-icons fullscreen-icon">{{ vm.fullscreenFor == 'day' ? 'fullscreen_exit' : 'fullscreen' }}</i></span> 
              </span>
             </span>
             <div class="card-content">
@@ -303,7 +310,7 @@
             </div>
         </div>
     </div>
-    <div class="col s12 m6 chart-container" ng-show="vm.showHour">
+    <div class="col s12 m6 chart-container" ng-show="vm.showHour" ng-class="{'fullscreen-chart' : vm.fullscreenFor == 'hour', 'hide-chart' : vm.fullscreenFor != 'hour' && vm.fullscreenFor != ''}">
         <div class="card">
             <span class="card-title">
                 <span ng-if="vm.isFrameDashbaord==1">
@@ -332,6 +339,7 @@
                     <label for="hour_compaliant">Compliant ({{vm.hour.noncompliantCount}})</label> &nbsp;&nbsp;
                     <input type="checkbox" class="filled-in" id="hour_non_compaliant" ng-model="vm.hour.noncompaliant" ng-click="vm.compaliantcheck(vm.hour.compaliant, vm.hour.noncompaliant, 'hour')" />
                     <label for="hour_non_compaliant">Non Compliant ({{vm.hour.compliantCount}})</label> &nbsp;&nbsp;
+                    <span><i ng-click="vm.fullscreenFor == 'hour' ? vm.fullscreenFor = '' :  vm.fullscreenFor = 'hour'" class="small material-icons fullscreen-icon">{{ vm.fullscreenFor == 'hour' ? 'fullscreen_exit' : 'fullscreen' }}</i></span> 
                 </span>
             </span>
 
@@ -406,7 +414,7 @@
                     <tr ng-repeat="items in vm.zendeskTableBody">
                         <td ng-repeat="header in vm.zendeskTableHeaders" ng-if="header != 'url'">{{items[header]}}</td>
                         <td ng-repeat="header in vm.zendeskTableHeaders" ng-if="header == 'url'">
-                            <a target="_blank" ng-href="{{items[header]}}"> {{items[header]}}</a> 
+                            <a target="_blank" ng-href="{{items[header]}}"> {{items[header]}}</a>
                         </td>
                     </tr>
 

@@ -189,15 +189,46 @@ tags-input .autocomplete .suggestion-item label {
   line-height: 22px;
 }
 
-.filter_block input[type="checkbox"]+label {
+/* .filter_block input[type="checkbox"]+label {
   padding: 0
-}
+} */
 
 .filter_block input[type="checkbox"]+label:before {
-  display: none;
+  /* display: none; */
   content: "";
-  padding: 0
+  padding: 0;
 }
+
+.select-wrapper span.caret {  
+  background: white;
+  z-index: 9;
+  width: 28px;
+  height: 20px;
+  padding-left: 10px;
+  padding-top: 4px;
+}
+
+.dropdown-content li>a, .dropdown-content li>span {  
+  padding: 10px 16px;
+}
+
+.fullscreen-icon {
+  top: 10px;
+  cursor: pointer;
+  position: relative;
+}
+
+.fullscreen-chart {
+  width: 100% !important;
+  display: block;
+}
+.hide-chart {
+  display: none;
+}
+
+/* li.disabled span {
+  display: none;
+} */
 
 input[type="checkbox"]+label:before {
   content: "";
@@ -875,7 +906,7 @@ table td[class*="col-"], table th[class*="col-"] {
 }
 
 .select-wrapper input.select-dropdown {
-  padding: 0 0 7px 0;
+  padding: 0 0 0 0;
 }
 
 
@@ -1261,9 +1292,12 @@ inspector-stylesheet:1 .material-tooltip .backdrop {
   html {
     font-size: 14px !important;
   }
-  
+  span .right {
+    font-size: 6px;
+  }
   .card .card-title {
     font-size: 15px;
+    padding: 10px 10px;
   }
 }
 
