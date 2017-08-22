@@ -1226,8 +1226,7 @@
                         // if condition to check if there is search criteria added, then it should filter out 
                         if (vm.searchCampaign && vm.searchCampaign.length > 0) {
                             vm.searchCampaignRef();
-                        } else {
-                            debugger
+                        } else {                            
                              vm.compaliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign' , true);
                            // generateChart('campaign', vm.campaignSummary, true);
                         }
