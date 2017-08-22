@@ -325,53 +325,54 @@
             if (points.length > 0 && (vm.campaign.compaliant || vm.campaign.noncompaliant)) { // condition added for CC-115
 
                 $('#compliance-tooltip').hide();
+                var campaign = points[0]['_chart'].config.data.datasets[points[0]['_datasetIndex']].campaignDetails[points[0]['_index']];
 
                 //CCP-295, Nishit
-                if (vm.isFrameDashbaord == 1 && points[0]['_chart'].config.data.datasets[points[0]['_datasetIndex']].campaignDetails[points[0]['_index']].value == 0) {
+                if (vm.isFrameDashbaord == 1 && campaign.value == 0) {
                     return false;
                 }
 
-                if (vm.isFrameDashbaord == 2 && points[0]['_chart'].config.data.datasets[points[0]['_datasetIndex']].campaignDetails[points[0]['_index']].avgValue == 0) {
+                if (vm.isFrameDashbaord == 2 && campaign.avgValue == 0) {
                     return false;
                 }
 
-                if (vm.isFrameDashbaord == 3 && points[0]['_chart'].config.data.datasets[points[0]['_datasetIndex']].campaignDetails[points[0]['_index']].audienceValue == 0) {
+                if (vm.isFrameDashbaord == 3 && campaign.audienceValue == 0) {
                     return false;
                 }
 
-                vm.selectedCampaign = points[0]['_chart'].config.data.datasets[points[0]['_datasetIndex']].campaignDetails[points[0]['_index']].id;
-                
+                vm.selectedCampaign = campaign.id;
+
                 vm.campaignBar.selectedCampaign = _.cloneDeep(vm.selectedCampaign);
-                vm.campaignBar.brandName = points[0]['_chart'].config.data.datasets[points[0]['_datasetIndex']].campaignDetails[points[0]['_index']].brandName;
-                vm.campaignBar.advertiserName = points[0]['_chart'].config.data.datasets[points[0]['_datasetIndex']].campaignDetails[points[0]['_index']].advertiserName;
+                vm.campaignBar.brandName = campaign.brandName;
+                vm.campaignBar.advertiserName = campaign.advertiserName;
                 //-- Clear the Children Graph and Children Request Parameters//
-                vm.selectedFrame = null
-                vm.selectedDay = null
+                vm.selectedFrame = null;
+                vm.selectedDay = null;
                 //-----------------------------------------------------------//
 
                 vm.playerData = {};
                 vm.player.compaliant = true;
                 vm.player.noncompaliant = true;
-                getSummaries();                
+                getSummaries();
                 var campaignId = vm.selectedCampaign.split(':')[1];
 
-                if (campaignId) {
+                if (campaignId && campaign.failedAudience) {
                     var params = {
                         "id": campaignId,
                         "startDate": vm.datePicker.date.startDate
-                    };                    
+                    };
                     filterService.getTooltipData(params).then(function (response) {
 
                         if (response) {
-                            var campaignData = response.data[campaignId];                            
-                            if (campaignData && campaignData.length > 0) {                                
+                            var campaignData = response.data[campaignId];
+                            if (campaignData && campaignData.length > 0) {
                                 vm.isZendeskTicketAvailable = true;
                                 vm.zendeskTableHeaders = Object.keys(campaignData[0]);
-                                vm.zendeskTableBody = campaignData;                                                            
+                                vm.zendeskTableBody = campaignData;
                             } else {
                                 $('#compliance-tooltip').hide();
                                 vm.isZendeskTicketAvailable = false;
-                               // Materialize.toast(response.message, TOASTER_TIME_INTERVAL, 'rounded');
+                                // Materialize.toast(response.message, TOASTER_TIME_INTERVAL, 'rounded');
                             }
                         } else {
                             $('#compliance-tooltip').hide();
@@ -390,21 +391,22 @@
             if (points.length > 0) {
                 $('#player-tooltip').hide();
 
-                //CCP-295, Nishit
+                // CCP-295, Nishit
+                var player = points[0]['_chart'].config.data.datasets[points[0]['_datasetIndex']].playerDetails[points[0]['_index']];
 
-                if (vm.isFrameDashbaord == 1 && points[0]['_chart'].config.data.datasets[points[0]['_datasetIndex']].playerDetails[points[0]['_index']].value == 0) {
+                if (vm.isFrameDashbaord == 1 && player.value == 0) {
                     return false;
                 }
 
-                if (vm.isFrameDashbaord == 2 && points[0]['_chart'].config.data.datasets[points[0]['_datasetIndex']].playerDetails[points[0]['_index']].avgValue == 0) {
+                if (vm.isFrameDashbaord == 2 && player.avgValue == 0) {
                     return false;
                 }
 
-                if (vm.isFrameDashbaord == 3 && points[0]['_chart'].config.data.datasets[points[0]['_datasetIndex']].playerDetails[points[0]['_index']].audienceValue == 0) {
+                if (vm.isFrameDashbaord == 3 && player.audienceValue == 0) {
                     return false;
                 }
 
-                vm.selectedFrame = points[0]['_chart'].config.data.datasets[points[0]['_datasetIndex']].playerDetails[points[0]['_index']].id; // Value of particluar bar
+                vm.selectedFrame = player.id; // Value of particluar bar
                 vm.campaignBar.selectedFrame = _.cloneDeep(vm.selectedFrame);
                 //-- Clear the Children Graph and Children Request Parameters
                 vm.selectedDay = null
@@ -413,6 +415,33 @@
                 vm.day.compaliant = true;
                 vm.day.noncompaliant = true;
                 getSummaries();
+                var displayUnitId = player.label;
+
+                if (displayUnitId && player.failedAudience) {
+                    var params = {
+                        "id": displayUnitId,
+                        "startDate": vm.datePicker.date.startDate
+                    };
+                    filterService.getTooltipData(params).then(function (response) {
+
+                        if (response) {
+                            var frameData = response.data[displayUnitId];
+                            if (frameData && frameData.length > 0) {
+                                vm.isZendeskTicketAvailable = true;
+                                vm.zendeskTableHeaders = Object.keys(frameData[0]);
+                                vm.zendeskTableBody = frameData;
+                            } else {
+                                $('#compliance-tooltip').hide();
+                                vm.isZendeskTicketAvailable = false;
+                                // Materialize.toast(response.message, TOASTER_TIME_INTERVAL, 'rounded');
+                            }
+                        } else {
+                            $('#compliance-tooltip').hide();
+                            vm.isZendeskTicketAvailable = false;
+                            // Materialize.toast(response.message, TOASTER_TIME_INTERVAL, 'rounded');
+                        }
+                    });
+                }
             } else {
                 return false;
             }
@@ -541,7 +570,7 @@
                             sumOfTarget += inelement1['value'];
                         }
                     }
-                    var percentage = (sumOfActual / sumOfTarget) * 100;
+                    var percentage = sumOfTarget == 0 ? 0 : ((sumOfActual / sumOfTarget) * 100);
                     vm.channelSummaryByImpression[index].percentage = percentage;
                     vm.channelSummaryByImpression[index].percentageDisplay = parseFloat(percentage).toFixed(2);
                 } else {
@@ -555,12 +584,13 @@
                 var inelement1 = vm.summary[index1];
                 if (totalCampaigns[inelement1['id']]) {
                     totalCampaignsForBusinessArea = totalCampaigns[inelement1['id']];
-
-                    compliantCampaignsForBusinessArea = totalCampaignsForBusinessArea.filter(function (obj) {
-                        return obj.failedAudience == false;
-                    });
-                    var percentage = (compliantCampaignsForBusinessArea.length / totalCampaignsForBusinessArea.length) * 100;
-                    vm.summary[index1].value = parseFloat(percentage).toFixed(2);
+                    if (totalCampaignsForBusinessArea.length > 0) {
+                        compliantCampaignsForBusinessArea = totalCampaignsForBusinessArea.filter(function (obj) {
+                            return obj.failedAudience == false;
+                        });
+                        var percentage = (compliantCampaignsForBusinessArea.length / totalCampaignsForBusinessArea.length) * 100;
+                        vm.summary[index1].value = parseFloat(percentage).toFixed(2);
+                    }
                 } else {
                     vm.summary[index1].value = 0;
                 }
@@ -569,7 +599,7 @@
 
         }
 
-        vm.searchCampaignRef = function () {            
+        vm.searchCampaignRef = function () {
             if (vm.searchCampaign && vm.searchCampaign.trim().length > 6) {
                 var substringArray = _.map(['SM', 'SB'], function (substring) {
                     return vm.searchCampaign.toUpperCase().indexOf(substring) > -1;
@@ -578,12 +608,12 @@
                 vm.clonnedCamapaignSummary = _.cloneDeep(vm.campaignSummary);
 
                 if (substringArray.indexOf(true) > -1) {
-                    var campaignSummary = _.cloneDeep(vm.campaignSummary);                   
+                    var campaignSummary = _.cloneDeep(vm.campaignSummary);
 
                     var data = campaignSummary.filter(function (obj) {
                         return obj.id.indexOf(vm.searchCampaign.toUpperCase()) > -1
                     });
-                    vm.campaignSummary = _.cloneDeep(data);                    
+                    vm.campaignSummary = _.cloneDeep(data);
                     vm.clonnedSummary = _.cloneDeep(vm.summary);
                     vm.clonnedChannelSummaryByImpression = _.cloneDeep(vm.channelSummaryByImpression);
                     filterSummaries(data);
@@ -593,7 +623,7 @@
                 }
             } else {
                 // and condition added for CC-136
-                if (vm.searchCampaign.trim().length == 0 && vm.clonnedSummary.length > 0) { 
+                if (vm.searchCampaign.trim().length == 0 && vm.clonnedSummary.length > 0) {
                     vm.campaignSummary = _.cloneDeep(vm.clonnedCamapaignSummary);
                     vm.summary = _.cloneDeep(vm.clonnedSummary);
                     vm.channelSummaryByImpression = _.cloneDeep(vm.clonnedChannelSummaryByImpression);
@@ -837,65 +867,65 @@
                             //             "startDate": vm.datePicker.date.startDate
                             //         };
                             //         campaignId = params.id;
-                                    // filterService.getTooltipData(params).then(function (response) {
+                            // filterService.getTooltipData(params).then(function (response) {
 
-                                    //     if (response) {
-                                    //         campaignData = response.data[campaignId];
-                                    //         if (campaignData && campaignData.length > 0) {
-                                    //             // Tooltip Element
-                                    //             var tooltipEl = document.getElementById('compliance-tooltip');
+                            //     if (response) {
+                            //         campaignData = response.data[campaignId];
+                            //         if (campaignData && campaignData.length > 0) {
+                            //             // Tooltip Element
+                            //             var tooltipEl = document.getElementById('compliance-tooltip');
 
-                                    //             function getBody(bodyItem) {
-                                    //                 return bodyItem.lines;
-                                    //             }
+                            //             function getBody(bodyItem) {
+                            //                 return bodyItem.lines;
+                            //             }
 
-                                    //             // Set Text
-                                    //             if (tooltipModel.body) {
-                                    //                 var titleLines = "Campaign" + campaignId; //tooltipModel.title || [];
-                                    //                 var bodyLines = tooltipModel.body.map(getBody);
+                            //             // Set Text
+                            //             if (tooltipModel.body) {
+                            //                 var titleLines = "Campaign" + campaignId; //tooltipModel.title || [];
+                            //                 var bodyLines = tooltipModel.body.map(getBody);
 
-                                    //                 var innerHtml = '<thead>';
-                                    //                 innerHtml += '<tr><th>Campaign</th><th>' + campaignId + '</th></tr>';
-                                    //                 innerHtml += '</thead><tbody>';
+                            //                 var innerHtml = '<thead>';
+                            //                 innerHtml += '<tr><th>Campaign</th><th>' + campaignId + '</th></tr>';
+                            //                 innerHtml += '</thead><tbody>';
 
-                                    //                 campaignData.forEach(function (body, i) {
-                                    //                     var colors = tooltipModel.labelColors[0];
-                                    //                     var style = 'background:' + colors.backgroundColor;
-                                    //                     style += '; border-color:' + colors.borderColor;
-                                    //                     style += '; border-width: 2px';
-                                    //                     var span = '<span class="chartjs-tooltip-key" style="' + style + '"></span>';
-                                    //                     var buildBody = Object.keys(body);
-                                    //                     buildBody.forEach(function (inBody, inIndex) {
-                                    //                         if (inBody != 'url') {
-                                    //                             innerHtml += '<tr><td style="color: rgba(255, 0, 0, 1);font-weight:600;">' + inBody + ' </td><td> ' + body[inBody] + '</td></tr>';
-                                    //                         } else {
-                                    //                             innerHtml += '<tr><td style="color: rgba(255, 0, 0, 1);font-weight:600;">' + inBody + ' </td><td><a target="_blank" href="' + body[inBody] + '"> ' + body[inBody] + '</a></td></tr>';
-                                    //                         }
-                                    //                     });
-                                    //                 });
-                                    //                 innerHtml += '</tbody>';
+                            //                 campaignData.forEach(function (body, i) {
+                            //                     var colors = tooltipModel.labelColors[0];
+                            //                     var style = 'background:' + colors.backgroundColor;
+                            //                     style += '; border-color:' + colors.borderColor;
+                            //                     style += '; border-width: 2px';
+                            //                     var span = '<span class="chartjs-tooltip-key" style="' + style + '"></span>';
+                            //                     var buildBody = Object.keys(body);
+                            //                     buildBody.forEach(function (inBody, inIndex) {
+                            //                         if (inBody != 'url') {
+                            //                             innerHtml += '<tr><td style="color: rgba(255, 0, 0, 1);font-weight:600;">' + inBody + ' </td><td> ' + body[inBody] + '</td></tr>';
+                            //                         } else {
+                            //                             innerHtml += '<tr><td style="color: rgba(255, 0, 0, 1);font-weight:600;">' + inBody + ' </td><td><a target="_blank" href="' + body[inBody] + '"> ' + body[inBody] + '</a></td></tr>';
+                            //                         }
+                            //                     });
+                            //                 });
+                            //                 innerHtml += '</tbody>';
 
-                                    //                 var tableRoot = tooltipEl.querySelector('table');
-                                    //                 tableRoot.innerHTML = innerHtml;
-                                    //             }
+                            //                 var tableRoot = tooltipEl.querySelector('table');
+                            //                 tableRoot.innerHTML = innerHtml;
+                            //             }
 
-                                    //             // Display, position, and set styles for font
-                                    //             tooltipEl.style.opacity = 1;
-                                    //             tooltipEl.style.display = 'block';
-                                    //             tooltipEl.style.fontFamily = tooltipModel._fontFamily;
-                                    //             tooltipEl.style.fontSize = tooltipModel.fontSize;
-                                    //             tooltipEl.style.fontStyle = tooltipModel._fontStyle;
-                                    //             tooltipEl.style.padding = tooltipModel.yPadding + 'px ' + tooltipModel.xPadding + 'px';
+                            //             // Display, position, and set styles for font
+                            //             tooltipEl.style.opacity = 1;
+                            //             tooltipEl.style.display = 'block';
+                            //             tooltipEl.style.fontFamily = tooltipModel._fontFamily;
+                            //             tooltipEl.style.fontSize = tooltipModel.fontSize;
+                            //             tooltipEl.style.fontStyle = tooltipModel._fontStyle;
+                            //             tooltipEl.style.padding = tooltipModel.yPadding + 'px ' + tooltipModel.xPadding + 'px';
 
-                                    //         } else {
-                                    //             $('#compliance-tooltip').hide();
-                                    //             Materialize.toast(response.message, TOASTER_TIME_INTERVAL, 'rounded');
-                                    //         }
-                                    //     } else {
-                                    //         $('#compliance-tooltip').hide();
-                                    //         Materialize.toast(response.message, TOASTER_TIME_INTERVAL, 'rounded');
-                                    //     }
-                                    // });
+                            //         } else {
+                            //             $('#compliance-tooltip').hide();
+                            //             Materialize.toast(response.message, TOASTER_TIME_INTERVAL, 'rounded');
+                            //         }
+                            //     } else {
+                            //         $('#compliance-tooltip').hide();
+                            //         Materialize.toast(response.message, TOASTER_TIME_INTERVAL, 'rounded');
+                            //     }
+                            // });
 
                             //     }
                             // }
