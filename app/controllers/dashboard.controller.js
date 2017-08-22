@@ -151,7 +151,7 @@
             checkAllcheckBoxes(); // CCP-308, Nishit
         };
 
-        vm.compaliantcheck = function (compaliant, noncompaliant, chart) {
+        vm.compaliantcheck = function (compaliant, noncompaliant, chart, flag) {
 
             if (chart === 'campaign') {
 
@@ -186,7 +186,7 @@
                 if (!compaliant && !noncompaliant) {
                     data = [];
                 }
-                generateChart('campaign', data, false);
+                generateChart('campaign', data, flag);
 
             }
 
@@ -494,13 +494,13 @@
             vm.channelSummaryByImpression = vm.channelSummaryByImpression
 
             if (vm.campaignSummary)
-                vm.compaliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign');
+                vm.compaliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign', false);
             if (vm.frameSummary)
-                vm.compaliantcheck(vm.player.compaliant, vm.player.noncompaliant, 'player');
+                vm.compaliantcheck(vm.player.compaliant, vm.player.noncompaliant, 'player', false);
             if (vm.daySummary)
-                vm.compaliantcheck(vm.day.compaliant, vm.day.noncompaliant, 'day');
+                vm.compaliantcheck(vm.day.compaliant, vm.day.noncompaliant, 'day', false);
             if (vm.spanSummary)
-                vm.compaliantcheck(vm.hour.compaliant, vm.hour.noncompaliant, 'hour');
+                vm.compaliantcheck(vm.hour.compaliant, vm.hour.noncompaliant, 'hour', false);
 
             highlightSelectedBar();
             setToolTips();
@@ -611,6 +611,7 @@
                     vm.clonnedSummary = _.cloneDeep(vm.summary);
                     vm.clonnedChannelSummaryByImpression = _.cloneDeep(vm.channelSummaryByImpression);
                     filterSummaries(data);
+                    generateChart('campaign', data, true);
                 } else {
                     console.log('Please enter valid campaign Reference');
                 }
@@ -621,7 +622,7 @@
                     vm.summary = _.cloneDeep(vm.clonnedSummary);
                     vm.channelSummaryByImpression = _.cloneDeep(vm.clonnedChannelSummaryByImpression);
                 }
-                vm.compaliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign');
+                vm.compaliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign', false);
                 return false;
             }
         }
@@ -1221,7 +1222,9 @@
                         if (vm.searchCampaign && vm.searchCampaign.length > 0) {
                             vm.searchCampaignRef();
                         } else {
-                            generateChart('campaign', vm.campaignSummary, true);
+                            debugger
+                             vm.compaliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign' , true);
+                           // generateChart('campaign', vm.campaignSummary, true);
                         }
                     }
                     else {
