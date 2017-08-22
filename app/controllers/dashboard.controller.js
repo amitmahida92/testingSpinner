@@ -181,17 +181,11 @@
                         });
                     }
 
-                    // if (vm.searchCampaign && vm.searchCampaign.length > 0) {
-                    //     vm.searchCampaignRef();
-                    //     return false;
-                    // }
-
                 }
 
                 if (!compaliant && !noncompaliant) {
                     data = [];
                 }
-
                 generateChart('campaign', data, false);
 
             }
@@ -587,18 +581,17 @@
                     vm.clonnedSummary = _.cloneDeep(vm.summary);
                     vm.clonnedChannelSummaryByImpression = _.cloneDeep(vm.channelSummaryByImpression);
                     filterSummaries(data);
-                    generateChart('campaign', data, true);
                 } else {
                     console.log('Please enter valid campaign Reference');
                 }
             } else {
                 // and condition added for CC-136
-                if (vm.searchCampaign.trim().length == 0 && vm.clonnedSummary.length > 0) { 
+                if (vm.searchCampaign.trim().length == 0 && vm.clonnedCamapaignSummary.length > 0) { 
                     vm.campaignSummary = _.cloneDeep(vm.clonnedCamapaignSummary);
                     vm.summary = _.cloneDeep(vm.clonnedSummary);
                     vm.channelSummaryByImpression = _.cloneDeep(vm.clonnedChannelSummaryByImpression);
                 }
-                generateChart('campaign', vm.campaignSummary, true);
+                vm.compaliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign');
                 return false;
             }
         }
