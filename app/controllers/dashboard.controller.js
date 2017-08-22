@@ -569,7 +569,7 @@
                 var inelement = vm.channelSummaryByImpression[index];
 
                 if (totalCampaigns[inelement.id]) {
-                    totalCampaignsForBusinessArea = totalCampaigns.inelement.id;
+                    totalCampaignsForBusinessArea = totalCampaigns[inelement['id']];
                     var sumOfActual = 0, sumOfTarget = 0;
 
                     if (totalCampaignsForBusinessArea.length > 0) {
@@ -626,7 +626,7 @@
                     vm.clonnedSummary = _.cloneDeep(vm.summary);
                     vm.clonnedChannelSummaryByImpression = _.cloneDeep(vm.channelSummaryByImpression);
                     filterSummaries(data);
-                    generateChart('campaign', data, true);
+                    vm.compaliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign', false);
                 } else {
                     console.log('Please enter valid campaign Reference');
                 }
