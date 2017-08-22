@@ -1577,7 +1577,7 @@
 
         function calculateWidthForCampaign(defaultWidth, totalRecords) {
             var _defaultWidth = defaultWidth;
-            return ((totalRecords * 28) < _defaultWidth ? _defaultWidth : defaultWidth += (totalRecords * 38)) // Nishit, CCP-291
+            return ((totalRecords * 31) < _defaultWidth ? _defaultWidth : defaultWidth += (totalRecords * 38)) // Nishit, CCP-291, CC-23
         }
 
 
