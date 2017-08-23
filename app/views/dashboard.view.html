@@ -51,7 +51,7 @@
 
                 <div class="section col s12 m2" style="z-index:2" id="selectedSpecialists">
                     <label for="">{{vm.userBundle['common.specialist']}}</label>
-                    <select class="" ng-model="vm.selectedSpecialists" material-select multiple watch>
+                    <select ng-change="vm.onAddTags()" class="" ng-model="vm.selectedSpecialists" material-select multiple watch>
                         <option value="" disabled selected>Select Specialist</option>    
                         <option ng-value="value" ng-repeat="value in vm.specialists">{{value.organisationName}}</option>
                     </select>
@@ -65,7 +65,7 @@
                 <div class=" col s12 m2" style="z-index:1" id="selectedMarketingNames">
                     <label for="">{{vm.userBundle['common.marketingname']}}</label>
 
-                    <select class="" ng-model="vm.selectedMarketingNames" material-select multiple watch>
+                    <select class="" ng-model="vm.selectedMarketingNames" material-select multiple watch ng-change="vm.onAddTags()">
                         <option value="" disabled selected>Select Marketing Name</option>    
                         <option ng-value="value" ng-repeat="value in vm.marketingNames">{{value.marketingName}}</option>
                     </select>

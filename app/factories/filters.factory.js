@@ -56,7 +56,7 @@
             console.error("Error in fetching data from the service");
         }
 
-        function getSummaries(requestParams) {
+        function getSummaries(requestParams) {            
             return $http({
                 method: HTTP_METHOD,
                 url: POP_SUMMARY,

@@ -171,7 +171,7 @@ module.exports = function (grunt) {
     });
 
     // Default task(s).
-    grunt.registerTask('build', [
+    grunt.registerTask('default', [
         'clean:dist',
         'useminPrepare',
         'concurrent',

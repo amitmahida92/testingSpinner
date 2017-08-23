@@ -540,21 +540,23 @@
 
         vm.removeTags = function (index, arr) {
             checkAllcheckBoxes();
-            getSummaries();
-            setTimeout(function () {                             
-                if(arr === "selectedMarketingNames") {
-                    $("#" + arr + " li").filter(function () { return $.text([this]) === vm[arr][index].marketingName; }).trigger('click');                
+            // getSummaries();
+            setTimeout(function () {
+                if (arr === "selectedMarketingNames") {
+                    $("#" + arr + " li").filter(function () { return $.text([this]) === vm[arr][index].marketingName; }).trigger('click');
                 } else {
                     $("#" + arr + " li").filter(function () { return $.text([this]) === vm[arr][index].organisationName; }).trigger('click');
                 }
-                
+
                 $("body").trigger('click');
             }.bind(this), 0);
         };
 
-        vm.onAddTags = function (data) {
-            checkAllcheckBoxes();
-            getSummaries();
+        vm.onAddTags = function () {            
+            if(vm.selectedMarketingNames.length > 0 || vm.selectedSpecialists.length > 0){
+                checkAllcheckBoxes();
+                getSummaries();
+            }                        
         };
 
         /**
@@ -1187,122 +1189,127 @@
 
             filterService.getSummaries(requestParameter).then(function (data) {
                 vm.cachedFilterObject = _.cloneDeep(vm.filterObject);
-                var data = data.data;
+                if (data && data.data) {
+                    var data = data.data;
+                    if (data.channelSummary && data.channelSummary.length > 0) {
 
-                if (data.channelSummary && data.channelSummary.length > 0) {
+                        vm.channelSummary = data.channelSummary;
+                        vm.channelSummaryByAudience = data.channelSummaryByAudience;
+                        vm.channelSummaryByImpression = data.channelSummaryByImpression;
 
-                    vm.channelSummary = data.channelSummary;
-                    vm.channelSummaryByAudience = data.channelSummaryByAudience;
-                    vm.channelSummaryByImpression = data.channelSummaryByImpression;
+                        vm.channelSummary = _.map(vm.channelSummary, function (obj) {
+                            return ((vm.selectedChannel.indexOf(obj.id) === -1) ? angular.extend(obj, { guageColors: vm.defaultGuageColors }) : angular.extend(obj, { guageColors: vm.selectedGuageColors }));
+                        });
 
-                    vm.channelSummary = _.map(vm.channelSummary, function (obj) {
-                        return ((vm.selectedChannel.indexOf(obj.id) === -1) ? angular.extend(obj, { guageColors: vm.defaultGuageColors }) : angular.extend(obj, { guageColors: vm.selectedGuageColors }));
-                    });
+                        vm.channelSummaryByAudience = _.map(vm.channelSummaryByAudience, function (obj) {
+                            return ((vm.selectedChannel.indexOf(obj.id) === -1) ? angular.extend(obj, { guageColors: vm.defaultGuageColors }) : angular.extend(obj, { guageColors: vm.selectedGuageColors }));
+                        });
 
-                    vm.channelSummaryByAudience = _.map(vm.channelSummaryByAudience, function (obj) {
-                        return ((vm.selectedChannel.indexOf(obj.id) === -1) ? angular.extend(obj, { guageColors: vm.defaultGuageColors }) : angular.extend(obj, { guageColors: vm.selectedGuageColors }));
-                    });
+                        vm.channelSummaryByImpression = _.map(vm.channelSummaryByImpression, function (obj) {
+                            var percentage;
 
-                    vm.channelSummaryByImpression = _.map(vm.channelSummaryByImpression, function (obj) {
-                        var percentage;
+                            if (parseFloat(obj.value)) {
+                                percentage = parseFloat(((obj.audienceValue * 100) / obj.value).toFixed(2));
+                                percentage = (isNaN(percentage) ? "0.00" : percentage);
+                            } else {
+                                percentage = "0.00";
+                            }
 
-                        if (parseFloat(obj.value)) {
-                            percentage = parseFloat(((obj.audienceValue * 100) / obj.value).toFixed(2));
-                            percentage = (isNaN(percentage) ? "0.00" : percentage);
-                        } else {
-                            percentage = "0.00";
+                            var moreData = {
+                                percentageDisplay: _.cloneDeep(percentage),
+                                percentage: (percentage > 100 ? 100 : percentage),
+                            }
+                            return (angular.extend(obj, { guageColors: vm.impressionGaugeColors }, moreData));
+                        });
+
+                        if (vm.isFrameDashbaord != 3)
+                            vm.summary = vm.channelSummary;
+                        else
+                            vm.summary = vm.channelSummaryByAudience;
+
+                    }
+                    if (data.campaignSummary) {
+                        if (data.campaignSummary.length > 0) {
+                            vm.campaignOptions.size = _.clone(configureOptions.HORIZONTAL_BAR.size); // after change in filter need to reset size
+                            vm.campaignSummary = _.map(data.campaignSummary, function (obj) {
+                                obj.value = parseFloat(obj.value);
+                                obj.avgValue = parseFloat(obj.avgValue);
+                                obj.audienceValue = parseFloat(obj.audienceValue);
+                                return obj;
+                            });
+
+                            // if condition to check if there is search criteria added, then it should filter out 
+                            if (vm.searchCampaign && vm.searchCampaign.length > 0) {
+                                vm.searchCampaignRef();
+                            } else {
+                                vm.compaliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign', true);
+                                // generateChart('campaign', vm.campaignSummary, true);
+                            }
+                        }
+                        else {
+                            vm.campaignSummary = [];
+                            vm.campaignData = {};
+                            vm.showCampaign = false;
+                            vm.campaignBar = {};
+                        }
+                    }
+                    if (data.frameSummary) {
+                        if (data.frameSummary.length > 0) {
+                            vm.barOptions.size = _.clone(configureOptions.BAR_PLAYER.size); // after change in filter need to reset size
+                            vm.frameSummary = _.map(data.frameSummary, function (obj) {
+                                obj.value = parseFloat(obj.value);
+                                obj.avgValue = parseFloat(obj.avgValue);
+                                obj.audienceValue = parseFloat(obj.audienceValue);
+                                return obj;
+                            });
+
+                            generateChart('player', vm.frameSummary, true);
+                        }
+                        else {
+                            vm.playerData = {};
+                            vm.showPlayer = false
+                        }
+                    }
+                    if (data.daySummary) {
+                        if (data.daySummary.length > 0) {
+                            vm.dayOptions.size = _.clone(configureOptions.BAR_DAY.size);
+                            vm.daySummary = _.map(data.daySummary, function (obj) {
+                                obj.value = parseFloat(obj.value);
+                                obj.avgValue = parseFloat(obj.avgValue);
+                                obj.audienceValue = parseFloat(obj.audienceValue);
+                                return obj;
+                            });
+                            generateChart('day', vm.daySummary, true);
+                        }
+                        else {
+                            vm.dayData = {};
+                            vm.showDay = false;
                         }
 
-                        var moreData = {
-                            percentageDisplay: _.cloneDeep(percentage),
-                            percentage: (percentage > 100 ? 100 : percentage),
+                    }
+                    if (data.spanSummary) {
+                        if (data.spanSummary.length > 0) {
+                            vm.dayOptions.size = _.clone(configureOptions.BAR_DAY.size);
+                            vm.spanSummary = _.map(data.spanSummary, function (obj) {
+                                obj.value = parseFloat(obj.value);
+                                obj.avgValue = parseFloat(obj.avgValue);
+                                obj.audienceValue = parseFloat(obj.audienceValue);
+                                return obj;
+                            });
+                            generateChart('hour', vm.spanSummary, true);
                         }
-                        return (angular.extend(obj, { guageColors: vm.impressionGaugeColors }, moreData));
-                    });
-
-                    if (vm.isFrameDashbaord != 3)
-                        vm.summary = vm.channelSummary;
-                    else
-                        vm.summary = vm.channelSummaryByAudience;
-
-                }
-
-                if (data.campaignSummary) {
-                    if (data.campaignSummary.length > 0) {
-                        vm.campaignOptions.size = _.clone(configureOptions.HORIZONTAL_BAR.size); // after change in filter need to reset size
-                        vm.campaignSummary = _.map(data.campaignSummary, function (obj) {
-                            obj.value = parseFloat(obj.value);
-                            obj.avgValue = parseFloat(obj.avgValue);
-                            obj.audienceValue = parseFloat(obj.audienceValue);
-                            return obj;
-                        });
-
-                        // if condition to check if there is search criteria added, then it should filter out 
-                        if (vm.searchCampaign && vm.searchCampaign.length > 0) {
-                            vm.searchCampaignRef();
-                        } else {
-                            vm.compaliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign', true);
-                            // generateChart('campaign', vm.campaignSummary, true);
+                        else {
+                            vm.hourData = {}
+                            vm.showHour = false
                         }
                     }
-                    else {
-                        vm.campaignSummary = [];
-                        vm.campaignData = {};
-                        vm.showCampaign = false;
-                        vm.campaignBar = {};
-                    }
-                }
-                if (data.frameSummary) {
-                    if (data.frameSummary.length > 0) {
-                        vm.barOptions.size = _.clone(configureOptions.BAR_PLAYER.size); // after change in filter need to reset size
-                        vm.frameSummary = _.map(data.frameSummary, function (obj) {
-                            obj.value = parseFloat(obj.value);
-                            obj.avgValue = parseFloat(obj.avgValue);
-                            obj.audienceValue = parseFloat(obj.audienceValue);
-                            return obj;
-                        });
-
-                        generateChart('player', vm.frameSummary, true);
-                    }
-                    else {
-                        vm.playerData = {};
-                        vm.showPlayer = false
-                    }
-                }
-                if (data.daySummary) {
-                    if (data.daySummary.length > 0) {
-                        vm.dayOptions.size = _.clone(configureOptions.BAR_DAY.size);
-                        vm.daySummary = _.map(data.daySummary, function (obj) {
-                            obj.value = parseFloat(obj.value);
-                            obj.avgValue = parseFloat(obj.avgValue);
-                            obj.audienceValue = parseFloat(obj.audienceValue);
-                            return obj;
-                        });
-                        generateChart('day', vm.daySummary, true);
-                    }
-                    else {
-                        vm.dayData = {};
-                        vm.showDay = false;
-                    }
+                    highlightSelectedBar();
 
                 }
-                if (data.spanSummary) {
-                    if (data.spanSummary.length > 0) {
-                        vm.dayOptions.size = _.clone(configureOptions.BAR_DAY.size);
-                        vm.spanSummary = _.map(data.spanSummary, function (obj) {
-                            obj.value = parseFloat(obj.value);
-                            obj.avgValue = parseFloat(obj.avgValue);
-                            obj.audienceValue = parseFloat(obj.audienceValue);
-                            return obj;
-                        });
-                        generateChart('hour', vm.spanSummary, true);
-                    }
-                    else {
-                        vm.hourData = {}
-                        vm.showHour = false
-                    }
-                }
-                highlightSelectedBar();
+
+
+
+
             });
 
         }
