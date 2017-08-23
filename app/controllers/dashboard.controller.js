@@ -618,13 +618,12 @@
             if (vm.searchCampaign && vm.searchCampaign.trim().length > 6) {
                 var substringArray = _.map(['SM', 'SB'], function (substring) {
                     return vm.searchCampaign.toUpperCase().indexOf(substring) > -1;
-                });
-
-                vm.clonnedCamapaignSummary = _.cloneDeep(vm.campaignSummary);
+                });                
+                vm.clonnedCamapaignSummary = (vm.clonnedCamapaignSummary.length > 0 ? vm.clonnedCamapaignSummary : _.cloneDeep(vm.campaignSummary));
 
                 if (substringArray.indexOf(true) > -1) {
-                    var campaignSummary = _.cloneDeep(vm.campaignSummary);
-
+                    var campaignSummary = vm.clonnedCamapaignSummary.length > 0 ? _.cloneDeep(vm.clonnedCamapaignSummary) : _.cloneDeep(vm.campaignSummary);
+                    
                     var data = campaignSummary.filter(function (obj) {
                         return obj.id.indexOf(vm.searchCampaign.toUpperCase()) > -1
                     });
