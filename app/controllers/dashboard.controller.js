@@ -375,6 +375,8 @@
                             // Materialize.toast(response.message, TOASTER_TIME_INTERVAL, 'rounded');
                         }
                     });
+                } else {
+                    vm.isZendeskTicketAvailable = false;
                 }
             } else {
                 return false;
@@ -436,6 +438,8 @@
                             // Materialize.toast(response.message, TOASTER_TIME_INTERVAL, 'rounded');
                         }
                     });
+                } else {
+                    vm.isZendeskTicketAvailable = false;
                 }
             } else {
                 return false;
