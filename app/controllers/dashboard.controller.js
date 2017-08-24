@@ -552,11 +552,11 @@
             }.bind(this), 0);
         };
 
-        vm.onAddTags = function () {            
-            if(vm.selectedMarketingNames.length > 0 || vm.selectedSpecialists.length > 0){
+        vm.onAddTags = function () {
+            if (vm.selectedMarketingNames.length > 0 || vm.selectedSpecialists.length > 0) {
                 checkAllcheckBoxes();
                 getSummaries();
-            }                        
+            }
         };
 
         /**
@@ -618,12 +618,12 @@
             if (vm.searchCampaign && vm.searchCampaign.trim().length > 6) {
                 var substringArray = _.map(['SM', 'SB'], function (substring) {
                     return vm.searchCampaign.toUpperCase().indexOf(substring) > -1;
-                });                
+                });
                 vm.clonnedCamapaignSummary = (vm.clonnedCamapaignSummary.length > 0 ? vm.clonnedCamapaignSummary : _.cloneDeep(vm.campaignSummary));
 
                 if (substringArray.indexOf(true) > -1) {
                     var campaignSummary = vm.clonnedCamapaignSummary.length > 0 ? _.cloneDeep(vm.clonnedCamapaignSummary) : _.cloneDeep(vm.campaignSummary);
-                    
+
                     var data = campaignSummary.filter(function (obj) {
                         return obj.id.indexOf(vm.searchCampaign.toUpperCase()) > -1
                     });
@@ -972,8 +972,8 @@
                     vm.playerDetails = {
                         playerDetails: []
                     };
-                    // vm.barOptions.size.width = (document.getElementById("campaign").style.width != "" ? document.getElementById("campaign").style.width : vm.barOptions.size.width);
-                    vm.barOptions.size.width = calculateWidthForCampaign(vm.barOptions.size.width, chartData.length);
+                    debugger
+                    vm.width = calculateWidthForPlayer(chartData.length);
 
                     if (vm.isFrameDashbaord == 1)
                         chartData = _.sortBy(chartData, 'value').reverse();
@@ -1254,7 +1254,7 @@
                     }
                     if (data.frameSummary) {
                         if (data.frameSummary.length > 0) {
-                            vm.barOptions.size = _.clone(configureOptions.BAR_PLAYER.size); // after change in filter need to reset size
+                            // vm.barOptions.size = _.clone(configureOptions.BAR_PLAYER.size); // after change in filter need to reset size
                             vm.frameSummary = _.map(data.frameSummary, function (obj) {
                                 obj.value = parseFloat(obj.value);
                                 obj.avgValue = parseFloat(obj.avgValue);
@@ -1602,6 +1602,16 @@
         function calculateWidthForCampaign(defaultWidth, totalRecords) {
             var _defaultWidth = defaultWidth;
             return ((totalRecords * 31) < _defaultWidth ? _defaultWidth : defaultWidth += (totalRecords * 38)) // Nishit, CCP-291, CC-23
+        }
+
+        function calculateWidthForPlayer(totalRecords) {            
+            if(totalRecords <= 4) {
+                return totalRecords * 320;
+            } else if(totalRecords <= 10) {
+                return totalRecords * 150;
+            } else {
+                return totalRecords * 80;
+            }                                               
         }
 
 

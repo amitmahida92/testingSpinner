@@ -51,10 +51,7 @@
         },
         BAR_PLAYER: {
             responsive: true,
-            maintainAspectRatio: false,
-            tooltips: {
-                
-            },
+            maintainAspectRatio: false,            
             legend: {
                 display: false
             },
