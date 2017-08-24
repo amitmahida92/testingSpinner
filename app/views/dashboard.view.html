@@ -248,7 +248,7 @@
             </span>
             <div style="height: 100%;overflow-y: auto; min-height: 405px; max-height: 405px;">
                 <!--style="width: {{vm.barOptions.size.width + 'px' }}; height: {{vm.barOptions.size.height + 'px'}}-->
-                <div class="card-content" ng-style='{"width": vm.barOptions.size.width,"height": vm.barOptions.size.height }'>
+                <div class="card-content" style="height: 400px;" ng-style="{'width': vm.width}">
                     <canvas id="player" class="chart chart-bar" chart-data="vm.playerData.datasets[0].data" chart-options="vm.barOptions" chart-colors="vm.playerData.datasets[0].backgroundColor"
                         chart-labels="vm.playerData.labels" chart-click="vm.onPlayerClick" chart-dataset-override="vm.playerDetails"></canvas>
                 </div>
