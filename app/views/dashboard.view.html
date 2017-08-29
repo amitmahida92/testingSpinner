@@ -20,7 +20,7 @@
         <div class="col s6 center title">POP Dashboard</div>
 
         <ul id='dropdown1' class='dropdown-content'>
-            <li ng-repeat="dashboardtype in vm.DASHBOARD_TYPES"><a href="{{'#!' + dashboardtype.routeURL}}"><img src="{{'images/' + dashboardtype.image}}" alt="Logo"> <span class="dropdownChildren">{{dashboardtype.name}}</span></a></li>
+            <li ng-repeat="dashboardtype in vm.DASHBOARD_TYPES"><a href="{{'#!' + dashboardtype.routeURL}}"><img ng-src="{{'images/' + dashboardtype.image}}" alt="Logo"> <span class="dropdownChildren">{{dashboardtype.name}}</span></a></li>
         </ul>
 
         <ul id="nav-mobile" class="right">
@@ -65,7 +65,7 @@
                 <div class=" col s12 m2" style="z-index:1" id="selectedMarketingNames">
                     <label for="">{{vm.userBundle['common.marketingname']}}</label>
 
-                    <select class="" ng-model="vm.selectedMarketingNames" material-select multiple watch ng-change="vm.onAddTags()">
+                    <select ng-change="vm.onAddTags()" class="" ng-model="vm.selectedMarketingNames" material-select multiple watch>
                         <option value="" disabled selected>Select Marketing Name</option>    
                         <option ng-value="value" ng-repeat="value in vm.marketingNames">{{value.marketingName}}</option>
                     </select>
@@ -180,8 +180,8 @@
                     <label for="campaign_compaliant">Compliant ({{vm.campaign.compliantCount}})</label> &nbsp;&nbsp;
                     <input type="checkbox" class="filled-in" id="campaign_non_compaliant" ng-model="vm.campaign.noncompaliant" ng-click="vm.compaliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign')" />
                     <label for="campaign_non_compaliant">Non Compliant ({{vm.campaign.noncompliantCount}})</label> &nbsp;&nbsp;
-                    <span><i ng-click="vm.fullscreenFor == 'campaign' ? vm.fullscreenFor = '' :  vm.fullscreenFor = 'campaign'" class="small material-icons fullscreen-icon">{{ vm.fullscreenFor == 'campaign' ? 'fullscreen_exit' : 'fullscreen' }}</i></span> 
-                </span>
+                    <span><i ng-click="vm.fullscreenFor == 'campaign' ? vm.fullscreenFor = '' :  vm.fullscreenFor = 'campaign'" class="small material-icons fullscreen-icon">{{ vm.fullscreenFor == 'campaign' ? 'fullscreen_exit' : 'fullscreen' }}</i></span>
+            </span>
             </span>
 
             <!--<span class="card-title" ng-if="vm.isFrameDashbaord">% frame above threshold </span>           
@@ -243,8 +243,8 @@
                     <label for="player_compaliant">Compliant ({{vm.player.compliantCount}})</label> &nbsp;&nbsp;
                     <input type="checkbox" class="filled-in" id="player_non_compaliant" ng-click="vm.compaliantcheck(vm.player.compaliant, vm.player.noncompaliant, 'player')" ng-model="vm.player.noncompaliant"  />
                     <label for="player_non_compaliant">Non Compliant ({{vm.player.noncompliantCount}})</label> &nbsp;&nbsp;
-                    <span><i ng-click="vm.fullscreenFor == 'player' ? vm.fullscreenFor = '' :  vm.fullscreenFor = 'player'" class="small material-icons fullscreen-icon">{{ vm.fullscreenFor == 'player' ? 'fullscreen_exit' : 'fullscreen' }}</i></span> 
-                </span>
+                    <span><i ng-click="vm.fullscreenFor == 'player' ? vm.fullscreenFor = '' :  vm.fullscreenFor = 'player'" class="small material-icons fullscreen-icon">{{ vm.fullscreenFor == 'player' ? 'fullscreen_exit' : 'fullscreen' }}</i></span>
+            </span>
             </span>
             <div style="height: 100%;overflow-y: auto; min-height: 405px; max-height: 405px;">
                 <!--style="width: {{vm.barOptions.size.width + 'px' }}; height: {{vm.barOptions.size.height + 'px'}}-->
@@ -300,8 +300,8 @@
                         <input type="checkbox" class="filled-in" id="day_non_compaliant" ng-click="vm.compaliantcheck(vm.day.compaliant,
                     vm.day.noncompaliant, 'day')"  ng-model="vm.day.noncompaliant" />
                         <label for="day_non_compaliant">Non Compliant ({{vm.day.noncompliantCount}})</label> &nbsp;&nbsp;
-                        <span><i ng-click="vm.fullscreenFor == 'day' ? vm.fullscreenFor = '' :  vm.fullscreenFor = 'day'" class="small material-icons fullscreen-icon">{{ vm.fullscreenFor == 'day' ? 'fullscreen_exit' : 'fullscreen' }}</i></span> 
-             </span>
+                        <span><i ng-click="vm.fullscreenFor == 'day' ? vm.fullscreenFor = '' :  vm.fullscreenFor = 'day'" class="small material-icons fullscreen-icon">{{ vm.fullscreenFor == 'day' ? 'fullscreen_exit' : 'fullscreen' }}</i></span>
+            </span>
             </span>
             <div class="card-content">
                 <canvas id="day" class="chart chart-bar" chart-data="vm.dayData.datasets[0].data" chart-options="vm.dayOptions" chart-colors="vm.dayData.datasets[0].backgroundColor"
@@ -339,8 +339,8 @@
                     <label for="hour_compaliant">Compliant ({{vm.hour.noncompliantCount}})</label> &nbsp;&nbsp;
                     <input type="checkbox" class="filled-in" id="hour_non_compaliant" ng-model="vm.hour.noncompaliant" ng-click="vm.compaliantcheck(vm.hour.compaliant, vm.hour.noncompaliant, 'hour')" />
                     <label for="hour_non_compaliant">Non Compliant ({{vm.hour.compliantCount}})</label> &nbsp;&nbsp;
-                    <span><i ng-click="vm.fullscreenFor == 'hour' ? vm.fullscreenFor = '' :  vm.fullscreenFor = 'hour'" class="small material-icons fullscreen-icon">{{ vm.fullscreenFor == 'hour' ? 'fullscreen_exit' : 'fullscreen' }}</i></span> 
-                </span>
+                    <span><i ng-click="vm.fullscreenFor == 'hour' ? vm.fullscreenFor = '' :  vm.fullscreenFor = 'hour'" class="small material-icons fullscreen-icon">{{ vm.fullscreenFor == 'hour' ? 'fullscreen_exit' : 'fullscreen' }}</i></span>
+            </span>
             </span>
 
             <div class="card-content">
