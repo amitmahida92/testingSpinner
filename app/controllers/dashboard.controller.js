@@ -272,14 +272,7 @@
                     var isSearchedPlayerInNewData = data.filter(function (obj) {
                         return obj.id.indexOf(vm.selectedFrame.toUpperCase()) > -1;
                     });
-
-                    var isAllSelectedPlayerHasNullValues = true;
-                    debugger
-                    isSearchedPlayerInNewData.forEach(function (element) {
-                        if (element.avgValue != 0) {
-                            isAllSelectedPlayerHasNullValues = false;
-                        }
-                    }, this);                    
+                    
                     if (isSearchedPlayerInNewData.length == 0) {
                         vm.showDay = false;
                         vm.showHour = false;
