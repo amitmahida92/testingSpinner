@@ -971,8 +971,7 @@
 
                     vm.playerDetails = {
                         playerDetails: []
-                    };
-                    debugger
+                    };                    
                     vm.width = calculateWidthForPlayer(chartData.length);
 
                     if (vm.isFrameDashbaord == 1)
