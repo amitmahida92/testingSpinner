@@ -1713,7 +1713,7 @@
 
         function calculateHeightForCampaign(defaultHeight, totalRecords) {
             var _defaultHeight = defaultHeight;
-            return ((totalRecords * 18) < _defaultHeight ? _defaultHeight : defaultHeight += (totalRecords * 22))
+            return ((totalRecords * 18) < _defaultHeight ? _defaultHeight : defaultHeight += (totalRecords * 19)) // made 19 from 22 for CC-157, Nishit
         }
 
         function calculateWidthForCampaign(defaultWidth, totalRecords) {
