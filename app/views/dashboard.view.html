@@ -190,17 +190,19 @@
              <a ng-if="!vm.isFrameDashbaord"  class="customToolTip" data-position="bottom" data-delay="50" data-tooltip="{{vm.sot_CampaignInformation}}"  ng-model="vm.frameToolTip" > <i   class="material-icons" >info_outline</i></a>-->
 
             <!--style=" min-height: {{vm.campaignOptions.size.height + 'px'}}"-->
-            <div style="height: 100%;overflow-y: auto; min-height: 405px; max-height: 405px;">
-                <!-- <div class="chartWrapper">
+
+            <!-- <div class="chartWrapper">
                 <div class="chartAreaWrapper">
-                    <canvas id="campaign" height="300" width="1200"
-                    class="chart-horizontal-bar" chart-data="vm.campaignData.datasets[0].data" chart-options="vm.campaignOptions"
-                    chart-colors="vm.campaignData.datasets[0].backgroundColor" chart-labels="vm.campaignData.labels" chart-dataset-override="vm.campaignDetails"
-                    chart-click="vm.onCampaignClick"></canvas>
+                    <canvas id="campaign" height="300" width="1200" id="campaign" class="chart-horizontal-bar" chart-data="vm.campaignData.datasets[0].data"
+                        chart-options="vm.campaignOptions" chart-colors="vm.campaignData.datasets[0].backgroundColor" chart-labels="vm.campaignData.labels"
+                        chart-dataset-override="vm.campaignDetails" chart-click="vm.onCampaignClick"></canvas>
                 </div>
                 <canvas id="campaignAxis" height="300" width="0"></canvas>
             </div> -->
 
+
+
+            <div style="height: 100%;overflow-y: auto; min-height: 405px; max-height: 405px;">
                 <div class="card-content" ng-style='{"min-height":vm.campaignOptions.size.height}'>
                     <canvas id="campaign" class="chart-horizontal-bar" chart-data="vm.campaignData.datasets[0].data" chart-options="vm.campaignOptions"
                         chart-colors="vm.campaignData.datasets[0].backgroundColor" chart-labels="vm.campaignData.labels" chart-dataset-override="vm.campaignDetails"

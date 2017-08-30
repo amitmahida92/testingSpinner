@@ -9,13 +9,14 @@
         var vm = this;
         var requireWorker;
         vm.fullscreenFor = '';
-        vm.clonnedChannelSummaryByImpression = [];
-        vm.clonnedSummary = [];
-        vm.clonnedCamapaignSummary = [];
+        // vm.clonnedChannelSummaryByImpression = [];
+        vm.triggerSearchAfterCampaignRefRemoved = false;
+        // vm.clonnedSummary = [];
+        // vm.clonnedCamapaignSummary = [];
         vm.isZendeskTicketAvailable = false;
         vm.searchCampaign = '';
         vm.selectedCampaign = '';
-        var tempSelectedFrame = '';
+        var tempSelectedFrame = '';       
 
         vm.campaignSummary = [];
         vm.frameSummary = [];
@@ -204,7 +205,7 @@
                         if (element.avgValue != 0) {
                             isAllSelectedCampaignHasNullAvgValue = false;
                         }
-                    }, this);                    
+                    }, this);                   
 
                     if (isSearchedCampaignInNewData.length == 0) {
                         vm.showPlayer = false;
@@ -224,11 +225,19 @@
                                     vm.showHour = true;
                                 }
                             }
-                        } else {
+                        } else {                            
+                            vm.selectedCampaign = '';
+                            vm.selectedFrame = '';
+                            tempSelectedFrame = '';
+                            vm.selectedDay = '';
+                            vm.campaignBar.selectedCampaign = '';
+                            vm.campaignBar.selectedFrame = '';
+                            vm.campaignBar.advertiserName = '';
+                            vm.campaignBar.brandName = '';
                             vm.showPlayer = false;
                             vm.showDay = false;
                             vm.showHour = false;
-                        }                        
+                        }
                     }
                 }
                 generateChart('campaign', data, flag);
@@ -272,7 +281,7 @@
                     var isSearchedPlayerInNewData = data.filter(function (obj) {
                         return obj.id.indexOf(vm.selectedFrame.toUpperCase()) > -1;
                     });
-                    
+
                     if (isSearchedPlayerInNewData.length == 0) {
                         vm.showDay = false;
                         vm.showHour = false;
@@ -416,6 +425,9 @@
                 vm.playerData = {};
                 vm.player.compaliant = true;
                 vm.player.noncompaliant = true;
+                vm.selectedFrame = '';
+                tempSelectedFrame = '';
+
                 getSummaries();
                 var campaignId = vm.selectedCampaign.split(':')[1];
 
@@ -479,6 +491,7 @@
                 vm.dayData = [];
                 vm.day.compaliant = true;
                 vm.day.noncompaliant = true;
+                vm.selectedDay = '';
                 getSummaries();
                 var displayUnitId = player.label;
 
@@ -628,7 +641,7 @@
          * @author Amit Mahida
          * @param {*} data 
          */
-        function filterSummaries(data) {
+        function filterSummaries(data) {            
 
             var totalCampaigns = _.groupBy(data, 'businessAreaCode');
             // console.log(totalCampaigns);
@@ -695,7 +708,7 @@
             }
             var isSearchedPlayerInNewData = vm.frameSummary.filter(function (obj) {
                 return obj.id.indexOf(vm.selectedFrame) > -1;
-            });
+            });            
             if (vm.selectedFrame == '') {
                 vm.showDay = false;
                 vm.showHour = false;
@@ -746,17 +759,17 @@
                 var substringArray = _.map(['SM', 'SB'], function (substring) {
                     return vm.searchCampaign.toUpperCase().indexOf(substring) > -1;
                 });
-                vm.clonnedCamapaignSummary = (vm.clonnedCamapaignSummary.length > 0 ? vm.clonnedCamapaignSummary : _.cloneDeep(vm.campaignSummary));
+                // vm.clonnedCamapaignSummary = (vm.clonnedCamapaignSummary.length > 0 ? vm.clonnedCamapaignSummary : _.cloneDeep(vm.campaignSummary));
 
                 if (substringArray.indexOf(true) > -1) {
-                    var campaignSummary = vm.clonnedCamapaignSummary.length > 0 ? _.cloneDeep(vm.clonnedCamapaignSummary) : _.cloneDeep(vm.campaignSummary);
+                    // var campaignSummary = vm.clonnedCamapaignSummary.length > 0 ? _.cloneDeep(vm.clonnedCamapaignSummary) : _.cloneDeep(vm.campaignSummary);
 
-                    var data = campaignSummary.filter(function (obj) {
+                    var data = vm.campaignSummary.filter(function (obj) {
                         return obj.id.indexOf(vm.searchCampaign.toUpperCase()) > -1
                     });
                     vm.campaignSummary = _.cloneDeep(data);
-                    vm.clonnedSummary = _.cloneDeep(vm.summary);
-                    vm.clonnedChannelSummaryByImpression = _.cloneDeep(vm.channelSummaryByImpression);
+                    // vm.clonnedSummary = _.cloneDeep(vm.summary);
+                    // vm.clonnedChannelSummaryByImpression = _.cloneDeep(vm.channelSummaryByImpression);
                     if (data.length === 0) {
                         vm.showCampaign = false;
                         vm.showPlayer = false;
@@ -771,12 +784,14 @@
                 }
             } else {
                 // and condition added for CC-136
-                if (vm.searchCampaign.trim().length == 0 && vm.clonnedSummary.length > 0) {
-                    vm.campaignSummary = _.cloneDeep(vm.clonnedCamapaignSummary);
-                    vm.summary = _.cloneDeep(vm.clonnedSummary);
-                    vm.channelSummaryByImpression = _.cloneDeep(vm.clonnedChannelSummaryByImpression);
-                    filterSummaries(vm.campaignSummary);
-                    filterChartData();
+                if (vm.searchCampaign.trim().length == 0) {
+                    // vm.campaignSummary = _.cloneDeep(vm.clonnedCamapaignSummary);
+                    // vm.summary = _.cloneDeep(vm.clonnedSummary);
+                    // vm.channelSummaryByImpression = _.cloneDeep(vm.clonnedChannelSummaryByImpression);
+                    // filterSummaries(vm.campaignSummary);
+                    vm.triggerSearchAfterCampaignRefRemoved = true;
+                    getSummaries();
+                    // filterChartData();
                 }
                 vm.compaliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign', false);
                 return false;
@@ -1310,12 +1325,28 @@
             if (vm.filterObject.channels)
                 requestParameter["channels"] = JSON.stringify(vm.filterObject.channels);
 
-            requestParameter["filterChange"] = filterChanged;
+            if (filterChanged) {
+                requestParameter["filterChange"] = filterChanged;
+            } else {
+                if (vm.triggerSearchAfterCampaignRefRemoved) {
+                    requestParameter["filterChange"] = vm.triggerSearchAfterCampaignRefRemoved;
+                    vm.triggerSearchAfterCampaignRefRemoved = false;
+                } else {
+                    requestParameter["filterChange"] = filterChanged;
+                }
+            }
 
             if (!_.isUndefined(vm.selectedCampaign) && vm.selectedCampaign != '')
                 requestParameter["campaignId"] = vm.selectedCampaign;
-            if (!_.isUndefined(vm.selectedFrame) && vm.selectedFrame != '')
+            if (!_.isUndefined(vm.selectedFrame) && vm.selectedFrame != '') {
                 requestParameter["extendedCodeId"] = vm.selectedFrame;
+            } else {
+                if (!_.isUndefined(tempSelectedFrame) && tempSelectedFrame != '') {
+                    requestParameter["extendedCodeId"] = tempSelectedFrame;
+                    vm.selectedFrame = tempSelectedFrame;
+                }
+            }
+
             if (!_.isUndefined(vm.selectedDay) && vm.selectedDay != '')
                 requestParameter["dayId"] = vm.selectedDay;
 
@@ -1361,7 +1392,7 @@
                             vm.summary = vm.channelSummary;
                         } else {
                             vm.summary = vm.channelSummaryByAudience;
-                            vm.clonnedSummary = [];
+                            // vm.clonnedSummary = [];
                         }
 
                     }
@@ -1382,7 +1413,7 @@
                             vm.showCampaign = false;
                             vm.campaignBar = {};
                         }
-                        vm.clonnedCamapaignSummary = [];
+                        // vm.clonnedCamapaignSummary = [];
                     }
                     if (data.frameSummary) {
                         if (data.frameSummary.length > 0) {
