@@ -24571,7 +24571,124 @@
 				"specialistCode": "6340C59A-CEF6-DD11-A1EF-000C29D542E5"
 			}
 		],
-		"frameSummary": [],
+		"frameSummary": [
+			{
+				"value": "0",
+				"id": "1235242818",
+				"label": "123696186",
+				"avgValue": "0",
+				"audienceValue": "110.00",
+				"advertiserName": null,
+				"productFormatCode": null,
+				"marketingNameCode": null,
+				"failed": true,
+				"failedAudience": false,
+				"brandName": null,
+				"tooltipData": [
+					{
+						"key": "Route ID",
+						"value": "1235242818"
+					},
+					{
+						"key": "Marketing Name",
+						"value": "Wandsworth High Street Showcase"
+					},
+					{
+						"key": "Address",
+						"value": "SW - WANDSWORTH HIGH STREET SHOWCASE"
+					}
+				],
+				"businessAreaCode": null,
+				"specialistCode": null
+			},
+			{
+				"value": "0",
+				"id": "1234881438",
+				"label": "13652475",
+				"avgValue": "0",
+				"audienceValue": "110.00",
+				"advertiserName": null,
+				"productFormatCode": null,
+				"marketingNameCode": null,
+				"failed": true,
+				"failedAudience": false,
+				"brandName": null,
+				"tooltipData": [
+					{
+						"key": "Route ID",
+						"value": "1234881438"
+					},
+					{
+						"key": "Marketing Name",
+						"value": "The M4 Torch"
+					},
+					{
+						"key": "Address",
+						"value": "THE M4 TORCH"
+					}
+				],
+				"businessAreaCode": null,
+				"specialistCode": null
+			},
+			{
+				"value": "0",
+				"id": "1234929443",
+				"label": "150463387",
+				"avgValue": "0",
+				"audienceValue": "110.00",
+				"advertiserName": null,
+				"productFormatCode": null,
+				"marketingNameCode": null,
+				"failed": true,
+				"failedAudience": false,
+				"brandName": null,
+				"tooltipData": [
+					{
+						"key": "Route ID",
+						"value": "1234929443"
+					},
+					{
+						"key": "Marketing Name",
+						"value": "The Western Avenue Tower (Inbound)"
+					},
+					{
+						"key": "Address",
+						"value": "W8 - WESTERN AVENUE TOWER (INBOUND)"
+					}
+				],
+				"businessAreaCode": null,
+				"specialistCode": null
+			},
+			{
+				"value": "0",
+				"id": "1234881437",
+				"label": "35246345",
+				"avgValue": "0",
+				"audienceValue": "110.00",
+				"advertiserName": null,
+				"productFormatCode": null,
+				"marketingNameCode": null,
+				"failed": true,
+				"failedAudience": false,
+				"brandName": null,
+				"tooltipData": [
+					{
+						"key": "Route ID",
+						"value": "1234881437"
+					},
+					{
+						"key": "Marketing Name",
+						"value": "The M4 Torch"
+					},
+					{
+						"key": "Address",
+						"value": "THE M4 TORCH"
+					}
+				],
+				"businessAreaCode": null,
+				"specialistCode": null
+			}
+		],
 		"daySummary": [],
 		"spanSummary": []
 	}
