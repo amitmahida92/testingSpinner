@@ -16,7 +16,7 @@
         vm.isZendeskTicketAvailable = false;
         vm.searchCampaign = '';
         vm.selectedCampaign = '';
-        var tempSelectedFrame = '';       
+        var tempSelectedFrame = '';
 
         vm.campaignSummary = [];
         vm.frameSummary = [];
@@ -205,7 +205,7 @@
                         if (element.avgValue != 0) {
                             isAllSelectedCampaignHasNullAvgValue = false;
                         }
-                    }, this);                   
+                    }, this);
 
                     if (isSearchedCampaignInNewData.length == 0) {
                         vm.showPlayer = false;
@@ -225,7 +225,7 @@
                                     vm.showHour = true;
                                 }
                             }
-                        } else {                            
+                        } else {
                             vm.selectedCampaign = '';
                             vm.selectedFrame = '';
                             tempSelectedFrame = '';
@@ -641,7 +641,7 @@
          * @author Amit Mahida
          * @param {*} data 
          */
-        function filterSummaries(data) {            
+        function filterSummaries(data) {
 
             var totalCampaigns = _.groupBy(data, 'businessAreaCode');
             // console.log(totalCampaigns);
@@ -708,7 +708,7 @@
             }
             var isSearchedPlayerInNewData = vm.frameSummary.filter(function (obj) {
                 return obj.id.indexOf(vm.selectedFrame) > -1;
-            });            
+            });
             if (vm.selectedFrame == '') {
                 vm.showDay = false;
                 vm.showHour = false;
@@ -937,6 +937,13 @@
             return hour;
         }
 
+        /**
+         * 
+         * 
+         * @param {any} type 
+         * @param {any} chartData 
+         * @param {any} toggleOtherCharts 
+         */
         function generateChart(type, chartData, toggleOtherCharts) {
             switch (type) {
                 case 'campaign':
@@ -956,6 +963,21 @@
                     vm.campaignDetails = {
                         campaignDetails: []
                     };
+
+                    vm.campaignOptions.animation = {
+                        onProgress: function (chart) {                            
+                            var sourceCanvas = this.chart.ctx.canvas;
+                            var copyHeight = this.scales['x-axis-0'].height - 10; 
+                            var copyWidth = sourceCanvas.width;
+                            var targetCtx = document.getElementById("campaignAxis").getContext("2d");
+                            targetCtx.canvas.width = sourceCanvas.width;
+                            targetCtx.canvas.style.width = sourceCanvas.scrollWidth + 'px';
+                            targetCtx.canvas.height = copyHeight;
+                            targetCtx.drawImage(sourceCanvas, 0, 0, copyWidth, copyHeight, 0, 0, copyWidth, copyHeight);
+
+                        }
+                    }
+
 
                     vm.campaignOptions.size.height = calculateHeightForCampaign(_.clone(configureOptions.HORIZONTAL_BAR.size.height), chartData.length);
 
@@ -1020,89 +1042,7 @@
                     vm.campaignOptions.tooltips = {
                         enabled: true,
                         mode: 'index',
-                        position: 'nearest',
-                        custom: function (tooltipModel) {
-
-                            // if (tooltipModel.title && tooltipModel.dataPoints.length > 0
-                            //     && vm.campaignData.datasets[0].compaliantcheck[tooltipModel.dataPoints[0].index] === false) {
-                            //     var chart = this._chart;
-                            //     if (getCampaignId(tooltipModel.title[0]) != campaignId) {                                    
-                            //         var params = {
-                            //             "id": getCampaignId(tooltipModel.title[0]),
-                            //             "startDate": vm.datePicker.date.startDate
-                            //         };
-                            //         campaignId = params.id;
-                            // filterService.getTooltipData(params).then(function (response) {
-
-                            //     if (response) {
-                            //         campaignData = response.data[campaignId];
-                            //         if (campaignData && campaignData.length > 0) {
-                            //             // Tooltip Element
-                            //             var tooltipEl = document.getElementById('compliance-tooltip');
-
-                            //             function getBody(bodyItem) {
-                            //                 return bodyItem.lines;
-                            //             }
-
-                            //             // Set Text
-                            //             if (tooltipModel.body) {
-                            //                 var titleLines = "Campaign" + campaignId; //tooltipModel.title || [];
-                            //                 var bodyLines = tooltipModel.body.map(getBody);
-
-                            //                 var innerHtml = '<thead>';
-                            //                 innerHtml += '<tr><th>Campaign</th><th>' + campaignId + '</th></tr>';
-                            //                 innerHtml += '</thead><tbody>';
-
-                            //                 campaignData.forEach(function (body, i) {
-                            //                     var colors = tooltipModel.labelColors[0];
-                            //                     var style = 'background:' + colors.backgroundColor;
-                            //                     style += '; border-color:' + colors.borderColor;
-                            //                     style += '; border-width: 2px';
-                            //                     var span = '<span class="chartjs-tooltip-key" style="' + style + '"></span>';
-                            //                     var buildBody = Object.keys(body);
-                            //                     buildBody.forEach(function (inBody, inIndex) {
-                            //                         if (inBody != 'url') {
-                            //                             innerHtml += '<tr><td style="color: rgba(255, 0, 0, 1);font-weight:600;">' + inBody + ' </td><td> ' + body[inBody] + '</td></tr>';
-                            //                         } else {
-                            //                             innerHtml += '<tr><td style="color: rgba(255, 0, 0, 1);font-weight:600;">' + inBody + ' </td><td><a target="_blank" href="' + body[inBody] + '"> ' + body[inBody] + '</a></td></tr>';
-                            //                         }
-                            //                     });
-                            //                 });
-                            //                 innerHtml += '</tbody>';
-
-                            //                 var tableRoot = tooltipEl.querySelector('table');
-                            //                 tableRoot.innerHTML = innerHtml;
-                            //             }
-
-                            //             // Display, position, and set styles for font
-                            //             tooltipEl.style.opacity = 1;
-                            //             tooltipEl.style.display = 'block';
-                            //             tooltipEl.style.fontFamily = tooltipModel._fontFamily;
-                            //             tooltipEl.style.fontSize = tooltipModel.fontSize;
-                            //             tooltipEl.style.fontStyle = tooltipModel._fontStyle;
-                            //             tooltipEl.style.padding = tooltipModel.yPadding + 'px ' + tooltipModel.xPadding + 'px';
-
-                            //         } else {
-                            //             $('#compliance-tooltip').hide();
-                            //             Materialize.toast(response.message, TOASTER_TIME_INTERVAL, 'rounded');
-                            //         }
-                            //     } else {
-                            //         $('#compliance-tooltip').hide();
-                            //         Materialize.toast(response.message, TOASTER_TIME_INTERVAL, 'rounded');
-                            //     }
-                            // });
-
-                            //     }
-                            // }
-                        },
-                        // callbacks: {
-                        //     title: function (tooltipItem) {
-                        //         return 'Nishit'
-                        //     },
-                        //     label: function (tooltipItem, data) {
-                        //         return "Nishit Test"
-                        //     }
-                        // }
+                        position: 'nearest'
                     };
 
                     break;
@@ -1177,7 +1117,19 @@
 
                     var campaignId = '', campaignData = '';
 
-                    // vm.barOptions['tooltipData'] = chartData;
+                    vm.barOptions.animation = {
+                        onProgress: function (chart) {                                                        
+                            var sourceCanvas = this.chart.ctx.canvas;
+                            var copyHeight = sourceCanvas.height; 
+                            var copyWidth = this.scales['y-axis-0'].width;
+                            var targetCtx = document.getElementById("playerAxis").getContext("2d");
+                            targetCtx.canvas.width = copyWidth;
+                            targetCtx.canvas.style.height = sourceCanvas.offsetHeight + 'px';
+                            targetCtx.canvas.height = copyHeight;
+                            targetCtx.drawImage(sourceCanvas, 0, 0, copyWidth, copyHeight, 0, 0, copyWidth, copyHeight);
+                        }
+                    }
+                                        
                     vm.barOptions.tooltips = {
                         enabled: false,
                         mode: 'index',

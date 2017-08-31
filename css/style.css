@@ -1,7 +1,7 @@
 /* Custome design stylesheet */
 
 html, body {
-  height: 100%;  
+  height: 100%;
 }
 
 body > div {
@@ -10,7 +10,12 @@ body > div {
   padding-bottom: 40px;
 }
 
-.sticky-footer{margin-top:-40px;height: 40px;min-height: auto;padding-bottom: 0;}
+.sticky-footer {
+  margin-top: -40px;
+  height: 40px;
+  min-height: auto;
+  padding-bottom: 0;
+}
 
 body {
   background: #f4f7f9;
@@ -1287,22 +1292,6 @@ div {
   color: #2e62a4 !important;
 }
 
-.chartWrapper {
-  position: relative;
-}
-
-.chartWrapper > canvas {
-  position: absolute;
-  left: 0;
-  top: 0;
-  pointer-events: none;
-}
-
-.chartAreaWrapper {
-  width: 600px;
-  overflow-x: scroll;
-}
-
 .modal-table {
   width: 825px;
   overflow-x: scroll;
@@ -1395,4 +1384,44 @@ div {
   .m7-col {
     width: 25%
   }
+}
+
+.chartWrapper1 {
+  position: relative;
+}
+
+.chartWrapper1 > canvas {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none !important;
+  background: #f4f7f9;
+  z-index: 999;
+  margin-left: 5px;  
+}
+
+.chartAreaWrapper1 {
+  height: 387px;
+  margin: 5px;
+  overflow-y: scroll;
+}
+
+.chartWrapper {
+  position: relative;
+}
+
+.chartWrapper > canvas {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none !important;
+  background: #f4f7f9;
+  z-index: 999;
+  margin-left: 5px;
+}
+
+.chartAreaWrapper {
+  margin: 5px;  
+  height: 387px;
+  overflow-x: scroll;
 }
