@@ -200,15 +200,26 @@
                 <canvas id="campaignAxis" height="300" width="0"></canvas>
             </div> -->
 
+            <div class="chartWrapper1">
+                <div class="chartAreaWrapper1">
+                    <div ng-style='{"height":vm.campaignOptions.size.height}'>
+                        <canvas id="campaign" class="chart-horizontal-bar" chart-data="vm.campaignData.datasets[0].data" chart-options="vm.campaignOptions"
+                            chart-colors="vm.campaignData.datasets[0].backgroundColor" chart-labels="vm.campaignData.labels"
+                            chart-dataset-override="vm.campaignDetails" chart-click="vm.onCampaignClick"></canvas>
+                    </div>
+                </div>
+                <canvas id="campaignAxis" ng-if="vm.campaignData.datasets[0].data.length > 0"></canvas>
+            </div>
 
 
-            <div style="height: 100%;overflow-y: auto; min-height: 405px; max-height: 405px;">
+
+            <!-- <div style="height: 100%;overflow-y: auto; min-height: 405px; max-height: 405px;">
                 <div class="card-content" ng-style='{"min-height":vm.campaignOptions.size.height}'>
                     <canvas id="campaign" class="chart-horizontal-bar" chart-data="vm.campaignData.datasets[0].data" chart-options="vm.campaignOptions"
                         chart-colors="vm.campaignData.datasets[0].backgroundColor" chart-labels="vm.campaignData.labels" chart-dataset-override="vm.campaignDetails"
                         chart-click="vm.onCampaignClick"></canvas>
                 </div>
-            </div>
+            </div> -->
         </div>
         <!-- <div class="compliance-tooltip" id="compliance-tooltip">
             <i class="material-icons tooltip-close" ng-click="vm.closeTooltip('compliance-tooltip')">close</i>
@@ -248,13 +259,24 @@
                     <span><i ng-click="vm.fullscreenFor == 'player' ? vm.fullscreenFor = '' :  vm.fullscreenFor = 'player'" class="small material-icons fullscreen-icon">{{ vm.fullscreenFor == 'player' ? 'fullscreen_exit' : 'fullscreen' }}</i></span>
             </span>
             </span>
-            <div style="height: 100%;overflow-y: auto; min-height: 405px; max-height: 405px;">
-                <!--style="width: {{vm.barOptions.size.width + 'px' }}; height: {{vm.barOptions.size.height + 'px'}}-->
+
+            <div class="chartWrapper">
+                <div class="chartAreaWrapper">
+                    <div ng-style="{'width': vm.width}" style="height: 364px;">
+                        <canvas id="player" class="chart chart-bar" chart-data="vm.playerData.datasets[0].data" chart-options="vm.barOptions" chart-colors="vm.playerData.datasets[0].backgroundColor"
+                            chart-labels="vm.playerData.labels" chart-click="vm.onPlayerClick" chart-dataset-override="vm.playerDetails"></canvas>
+                    </div>
+                </div>
+                <canvas id="playerAxis" ng-if="vm.playerData.datasets[0].data.length > 0"></canvas>
+            </div>
+
+
+            <!-- <div style="height: 100%;overflow-y: auto; min-height: 405px; max-height: 405px;">
                 <div class="card-content" style="height: 400px;" ng-style="{'width': vm.width}">
                     <canvas id="player" class="chart chart-bar" chart-data="vm.playerData.datasets[0].data" chart-options="vm.barOptions" chart-colors="vm.playerData.datasets[0].backgroundColor"
                         chart-labels="vm.playerData.labels" chart-click="vm.onPlayerClick" chart-dataset-override="vm.playerDetails"></canvas>
                 </div>
-            </div>
+            </div> -->
         </div>
 
         <div class="compliance-tooltip tooltip_custom" id="player-tooltip">
