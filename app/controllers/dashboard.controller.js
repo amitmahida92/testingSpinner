@@ -5,33 +5,30 @@
 
     DashboardCtrl.$inject = ['filterService', 'configureOptions', 'Webworker'];
 
+    /**
+     * 
+     * @param {any} filterService 
+     * @param {any} configureOptions 
+     * @param {any} Webworker 
+     */
     function DashboardCtrl(filterService, configureOptions, Webworker) {
-        var vm = this;
-        var requireWorker;
-        vm.fullscreenFor = '';
-        // vm.clonnedChannelSummaryByImpression = [];
-        vm.triggerSearchAfterCampaignRefRemoved = false;
-        // vm.clonnedSummary = [];
-        // vm.clonnedCamapaignSummary = [];
+        var vm = this;       
+        
+        vm.fullscreenFor = '';        
+        vm.triggerSearchAfterCampaignRefRemoved = false;        
         vm.isZendeskTicketAvailable = false;
         vm.searchCampaign = '';
         vm.selectedCampaign = '';
         var tempSelectedFrame = '';
 
+        // Chart summary variables
         vm.campaignSummary = [];
         vm.frameSummary = [];
         vm.daySummary = [];
         vm.spanSummary = [];
 
-        vm.ccpLink = "/Service/popboard/ccplink?campaignId=";
-
-        vm.chips = [{
-            tag: 'Apple',
-        }, {
-            tag: 'Microsoft',
-        }, {
-            tag: 'Google',
-        }];
+        // External link to ccp
+        vm.ccpLink = CCP_LINK;        
 
         vm.frontEndVersion = frontEndVersion;
         vm.DASHBOARD_TYPES = [
@@ -63,7 +60,6 @@
                 name: "Impressions"
             }
         ];
-
 
         // Show/Hide flags
         vm.showTitle = false;
@@ -163,7 +159,6 @@
         vm.compaliantcheck = function (compaliant, noncompaliant, chart, flag) {
 
             if (chart === 'campaign') {
-
                 var data = _.cloneDeep(vm.campaignSummary);
                 if (vm.isFrameDashbaord != 3) {
                     if (!compaliant) {
@@ -171,7 +166,6 @@
                             return obj.failed == true;
                         });
                     }
-
                     if (!noncompaliant) {
                         data = vm.campaignSummary.filter(function (obj) {
                             return obj.failed == false;
@@ -907,8 +901,7 @@
                 if (vm.configData.marketingNames)
                     vm.marketingNames = vm.configData.marketingNames;
 
-                MAX_INACTIVE_INTERVAL = vm.configData.systemData.maxInactiveInterval || MAX_INACTIVE_INTERVAL;
-                startKeepAliveService();
+                MAX_INACTIVE_INTERVAL = vm.configData.systemData.maxInactiveInterval || MAX_INACTIVE_INTERVAL;                
                 getSummaries();
             });
             setTimeout(function () {
@@ -916,7 +909,6 @@
                     belowOrigin: true // Displays dropdown below the button
                 });
                 $('select').material_select();
-
             });
 
         }
@@ -967,14 +959,14 @@
                     vm.campaignOptions.animation = {
                         onProgress: function (chart) {                            
                             var sourceCanvas = this.chart.ctx.canvas;
-                            var copyHeight = this.scales['x-axis-0'].height - 10; 
+                            var copyHeight = this.scales['x-axis-0'].height - 4; 
                             var copyWidth = sourceCanvas.width;
-                            var targetCtx = document.getElementById("campaignAxis").getContext("2d");
+                            var targetCtx = document.getElementById("campaignXAxis").getContext("2d");
                             targetCtx.canvas.width = sourceCanvas.width;
                             targetCtx.canvas.style.width = sourceCanvas.scrollWidth + 'px';
                             targetCtx.canvas.height = copyHeight;
                             targetCtx.drawImage(sourceCanvas, 0, 0, copyWidth, copyHeight, 0, 0, copyWidth, copyHeight);
-
+                            vm.campaignYAxisLabel = this.chart.options.scales.yAxes[0].scaleLabel.labelString; 
                         }
                     }
 
@@ -1127,6 +1119,7 @@
                             targetCtx.canvas.style.height = sourceCanvas.offsetHeight + 'px';
                             targetCtx.canvas.height = copyHeight;
                             targetCtx.drawImage(sourceCanvas, 0, 0, copyWidth, copyHeight, 0, 0, copyWidth, copyHeight);
+                            vm.playerXAxisLabel = this.chart.options.scales.xAxes[0].scaleLabel.labelString; 
                         }
                     }
                                         
@@ -1468,7 +1461,7 @@
                 // Display, position, and set styles for font
                 tooltipEl.style.opacity = 1;
                 tooltipEl.style.left = position.left + tooltipModel.caretX - 126 + 'px';
-                tooltipEl.style.top = position.top + tooltipModel.caretY - 150 + 'px';
+                tooltipEl.style.top = position.top + tooltipModel.caretY - 100 + 'px';
                 tooltipEl.style.fontFamily = tooltipModel._fontFamily;
                 tooltipEl.style.fontSize = tooltipModel.fontSize;
                 tooltipEl.style.fontStyle = tooltipModel._fontStyle;
@@ -1641,36 +1634,7 @@
                 vm.fullscreenFor = '';
                 return true;
             }
-        }
-
-        function startKeepAliveService() {
-            // Webworker.create(keepAlive, { async: true })
-            //     .run(MAX_INACTIVE_INTERVAL, BOS_SESSIONID, calculateURL())
-            //     .then(function (result) {
-            //     });
-
-            requireWorker = Webworker.create(keepAlive, {
-                async: true
-            });
-            requireWorker.run(MAX_INACTIVE_INTERVAL, BOS_SESSIONID, calculateURL()).then(function (result) { });
-
-        }
-
-        function keepAlive(interval, bosSessionId, url) {
-            setInterval(function () {
-                var xmlHttp = new XMLHttpRequest();
-                xmlHttp.onreadystatechange = function () {
-
-                    //if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-                    //    callback(xmlHttp.responseText);
-                }
-                xmlHttp.open("GET", url, true); // true for asynchronous
-                xmlHttp.setRequestHeader("Bos-SessionId", bosSessionId);
-                console.log("Keep alive called");
-                xmlHttp.send(null);
-            }, interval * 1000);
-
-        }
+        } 
 
         function calculateURL() {
             var generatedURL = "";

@@ -1397,7 +1397,7 @@ div {
   pointer-events: none !important;
   background: #f4f7f9;
   z-index: 999;
-  margin-left: 5px;  
+  margin-left: 5px;
 }
 
 .chartAreaWrapper1 {
@@ -1421,7 +1421,36 @@ div {
 }
 
 .chartAreaWrapper {
-  margin: 5px;  
+  margin: 5px;
   height: 387px;
   overflow-x: scroll;
+}
+
+.verticleAxisLabel {
+  position: absolute;
+  top: 0;
+  left: 0px;
+  z-index: 999;
+  height: 364px;
+  margin: 5px;
+  writing-mode: tb;
+  text-align: center;
+  transform: rotate(180deg);
+  background: #f4f7f9;
+  pointer-events: none;
+  color: rgb(111,111,111);
+  font-size: small;
+}
+
+.horizontalAxisLabel {
+  position: absolute;
+  top: 90%;
+  left: 0%;
+  z-index: 999;
+  background: #f4f7f9;
+  width: 100%;
+  text-align: center;
+  color: rgb(111,111,111);
+  font-size: small;
+  pointer-events: none;
 }

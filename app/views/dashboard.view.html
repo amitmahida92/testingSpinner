@@ -206,9 +206,12 @@
                         <canvas id="campaign" class="chart-horizontal-bar" chart-data="vm.campaignData.datasets[0].data" chart-options="vm.campaignOptions"
                             chart-colors="vm.campaignData.datasets[0].backgroundColor" chart-labels="vm.campaignData.labels"
                             chart-dataset-override="vm.campaignDetails" chart-click="vm.onCampaignClick"></canvas>
-                    </div>
+                    </div>                
                 </div>
-                <canvas id="campaignAxis" ng-if="vm.campaignData.datasets[0].data.length > 0"></canvas>
+                <canvas id="campaignXAxis" ng-if="vm.campaignData.datasets[0].data.length > 0"></canvas>
+                <div class="verticleAxisLabel">
+                    {{vm.campaignYAxisLabel}}
+                </div>                
             </div>
 
 
@@ -268,6 +271,9 @@
                     </div>
                 </div>
                 <canvas id="playerAxis" ng-if="vm.playerData.datasets[0].data.length > 0"></canvas>
+                <div class="horizontalAxisLabel">
+                    {{vm.playerXAxisLabel}}
+                </div>                
             </div>
 
 
