@@ -1395,7 +1395,7 @@ div {
   left: 0;
   top: 0;
   pointer-events: none !important;
-  background: #f4f7f9;
+  background: #f1f1f1;
   z-index: 999;
   margin-left: 5px;
 }
@@ -1415,7 +1415,7 @@ div {
   left: 0;
   top: 0;
   pointer-events: none !important;
-  background: #f4f7f9;
+  background: #f1f1f1;
   z-index: 999;
   margin-left: 5px;
 }
@@ -1431,12 +1431,13 @@ div {
   top: 0;
   left: 0px;
   z-index: 999;
-  height: 364px;
-  margin: 5px;
+  height: 100%;
+  border-radius: 18%;
+  margin-left: 5px;
   writing-mode: tb;
   text-align: center;
   transform: rotate(180deg);
-  background: #f4f7f9;
+  background: #f1f1f1;
   pointer-events: none;
   color: rgb(111,111,111);
   font-size: small;
@@ -1447,7 +1448,7 @@ div {
   top: 90%;
   left: 0%;
   z-index: 999;
-  background: #f4f7f9;
+  background: #f1f1f1;
   width: 100%;
   text-align: center;
   color: rgb(111,111,111);

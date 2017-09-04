@@ -209,7 +209,7 @@
                     </div>                
                 </div>
                 <canvas id="campaignXAxis" ng-if="vm.campaignData.datasets[0].data.length > 0"></canvas>
-                <div class="verticleAxisLabel">
+                <div class="verticleAxisLabel" ng-if="vm.campaignData.datasets[0].data.length > 0">
                     {{vm.campaignYAxisLabel}}
                 </div>                
             </div>
@@ -265,13 +265,13 @@
 
             <div class="chartWrapper">
                 <div class="chartAreaWrapper">
-                    <div ng-style="{'width': vm.width}" style="height: 364px;">
+                    <div ng-style="{'width': vm.width}" style="height: 367px;">
                         <canvas id="player" class="chart chart-bar" chart-data="vm.playerData.datasets[0].data" chart-options="vm.barOptions" chart-colors="vm.playerData.datasets[0].backgroundColor"
-                            chart-labels="vm.playerData.labels" chart-click="vm.onPlayerClick" chart-dataset-override="vm.playerDetails"></canvas>
+                            chart-labels="vm.playerData.labels" chart-click="vm.onPlayerClick" chart-dataset-override="vm.playerDetails" height="330"></canvas>
                     </div>
                 </div>
                 <canvas id="playerAxis" ng-if="vm.playerData.datasets[0].data.length > 0"></canvas>
-                <div class="horizontalAxisLabel">
+                <div class="horizontalAxisLabel" ng-if="vm.playerData.datasets[0].data.length > 0">
                     {{vm.playerXAxisLabel}}
                 </div>                
             </div>
@@ -416,8 +416,6 @@
         Back End Version {{vm.configData.systemData.version}} | Front End Version {{vm.frontEndVersion}}
     </div>
 </div>
-
-
 
 <script type="text/ng-template" id="my-custom-template">
     <span class="collection-item"> <input type="checkbox" id="test6" /><label for="test6"><i class="material-icons">done</i></label>

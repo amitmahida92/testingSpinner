@@ -12,10 +12,10 @@
      * @param {any} Webworker 
      */
     function DashboardCtrl(filterService, configureOptions, Webworker) {
-        var vm = this;       
-        
-        vm.fullscreenFor = '';        
-        vm.triggerSearchAfterCampaignRefRemoved = false;        
+        var vm = this;
+
+        vm.fullscreenFor = '';
+        vm.triggerSearchAfterCampaignRefRemoved = false;
         vm.isZendeskTicketAvailable = false;
         vm.searchCampaign = '';
         vm.selectedCampaign = '';
@@ -28,7 +28,7 @@
         vm.spanSummary = [];
 
         // External link to ccp
-        vm.ccpLink = CCP_LINK;        
+        vm.ccpLink = CCP_LINK;
 
         vm.frontEndVersion = frontEndVersion;
         vm.DASHBOARD_TYPES = [
@@ -99,6 +99,7 @@
         vm.selectedChannel = [];
         vm.isFrameDashbaord = 3; // default selection for graph        
 
+        // Chart level filters
         vm.campaign = {
             compaliant: true,
             noncompaliant: true,
@@ -111,7 +112,6 @@
             compliantCount: 0,
             noncompliantCount: 0
         };
-
         vm.day = {
             compaliant: true,
             noncompaliant: true,
@@ -153,37 +153,23 @@
             }
 
             getSummaries();
-            checkAllcheckBoxes(); // CCP-308, Nishit
+            checkAllcheckBoxes();
         };
 
         vm.compaliantcheck = function (compaliant, noncompaliant, chart, flag) {
-
             if (chart === 'campaign') {
                 var data = _.cloneDeep(vm.campaignSummary);
-                if (vm.isFrameDashbaord != 3) {
-                    if (!compaliant) {
-                        data = vm.campaignSummary.filter(function (obj) {
-                            return obj.failed == true;
-                        });
-                    }
-                    if (!noncompaliant) {
-                        data = vm.campaignSummary.filter(function (obj) {
-                            return obj.failed == false;
-                        });
-                    }
-                } else {
-                    if (!compaliant) {
-                        data = vm.campaignSummary.filter(function (obj) {
-                            return obj.failedAudience == true;
-                        });
-                    }
 
-                    if (!noncompaliant) {
-                        data = vm.campaignSummary.filter(function (obj) {
-                            return obj.failedAudience == false;
-                        });
-                    }
+                if (!compaliant) {
+                    data = vm.campaignSummary.filter(function (obj) {
+                        return obj.failedAudience == true;
+                    });
+                }
 
+                if (!noncompaliant) {
+                    data = vm.campaignSummary.filter(function (obj) {
+                        return obj.failedAudience == false;
+                    });
                 }
 
                 if (!compaliant && !noncompaliant) {
@@ -210,14 +196,20 @@
                         vm.selectedFrame = '';
                     } else {
                         if (vm.selectedCampaign != '' && !isAllSelectedCampaignHasNullAvgValue) {
-                            vm.showPlayer = true;
                             if (tempSelectedFrame != '') {
                                 vm.campaignBar.selectedFrame = tempSelectedFrame;
                                 vm.selectedFrame = tempSelectedFrame;
+                                vm.showPlayer = true;
+                                setTimeout(function () {
+                                    $('#player').height('1');
+                                }, 200);
                                 vm.showDay = true;
                                 if (vm.selectedDay != '') {
                                     vm.showHour = true;
                                 }
+                            }
+                            if (vm.frameSummary.length > 0 && vm.selectedFrame == '') {
+                                vm.showPlayer = true;
                             }
                         } else {
                             vm.selectedCampaign = '';
@@ -241,30 +233,16 @@
 
                 var data = _.cloneDeep(vm.frameSummary);
 
-                if (vm.isFrameDashbaord != 3) {
-                    if (!compaliant) {
-                        var data = vm.frameSummary.filter(function (obj) {
-                            return obj.failed == true;
-                        });
-                    }
+                if (!compaliant) {
+                    var data = vm.frameSummary.filter(function (obj) {
+                        return obj.failedAudience == true;
+                    });
+                }
 
-                    if (!noncompaliant) {
-                        var data = vm.frameSummary.filter(function (obj) {
-                            return obj.failed == false;
-                        });
-                    }
-                } else {
-                    if (!compaliant) {
-                        var data = vm.frameSummary.filter(function (obj) {
-                            return obj.failedAudience == true;
-                        });
-                    }
-
-                    if (!noncompaliant) {
-                        var data = vm.frameSummary.filter(function (obj) {
-                            return obj.failedAudience == false;
-                        });
-                    }
+                if (!noncompaliant) {
+                    var data = vm.frameSummary.filter(function (obj) {
+                        return obj.failedAudience == false;
+                    });
                 }
 
                 if (!compaliant && !noncompaliant) {
@@ -281,6 +259,7 @@
                         vm.showHour = false;
                     } else {
                         if (vm.selectedFrame != '') {
+                            vm.showPlayer = true;
                             vm.showDay = true;
                             if (vm.selectedDay != '') {
                                 vm.showHour = true;
@@ -289,39 +268,22 @@
                     }
                 }
                 generateChart('player', data, false);
-
             }
 
             if (chart == "day") {
 
                 var data = _.cloneDeep(vm.daySummary);
 
-                if (vm.isFrameDashbaord != 3) {
-                    if (!compaliant) {
-                        var data = vm.daySummary.filter(function (obj) {
-                            return obj.failed == true;
-                        });
-                    }
+                if (!compaliant) {
+                    var data = vm.daySummary.filter(function (obj) {
+                        return obj.failedAudience == true;
+                    });
+                }
 
-                    if (!noncompaliant) {
-                        var data = vm.daySummary.filter(function (obj) {
-                            return obj.failed == false;
-                        });
-                    }
-
-                } else {
-
-                    if (!compaliant) {
-                        var data = vm.daySummary.filter(function (obj) {
-                            return obj.failedAudience == true;
-                        });
-                    }
-
-                    if (!noncompaliant) {
-                        var data = vm.daySummary.filter(function (obj) {
-                            return obj.failedAudience == false;
-                        });
-                    }
+                if (!noncompaliant) {
+                    var data = vm.daySummary.filter(function (obj) {
+                        return obj.failedAudience == false;
+                    });
                 }
 
                 if (!compaliant && !noncompaliant) {
@@ -347,30 +309,16 @@
 
                 var data = _.cloneDeep(vm.spanSummary);
 
-                if (vm.isFrameDashbaord != 3) {
-                    if (!compaliant) {
-                        var data = vm.spanSummary.filter(function (obj) {
-                            return obj.failed == true;
-                        });
-                    }
+                if (!compaliant) {
+                    var data = vm.spanSummary.filter(function (obj) {
+                        return obj.failedAudience == true;
+                    });
+                }
 
-                    if (!noncompaliant) {
-                        var data = vm.spanSummary.filter(function (obj) {
-                            return obj.failed == false;
-                        });
-                    }
-                } else {
-                    if (!compaliant) {
-                        var data = vm.spanSummary.filter(function (obj) {
-                            return obj.failedAudience == true;
-                        });
-                    }
-
-                    if (!noncompaliant) {
-                        var data = vm.spanSummary.filter(function (obj) {
-                            return obj.failedAudience == false;
-                        });
-                    }
+                if (!noncompaliant) {
+                    var data = vm.spanSummary.filter(function (obj) {
+                        return obj.failedAudience == false;
+                    });
                 }
 
                 if (!compaliant && !noncompaliant) {
@@ -393,16 +341,7 @@
                 $('#compliance-tooltip').hide();
                 var campaign = points[0]['_chart'].config.data.datasets[points[0]['_datasetIndex']].campaignDetails[points[0]['_index']];
 
-                //CCP-295, Nishit
-                if (vm.isFrameDashbaord == 1 && campaign.value == 0) {
-                    return false;
-                }
-
-                if (vm.isFrameDashbaord == 2 && campaign.avgValue == 0) {
-                    return false;
-                }
-
-                if (vm.isFrameDashbaord == 3 && campaign.audienceValue == 0) {
+                if (campaign.audienceValue == 0) {
                     return false;
                 }
 
@@ -461,19 +400,9 @@
         vm.onPlayerClick = function (points, evt) {
             if (points.length > 0) {
                 $('#player-tooltip').hide();
-
-                // CCP-295, Nishit
                 var player = points[0]['_chart'].config.data.datasets[points[0]['_datasetIndex']].playerDetails[points[0]['_index']];
 
-                if (vm.isFrameDashbaord == 1 && player.value == 0) {
-                    return false;
-                }
-
-                if (vm.isFrameDashbaord == 2 && player.avgValue == 0) {
-                    return false;
-                }
-
-                if (vm.isFrameDashbaord == 3 && player.audienceValue == 0) {
+                if (player.audienceValue == 0) {
                     return false;
                 }
 
@@ -524,23 +453,12 @@
         // Third Chart
         vm.onDayClick = function (points, evt) {
             if (points.length > 0) {
+                var dayDetails = points[0]['_chart'].config.data.datasets[points[0]['_datasetIndex']].dayDetails[points[0]['_index']];
 
-                //CCP-295, Nishit
-
-                if (vm.isFrameDashbaord == 1 && points[0]['_chart'].config.data.datasets[points[0]['_datasetIndex']].dayDetails[points[0]['_index']].value == 0) {
+                if (dayDetails.audienceValue == 0) {
                     return false;
                 }
-
-                if (vm.isFrameDashbaord == 2 && points[0]['_chart'].config.data.datasets[points[0]['_datasetIndex']].dayDetails[points[0]['_index']].avgValue == 0) {
-                    return false;
-                }
-
-                if (vm.isFrameDashbaord == 3 && points[0]['_chart'].config.data.datasets[points[0]['_datasetIndex']].dayDetails[points[0]['_index']].audienceValue == 0) {
-                    return false;
-                }
-
-
-                var dayId = points[0]['_chart'].config.data.datasets[points[0]['_datasetIndex']].dayDetails[points[0]['_index']].id; // Value of particluar bar
+                var dayId = dayDetails.id; // Value of particluar bar
                 vm.selectedDay = dayId;
                 vm.hourData = [];
                 vm.hour.compaliant = true;
@@ -555,21 +473,8 @@
 
         vm.selectDashBoardType = function () {
 
-            if (vm.isFrameDashbaord != 3) {
 
-                // vm.selectedChannel = []; commented for issue 6 by Rushita
-                // vm.channelSummary = _.map(vm.channelSummary, function (obj) {
-                //     return ((vm.selectedChannel.indexOf(obj.id) === -1) ? angular.extend(obj, { guageColors: vm.defaultGuageColors }) : angular.extend(obj, { guageColors: vm.selectedGuageColors }));
-                // });
-                vm.summary = vm.channelSummary;
-            } else {
-
-                // vm.selectedChannel = []; commented for issue 6 by Rushita
-                // vm.channelSummaryByAudience = _.map(vm.channelSummaryByAudience, function (obj) {
-                //     return ((vm.selectedChannel.indexOf(obj.id) === -1) ? angular.extend(obj, { guageColors: vm.defaultGuageColors }) : angular.extend(obj, { guageColors: vm.selectedGuageColors }));
-                // });
-                vm.summary = vm.channelSummaryByAudience;
-            }
+            vm.summary = vm.channelSummaryByAudience;
 
             vm.channelSummaryByImpression = vm.channelSummaryByImpression
 
@@ -638,7 +543,6 @@
         function filterSummaries(data) {
 
             var totalCampaigns = _.groupBy(data, 'businessAreaCode');
-            // console.log(totalCampaigns);
             var compliantCampaignsForBusinessArea, totalCampaignsForBusinessArea;
 
             // black charts (Audience Compliance)
@@ -681,8 +585,6 @@
                     vm.summary[index1].value = 0;
                 }
             }
-
-
         }
 
         /**
@@ -753,17 +655,12 @@
                 var substringArray = _.map(['SM', 'SB'], function (substring) {
                     return vm.searchCampaign.toUpperCase().indexOf(substring) > -1;
                 });
-                // vm.clonnedCamapaignSummary = (vm.clonnedCamapaignSummary.length > 0 ? vm.clonnedCamapaignSummary : _.cloneDeep(vm.campaignSummary));
 
                 if (substringArray.indexOf(true) > -1) {
-                    // var campaignSummary = vm.clonnedCamapaignSummary.length > 0 ? _.cloneDeep(vm.clonnedCamapaignSummary) : _.cloneDeep(vm.campaignSummary);
-
                     var data = vm.campaignSummary.filter(function (obj) {
                         return obj.id.indexOf(vm.searchCampaign.toUpperCase()) > -1
                     });
                     vm.campaignSummary = _.cloneDeep(data);
-                    // vm.clonnedSummary = _.cloneDeep(vm.summary);
-                    // vm.clonnedChannelSummaryByImpression = _.cloneDeep(vm.channelSummaryByImpression);
                     if (data.length === 0) {
                         vm.showCampaign = false;
                         vm.showPlayer = false;
@@ -777,24 +674,20 @@
                     console.log('Please enter valid campaign Reference');
                 }
             } else {
-                // and condition added for CC-136
                 if (vm.searchCampaign.trim().length == 0) {
-                    // vm.campaignSummary = _.cloneDeep(vm.clonnedCamapaignSummary);
-                    // vm.summary = _.cloneDeep(vm.clonnedSummary);
-                    // vm.channelSummaryByImpression = _.cloneDeep(vm.clonnedChannelSummaryByImpression);
-                    // filterSummaries(vm.campaignSummary);
                     vm.triggerSearchAfterCampaignRefRemoved = true;
                     getSummaries();
-                    // filterChartData();
                 }
-                vm.compaliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign', false);
                 return false;
             }
+
         }
-        //------------------------------------------------------------------------------------------------------------------
 
+        /**
+         * This function resets the state of chart level checkbox filters
+         * @returns void
+         */
         function checkAllcheckBoxes() {
-
             vm.player.compaliant = true;
             vm.player.noncompaliant = true;
             vm.campaign.compaliant = true;
@@ -805,6 +698,10 @@
             vm.hour.noncompaliant = true;
         }
 
+        /**
+         * This function prepared information tooltip on each section
+         * @return void
+         */
         function setToolTips() {
 
             $("#dashBoardToolTip").attr("data-tooltip", vm.userBundle['common.dashboard.tooltip']);
@@ -859,16 +756,17 @@
 
         }
 
-
+        /**
+         * This function makes server call to get initial configuration data
+         * @return void
+         */
         function getInitialConfig() {
             var initalConfigData = filterService.getInitialConfig().then(function (data) {
 
                 vm.configData = data.data;
                 vm.userBundle = data.data.userBundle;
-                //data-tooltip="{{vm.userBundle['common.dashboard.tooltip']}}"
-
-
                 setToolTips();
+
                 configureOptions.HOUR_BAR.scales.xAxes[0].scaleLabel.labelString = vm.userBundle["popboard.time.xAxis.label"];
                 configureOptions.HOUR_BAR.scales.yAxes[0].scaleLabel.labelString = vm.userBundle["popboard.time.yAxis.label"];
 
@@ -881,11 +779,9 @@
                 configureOptions.BAR_DAY.scales.xAxes[0].scaleLabel.labelString = vm.userBundle["popboard.date.xAxis.label"];
                 configureOptions.BAR_DAY.scales.yAxes[0].scaleLabel.labelString = vm.userBundle["popboard.date.yAxis.label"];
 
-
-
-
-                if (vm.configData.complainceLevel)
+                if (vm.configData.complainceLevel) {
                     COMPLAINCE_PERCENTAGE = vm.configData.complainceLevel;
+                }
 
                 vm.datePicker = {
                     date: {
@@ -901,37 +797,31 @@
                 if (vm.configData.marketingNames)
                     vm.marketingNames = vm.configData.marketingNames;
 
-                MAX_INACTIVE_INTERVAL = vm.configData.systemData.maxInactiveInterval || MAX_INACTIVE_INTERVAL;                
+                MAX_INACTIVE_INTERVAL = vm.configData.systemData.maxInactiveInterval || MAX_INACTIVE_INTERVAL;
                 getSummaries();
             });
+
             setTimeout(function () {
                 $('#my-drop-btn').dropdown({
                     belowOrigin: true // Displays dropdown below the button
                 });
                 $('select').material_select();
             });
-
         }
 
+        /**
+         * This function loads the application service call urls
+         * @param {any} serviceCallKeys 
+         */
         function loadServiceCallKeys(serviceCallKeys) {
             var key;
             for (key in serviceCallKeys) {
                 window[key] = (typeof SERVICE_BASE_URL != 'undefined' ? SERVICE_BASE_URL : '') + serviceCallKeys[key];
-            };
-        }
-
-        function formatHours(hour) {
-            if (hour < 10) {
-                hour = "0" + hour + ":00";
-            } else {
-                hour = hour + ":00";
             }
-            return hour;
         }
 
         /**
-         * 
-         * 
+         * @desc This function generates summary charts with their respective configurations
          * @param {any} type 
          * @param {any} chartData 
          * @param {any} toggleOtherCharts 
@@ -957,63 +847,38 @@
                     };
 
                     vm.campaignOptions.animation = {
-                        onProgress: function (chart) {                            
+                        onProgress: function (chart) {
                             var sourceCanvas = this.chart.ctx.canvas;
-                            var copyHeight = this.scales['x-axis-0'].height - 4; 
+                            var copyHeight = this.scales['x-axis-0'].height - 4;
                             var copyWidth = sourceCanvas.width;
                             var targetCtx = document.getElementById("campaignXAxis").getContext("2d");
                             targetCtx.canvas.width = sourceCanvas.width;
                             targetCtx.canvas.style.width = sourceCanvas.scrollWidth + 'px';
                             targetCtx.canvas.height = copyHeight;
                             targetCtx.drawImage(sourceCanvas, 0, 0, copyWidth, copyHeight, 0, 0, copyWidth, copyHeight);
-                            vm.campaignYAxisLabel = this.chart.options.scales.yAxes[0].scaleLabel.labelString; 
+                            vm.campaignYAxisLabel = this.chart.options.scales.yAxes[0].scaleLabel.labelString;
                         }
                     }
 
-
                     vm.campaignOptions.size.height = calculateHeightForCampaign(_.clone(configureOptions.HORIZONTAL_BAR.size.height), chartData.length);
 
-                    if (vm.isFrameDashbaord == 1)
-                        chartData = _.sortBy(chartData, 'value').reverse();
-                    else if (vm.isFrameDashbaord == 2)
-                        chartData = _.sortBy(chartData, 'avgValue').reverse();
-                    else
-                        chartData = _.sortBy(chartData, 'avgValue').reverse();
+                    chartData = _.sortBy(chartData, 'avgValue').reverse();
 
                     _.forEach(chartData, function (obj) {
                         vm.campaignData.labels.push(obj.label);
                         vm.campaignData.datasets[0].advertiserName.push(obj.advertiserName);
                         vm.campaignData.datasets[0].brandName.push(obj.brandName);
 
-                        if (vm.isFrameDashbaord == 1)
-                            vm.campaignData.datasets[0].data.push(obj.value);
-                        else if (vm.isFrameDashbaord == 2)
-                            vm.campaignData.datasets[0].data.push(obj.avgValue);
-                        else
-                            vm.campaignData.datasets[0].data.push(obj.avgValue);
+                        vm.campaignData.datasets[0].data.push(obj.avgValue);
 
-                        if (vm.isFrameDashbaord != 3) {
-                            if (obj.failed) {
-                                ++vm.campaign.noncompliantCount;
-                                vm.campaignData.datasets[0].backgroundColor.push(RED_COLOR);
-                                vm.campaignData.datasets[0].compaliantcheck.push(false);
-                            }
-                            else {
-                                vm.campaignData.datasets[0].backgroundColor.push(BLUE_COLOR);
-                                vm.campaignData.datasets[0].compaliantcheck.push(true);
-                                ++vm.campaign.compliantCount;
-                            }
+                        if (obj.failedAudience) {
+                            ++vm.campaign.noncompliantCount;
+                            vm.campaignData.datasets[0].backgroundColor.push(RED_COLOR);
+                            vm.campaignData.datasets[0].compaliantcheck.push(false);
                         } else {
-                            if (obj.failedAudience) {
-                                ++vm.campaign.noncompliantCount;
-                                vm.campaignData.datasets[0].backgroundColor.push(RED_COLOR);
-                                vm.campaignData.datasets[0].compaliantcheck.push(false);
-                            }
-                            else {
-                                vm.campaignData.datasets[0].backgroundColor.push(BLUE_COLOR);
-                                vm.campaignData.datasets[0].compaliantcheck.push(true);
-                                ++vm.campaign.compliantCount;
-                            }
+                            vm.campaignData.datasets[0].backgroundColor.push(BLUE_COLOR);
+                            vm.campaignData.datasets[0].compaliantcheck.push(true);
+                            ++vm.campaign.compliantCount;
                         }
                         vm.campaignDetails.campaignDetails.push(obj);
                     });
@@ -1021,13 +886,6 @@
                     if (toggleOtherCharts) {
                         vm.hideWatermark = true;
                         vm.showCampaign = true;
-                    }
-
-
-                    function getCampaignId(title) {
-                        var n = title.split(" ");
-                        var temp = n[n.length - 1].trim().split(':');
-                        return temp[temp.length - 1];
                     }
 
                     var campaignId = '', campaignData = '';
@@ -1056,45 +914,20 @@
                         playerDetails: []
                     };
                     vm.width = calculateWidthForPlayer(chartData.length);
-
-                    if (vm.isFrameDashbaord == 1)
-                        chartData = _.sortBy(chartData, 'value').reverse();
-                    else if (vm.isFrameDashbaord == 2)
-                        chartData = _.sortBy(chartData, 'avgValue').reverse();
-                    else
-                        chartData = _.sortBy(chartData, 'audienceValue').reverse();
+                    chartData = _.sortBy(chartData, 'audienceValue').reverse();
 
                     _.forEach(chartData, function (obj) {
 
                         vm.playerData.labels.push(obj.label);
-
-                        if (vm.isFrameDashbaord == 1)
-                            vm.playerData.datasets[0].data.push(obj.value);
-                        else if (vm.isFrameDashbaord == 2)
-                            vm.playerData.datasets[0].data.push(obj.avgValue);
-                        else
-                            vm.playerData.datasets[0].data.push(obj.audienceValue);
-
-                        if (vm.isFrameDashbaord != 3) {
-                            if (obj.failed) {
-                                vm.playerData.datasets[0].backgroundColor.push(RED_COLOR);
-                                vm.playerData.datasets[0].compaliantcheck.push(false);
-                                ++vm.player.noncompliantCount; //CCP-307 Nishit
-                            } else {
-                                vm.playerData.datasets[0].backgroundColor.push(BLUE_COLOR);
-                                vm.playerData.datasets[0].compaliantcheck.push(true);
-                                ++vm.player.compliantCount;
-                            }
+                        vm.playerData.datasets[0].data.push(obj.audienceValue);
+                        if (obj.failedAudience) {
+                            vm.playerData.datasets[0].backgroundColor.push(RED_COLOR);
+                            vm.playerData.datasets[0].compaliantcheck.push(false);
+                            ++vm.player.noncompliantCount;
                         } else {
-                            if (obj.failedAudience) {
-                                vm.playerData.datasets[0].backgroundColor.push(RED_COLOR);
-                                vm.playerData.datasets[0].compaliantcheck.push(false);
-                                ++vm.player.noncompliantCount;
-                            } else {
-                                vm.playerData.datasets[0].backgroundColor.push(BLUE_COLOR);
-                                vm.playerData.datasets[0].compaliantcheck.push(true);
-                                ++vm.player.compliantCount;
-                            }
+                            vm.playerData.datasets[0].backgroundColor.push(BLUE_COLOR);
+                            vm.playerData.datasets[0].compaliantcheck.push(true);
+                            ++vm.player.compliantCount;
                         }
 
                         vm.playerDetails.playerDetails.push(obj)
@@ -1110,19 +943,19 @@
                     var campaignId = '', campaignData = '';
 
                     vm.barOptions.animation = {
-                        onProgress: function (chart) {                                                        
+                        onProgress: function (chart) {
                             var sourceCanvas = this.chart.ctx.canvas;
-                            var copyHeight = sourceCanvas.height; 
+                            var copyHeight = sourceCanvas.height;
                             var copyWidth = this.scales['y-axis-0'].width;
                             var targetCtx = document.getElementById("playerAxis").getContext("2d");
                             targetCtx.canvas.width = copyWidth;
                             targetCtx.canvas.style.height = sourceCanvas.offsetHeight + 'px';
                             targetCtx.canvas.height = copyHeight;
                             targetCtx.drawImage(sourceCanvas, 0, 0, copyWidth, copyHeight, 0, 0, copyWidth, copyHeight);
-                            vm.playerXAxisLabel = this.chart.options.scales.xAxes[0].scaleLabel.labelString; 
+                            vm.playerXAxisLabel = this.chart.options.scales.xAxes[0].scaleLabel.labelString;
                         }
                     }
-                                        
+
                     vm.barOptions.tooltips = {
                         enabled: false,
                         mode: 'index',
@@ -1152,36 +985,15 @@
                     vm.dayOptions.size.width = calculateWidthForCampaign(vm.dayOptions.size.width, chartData.length);
                     _.forEach(chartData, function (obj) {
                         vm.dayData.labels.push(obj.label);
+                        vm.dayData.datasets[0].data.push(obj.audienceValue);
 
-
-                        if (vm.isFrameDashbaord == 1)
-                            vm.dayData.datasets[0].data.push(obj.value);
-                        else if (vm.isFrameDashbaord == 2)
-                            vm.dayData.datasets[0].data.push(obj.avgValue);
-                        else
-                            vm.dayData.datasets[0].data.push(obj.audienceValue);
-
-                        if (vm.isFrameDashbaord != 3) {
-
-                            if (obj.failed) {
-                                vm.dayData.datasets[0].backgroundColor.push(RED_COLOR);
-                                vm.day.noncompliantCount++;
-                            } else {
-                                vm.dayData.datasets[0].backgroundColor.push(BLUE_COLOR);
-                                vm.day.compliantCount++;
-                            }
+                        if (obj.failedAudience) {
+                            vm.dayData.datasets[0].backgroundColor.push(RED_COLOR);
+                            vm.day.noncompliantCount++;
                         } else {
-
-                            if (obj.failedAudience) {
-                                vm.dayData.datasets[0].backgroundColor.push(RED_COLOR);
-                                vm.day.noncompliantCount++;
-                            } else {
-                                vm.dayData.datasets[0].backgroundColor.push(BLUE_COLOR);
-                                vm.day.compliantCount++;
-                            }
+                            vm.dayData.datasets[0].backgroundColor.push(BLUE_COLOR);
+                            vm.day.compliantCount++;
                         }
-
-
                         vm.dayDetails.dayDetails.push(obj);
                     });
 
@@ -1189,7 +1001,6 @@
                         vm.showDay = true;
                         vm.showHour = false;
                     }
-
                     break;
                 case 'hour':
                     vm.hourData = {
@@ -1213,32 +1024,17 @@
                     _.forEach(chartData, function (obj) {
                         vm.hourData.labels.push(obj.label);
 
-                        if (vm.isFrameDashbaord != 3)
-                            vm.hourData.datasets[0].data.push(obj.value);
-                        else
-                            vm.hourData.datasets[0].data.push(obj.audienceValue);
 
-                        if (vm.isFrameDashbaord != 3) {
-                            if (obj.failed) {
-                                vm.hourData.datasets[0].backgroundColor.push(RED_COLOR);
-                                ++vm.hour.compliantCount;
-                            }
-                            else {
-                                vm.hourData.datasets[0].backgroundColor.push(BLUE_COLOR);
-                                if (!angular.isUndefined(obj.failed))
-                                    ++vm.hour.noncompliantCount;
-                            }
-                        } else {
+                        vm.hourData.datasets[0].data.push(obj.audienceValue);
 
-                            if (obj.failedAudience) {
-                                vm.hourData.datasets[0].backgroundColor.push(RED_COLOR);
-                                ++vm.hour.compliantCount;
-                            }
-                            else {
-                                vm.hourData.datasets[0].backgroundColor.push(BLUE_COLOR);
-                                if (!angular.isUndefined(obj.failedAudience))
-                                    ++vm.hour.noncompliantCount;
-                            }
+                        if (obj.failedAudience) {
+                            vm.hourData.datasets[0].backgroundColor.push(RED_COLOR);
+                            ++vm.hour.compliantCount;
+                        }
+                        else {
+                            vm.hourData.datasets[0].backgroundColor.push(BLUE_COLOR);
+                            if (!angular.isUndefined(obj.failedAudience))
+                                ++vm.hour.noncompliantCount;
                         }
                         vm.hourDetails.hourDetails.push(obj)
                     });
@@ -1254,6 +1050,10 @@
             $('#' + id).hide();
         }
 
+        /**
+         * This function retrives all summary chart's data from the server
+         * @returns void
+         */
         function getSummaries() {
             createFilterOject();
             var filterChanged = isFilterChanged();
@@ -1303,7 +1103,6 @@
                 if (data && data.data) {
                     var data = data.data;
                     if (data.channelSummary && data.channelSummary.length > 0) {
-
                         vm.channelSummary = data.channelSummary;
                         vm.channelSummaryByAudience = data.channelSummaryByAudience;
                         vm.channelSummaryByImpression = data.channelSummaryByImpression;
@@ -1331,18 +1130,10 @@
                                 percentage: (percentage > 100 ? 100 : percentage),
                             }
                             return (angular.extend(obj, { guageColors: vm.impressionGaugeColors }, moreData));
-                        });
-
-                        if (vm.isFrameDashbaord != 3) {
-                            vm.summary = vm.channelSummary;
-                        } else {
-                            vm.summary = vm.channelSummaryByAudience;
-                            // vm.clonnedSummary = [];
-                        }
-
+                        });                        
+                        vm.summary = vm.channelSummaryByAudience;                        
                     }
                     if (data.campaignSummary) {
-
                         if (data.campaignSummary.length > 0) {
                             vm.campaignOptions.size = _.clone(configureOptions.HORIZONTAL_BAR.size); // after change in filter need to reset size
                             vm.campaignSummary = _.map(data.campaignSummary, function (obj) {
@@ -1357,8 +1148,7 @@
                             vm.campaignData = {};
                             vm.showCampaign = false;
                             vm.campaignBar = {};
-                        }
-                        // vm.clonnedCamapaignSummary = [];
+                        }                        
                     }
                     if (data.frameSummary) {
                         if (data.frameSummary.length > 0) {
@@ -1371,10 +1161,11 @@
                             });
 
                             generateChart('player', vm.frameSummary, true);
+                            vm.showPlayer = true;
                         }
                         else {
                             vm.playerData = {};
-                            vm.showPlayer = false
+                            vm.showPlayer = false;
                         }
                     }
                     if (data.daySummary) {
@@ -1387,6 +1178,7 @@
                                 return obj;
                             });
                             generateChart('day', vm.daySummary, true);
+                            vm.showDay = true;
                         }
                         else {
                             vm.dayData = {};
@@ -1404,22 +1196,29 @@
                                 return obj;
                             });
                             generateChart('hour', vm.spanSummary, true);
+                            vm.showHour = true;
                         }
                         else {
                             vm.hourData = {};
-                            vm.showHour = false
+                            vm.showHour = false;
                         }
                     }
                     highlightSelectedBar();
-
                 }
                 if (vm.searchCampaign != '') {
                     vm.searchCampaignRef();
+                } else {
+                    filterChartData();
                 }
             });
-
         }
 
+        /**
+         * @desc This function generates tooltip on the fly for player chart
+         * @param {any} tooltipModel 
+         * @param {any} chart 
+         * @author Amit Mahida
+         */
         function frameTooltip(tooltipModel, chart) {
             if (tooltipModel.dataPoints) {
                 var tooltipData = vm.frameSummary.filter(function (obj) {
@@ -1449,8 +1248,7 @@
                         style += '; border-width: 2px';
                         var span = '<span class="chartjs-tooltip-key" style="' + style + '"></span>';
                         innerHtml += '<tr><td style="font-weight:600;color: #fcfcfc;">' + body['key'] + ' </td></tr>';
-                        innerHtml += '<tr><td style="color: #fcfcfc;">' + body['value'] + ' </td></tr>';
-                        // <td>' + body['value'] + '</td>
+                        innerHtml += '<tr><td style="color: #fcfcfc;">' + body['value'] + ' </td></tr>';                        
                     });
                     innerHtml += '</tbody>';
 
@@ -1468,43 +1266,31 @@
                 tooltipEl.style.padding = tooltipModel.yPadding + 'px ' + tooltipModel.xPadding + 'px';
                 tooltipEl.style.display = 'block';
                 tooltipEl.style.height = 'auto';
-
             } else {
                 var tooltipEl = document.getElementById('player-tooltip');
                 tooltipEl.style.display = 'none';
             }
-
         }
 
+        /**
+         * @desc This function handles the state of selected bar from the summary chart
+         */
         function highlightSelectedBar() {
             if (!_.isUndefined(vm.selectedCampaign) && !_.isNull(vm.selectedCampaign)) {
                 if (!_.isEmpty(vm.campaignData)) {
                     vm.campaignData.datasets[0].backgroundColor = [];
-                    _.forEach(vm.campaignDetails.campaignDetails, function (obj, key) {
-
-                        if (vm.isFrameDashbaord != 3) {
-                            if (obj.failed) {
-                                vm.campaignData.datasets[0].backgroundColor.push(RED_COLOR);
-                                vm.campaignData.datasets[0].compaliantcheck.push(false);
-                            }
-                            else {
-                                vm.campaignData.datasets[0].backgroundColor.push(BLUE_COLOR);
-                                vm.campaignData.datasets[0].compaliantcheck.push(true);
-                            }
-                        } else {
-                            if (obj.failedAudience) {
-                                vm.campaignData.datasets[0].compaliantcheck.push(false);
-                                vm.campaignData.datasets[0].backgroundColor.push(RED_COLOR);
-                            }
-                            else {
-                                vm.campaignData.datasets[0].backgroundColor.push(BLUE_COLOR);
-                                vm.campaignData.datasets[0].compaliantcheck.push(true);
-                            }
+                    _.forEach(vm.campaignDetails.campaignDetails, function (obj, key) {                        
+                        if (obj.failedAudience) {
+                            vm.campaignData.datasets[0].compaliantcheck.push(false);
+                            vm.campaignData.datasets[0].backgroundColor.push(RED_COLOR);
                         }
+                        else {
+                            vm.campaignData.datasets[0].backgroundColor.push(BLUE_COLOR);
+                            vm.campaignData.datasets[0].compaliantcheck.push(true);
+                        }                        
                     });
 
                     var index = _.findIndex(vm.campaignDetails.campaignDetails, function (o) { return o.id == vm.selectedCampaign; });
-                    vm.campaignBar.selectedFrame = null; // when no campaign is selected no frame should be selected
                     if (index > -1) {
                         vm.campaignData.datasets[0].backgroundColor[index] = GREEN_COLOR;
                         vm.campaignBar.selectedCampaign = vm.selectedCampaign.split(':')[0];
@@ -1512,6 +1298,7 @@
                         vm.campaignBar.advertiserName = vm.campaignData.datasets[0].advertiserName[index];
                     } else {
                         vm.campaignBar.selectedCampaign = null;
+                        vm.campaignBar.selectedFrame = null; // when no campaign is selected no frame should be selected
                         vm.campaignBar.brandName = null;
                         vm.campaignBar.advertiserName = null;
                     }
@@ -1521,26 +1308,14 @@
             if (!_.isUndefined(vm.selectedFrame) && !_.isNull(vm.selectedFrame)) {
                 if (!_.isEmpty(vm.playerData)) {
                     vm.playerData.datasets[0].backgroundColor = [];
-                    _.forEach(vm.playerDetails.playerDetails, function (obj, key) {
-
-                        if (vm.isFrameDashbaord != 3) {
-                            if (obj.failed) {
-                                vm.playerData.datasets[0].backgroundColor.push(RED_COLOR);
-                                vm.playerData.datasets[0].compaliantcheck.push(false);
-                            } else {
-                                vm.playerData.datasets[0].backgroundColor.push(BLUE_COLOR);
-                                vm.playerData.datasets[0].compaliantcheck.push(true);
-                            }
+                    _.forEach(vm.playerDetails.playerDetails, function (obj, key) {                        
+                        if (obj.failedAudience) {
+                            vm.playerData.datasets[0].backgroundColor.push(RED_COLOR);
+                            vm.playerData.datasets[0].compaliantcheck.push(false);
                         } else {
-                            if (obj.failedAudience) {
-                                vm.playerData.datasets[0].backgroundColor.push(RED_COLOR);
-                                vm.playerData.datasets[0].compaliantcheck.push(false);
-                            } else {
-                                vm.playerData.datasets[0].backgroundColor.push(BLUE_COLOR);
-                                vm.playerData.datasets[0].compaliantcheck.push(true);
-                            }
+                            vm.playerData.datasets[0].backgroundColor.push(BLUE_COLOR);
+                            vm.playerData.datasets[0].compaliantcheck.push(true);
                         }
-
                     });
                     var index = _.findIndex(vm.playerDetails.playerDetails, function (o) { return o.id == vm.selectedFrame; });
                     if (index > -1) {
@@ -1555,23 +1330,12 @@
             if (!_.isUndefined(vm.selectedDay) && !_.isNull(vm.selectedDay)) {
                 if (!_.isEmpty(vm.dayData)) {
                     vm.dayData.datasets[0].backgroundColor = [];
-                    _.forEach(vm.dayDetails.dayDetails, function (obj, key) {
-
-                        if (vm.isFrameDashbaord != 3) {
-                            if (obj.failed) {
-                                vm.dayData.datasets[0].backgroundColor.push(RED_COLOR);
-                            } else {
-                                vm.dayData.datasets[0].backgroundColor.push(BLUE_COLOR);
-                            }
+                    _.forEach(vm.dayDetails.dayDetails, function (obj, key) {                        
+                        if (obj.failedAudience) {
+                            vm.dayData.datasets[0].backgroundColor.push(RED_COLOR);
                         } else {
-                            if (obj.failedAudience) {
-                                vm.dayData.datasets[0].backgroundColor.push(RED_COLOR);
-                            } else {
-                                vm.dayData.datasets[0].backgroundColor.push(BLUE_COLOR);
-                            }
+                            vm.dayData.datasets[0].backgroundColor.push(BLUE_COLOR);
                         }
-
-
                     });
                     var index = _.findIndex(vm.dayDetails.dayDetails, function (o) { return o.id == vm.selectedDay; });
                     if (index > -1)
@@ -1583,46 +1347,21 @@
                 if (!_.isEmpty(vm.dayData)) {
                     vm.dayData.datasets[0].backgroundColor = [];
                     _.forEach(vm.dayDetails.dayDetails, function (obj, key) {
-
-                        if (vm.isFrameDashbaord != 3) {
-
-                            if (obj.failed) {
-                                vm.dayData.datasets[0].backgroundColor.push(RED_COLOR);
-
-                            } else {
-                                vm.dayData.datasets[0].backgroundColor.push(BLUE_COLOR);
-
-                            }
+                        if (obj.failedAudience) {
+                            vm.dayData.datasets[0].backgroundColor.push(RED_COLOR);
                         } else {
-
-                            if (obj.failedAudience) {
-                                vm.dayData.datasets[0].backgroundColor.push(RED_COLOR);
-
-                            } else {
-                                vm.dayData.datasets[0].backgroundColor.push(BLUE_COLOR);
-
-                            }
+                            vm.dayData.datasets[0].backgroundColor.push(BLUE_COLOR);
                         }
-
-
                     });
                     var index = _.findIndex(vm.dayDetails.dayDetails, function (o) { return o.id == vm.selectedDay; });
-                    if (index > -1)
+                    if (index > -1) {
                         vm.dayData.datasets[0].backgroundColor[index] = GREEN_COLOR;
+                    }                        
                 }
             }
-        }
-
-
-        function clearChartData() {
-            vm.campaignData = {};
-            vm.playerData = {};
-            vm.dayData = {};
-            vm.hourData = {};
-        }
+        }        
 
         function isFilterChanged() {
-
             if (Object.keys(vm.cachedFilterObject).length > 0) {
                 if (JSON.stringify(vm.filterObject) == JSON.stringify(vm.cachedFilterObject)) {
                     return false;
@@ -1634,7 +1373,7 @@
                 vm.fullscreenFor = '';
                 return true;
             }
-        } 
+        }
 
         function calculateURL() {
             var generatedURL = "";
@@ -1646,11 +1385,7 @@
             return generatedURL;
         }
 
-        function createFilterOject() {
-            //vm.datePicker
-            //vm.selectedMarketingNames = [];
-            //vm.selectedSpecialists = [];
-            //vm.selectedChannel = [];
+        function createFilterOject() {            
             vm.filterObject = {}
 
             if (vm.datePicker.date) {
@@ -1751,12 +1486,6 @@
                 vm.showFilter = true;
             }
         }
-
-        //------------------------------------------------------------------------------------------------------------------------
-
         getInitialConfig();
-
-
-
     }
 })();
