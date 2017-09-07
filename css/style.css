@@ -340,6 +340,7 @@ input:not([type]):focus:not([readonly]), input[type=text]:focus:not([readonly]),
   font-weight: 600;
   /* margin-bottom: 15px; */
   opacity: 1;
+  cursor: pointer;
 }
 
 .chart-doughnut {
@@ -349,6 +350,7 @@ input:not([type]):focus:not([readonly]), input[type=text]:focus:not([readonly]),
   margin: 0 auto;
   position: relative;
   z-index: 9;
+  cursor: pointer;
 }
 
 .donut-inner {
@@ -368,7 +370,8 @@ input:not([type]):focus:not([readonly]), input[type=text]:focus:not([readonly]),
   line-height: 18px;
   margin-top: 50px;
   display: block;
-  font-size: 15px
+  font-size: 15px;
+  cursor: pointer;
 }
 
 .ranges li {
@@ -917,7 +920,7 @@ table td[class*="col-"], table th[class*="col-"] {
   box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.24);
   z-index: 9;
   border-radius: 50%;
-  cursor: default;
+  cursor: pointer;
   font-size: 1.35em;
 }
 
@@ -1423,6 +1426,12 @@ div {
 .chartAreaWrapper {
   margin: 5px;
   height: 387px;
+  overflow-x: scroll;
+}
+
+.chartAreaWrapperForDay {
+  margin: 10px;
+  height: 154px;
   overflow-x: scroll;
 }
 

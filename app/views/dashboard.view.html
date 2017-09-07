@@ -119,9 +119,9 @@
         <!--ng-style="{'max-width': (100 / vm.channelSummary.length) + '%'}"-->
         <div class="col m7-col center" ng-style="{'max-width': (100 / vm.summary.length) + '%'}" ng-repeat="channel in vm.summary">
             <canvas id="doughnut1" class="chart chart-doughnut" chart-data="[channel.value,100-channel.value]" chart-options="vm.sampleOptions"
-                chart-colors="channel.guageColors" ng-click="vm.onChannelClick(channel.id)">
+                chart-colors="channel.guageColors" ng-click="vm.onChannelClick(channel.id, channel.value)">
             </canvas>
-            <h5 class="gaugereader" ng-click="vm.onChannelClick(channel.id)">{{channel.value}}%</h5>
+            <h5 class="gaugereader" ng-click="vm.onChannelClick(channel.id, channel.value)">{{channel.value}}%</h5>
             <div class="donut-inner">
                 <span>{{channel.label}}</span>
             </div>
@@ -184,34 +184,18 @@
             </span>
             </span>
 
-            <!--<span class="card-title" ng-if="vm.isFrameDashbaord">% frame above threshold </span>           
-             <a ng-if="vm.isFrameDashbaord"  class="customToolTip" data-position="bottom" data-delay="50" data-tooltip="{{vm.frame_CampaignInformation}}"  ng-model="vm.frameToolTip" > <i   class="material-icons" >info_outline</i></a>
-            <span class="card-title" ng-if="!vm.isFrameDashbaord">Campaigns - Average Performance - % played vs booked</span>
-             <a ng-if="!vm.isFrameDashbaord"  class="customToolTip" data-position="bottom" data-delay="50" data-tooltip="{{vm.sot_CampaignInformation}}"  ng-model="vm.frameToolTip" > <i   class="material-icons" >info_outline</i></a>-->
-
-            <!--style=" min-height: {{vm.campaignOptions.size.height + 'px'}}"-->
-
-            <!-- <div class="chartWrapper">
-                <div class="chartAreaWrapper">
-                    <canvas id="campaign" height="300" width="1200" id="campaign" class="chart-horizontal-bar" chart-data="vm.campaignData.datasets[0].data"
-                        chart-options="vm.campaignOptions" chart-colors="vm.campaignData.datasets[0].backgroundColor" chart-labels="vm.campaignData.labels"
-                        chart-dataset-override="vm.campaignDetails" chart-click="vm.onCampaignClick"></canvas>
-                </div>
-                <canvas id="campaignAxis" height="300" width="0"></canvas>
-            </div> -->
-
             <div class="chartWrapper1">
                 <div class="chartAreaWrapper1">
                     <div ng-style='{"height":vm.campaignOptions.size.height}'>
                         <canvas id="campaign" class="chart-horizontal-bar" chart-data="vm.campaignData.datasets[0].data" chart-options="vm.campaignOptions"
                             chart-colors="vm.campaignData.datasets[0].backgroundColor" chart-labels="vm.campaignData.labels"
                             chart-dataset-override="vm.campaignDetails" chart-click="vm.onCampaignClick"></canvas>
-                    </div>                
+                    </div>
                 </div>
                 <canvas id="campaignXAxis" ng-if="vm.campaignData.datasets[0].data.length > 0"></canvas>
                 <div class="verticleAxisLabel" ng-if="vm.campaignData.datasets[0].data.length > 0">
                     {{vm.campaignYAxisLabel}}
-                </div>                
+                </div>
             </div>
 
 
@@ -267,13 +251,14 @@
                 <div class="chartAreaWrapper">
                     <div ng-style="{'width': vm.width}" style="height: 367px;">
                         <canvas id="player" class="chart chart-bar" chart-data="vm.playerData.datasets[0].data" chart-options="vm.barOptions" chart-colors="vm.playerData.datasets[0].backgroundColor"
-                            chart-labels="vm.playerData.labels" chart-click="vm.onPlayerClick" chart-dataset-override="vm.playerDetails" height="330"></canvas>
+                            chart-labels="vm.playerData.labels" chart-click="vm.onPlayerClick" chart-dataset-override="vm.playerDetails"
+                            height="330"></canvas>
                     </div>
                 </div>
                 <canvas id="playerAxis" ng-if="vm.playerData.datasets[0].data.length > 0"></canvas>
                 <div class="horizontalAxisLabel" ng-if="vm.playerData.datasets[0].data.length > 0">
                     {{vm.playerXAxisLabel}}
-                </div>                
+                </div>
             </div>
 
 
@@ -333,11 +318,20 @@
                         <span><i ng-click="vm.fullscreenFor == 'day' ? vm.fullscreenFor = '' :  vm.fullscreenFor = 'day'" class="small material-icons fullscreen-icon">{{ vm.fullscreenFor == 'day' ? 'fullscreen_exit' : 'fullscreen' }}</i></span>
             </span>
             </span>
-            <div class="card-content">
-                <canvas id="day" class="chart chart-bar" chart-data="vm.dayData.datasets[0].data" chart-options="vm.dayOptions" chart-colors="vm.dayData.datasets[0].backgroundColor"
-                    chart-labels="vm.dayData.labels" chart-click="vm.onDayClick" chart-dataset-override="vm.dayDetails">
-                </canvas>
-            </div>
+
+            <div class="chartWrapper">
+                <div class="chartAreaWrapperForDay">
+                    <div ng-style="{'width': vm.dayChartWidth}" style="height: 150px;">
+                        <canvas id="day" class="chart chart-bar" chart-data="vm.dayData.datasets[0].data" chart-options="vm.dayOptions" chart-colors="vm.dayData.datasets[0].backgroundColor"
+                            chart-labels="vm.dayData.labels" chart-click="vm.onDayClick" chart-dataset-override="vm.dayDetails"></canvas>
+                    </div>
+                </div>
+                <canvas id="dayAxis" style="margin-left: 10px;" ng-if="vm.dayData.datasets[0].data.length > 0"></canvas>
+                <div class="horizontalAxisLabel" style="top: 85%;" ng-if="vm.dayData.datasets[0].data.length > 0">
+                    {{vm.dayXAxisLabel}}
+                </div>
+            </div>            
+
         </div>
     </div>
     <div class="col s12 m6 chart-container" ng-show="vm.showHour" ng-class="{'fullscreen-chart animated zoomIn' : vm.fullscreenFor == 'hour', 'hide-chart' : vm.fullscreenFor != 'hour' && vm.fullscreenFor != ''}">

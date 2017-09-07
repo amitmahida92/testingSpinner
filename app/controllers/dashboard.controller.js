@@ -134,7 +134,11 @@
 
         // Doughnut Chart Click
 
-        vm.onChannelClick = function (channelid) {
+        vm.onChannelClick = function (channelid, channelValue) {            
+            if(channelValue == 0){
+                // Amit : CC-206 : Campaign Compliance Gauge should not be clickable which has 0.00% data.	                
+                return;
+            }
             // below condition added for CC-135
             if (vm.searchCampaign && vm.searchCampaign.trim().length > 6)
                 return;
@@ -142,10 +146,9 @@
             if (vm.selectedChannel.length > 0) {
                 if (_.includes(vm.selectedChannel, channelid)) {
                     var index = _.indexOf(vm.selectedChannel, channelid);
-                    vm.selectedChannel.splice(index, 1)
-                }
-                else {
-                    vm.selectedChannel.push(channelid)
+                    vm.selectedChannel.splice(index, 1);
+                } else {
+                    vm.selectedChannel.push(channelid);
                 }
             }
             else {
@@ -201,7 +204,7 @@
                                 vm.selectedFrame = tempSelectedFrame;
                                 vm.showPlayer = true;
                                 setTimeout(function () {
-                                    $('#player').height('1');
+                                    $('#player').height('367');
                                 }, 200);
                                 vm.showDay = true;
                                 if (vm.selectedDay != '') {
@@ -652,7 +655,7 @@
          */
         vm.searchCampaignRef = function () {
             if (vm.searchCampaign && vm.searchCampaign.trim().length > 6) {
-                var substringArray = _.map(['SM', 'SB'], function (substring) {
+                var substringArray = _.map(['SM', 'SB', 'BK'], function (substring) {
                     return vm.searchCampaign.toUpperCase().indexOf(substring) > -1;
                 });
 
@@ -982,6 +985,22 @@
                         dayDetails: []
                     }
 
+                    vm.dayChartWidth = calculateWidthForPlayer(chartData.length);
+
+                    vm.dayOptions.animation = {
+                        onProgress: function (chart) {
+                            var sourceCanvas = this.chart.ctx.canvas;
+                            var copyHeight = sourceCanvas.height;
+                            var copyWidth = this.scales['y-axis-0'].width;
+                            var targetCtx = document.getElementById("dayAxis").getContext("2d");
+                            targetCtx.canvas.width = copyWidth;
+                            targetCtx.canvas.style.height = sourceCanvas.offsetHeight + 'px';
+                            targetCtx.canvas.height = copyHeight;
+                            targetCtx.drawImage(sourceCanvas, 0, 0, copyWidth, copyHeight, 0, 0, copyWidth, copyHeight);
+                            vm.dayXAxisLabel = this.chart.options.scales.xAxes[0].scaleLabel.labelString;
+                        }
+                    }
+
                     vm.dayOptions.size.width = calculateWidthForCampaign(vm.dayOptions.size.width, chartData.length);
                     _.forEach(chartData, function (obj) {
                         vm.dayData.labels.push(obj.label);
@@ -1130,8 +1149,8 @@
                                 percentage: (percentage > 100 ? 100 : percentage),
                             }
                             return (angular.extend(obj, { guageColors: vm.impressionGaugeColors }, moreData));
-                        });                        
-                        vm.summary = vm.channelSummaryByAudience;                        
+                        });
+                        vm.summary = vm.channelSummaryByAudience;
                     }
                     if (data.campaignSummary) {
                         if (data.campaignSummary.length > 0) {
@@ -1148,7 +1167,7 @@
                             vm.campaignData = {};
                             vm.showCampaign = false;
                             vm.campaignBar = {};
-                        }                        
+                        }
                     }
                     if (data.frameSummary) {
                         if (data.frameSummary.length > 0) {
@@ -1248,7 +1267,7 @@
                         style += '; border-width: 2px';
                         var span = '<span class="chartjs-tooltip-key" style="' + style + '"></span>';
                         innerHtml += '<tr><td style="font-weight:600;color: #fcfcfc;">' + body['key'] + ' </td></tr>';
-                        innerHtml += '<tr><td style="color: #fcfcfc;">' + body['value'] + ' </td></tr>';                        
+                        innerHtml += '<tr><td style="color: #fcfcfc;">' + body['value'] + ' </td></tr>';
                     });
                     innerHtml += '</tbody>';
 
@@ -1279,7 +1298,7 @@
             if (!_.isUndefined(vm.selectedCampaign) && !_.isNull(vm.selectedCampaign)) {
                 if (!_.isEmpty(vm.campaignData)) {
                     vm.campaignData.datasets[0].backgroundColor = [];
-                    _.forEach(vm.campaignDetails.campaignDetails, function (obj, key) {                        
+                    _.forEach(vm.campaignDetails.campaignDetails, function (obj, key) {
                         if (obj.failedAudience) {
                             vm.campaignData.datasets[0].compaliantcheck.push(false);
                             vm.campaignData.datasets[0].backgroundColor.push(RED_COLOR);
@@ -1287,7 +1306,7 @@
                         else {
                             vm.campaignData.datasets[0].backgroundColor.push(BLUE_COLOR);
                             vm.campaignData.datasets[0].compaliantcheck.push(true);
-                        }                        
+                        }
                     });
 
                     var index = _.findIndex(vm.campaignDetails.campaignDetails, function (o) { return o.id == vm.selectedCampaign; });
@@ -1308,7 +1327,7 @@
             if (!_.isUndefined(vm.selectedFrame) && !_.isNull(vm.selectedFrame)) {
                 if (!_.isEmpty(vm.playerData)) {
                     vm.playerData.datasets[0].backgroundColor = [];
-                    _.forEach(vm.playerDetails.playerDetails, function (obj, key) {                        
+                    _.forEach(vm.playerDetails.playerDetails, function (obj, key) {
                         if (obj.failedAudience) {
                             vm.playerData.datasets[0].backgroundColor.push(RED_COLOR);
                             vm.playerData.datasets[0].compaliantcheck.push(false);
@@ -1330,7 +1349,7 @@
             if (!_.isUndefined(vm.selectedDay) && !_.isNull(vm.selectedDay)) {
                 if (!_.isEmpty(vm.dayData)) {
                     vm.dayData.datasets[0].backgroundColor = [];
-                    _.forEach(vm.dayDetails.dayDetails, function (obj, key) {                        
+                    _.forEach(vm.dayDetails.dayDetails, function (obj, key) {
                         if (obj.failedAudience) {
                             vm.dayData.datasets[0].backgroundColor.push(RED_COLOR);
                         } else {
@@ -1356,21 +1375,38 @@
                     var index = _.findIndex(vm.dayDetails.dayDetails, function (o) { return o.id == vm.selectedDay; });
                     if (index > -1) {
                         vm.dayData.datasets[0].backgroundColor[index] = GREEN_COLOR;
-                    }                        
+                    }
                 }
             }
-        }        
+        }
+
+        /**
+         * This fucntion resets current state and data of all charts
+         * @author Amit Mahida
+         */
+        function resetCharts() {
+            vm.fullscreenFor = '';
+            vm.selectedCampaign = '';
+            vm.selectedFrame = '';
+            vm.selectedDay = '';
+            vm.showPlayer = false;
+            vm.showDay = false;
+            vm.showHour = false;
+            vm.frameSummary = [];
+            vm.daySummary = [];
+            vm.spanSummary = [];
+        }
 
         function isFilterChanged() {
             if (Object.keys(vm.cachedFilterObject).length > 0) {
                 if (JSON.stringify(vm.filterObject) == JSON.stringify(vm.cachedFilterObject)) {
                     return false;
                 } else {
-                    vm.fullscreenFor = '';
+                    resetCharts();
                     return true;
                 }
             } else {
-                vm.fullscreenFor = '';
+                resetCharts();
                 return true;
             }
         }
@@ -1385,7 +1421,7 @@
             return generatedURL;
         }
 
-        function createFilterOject() {            
+        function createFilterOject() {
             vm.filterObject = {}
 
             if (vm.datePicker.date) {
