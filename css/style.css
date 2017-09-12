@@ -1441,6 +1441,7 @@ div {
   left: 0px;
   z-index: 999;
   height: 100%;
+  width: 1%;
   border-radius: 18%;
   margin-left: 5px;
   writing-mode: tb;
