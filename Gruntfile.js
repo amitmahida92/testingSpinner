@@ -21,7 +21,7 @@ module.exports = function (grunt) {
     var appConfig = {
         app: require('./bower.json').appPath || 'app',
         appModule: require('./bower.json').moduleName || 'reportingDashboard',
-        dist: 'build'
+        dist: 'dist'
     };
 
     // Project configuration.
@@ -171,7 +171,7 @@ module.exports = function (grunt) {
     });
 
     // Default task(s).
-    grunt.registerTask('build', [
+    grunt.registerTask('default', [
         'clean:dist',
         'useminPrepare',
         'concurrent',

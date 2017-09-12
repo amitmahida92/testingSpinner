@@ -5,24 +5,61 @@
 
     DashboardCtrl.$inject = ['filterService', 'configureOptions', 'Webworker'];
 
+    /**
+     * 
+     * @param {any} filterService 
+     * @param {any} configureOptions 
+     * @param {any} Webworker 
+     */
     function DashboardCtrl(filterService, configureOptions, Webworker) {
         var vm = this;
 
+        vm.fullscreenFor = '';
+        vm.triggerSearchAfterCampaignRefRemoved = false;
+        vm.isZendeskTicketAvailable = false;
+        vm.searchCampaign = '';
+        vm.selectedCampaign = '';
+        var tempSelectedFrame = '';
 
+        // Chart summary variables
+        vm.campaignSummary = [];
+        vm.frameSummary = [];
+        vm.daySummary = [];
+        vm.spanSummary = [];
 
-        vm.DASHBOARD_TYPES = [{
-            id: 1,
-            name: "Frame Dashboard",
-            image: 'logo0.png',
-            routeURL: 'dashboard'
-        },
-        {
-            id: 2,
-            name: "Share Of Time",
-            image: 'logo1.png',
-            routeURL: 'shareoftime'
-        }]
+        // External link to ccp
+        vm.ccpLink = CCP_LINK;
 
+        vm.frontEndVersion = frontEndVersion;
+        vm.DASHBOARD_TYPES = [
+            {
+                id: 1,
+                name: "Frame Dashboard",
+                image: 'logo0.png',
+                routeURL: 'dashboard'
+            },
+            {
+                id: 2,
+                name: "Share Of Time",
+                image: 'logo1.png',
+                routeURL: 'shareoftime'
+            }
+        ];
+
+        vm.graphOptions = [
+            {
+                id: 1,
+                name: "Frame",
+            },
+            {
+                id: 2,
+                name: "SoT"
+            },
+            {
+                id: 3,
+                name: "Impressions"
+            }
+        ];
 
         // Show/Hide flags
         vm.showTitle = false;
@@ -31,7 +68,7 @@
         vm.showPlayer = false;
         vm.showDay = false;
         vm.showHour = false;
-
+        vm.campaignSummaryCheck = false; // summary toggle
         vm.showFilter = true;
 
         // Chart Object
@@ -57,31 +94,61 @@
         vm.sampleOptions = configureOptions.DOUGHNUT;
 
         // Filter data selected by User//
-        vm.selectedProductFormats = [];
+        vm.selectedMarketingNames = [];
         vm.selectedSpecialists = [];
         vm.selectedChannel = [];
-        vm.isFrameDashbaord = false;
+        vm.isFrameDashbaord = 3; // default selection for graph        
 
+        // Chart level filters
+        vm.campaign = {
+            compaliant: true,
+            noncompaliant: true,
+            compliantCount: 0,
+            noncompliantCount: 0,
+        };
+        vm.player = {
+            compaliant: true,
+            noncompaliant: true,
+            compliantCount: 0,
+            noncompliantCount: 0
+        };
+        vm.day = {
+            compaliant: true,
+            noncompaliant: true,
+            compliantCount: 0,
+            noncompliantCount: 0
+        };
+        vm.hour = {
+            compaliant: true,
+            noncompaliant: true,
+            compliantCount: 0,
+            noncompliantCount: 0
+        };
 
-
-
-
-
+        // For selected campaign bottom section
+        vm.campaignBar = {};
 
         //------------------------------------------------------------------------------------------------------------------
         //                                              Chart Click Events
         //------------------------------------------------------------------------------------------------------------------
 
-        //Doughnut Chart Click
+        // Doughnut Chart Click
 
-        vm.onChannelClick = function (channelid) {
+        vm.onChannelClick = function (channelid, channelValue) {            
+            if(channelValue == 0){
+                // Amit : CC-206 : Campaign Compliance Gauge should not be clickable which has 0.00% data.	                
+                return;
+            }
+            // below condition added for CC-135
+            if (vm.searchCampaign && vm.searchCampaign.trim().length > 6)
+                return;
+
             if (vm.selectedChannel.length > 0) {
                 if (_.includes(vm.selectedChannel, channelid)) {
                     var index = _.indexOf(vm.selectedChannel, channelid);
-                    vm.selectedChannel.splice(index, 1)
-                }
-                else {
-                    vm.selectedChannel.push(channelid)
+                    vm.selectedChannel.splice(index, 1);
+                } else {
+                    vm.selectedChannel.push(channelid);
                 }
             }
             else {
@@ -89,21 +156,244 @@
             }
 
             getSummaries();
-        }
+            checkAllcheckBoxes();
+        };
+
+        vm.compaliantcheck = function (compaliant, noncompaliant, chart, flag) {
+            if (chart === 'campaign') {
+                var data = _.cloneDeep(vm.campaignSummary);
+
+                if (!compaliant) {
+                    data = vm.campaignSummary.filter(function (obj) {
+                        return obj.failedAudience == true;
+                    });
+                }
+
+                if (!noncompaliant) {
+                    data = vm.campaignSummary.filter(function (obj) {
+                        return obj.failedAudience == false;
+                    });
+                }
+
+                if (!compaliant && !noncompaliant) {
+                    data = [];
+                }
+
+                if (vm.selectedCampaign != '') {
+                    var isSearchedCampaignInNewData = data.filter(function (obj) {
+                        return obj.id.indexOf(vm.selectedCampaign.toUpperCase()) > -1;
+                    });
+                    var isAllSelectedCampaignHasNullAvgValue = true;
+                    isSearchedCampaignInNewData.forEach(function (element) {
+                        if (element.avgValue != 0) {
+                            isAllSelectedCampaignHasNullAvgValue = false;
+                        }
+                    }, this);
+
+                    if (isSearchedCampaignInNewData.length == 0) {
+                        vm.showPlayer = false;
+                        vm.showDay = false;
+                        vm.showHour = false;
+                        tempSelectedFrame = vm.selectedFrame;
+                        vm.campaignBar.selectedFrame = '';
+                        vm.selectedFrame = '';
+                    } else {
+                        if (vm.selectedCampaign != '' && !isAllSelectedCampaignHasNullAvgValue) {
+                            if (tempSelectedFrame != '') {
+                                vm.campaignBar.selectedFrame = tempSelectedFrame;
+                                vm.selectedFrame = tempSelectedFrame;
+                                vm.showPlayer = true;
+                                setTimeout(function () {
+                                    $('#player').height('367');
+                                }, 200);
+                                vm.showDay = true;
+                                if (vm.selectedDay != '') {
+                                    vm.showHour = true;
+                                }
+                            }
+                            if (vm.frameSummary.length > 0 && vm.selectedFrame == '') {
+                                vm.showPlayer = true;
+                            }
+                        } else {
+                            vm.selectedCampaign = '';
+                            vm.selectedFrame = '';
+                            tempSelectedFrame = '';
+                            vm.selectedDay = '';
+                            vm.campaignBar.selectedCampaign = '';
+                            vm.campaignBar.selectedFrame = '';
+                            vm.campaignBar.advertiserName = '';
+                            vm.campaignBar.brandName = '';
+                            vm.showPlayer = false;
+                            vm.showDay = false;
+                            vm.showHour = false;
+                        }
+                    }
+                }
+                generateChart('campaign', data, flag);
+            }
+
+            if (chart == "player") {
+
+                var data = _.cloneDeep(vm.frameSummary);
+
+                if (!compaliant) {
+                    var data = vm.frameSummary.filter(function (obj) {
+                        return obj.failedAudience == true;
+                    });
+                }
+
+                if (!noncompaliant) {
+                    var data = vm.frameSummary.filter(function (obj) {
+                        return obj.failedAudience == false;
+                    });
+                }
+
+                if (!compaliant && !noncompaliant) {
+                    var data = [];
+                }
+
+                if (vm.selectedFrame != '') {
+                    var isSearchedPlayerInNewData = data.filter(function (obj) {
+                        return obj.id.indexOf(vm.selectedFrame.toUpperCase()) > -1;
+                    });
+
+                    if (isSearchedPlayerInNewData.length == 0) {
+                        vm.showDay = false;
+                        vm.showHour = false;
+                    } else {
+                        if (vm.selectedFrame != '') {
+                            vm.showPlayer = true;
+                            vm.showDay = true;
+                            if (vm.selectedDay != '') {
+                                vm.showHour = true;
+                            }
+                        }
+                    }
+                }
+                generateChart('player', data, false);
+            }
+
+            if (chart == "day") {
+
+                var data = _.cloneDeep(vm.daySummary);
+
+                if (!compaliant) {
+                    var data = vm.daySummary.filter(function (obj) {
+                        return obj.failedAudience == true;
+                    });
+                }
+
+                if (!noncompaliant) {
+                    var data = vm.daySummary.filter(function (obj) {
+                        return obj.failedAudience == false;
+                    });
+                }
+
+                if (!compaliant && !noncompaliant) {
+                    var data = [];
+                }
+
+                if (vm.selectedDay != '') {
+                    var isSearchedDayInNewData = data.filter(function (obj) {
+                        return obj.id.indexOf(vm.selectedDay.toUpperCase()) > -1;
+                    });
+                    if (isSearchedDayInNewData.length == 0) {
+                        vm.showHour = false;
+                    } else {
+                        if (vm.selectedDay != '') {
+                            vm.showHour = true;
+                        }
+                    }
+                }
+                generateChart('day', data, false);
+            }
+
+            if (chart == "hour") {
+
+                var data = _.cloneDeep(vm.spanSummary);
+
+                if (!compaliant) {
+                    var data = vm.spanSummary.filter(function (obj) {
+                        return obj.failedAudience == true;
+                    });
+                }
+
+                if (!noncompaliant) {
+                    var data = vm.spanSummary.filter(function (obj) {
+                        return obj.failedAudience == false;
+                    });
+                }
+
+                if (!compaliant && !noncompaliant) {
+                    var data = [];
+                }
+
+                generateChart('hour', data, false);
+
+            }
+
+            highlightSelectedBar();
+            setToolTips();
+        };
 
 
         // First Chart
         vm.onCampaignClick = function (points, evt) {
-            if (points.length > 0) {
-                var campaignId = points[0]['_chart'].config.data.datasets[points[0]['_datasetIndex']].campaignDetails[points[0]['_index']].id; // Value of particluar bar
-                vm.selectedCampaign = campaignId
+            if (points.length > 0 && (vm.campaign.compaliant || vm.campaign.noncompaliant)) { // condition added for CC-115
+
+                $('#compliance-tooltip').hide();
+                var campaign = points[0]['_chart'].config.data.datasets[points[0]['_datasetIndex']].campaignDetails[points[0]['_index']];
+
+                if (campaign.audienceValue == 0) {
+                    return false;
+                }
+
+                vm.selectedCampaign = campaign.id;
+
+                vm.campaignBar.selectedCampaign = _.cloneDeep(vm.selectedCampaign);
+                vm.campaignBar.brandName = campaign.brandName;
+                vm.campaignBar.advertiserName = campaign.advertiserName;
                 //-- Clear the Children Graph and Children Request Parameters//
-                vm.selectedFrame = null
-                vm.selectedDay = null
+                vm.selectedFrame = '';
+                vm.selectedDay = '';
                 //-----------------------------------------------------------//
 
                 vm.playerData = {};
+                vm.player.compaliant = true;
+                vm.player.noncompaliant = true;
+                vm.selectedFrame = '';
+                tempSelectedFrame = '';
+
                 getSummaries();
+                var campaignId = vm.selectedCampaign.split(':')[1];
+
+                if (campaignId && campaign.failedAudience) {
+                    var params = {
+                        "id": campaignId,
+                        "startDate": vm.datePicker.date.startDate
+                    };
+                    filterService.getTooltipData(params).then(function (response) {
+
+                        if (response) {
+                            var campaignData = response.data[campaignId];
+                            if (campaignData && campaignData.length > 0) {
+                                vm.isZendeskTicketAvailable = true;
+                                vm.zendeskTableHeaders = Object.keys(campaignData[0]);
+                                vm.zendeskTableBody = campaignData;
+                            } else {
+                                $('#compliance-tooltip').hide();
+                                vm.isZendeskTicketAvailable = false;
+                                // Materialize.toast(response.message, TOASTER_TIME_INTERVAL, 'rounded');
+                            }
+                        } else {
+                            $('#compliance-tooltip').hide();
+                            vm.isZendeskTicketAvailable = false;
+                            // Materialize.toast(response.message, TOASTER_TIME_INTERVAL, 'rounded');
+                        }
+                    });
+                } else {
+                    vm.isZendeskTicketAvailable = false;
+                }
             } else {
                 return false;
             }
@@ -112,14 +402,52 @@
         // Second Chart
         vm.onPlayerClick = function (points, evt) {
             if (points.length > 0) {
+                $('#player-tooltip').hide();
+                var player = points[0]['_chart'].config.data.datasets[points[0]['_datasetIndex']].playerDetails[points[0]['_index']];
 
-                var frameId = points[0]['_chart'].config.data.datasets[points[0]['_datasetIndex']].playerDetails[points[0]['_index']].id; // Value of particluar bar
-                vm.selectedFrame = frameId
-                //-- Clear the Children Graph and Children Request Parameters//                
-                vm.selectedDay = null
+                if (player.audienceValue == 0) {
+                    return false;
+                }
+
+                vm.selectedFrame = player.id; // Value of particluar bar
+                vm.campaignBar.selectedFrame = _.cloneDeep(vm.selectedFrame);
+                //-- Clear the Children Graph and Children Request Parameters
+                vm.selectedDay = '';
                 //-----------------------------------------------------------//
                 vm.dayData = [];
+                vm.day.compaliant = true;
+                vm.day.noncompaliant = true;
+                vm.selectedDay = '';
                 getSummaries();
+                var displayUnitId = player.label;
+
+                if (displayUnitId && player.failedAudience) {
+                    var params = {
+                        "id": displayUnitId,
+                        "startDate": vm.datePicker.date.startDate
+                    };
+                    filterService.getTooltipData(params).then(function (response) {
+
+                        if (response) {
+                            var frameData = response.data[displayUnitId];
+                            if (frameData && frameData.length > 0) {
+                                vm.isZendeskTicketAvailable = true;
+                                vm.zendeskTableHeaders = Object.keys(frameData[0]);
+                                vm.zendeskTableBody = frameData;
+                            } else {
+                                $('#compliance-tooltip').hide();
+                                vm.isZendeskTicketAvailable = false;
+                                // Materialize.toast(response.message, TOASTER_TIME_INTERVAL, 'rounded');
+                            }
+                        } else {
+                            $('#compliance-tooltip').hide();
+                            vm.isZendeskTicketAvailable = false;
+                            // Materialize.toast(response.message, TOASTER_TIME_INTERVAL, 'rounded');
+                        }
+                    });
+                } else {
+                    vm.isZendeskTicketAvailable = false;
+                }
             } else {
                 return false;
             }
@@ -128,26 +456,42 @@
         // Third Chart
         vm.onDayClick = function (points, evt) {
             if (points.length > 0) {
-                var dayId = points[0]['_chart'].config.data.datasets[points[0]['_datasetIndex']].dayDetails[points[0]['_index']].id; // Value of particluar bar
-                vm.selectedDay = dayId
-                vm.hourData = [];
+                var dayDetails = points[0]['_chart'].config.data.datasets[points[0]['_datasetIndex']].dayDetails[points[0]['_index']];
 
+                if (dayDetails.audienceValue == 0) {
+                    return false;
+                }
+                var dayId = dayDetails.id; // Value of particluar bar
+                vm.selectedDay = dayId;
+                vm.hourData = [];
+                vm.hour.compaliant = true;
+                vm.hour.noncompaliant = true;
                 getSummaries();
             } else {
                 return false;
             }
         }
 
-
         //Select Dashboard Type//
 
         vm.selectDashBoardType = function () {
-            generateChart('campaign', vm.campaignSummary);
-            generateChart('player', vm.frameSummary);
-            generateChart('day', vm.daySummary);
-            generateChart('hour', vm.spanSummary);
+
+
+            vm.summary = vm.channelSummaryByAudience;
+
+            vm.channelSummaryByImpression = vm.channelSummaryByImpression
+
+            if (vm.campaignSummary)
+                vm.compaliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign', false);
+            if (vm.frameSummary)
+                vm.compaliantcheck(vm.player.compaliant, vm.player.noncompaliant, 'player', false);
+            if (vm.daySummary)
+                vm.compaliantcheck(vm.day.compaliant, vm.day.noncompaliant, 'day', false);
+            if (vm.spanSummary)
+                vm.compaliantcheck(vm.hour.compaliant, vm.hour.noncompaliant, 'hour', false);
+
             highlightSelectedBar();
-            setInformationToolTip();
+            setToolTips();
         }
 
 
@@ -157,12 +501,12 @@
         //------------------------------------------------------------------------------------------------------------------
         //                                              Code to fill the drop downs
         //------------------------------------------------------------------------------------------------------------------
-        vm.loadProductFormat = function ($query) {
+        vm.loadmarketingNames = function ($query) {
             if ($query == '')
-                return vm.productFormats;
+                return vm.marketingNames;
             else {
-                return vm.productFormats.filter(function (productFormat) {
-                    return productFormat.productFormatName.toLowerCase().indexOf($query.toLowerCase()) != -1;
+                return vm.marketingNames.filter(function (marketingName) {
+                    return marketingName.marketingName.toLowerCase().indexOf($query.toLowerCase()) != -1;
                 });
             }
         }
@@ -178,173 +522,452 @@
         }
 
         vm.removeTags = function (index, arr) {
-            arr.splice(index, 1);
-            getSummaries();
-        }
+            checkAllcheckBoxes();
+            setTimeout(function () {
+                if (arr === "selectedMarketingNames") {
+                    $("#" + arr + " li").filter(function () { return $.text([this]) === vm[arr][index].marketingName; }).trigger('click');
+                } else {
+                    $("#" + arr + " li").filter(function () { return $.text([this]) === vm[arr][index].organisationName; }).trigger('click');
+                }
+                $("body").trigger('click');
+            }.bind(this), 0);
+        };
+
         vm.onAddTags = function () {
+            checkAllcheckBoxes();
             getSummaries();
+        };
+
+        /**
+         * @desc This function filters both summary charts based on selected filters
+         * @author Amit Mahida
+         * @param {*} data 
+         */
+        function filterSummaries(data) {
+
+            var totalCampaigns = _.groupBy(data, 'businessAreaCode');
+            var compliantCampaignsForBusinessArea, totalCampaignsForBusinessArea;
+
+            // black charts (Audience Compliance)
+            for (var index = 0; index < vm.channelSummaryByImpression.length; index++) {
+                var inelement = vm.channelSummaryByImpression[index];
+
+                if (totalCampaigns[inelement.id]) {
+                    totalCampaignsForBusinessArea = totalCampaigns[inelement['id']];
+                    var sumOfActual = 0, sumOfTarget = 0;
+
+                    if (totalCampaignsForBusinessArea.length > 0) {
+                        for (var index2 = 0; index2 < totalCampaignsForBusinessArea.length; index2++) {
+                            var inelement1 = totalCampaignsForBusinessArea[index2];
+                            sumOfActual += inelement1['audienceValue'];
+                            sumOfTarget += inelement1['value'];
+                        }
+                    }
+                    var percentage = sumOfTarget == 0 ? 0 : ((sumOfActual / sumOfTarget) * 100);
+                    vm.channelSummaryByImpression[index].percentage = percentage;
+                    vm.channelSummaryByImpression[index].percentageDisplay = parseFloat(percentage).toFixed(2);
+                } else {
+                    vm.channelSummaryByImpression[index].percentage = 0;
+                    vm.channelSummaryByImpression[index].percentageDisplay = 0;
+                }
+            }
+
+            // blue charts (Campaign Compliance)
+            for (var index1 = 0; index1 < vm.summary.length; index1++) {
+                var inelement1 = vm.summary[index1];
+                if (totalCampaigns[inelement1['id']]) {
+                    totalCampaignsForBusinessArea = totalCampaigns[inelement1['id']];
+                    if (totalCampaignsForBusinessArea.length > 0) {
+                        compliantCampaignsForBusinessArea = totalCampaignsForBusinessArea.filter(function (obj) {
+                            return obj.failedAudience == false;
+                        });
+                        var percentage = (compliantCampaignsForBusinessArea.length / totalCampaignsForBusinessArea.length) * 100;
+                        vm.summary[index1].value = parseFloat(percentage).toFixed(2);
+                    }
+                } else {
+                    vm.summary[index1].value = 0;
+                }
+            }
         }
-        //------------------------------------------------------------------------------------------------------------------
+
+        /**
+         * @desc This function filters the state of charts based on search result filtered by campaign reference
+         * @author Amit Mahida
+         * @returns void
+         */
+        function filterChartData() {
+            vm.showCampaign = !_.isUndefined(vm.campaignSummary) && vm.campaignSummary.length > 0 ? true : false;
+            var isSearchedCampaignInNewData = vm.campaignSummary.filter(function (obj) {
+                return obj.id.indexOf(vm.selectedCampaign.toUpperCase()) > -1;
+            });
+            if (vm.selectedCampaign == '') {
+                vm.showPlayer = false;
+                vm.showDay = false;
+                vm.showHour = false;
+            }
+            var isSearchedPlayerInNewData = vm.frameSummary.filter(function (obj) {
+                return obj.id.indexOf(vm.selectedFrame) > -1;
+            });
+            if (vm.selectedFrame == '') {
+                vm.showDay = false;
+                vm.showHour = false;
+            }
+            var isSearchedDayInNewData = vm.daySummary.filter(function (obj) {
+                return obj.id.indexOf(vm.selectedDay) > -1;
+            });
+            if (vm.selectedDay == '') {
+                vm.showHour = false;
+            }
+            if (isSearchedCampaignInNewData.length == 0) {
+                vm.showPlayer = false;
+                vm.showDay = false;
+                vm.showHour = false;
+            } else if (isSearchedPlayerInNewData.length == 0) {
+                vm.showDay = false;
+                vm.showHour = false;
+            } else if (isSearchedDayInNewData.length == 0) {
+                vm.showHour = false;
+            } else {
+                vm.showPlayer = !_.isUndefined(vm.frameSummary) && vm.frameSummary.length > 0 ? true : false;
+                if (vm.showPlayer && vm.selectedCampaign != '') {
+                    vm.compaliantcheck(vm.player.compaliant, vm.player.noncompaliant, 'player');
+                } else {
+                    vm.showPlayer = false;
+                }
+                vm.showDay = !_.isUndefined(vm.daySummary) && vm.daySummary.length > 0 ? true : false;
+                if (vm.showDay && vm.selectedFrame != '') {
+                    vm.compaliantcheck(vm.day.compaliant, vm.day.noncompaliant, 'day');
+                } else {
+                    vm.showDay = false;
+                }
+                vm.showHour = !_.isUndefined(vm.spanSummary) && vm.spanSummary.length > 0 ? true : false;
+                if (vm.showHour && vm.selectedDay != '') {
+                    vm.compaliantcheck(vm.hour.compaliant, vm.hour.noncompaliant, 'hour')
+                } else {
+                    vm.showHour = false;
+                }
+            }
+        }
+
+        /**
+         * @desc This function filters the summaries displayed in the gauge chart at UI level
+         * @author Amit Mahida
+         */
+        vm.searchCampaignRef = function () {
+            if (vm.searchCampaign && vm.searchCampaign.trim().length > 6) {
+                var substringArray = _.map(['SM', 'SB', 'BK'], function (substring) {
+                    return vm.searchCampaign.toUpperCase().indexOf(substring) > -1;
+                });
+
+                if (substringArray.indexOf(true) > -1) {
+                    var data = vm.campaignSummary.filter(function (obj) {
+                        return obj.id.indexOf(vm.searchCampaign.toUpperCase()) > -1
+                    });
+                    vm.campaignSummary = _.cloneDeep(data);
+                    if (data.length === 0) {
+                        vm.showCampaign = false;
+                        vm.showPlayer = false;
+                        vm.showDay = false;
+                        vm.showHour = false;
+                    }
+                    filterSummaries(data);
+                    filterChartData();
+                    vm.compaliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign', false);
+                } else {
+                    console.log('Please enter valid campaign Reference');
+                }
+            } else {
+                if (vm.searchCampaign.trim().length == 0) {
+                    vm.triggerSearchAfterCampaignRefRemoved = true;
+                    getSummaries();
+                }
+                return false;
+            }
+
+        }
+
+        /**
+         * This function resets the state of chart level checkbox filters
+         * @returns void
+         */
+        function checkAllcheckBoxes() {
+            vm.player.compaliant = true;
+            vm.player.noncompaliant = true;
+            vm.campaign.compaliant = true;
+            vm.campaign.noncompaliant = true;
+            vm.day.compaliant = true;
+            vm.day.noncompaliant = true;
+            vm.hour.compaliant = true;
+            vm.hour.noncompaliant = true;
+        }
+
+        /**
+         * This function prepared information tooltip on each section
+         * @return void
+         */
+        function setToolTips() {
+
+            $("#dashBoardToolTip").attr("data-tooltip", vm.userBundle['common.dashboard.tooltip']);
+            $("#dashBoardToolTip").tooltip();
+
+            $("#gaugetooltip").attr("data-tooltip", vm.userBundle['common.gauge.tooltip']);
+            $("#gaugetooltip").tooltip();
+
+            $("#gaugetooltip_audience").attr("data-tooltip", vm.userBundle['common.gauge.tooltip.audience']);
+            $("#gaugetooltip_audience").tooltip();
+
+            // campaign
+            $("#framecampaigntooltip").attr("data-tooltip", vm.userBundle['popboard.frame.campaign.tooltip']);
+            $("#framecampaigntooltip").tooltip();
+
+            $("#sotcampaigntooltip").attr("data-tooltip", vm.userBundle['popboard.sot.campaign.tooltip']);
+            $("#sotcampaigntooltip").tooltip();
+
+            $("#impressionscampaigntooltip").attr("data-tooltip", vm.userBundle['popboard.impressions.campaign.tooltip']);
+            $("#impressionscampaigntooltip").tooltip();
+
+            // player
+            $("#frameplayertooltip").attr("data-tooltip", vm.userBundle['popboard.frame.player.tooltip']);
+            $("#frameplayertooltip").tooltip();
+
+            $("#sotplayertooltip").attr("data-tooltip", vm.userBundle['popboard.sot.player.tooltip']);
+            $("#sotplayertooltip").tooltip();
+
+            $("#impressionsplayertooltip").attr("data-tooltip", vm.userBundle['popboard.impressions.player.tooltip']);
+            $("#impressionsplayertooltip").tooltip();
 
 
+            //Date
+            $("#framedatetooltip").attr("data-tooltip", vm.userBundle['popboard.frame.date.tooltip']);
+            $("#framedatetooltip").tooltip();
 
+            $("#sotdatetooltip").attr("data-tooltip", vm.userBundle['popboard.sot.date.tooltip']);
+            $("#sotdatetooltip").tooltip();
+
+            $("#impressionstdatetooltip").attr("data-tooltip", vm.userBundle['popboard.impressions.date.tooltip']);
+            $("#impressionstdatetooltip").tooltip();
+
+            // Time
+            $("#frametimetooltip").attr("data-tooltip", vm.userBundle['popboard.frame.time.tooltip']);
+            $("#frametimetooltip").tooltip();
+
+            $("#sottimetooltip").attr("data-tooltip", vm.userBundle['popboard.sot.time.tooltip']);
+            $("#sottimetooltip").tooltip();
+
+            $("#impressionstimetooltip").attr("data-tooltip", vm.userBundle['popboard.impressions.time.tooltip']);
+            $("#impressionstimetooltip").tooltip();
+
+        }
+
+        /**
+         * This function makes server call to get initial configuration data
+         * @return void
+         */
         function getInitialConfig() {
             var initalConfigData = filterService.getInitialConfig().then(function (data) {
-                var configData = data.data;
-                // vm.userBundle = data.data.userBundle;
 
-                // configureOptions.HORIZONTAL_BAR.scales.xAxes[0].scaleLabel.labelString = vm.userBundle["popboard.frame.xAxis.label"];
-                // configureOptions.HORIZONTAL_BAR.scales.yAxes[0].scaleLabel.labelString = vm.userBundle["popboard.frame.yAxis.label"];
+                vm.configData = data.data;
+                vm.userBundle = data.data.userBundle;
+                setToolTips();
 
-                // configureOptions.BAR_PLAYER.scales.xAxes[0].scaleLabel.labelString = vm.userBundle["popboard.player.xAxis.label"];
-                // configureOptions.BAR_PLAYER.scales.yAxes[0].scaleLabel.labelString = vm.userBundle["popboard.player.yAxis.label"];
+                configureOptions.HOUR_BAR.scales.xAxes[0].scaleLabel.labelString = vm.userBundle["popboard.time.xAxis.label"];
+                configureOptions.HOUR_BAR.scales.yAxes[0].scaleLabel.labelString = vm.userBundle["popboard.time.yAxis.label"];
 
-                // configureOptions.BAR_DAY.scales.xAxes[0].scaleLabel.labelString = vm.userBundle["popboard.date.xAxis.label"];
-                // configureOptions.BAR_DAY.scales.yAxes[0].scaleLabel.labelString = vm.userBundle["popboard.date.yAxis.label"];
+                configureOptions.HORIZONTAL_BAR.scales.xAxes[0].scaleLabel.labelString = vm.userBundle["popboard.campaign.xAxis.label"];
+                configureOptions.HORIZONTAL_BAR.scales.yAxes[0].scaleLabel.labelString = vm.userBundle["popboard.campaign.yAxis.label"];
 
-                // configureOptions.HOUR_BAR.scales.xAxes[0].scaleLabel.labelString = vm.userBundle["popboard.time.xAxis.label"];
-                // configureOptions.HOUR_BAR.scales.yAxes[0].scaleLabel.labelString = vm.userBundle["popboard.time.yAxis.label"];
+                configureOptions.BAR_PLAYER.scales.xAxes[0].scaleLabel.labelString = vm.userBundle["popboard.player.xAxis.label"];
+                configureOptions.BAR_PLAYER.scales.yAxes[0].scaleLabel.labelString = vm.userBundle["popboard.player.yAxis.label"];
 
+                configureOptions.BAR_DAY.scales.xAxes[0].scaleLabel.labelString = vm.userBundle["popboard.date.xAxis.label"];
+                configureOptions.BAR_DAY.scales.yAxes[0].scaleLabel.labelString = vm.userBundle["popboard.date.yAxis.label"];
 
-                if (configData.complainceLevel)
-                    COMPLAINCE_PERCENTAGE = configData.complainceLevel
+                if (vm.configData.complainceLevel) {
+                    COMPLAINCE_PERCENTAGE = vm.configData.complainceLevel;
+                }
+
                 vm.datePicker = {
                     date: {
-                        startDate: configData.defaultStartDate,
-                        endDate: configData.defaultEndDate
+                        startDate: vm.configData.defaultStartDate,
+                        endDate: vm.configData.defaultEndDate
                     }
                 };
-                if (configData.serviceCalls)
-                    loadServiceCallKeys(configData.serviceCalls)
-                if (configData.specialists)
-                    vm.specialists = configData.specialists;
-                if (configData.productFormats)
-                    vm.productFormats = configData.productFormats;
 
-                MAX_INACTIVE_INTERVAL = configData.systemData.maxInactiveInterval || MAX_INACTIVE_INTERVAL;
-                startKeepAliveService();
+                if (vm.configData.serviceCalls)
+                    loadServiceCallKeys(vm.configData.serviceCalls)
+                if (vm.configData.specialists)
+                    vm.specialists = vm.configData.specialists;
+                if (vm.configData.marketingNames)
+                    vm.marketingNames = vm.configData.marketingNames;
+
+                MAX_INACTIVE_INTERVAL = vm.configData.systemData.maxInactiveInterval || MAX_INACTIVE_INTERVAL;
                 getSummaries();
             });
+
             setTimeout(function () {
                 $('#my-drop-btn').dropdown({
                     belowOrigin: true // Displays dropdown below the button
                 });
+                $('select').material_select();
             });
-            setInformationToolTip();
-
         }
 
-
-        function setInformationToolTip() {
-            vm.frame_CampaignInformation = frame_CampaignInformation;
-            vm.sot_CampaignInformation = sot_CampaignInformation;
-            vm.frame_PlayerInformation = frame_PlayerInformation;
-            vm.sot_PlayerInformation = sot_PlayerInformation;
-            vm.frame_DayInformation = frame_DayInformation;
-            vm.sot_DayInformation = sot_DayInformation;
-            vm.frame_DateInformation = frame_DateInformation;
-            vm.sot_DateInformation = sot_DateInformation;
-            vm.Dashboard = Dashboard;
-        }
-
+        /**
+         * This function loads the application service call urls
+         * @param {any} serviceCallKeys 
+         */
         function loadServiceCallKeys(serviceCallKeys) {
             var key;
             for (key in serviceCallKeys) {
                 window[key] = (typeof SERVICE_BASE_URL != 'undefined' ? SERVICE_BASE_URL : '') + serviceCallKeys[key];
-            };
-        }
-
-        function formatHours(hour) {
-            if (hour < 10) {
-                hour = "0" + hour + ":00";
-            } else {
-                hour = hour + ":00";
             }
-            return hour;
         }
 
-        function generateChart(type, chartData) {
+        /**
+         * @desc This function generates summary charts with their respective configurations
+         * @param {any} type 
+         * @param {any} chartData 
+         * @param {any} toggleOtherCharts 
+         */
+        function generateChart(type, chartData, toggleOtherCharts) {
             switch (type) {
                 case 'campaign':
                     vm.campaignData = {
                         labels: [],
                         datasets: [{
                             backgroundColor: [],
-                            data: []
+                            data: [],
+                            compaliantcheck: [],
+                            brandName: [],
+                            advertiserName: []
                         }]
-
                     };
+                    vm.campaign.compliantCount = 0;
+                    vm.campaign.noncompliantCount = 0;
+
                     vm.campaignDetails = {
                         campaignDetails: []
+                    };
+
+                    vm.campaignOptions.animation = {
+                        onProgress: function (chart) {
+                            var sourceCanvas = this.chart.ctx.canvas;
+                            var copyHeight = this.scales['x-axis-0'].height - 4;
+                            var copyWidth = sourceCanvas.width;
+                            var targetCtx = document.getElementById("campaignXAxis").getContext("2d");
+                            targetCtx.canvas.width = sourceCanvas.width;
+                            targetCtx.canvas.style.width = sourceCanvas.scrollWidth + 'px';
+                            targetCtx.canvas.height = copyHeight;
+                            targetCtx.drawImage(sourceCanvas, 0, 0, copyWidth, copyHeight, 0, 0, copyWidth, copyHeight);
+                            vm.campaignYAxisLabel = this.chart.options.scales.yAxes[0].scaleLabel.labelString;
+                        }
                     }
 
-                    vm.campaignOptions.size.height = calculateHeightForCampaign(vm.campaignOptions.size.height, chartData.length);
+                    vm.campaignOptions.size.height = calculateHeightForCampaign(_.clone(configureOptions.HORIZONTAL_BAR.size.height), chartData.length);
+
+                    chartData = _.sortBy(chartData, 'avgValue').reverse();
 
                     _.forEach(chartData, function (obj) {
                         vm.campaignData.labels.push(obj.label);
-                        if (vm.isFrameDashbaord) {
-                            vm.campaignData.datasets[0].data.push(obj.value);
-                            if (obj.value < COMPLAINCE_PERCENTAGE)
-                                vm.campaignData.datasets[0].backgroundColor.push(RED_COLOR);
-                            else
-                                vm.campaignData.datasets[0].backgroundColor.push(BLUE_COLOR);
-                        }
-                        else {
-                            vm.campaignData.datasets[0].data.push(obj.avgValue);
-                            if (obj.failed)
-                                vm.campaignData.datasets[0].backgroundColor.push(RED_COLOR);
-                            else
-                                vm.campaignData.datasets[0].backgroundColor.push(BLUE_COLOR);
+                        vm.campaignData.datasets[0].advertiserName.push(obj.advertiserName);
+                        vm.campaignData.datasets[0].brandName.push(obj.brandName);
 
-                        }
+                        vm.campaignData.datasets[0].data.push(obj.avgValue);
 
+                        if (obj.failedAudience) {
+                            ++vm.campaign.noncompliantCount;
+                            vm.campaignData.datasets[0].backgroundColor.push(RED_COLOR);
+                            vm.campaignData.datasets[0].compaliantcheck.push(false);
+                        } else {
+                            vm.campaignData.datasets[0].backgroundColor.push(BLUE_COLOR);
+                            vm.campaignData.datasets[0].compaliantcheck.push(true);
+                            ++vm.campaign.compliantCount;
+                        }
                         vm.campaignDetails.campaignDetails.push(obj);
-
-
-
                     });
-                    vm.hideWatermark = true;
-                    vm.showCampaign = true;
+
+                    if (toggleOtherCharts) {
+                        vm.hideWatermark = true;
+                        vm.showCampaign = true;
+                    }
+
+                    var campaignId = '', campaignData = '';
+                    vm.campaignOptions.tooltips = {
+                        enabled: true,
+                        mode: 'index',
+                        position: 'nearest'
+                    };
+
                     break;
                 case 'player':
                     vm.playerData = {
                         labels: [],
                         datasets: [{
-                            backgroundColor: []
-                            ,
+                            backgroundColor: [],
                             borderWidth: 1,
-                            data: []
+                            data: [],
+                            compaliantcheck: []
                         }]
                     };
+
+                    vm.player.compliantCount = 0;
+                    vm.player.noncompliantCount = 0;
+
                     vm.playerDetails = {
                         playerDetails: []
                     };
-                    // vm.barOptions.size.width = (document.getElementById("campaign").style.width != "" ? document.getElementById("campaign").style.width : vm.barOptions.size.width);
-                    vm.barOptions.size.width = calculateWidthForCampaign(vm.barOptions.size.width, chartData.length);
+                    vm.width = calculateWidthForPlayer(chartData.length);
+                    chartData = _.sortBy(chartData, 'audienceValue').reverse();
+
                     _.forEach(chartData, function (obj) {
+
                         vm.playerData.labels.push(obj.label);
-
-                        if (vm.isFrameDashbaord) {
-                            vm.playerData.datasets[0].data.push(obj.value);
-                            if (obj.value < COMPLAINCE_PERCENTAGE)
-                                vm.playerData.datasets[0].backgroundColor.push(RED_COLOR);
-                            else
-                                vm.playerData.datasets[0].backgroundColor.push(BLUE_COLOR);
+                        vm.playerData.datasets[0].data.push(obj.audienceValue);
+                        if (obj.failedAudience) {
+                            vm.playerData.datasets[0].backgroundColor.push(RED_COLOR);
+                            vm.playerData.datasets[0].compaliantcheck.push(false);
+                            ++vm.player.noncompliantCount;
+                        } else {
+                            vm.playerData.datasets[0].backgroundColor.push(BLUE_COLOR);
+                            vm.playerData.datasets[0].compaliantcheck.push(true);
+                            ++vm.player.compliantCount;
                         }
-                        else {
-                            vm.playerData.datasets[0].data.push(obj.avgValue);
-                            if (obj.failed)
-                                vm.playerData.datasets[0].backgroundColor.push(RED_COLOR);
-                            else
-                                vm.playerData.datasets[0].backgroundColor.push(BLUE_COLOR);
 
-                        }
                         vm.playerDetails.playerDetails.push(obj)
                     });
 
-                    vm.showPlayer = true;
-                    vm.showDay = false;
-                    vm.showHour = false;
+                    if (toggleOtherCharts) {
+                        vm.showPlayer = true;
+                        vm.showDay = false;
+                        vm.showHour = false;
+                    }
+
+
+                    var campaignId = '', campaignData = '';
+
+                    vm.barOptions.animation = {
+                        onProgress: function (chart) {
+                            var sourceCanvas = this.chart.ctx.canvas;
+                            var copyHeight = sourceCanvas.height;
+                            var copyWidth = this.scales['y-axis-0'].width;
+                            var targetCtx = document.getElementById("playerAxis").getContext("2d");
+                            targetCtx.canvas.width = copyWidth;
+                            targetCtx.canvas.style.height = sourceCanvas.offsetHeight + 'px';
+                            targetCtx.canvas.height = copyHeight;
+                            targetCtx.drawImage(sourceCanvas, 0, 0, copyWidth, copyHeight, 0, 0, copyWidth, copyHeight);
+                            vm.playerXAxisLabel = this.chart.options.scales.xAxes[0].scaleLabel.labelString;
+                        }
+                    }
+
+                    vm.barOptions.tooltips = {
+                        enabled: false,
+                        mode: 'index',
+                        position: 'average',
+                        custom: function (tooltipModel) {
+                            var chart = this._chart;
+                            frameTooltip(tooltipModel, chart);
+                        }
+                    };
                     break;
                 case 'day':
                     vm.dayData = {
@@ -355,34 +978,48 @@
                             data: []
                         }]
                     };
+                    vm.day.compliantCount = 0;
+                    vm.day.noncompliantCount = 0;
+
                     vm.dayDetails = {
                         dayDetails: []
                     }
+
+                    vm.dayChartWidth = calculateWidthForPlayer(chartData.length);
+
+                    vm.dayOptions.animation = {
+                        onProgress: function (chart) {
+                            var sourceCanvas = this.chart.ctx.canvas;
+                            var copyHeight = sourceCanvas.height;
+                            var copyWidth = this.scales['y-axis-0'].width;
+                            var targetCtx = document.getElementById("dayAxis").getContext("2d");
+                            targetCtx.canvas.width = copyWidth;
+                            targetCtx.canvas.style.height = sourceCanvas.offsetHeight + 'px';
+                            targetCtx.canvas.height = copyHeight;
+                            targetCtx.drawImage(sourceCanvas, 0, 0, copyWidth, copyHeight, 0, 0, copyWidth, copyHeight);
+                            vm.dayXAxisLabel = this.chart.options.scales.xAxes[0].scaleLabel.labelString;
+                        }
+                    }
+
                     vm.dayOptions.size.width = calculateWidthForCampaign(vm.dayOptions.size.width, chartData.length);
                     _.forEach(chartData, function (obj) {
                         vm.dayData.labels.push(obj.label);
+                        vm.dayData.datasets[0].data.push(obj.audienceValue);
 
-                        if (vm.isFrameDashbaord) {
-                            vm.dayData.datasets[0].data.push(obj.value);
-
-                            if (obj.value < COMPLAINCE_PERCENTAGE)
-                                vm.dayData.datasets[0].backgroundColor.push(RED_COLOR);
-                            else
-                                vm.dayData.datasets[0].backgroundColor.push(BLUE_COLOR);
-                        }
-                        else {
-                            vm.dayData.datasets[0].data.push(obj.avgValue);
-                            if (obj.failed)
-                                vm.dayData.datasets[0].backgroundColor.push(RED_COLOR);
-                            else
-                                vm.dayData.datasets[0].backgroundColor.push(BLUE_COLOR);
-
+                        if (obj.failedAudience) {
+                            vm.dayData.datasets[0].backgroundColor.push(RED_COLOR);
+                            vm.day.noncompliantCount++;
+                        } else {
+                            vm.dayData.datasets[0].backgroundColor.push(BLUE_COLOR);
+                            vm.day.compliantCount++;
                         }
                         vm.dayDetails.dayDetails.push(obj);
                     });
 
-                    vm.showDay = true;
-                    vm.showHour = false;
+                    if (toggleOtherCharts) {
+                        vm.showDay = true;
+                        vm.showHour = false;
+                    }
                     break;
                 case 'hour':
                     vm.hourData = {
@@ -393,27 +1030,53 @@
                             data: []
                         }]
                     };
+                    vm.hour.compliantCount = 0;
+                    vm.hour.noncompliantCount = 0;
+
+                    vm.hourDetails = {
+                        hourDetails: []
+                    }
+
+                    // Commented the below code based on Ravi R confirmation as he wanted sorting by Hour
+                    // chartData = _.sortBy(chartData, 'value').reverse(); // for hour data we will not get avgValue, Nishit, CCP-290
 
                     _.forEach(chartData, function (obj) {
                         vm.hourData.labels.push(obj.label);
-                        vm.hourData.datasets[0].data.push(obj.value);
-                        if (obj.value < COMPLAINCE_PERCENTAGE)
+
+
+                        vm.hourData.datasets[0].data.push(obj.audienceValue);
+
+                        if (obj.failedAudience) {
                             vm.hourData.datasets[0].backgroundColor.push(RED_COLOR);
-                        else
+                            ++vm.hour.compliantCount;
+                        }
+                        else {
                             vm.hourData.datasets[0].backgroundColor.push(BLUE_COLOR);
+                            if (!angular.isUndefined(obj.failedAudience))
+                                ++vm.hour.noncompliantCount;
+                        }
+                        vm.hourDetails.hourDetails.push(obj)
                     });
 
-                    vm.showHour = true;
+                    if (toggleOtherCharts)
+                        vm.showHour = true;
+
                     break;
             }
         }
 
+        vm.closeTooltip = function (id) {
+            $('#' + id).hide();
+        }
+
+        /**
+         * This function retrives all summary chart's data from the server
+         * @returns void
+         */
         function getSummaries() {
-
-            createFilterOject()
+            createFilterOject();
             var filterChanged = isFilterChanged();
-            var requestParameter = {}
-
+            var requestParameter = {};
 
             if (vm.datePicker.date) {
                 requestParameter["startDate"] = vm.filterObject.startDate;
@@ -421,129 +1084,265 @@
             }
             if (vm.filterObject.specialists)
                 requestParameter["specialists"] = JSON.stringify(vm.filterObject.specialists);
-            if (vm.filterObject.productFormats)
-                requestParameter["productFormats"] = JSON.stringify(vm.filterObject.productFormats);
+            if (vm.filterObject.marketingNames)
+                requestParameter["marketingNames"] = JSON.stringify(vm.filterObject.marketingNames);
             if (vm.filterObject.channels)
                 requestParameter["channels"] = JSON.stringify(vm.filterObject.channels);
 
-            requestParameter["filterChange"] = filterChanged;
+            if (filterChanged) {
+                requestParameter["filterChange"] = filterChanged;
+            } else {
+                if (vm.triggerSearchAfterCampaignRefRemoved) {
+                    requestParameter["filterChange"] = vm.triggerSearchAfterCampaignRefRemoved;
+                    vm.triggerSearchAfterCampaignRefRemoved = false;
+                } else {
+                    requestParameter["filterChange"] = filterChanged;
+                }
+            }
 
-            if (vm.selectedCampaign != null)
+            if (!_.isUndefined(vm.selectedCampaign) && vm.selectedCampaign != '')
                 requestParameter["campaignId"] = vm.selectedCampaign;
-            if (vm.selectedFrame != null)
+            if (!_.isUndefined(vm.selectedFrame) && vm.selectedFrame != '') {
                 requestParameter["extendedCodeId"] = vm.selectedFrame;
-            if (vm.selectedDay != null)
+            } else {
+                if (!_.isUndefined(tempSelectedFrame) && tempSelectedFrame != '') {
+                    requestParameter["extendedCodeId"] = tempSelectedFrame;
+                    vm.selectedFrame = tempSelectedFrame;
+                }
+            }
+
+            if (!_.isUndefined(vm.selectedDay) && vm.selectedDay != '')
                 requestParameter["dayId"] = vm.selectedDay;
 
-
+            if (_.isUndefined(requestParameter.startDate) || _.isUndefined(requestParameter.endDate)) {
+                return;
+            }
             filterService.getSummaries(requestParameter).then(function (data) {
                 vm.cachedFilterObject = _.cloneDeep(vm.filterObject);
-                var data = data.data;
+                if (data && data.data) {
+                    var data = data.data;
+                    if (data.channelSummary && data.channelSummary.length > 0) {
+                        vm.channelSummary = data.channelSummary;
+                        vm.channelSummaryByAudience = data.channelSummaryByAudience;
+                        vm.channelSummaryByImpression = data.channelSummaryByImpression;
 
-                if (data.channelSummary && data.channelSummary.length > 0) {
-                    console.log(vm.selectedChannel)
-                    vm.channelSummary = data.channelSummary;
+                        vm.channelSummary = _.map(vm.channelSummary, function (obj) {
+                            return ((vm.selectedChannel.indexOf(obj.id) === -1) ? angular.extend(obj, { guageColors: vm.defaultGuageColors }) : angular.extend(obj, { guageColors: vm.selectedGuageColors }));
+                        });
 
-                    vm.channelSummary = _.map(vm.channelSummary, function (obj) {
-                        return ((vm.selectedChannel.indexOf(obj.id) === -1) ? angular.extend(obj, { guageColors: vm.defaultGuageColors }) : angular.extend(obj, { guageColors: vm.selectedGuageColors }));
-                    });
+                        vm.channelSummaryByAudience = _.map(vm.channelSummaryByAudience, function (obj) {
+                            return ((vm.selectedChannel.indexOf(obj.id) === -1) ? angular.extend(obj, { guageColors: vm.defaultGuageColors }) : angular.extend(obj, { guageColors: vm.selectedGuageColors }));
+                        });
 
+                        vm.channelSummaryByImpression = _.map(vm.channelSummaryByImpression, function (obj) {
+                            var percentage;
+
+                            if (parseFloat(obj.value)) {
+                                percentage = parseFloat(((obj.audienceValue * 100) / obj.value).toFixed(2));
+                                percentage = (isNaN(percentage) ? "0.00" : percentage);
+                            } else {
+                                percentage = "0.00";
+                            }
+
+                            var moreData = {
+                                percentageDisplay: _.cloneDeep(percentage),
+                                percentage: (percentage > 100 ? 100 : percentage),
+                            }
+                            return (angular.extend(obj, { guageColors: vm.impressionGaugeColors }, moreData));
+                        });
+                        vm.summary = vm.channelSummaryByAudience;
+                    }
+                    if (data.campaignSummary) {
+                        if (data.campaignSummary.length > 0) {
+                            vm.campaignOptions.size = _.clone(configureOptions.HORIZONTAL_BAR.size); // after change in filter need to reset size
+                            vm.campaignSummary = _.map(data.campaignSummary, function (obj) {
+                                obj.value = parseFloat(obj.value);
+                                obj.avgValue = parseFloat(obj.avgValue);
+                                obj.audienceValue = parseFloat(obj.audienceValue);
+                                return obj;
+                            });
+                            vm.compaliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign', true);
+                        } else {
+                            vm.campaignSummary = [];
+                            vm.campaignData = {};
+                            vm.showCampaign = false;
+                            vm.campaignBar = {};
+                        }
+                    }
+                    if (data.frameSummary) {
+                        if (data.frameSummary.length > 0) {
+                            // vm.barOptions.size = _.clone(configureOptions.BAR_PLAYER.size); // after change in filter need to reset size
+                            vm.frameSummary = _.map(data.frameSummary, function (obj) {
+                                obj.value = parseFloat(obj.value);
+                                obj.avgValue = parseFloat(obj.avgValue);
+                                obj.audienceValue = parseFloat(obj.audienceValue);
+                                return obj;
+                            });
+
+                            generateChart('player', vm.frameSummary, true);
+                            vm.showPlayer = true;
+                        }
+                        else {
+                            vm.playerData = {};
+                            vm.showPlayer = false;
+                        }
+                    }
+                    if (data.daySummary) {
+                        if (data.daySummary.length > 0) {
+                            vm.dayOptions.size = _.clone(configureOptions.BAR_DAY.size);
+                            vm.daySummary = _.map(data.daySummary, function (obj) {
+                                obj.value = parseFloat(obj.value);
+                                obj.avgValue = parseFloat(obj.avgValue);
+                                obj.audienceValue = parseFloat(obj.audienceValue);
+                                return obj;
+                            });
+                            generateChart('day', vm.daySummary, true);
+                            vm.showDay = true;
+                        }
+                        else {
+                            vm.dayData = {};
+                            vm.showDay = false;
+                        }
+
+                    }
+                    if (data.spanSummary) {
+                        if (data.spanSummary.length > 0) {
+                            vm.dayOptions.size = _.clone(configureOptions.BAR_DAY.size);
+                            vm.spanSummary = _.map(data.spanSummary, function (obj) {
+                                obj.value = parseFloat(obj.value);
+                                obj.avgValue = parseFloat(obj.avgValue);
+                                obj.audienceValue = parseFloat(obj.audienceValue);
+                                return obj;
+                            });
+                            generateChart('hour', vm.spanSummary, true);
+                            vm.showHour = true;
+                        }
+                        else {
+                            vm.hourData = {};
+                            vm.showHour = false;
+                        }
+                    }
+                    highlightSelectedBar();
                 }
-
-
-                if (data.campaignSummary) {
-                    if (data.campaignSummary.length > 0) {
-                        vm.campaignOptions.size = _.clone(configureOptions.HORIZONTAL_BAR.size); // after change in filter need to reset size
-                        vm.campaignSummary = data.campaignSummary;
-                        generateChart('campaign', vm.campaignSummary);
-                    }
-                    else {
-                        vm.campaignData = {};
-                        vm.showCampaign = false;
-                    }
+                if (vm.searchCampaign != '') {
+                    vm.searchCampaignRef();
+                } else {
+                    filterChartData();
                 }
-                if (data.frameSummary) {
-                    if (data.frameSummary.length > 0) {
-                        vm.barOptions.size = _.clone(configureOptions.BAR_PLAYER.size); // after change in filter need to reset size
-                        vm.frameSummary = data.frameSummary;
-                        generateChart('player', vm.frameSummary);
-                    }
-                    else {
-                        vm.playerData = {};
-                        vm.showPlayer = false
-                    }
-                }
-                if (data.daySummary) {
-                    if (data.daySummary.length > 0) {
-                        vm.dayOptions.size = _.clone(configureOptions.BAR_DAY.size);
-                        vm.daySummary = data.daySummary;
-                        generateChart('day', vm.daySummary);
-                    }
-                    else {
-                        vm.dayData = {};
-                        vm.showDay = false;
-                    }
-
-                }
-                if (data.spanSummary) {
-                    if (data.spanSummary.length > 0) {
-                        vm.spanSummary = data.spanSummary;
-                        generateChart('hour', vm.spanSummary);
-                    }
-                    else {
-                        vm.hourData = {}
-                        vm.showHour = false
-                    }
-                }
-                highlightSelectedBar();
             });
-
-
         }
 
-        function highlightSelectedBar() {
+        /**
+         * @desc This function generates tooltip on the fly for player chart
+         * @param {any} tooltipModel 
+         * @param {any} chart 
+         * @author Amit Mahida
+         */
+        function frameTooltip(tooltipModel, chart) {
+            if (tooltipModel.dataPoints) {
+                var tooltipData = vm.frameSummary.filter(function (obj) {
+                    return obj.label == tooltipModel.dataPoints[0].xLabel;
+                });
+                if (tooltipData) {
+                    tooltipData = tooltipData[0].tooltipData;
+                }
 
+                var tooltipEl = document.getElementById('player-tooltip');
+
+                function getBody(bodyItem) {
+                    return bodyItem.lines;
+                }
+
+                // Set Text
+                if (tooltipModel.body) {
+                    var titleLines = "Campaign" + tooltipModel.title[0]; //tooltipModel.title || [];
+                    var bodyLines = tooltipModel.body.map(getBody);
+
+                    var innerHtml = ' ';
+
+                    tooltipData.forEach(function (body) {
+                        var colors = tooltipModel.labelColors[0];
+                        var style = 'background:' + colors.backgroundColor;
+                        style += '; border-color:' + colors.borderColor;
+                        style += '; border-width: 2px';
+                        var span = '<span class="chartjs-tooltip-key" style="' + style + '"></span>';
+                        innerHtml += '<tr><td style="font-weight:600;color: #fcfcfc;">' + body['key'] + ' </td></tr>';
+                        innerHtml += '<tr><td style="color: #fcfcfc;">' + body['value'] + ' </td></tr>';
+                    });
+                    innerHtml += '</tbody>';
+
+                    var tableRoot = tooltipEl.querySelector('table');
+                    tableRoot.innerHTML = innerHtml;
+                }
+                var position = chart.canvas.getBoundingClientRect();
+                // Display, position, and set styles for font
+                tooltipEl.style.opacity = 1;
+                tooltipEl.style.left = position.left + tooltipModel.caretX - 126 + 'px';
+                tooltipEl.style.top = position.top + tooltipModel.caretY - 100 + 'px';
+                tooltipEl.style.fontFamily = tooltipModel._fontFamily;
+                tooltipEl.style.fontSize = tooltipModel.fontSize;
+                tooltipEl.style.fontStyle = tooltipModel._fontStyle;
+                tooltipEl.style.padding = tooltipModel.yPadding + 'px ' + tooltipModel.xPadding + 'px';
+                tooltipEl.style.display = 'block';
+                tooltipEl.style.height = 'auto';
+            } else {
+                var tooltipEl = document.getElementById('player-tooltip');
+                tooltipEl.style.display = 'none';
+            }
+        }
+
+        /**
+         * @desc This function handles the state of selected bar from the summary chart
+         */
+        function highlightSelectedBar() {
             if (!_.isUndefined(vm.selectedCampaign) && !_.isNull(vm.selectedCampaign)) {
                 if (!_.isEmpty(vm.campaignData)) {
                     vm.campaignData.datasets[0].backgroundColor = [];
                     _.forEach(vm.campaignDetails.campaignDetails, function (obj, key) {
-                        if (vm.isFrameDashbaord) {
-                            if (obj.value < COMPLAINCE_PERCENTAGE)
-                                vm.campaignData.datasets[0].backgroundColor.push(RED_COLOR);
-                            else
-                                vm.campaignData.datasets[0].backgroundColor.push(BLUE_COLOR);
+                        if (obj.failedAudience) {
+                            vm.campaignData.datasets[0].compaliantcheck.push(false);
+                            vm.campaignData.datasets[0].backgroundColor.push(RED_COLOR);
                         }
                         else {
-                            if (obj.failed)
-                                vm.campaignData.datasets[0].backgroundColor.push(RED_COLOR);
-                            else
-                                vm.campaignData.datasets[0].backgroundColor.push(BLUE_COLOR);
+                            vm.campaignData.datasets[0].backgroundColor.push(BLUE_COLOR);
+                            vm.campaignData.datasets[0].compaliantcheck.push(true);
                         }
                     });
 
                     var index = _.findIndex(vm.campaignDetails.campaignDetails, function (o) { return o.id == vm.selectedCampaign; });
-                    vm.campaignData.datasets[0].backgroundColor[index] = GREEN_COLOR;
+                    if (index > -1) {
+                        vm.campaignData.datasets[0].backgroundColor[index] = GREEN_COLOR;
+                        vm.campaignBar.selectedCampaign = vm.selectedCampaign.split(':')[0];
+                        vm.campaignBar.brandName = vm.campaignData.datasets[0].brandName[index];
+                        vm.campaignBar.advertiserName = vm.campaignData.datasets[0].advertiserName[index];
+                    } else {
+                        vm.campaignBar.selectedCampaign = null;
+                        vm.campaignBar.selectedFrame = null; // when no campaign is selected no frame should be selected
+                        vm.campaignBar.brandName = null;
+                        vm.campaignBar.advertiserName = null;
+                    }
+
                 }
             }
             if (!_.isUndefined(vm.selectedFrame) && !_.isNull(vm.selectedFrame)) {
                 if (!_.isEmpty(vm.playerData)) {
                     vm.playerData.datasets[0].backgroundColor = [];
                     _.forEach(vm.playerDetails.playerDetails, function (obj, key) {
-                        if (vm.isFrameDashbaord) {
-                            if (obj.value < COMPLAINCE_PERCENTAGE)
-                                vm.playerData.datasets[0].backgroundColor.push(RED_COLOR);
-                            else
-                                vm.playerData.datasets[0].backgroundColor.push(BLUE_COLOR);
-                        }
-                        else {
-                            if (obj.failed)
-                                vm.playerData.datasets[0].backgroundColor.push(RED_COLOR);
-                            else
-                                vm.playerData.datasets[0].backgroundColor.push(BLUE_COLOR);
+                        if (obj.failedAudience) {
+                            vm.playerData.datasets[0].backgroundColor.push(RED_COLOR);
+                            vm.playerData.datasets[0].compaliantcheck.push(false);
+                        } else {
+                            vm.playerData.datasets[0].backgroundColor.push(BLUE_COLOR);
+                            vm.playerData.datasets[0].compaliantcheck.push(true);
                         }
                     });
                     var index = _.findIndex(vm.playerDetails.playerDetails, function (o) { return o.id == vm.selectedFrame; });
-                    vm.playerData.datasets[0].backgroundColor[index] = GREEN_COLOR;
+                    if (index > -1) {
+                        vm.playerData.datasets[0].backgroundColor[index] = GREEN_COLOR;
+                        vm.campaignBar.selectedFrame = vm.selectedFrame;
+                    } else {
+                        vm.campaignBar.selectedFrame = null;
+                    }
                 }
 
             }
@@ -551,66 +1350,65 @@
                 if (!_.isEmpty(vm.dayData)) {
                     vm.dayData.datasets[0].backgroundColor = [];
                     _.forEach(vm.dayDetails.dayDetails, function (obj, key) {
-                        if (vm.isFrameDashbaord) {
-                            if (obj.value < COMPLAINCE_PERCENTAGE)
-                                vm.dayData.datasets[0].backgroundColor.push(RED_COLOR);
-                            else
-                                vm.dayData.datasets[0].backgroundColor.push(BLUE_COLOR);
-                        }
-                        else {
-                            if (obj.failed)
-                                vm.dayData.datasets[0].backgroundColor.push(RED_COLOR);
-                            else
-                                vm.dayData.datasets[0].backgroundColor.push(BLUE_COLOR);
+                        if (obj.failedAudience) {
+                            vm.dayData.datasets[0].backgroundColor.push(RED_COLOR);
+                        } else {
+                            vm.dayData.datasets[0].backgroundColor.push(BLUE_COLOR);
                         }
                     });
                     var index = _.findIndex(vm.dayDetails.dayDetails, function (o) { return o.id == vm.selectedDay; });
-                    vm.dayData.datasets[0].backgroundColor[index] = GREEN_COLOR;
+                    if (index > -1)
+                        vm.dayData.datasets[0].backgroundColor[index] = GREEN_COLOR;
+                }
+            }
+
+            if (!_.isUndefined(vm.selectedDay) && !_.isNull(vm.selectedDay)) {
+                if (!_.isEmpty(vm.dayData)) {
+                    vm.dayData.datasets[0].backgroundColor = [];
+                    _.forEach(vm.dayDetails.dayDetails, function (obj, key) {
+                        if (obj.failedAudience) {
+                            vm.dayData.datasets[0].backgroundColor.push(RED_COLOR);
+                        } else {
+                            vm.dayData.datasets[0].backgroundColor.push(BLUE_COLOR);
+                        }
+                    });
+                    var index = _.findIndex(vm.dayDetails.dayDetails, function (o) { return o.id == vm.selectedDay; });
+                    if (index > -1) {
+                        vm.dayData.datasets[0].backgroundColor[index] = GREEN_COLOR;
+                    }
                 }
             }
         }
 
-
-        function clearChartData() {
-            vm.campaignData = {};
-            vm.playerData = {};
-            vm.dayData = {};
-            vm.hourData = {}
+        /**
+         * This fucntion resets current state and data of all charts
+         * @author Amit Mahida
+         */
+        function resetCharts() {
+            vm.fullscreenFor = '';
+            vm.selectedCampaign = '';
+            vm.selectedFrame = '';
+            vm.selectedDay = '';
+            vm.showPlayer = false;
+            vm.showDay = false;
+            vm.showHour = false;
+            vm.frameSummary = [];
+            vm.daySummary = [];
+            vm.spanSummary = [];
         }
 
         function isFilterChanged() {
-
             if (Object.keys(vm.cachedFilterObject).length > 0) {
-                if (JSON.stringify(vm.filterObject) == JSON.stringify(vm.cachedFilterObject))
+                if (JSON.stringify(vm.filterObject) == JSON.stringify(vm.cachedFilterObject)) {
                     return false;
-                else
+                } else {
+                    resetCharts();
                     return true;
-            }
-            else
-                return true;
-        }
-
-        function startKeepAliveService() {
-            Webworker.create(keepAlive, { async: true })
-                .run(MAX_INACTIVE_INTERVAL, BOS_SESSIONID, calculateURL())
-                .then(function (result) {
-                });
-        }
-
-        function keepAlive(interval, bosSessionId, url) {
-            setInterval(function () {
-                var xmlHttp = new XMLHttpRequest();
-                xmlHttp.onreadystatechange = function () {
-
-                    //if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-                    //    callback(xmlHttp.responseText);
                 }
-                xmlHttp.open("GET", url, true); // true for asynchronous 
-                xmlHttp.setRequestHeader("Bos-SessionId", bosSessionId);
-                console.log("Keep alive called");
-                xmlHttp.send(null);
-            }, interval * 1000);
-
+            } else {
+                resetCharts();
+                return true;
+            }
         }
 
         function calculateURL() {
@@ -624,10 +1422,6 @@
         }
 
         function createFilterOject() {
-            //vm.datePicker
-            //vm.selectedProductFormats = [];
-            //vm.selectedSpecialists = [];
-            //vm.selectedChannel = [];
             vm.filterObject = {}
 
             if (vm.datePicker.date) {
@@ -641,37 +1435,44 @@
                 })
                 vm.filterObject["specialists"] = specialists
             }
-            if (vm.selectedProductFormats && vm.selectedProductFormats.length > 0) {
-                var productFormats = [];
-                _.forEach(vm.selectedProductFormats, function (obj) {
-                    productFormats.push(obj.productFormatId);
+            if (vm.selectedMarketingNames && vm.selectedMarketingNames.length > 0) {
+                var marketingNames = [];
+                _.forEach(vm.selectedMarketingNames, function (obj) {
+                    marketingNames.push(obj.marketingNameId);
                 })
-                vm.filterObject["productFormats"] = productFormats
+                vm.filterObject["marketingNames"] = marketingNames;
             }
             if (vm.selectedChannel && vm.selectedChannel.length > 0)
                 vm.filterObject["channels"] = vm.selectedChannel
         }
 
-
-
-
         function calculateHeightForCampaign(defaultHeight, totalRecords) {
-
             var _defaultHeight = defaultHeight;
-            return ((totalRecords * 18) < _defaultHeight ? _defaultHeight : defaultHeight += (totalRecords * 22))
+            return ((totalRecords * 16) < _defaultHeight ? _defaultHeight : defaultHeight += (totalRecords * 17)) // made 17 from 22 for CC-157, Nishit
         }
 
         function calculateWidthForCampaign(defaultWidth, totalRecords) {
             var _defaultWidth = defaultWidth;
-            return ((totalRecords * 14) < _defaultWidth ? _defaultWidth : defaultWidth += (totalRecords * 15))
+            return ((totalRecords * 31) < _defaultWidth ? _defaultWidth : defaultWidth += (totalRecords * 38)) // Nishit, CCP-291, CC-23
+        }
+
+        function calculateWidthForPlayer(totalRecords) {
+            if (totalRecords <= 4) {
+                return totalRecords * 320;
+            } else if (totalRecords <= 10) {
+                return totalRecords * 150;
+            } else {
+                return totalRecords * 80;
+            }
         }
 
 
         //------------------------------------------------------------------------------------------------------------------
-        //                                            Date Range Configuration 
+        //                                            Date Range Configuration
         //------------------------------------------------------------------------------------------------------------------
 
         var DATERANGEPICKER = {
+            maxDate: new Date(),
             locale: {
                 separator: ' : ',
                 format: DATE_FORMAT
@@ -690,11 +1491,13 @@
                 'apply.daterangepicker': function (ev, picker) {
                     vm.datePicker = {
                         date: {
-                            startDate: vm.datePicker.date.startDate.format(DATE_FORMAT),
-                            endDate: vm.datePicker.date.endDate.format(DATE_FORMAT)
+                            startDate: (typeof vm.datePicker.date.startDate == 'string' ? vm.datePicker.date.startDate : vm.datePicker.date.startDate.format(DATE_FORMAT)),
+                            endDate: (typeof vm.datePicker.date.endDate == 'string' ? vm.datePicker.date.endDate : vm.datePicker.date.endDate.format(DATE_FORMAT))
                         }
                     };
-
+                    vm.showPlayer = false;
+                    vm.showDay = false;
+                    vm.showHour = false;
                     getSummaries();
                 }
             }
@@ -719,12 +1522,6 @@
                 vm.showFilter = true;
             }
         }
-
-        //------------------------------------------------------------------------------------------------------------------------
-
         getInitialConfig();
-
-
-
     }
 })();

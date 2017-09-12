@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "Dashboard which shows filter and charts.",
   "main": "Gruntfile.js",
-  "dependencies": {},
+  "dependencies": {
+    "angular-chart.js": "^1.1.1"
+  },
   "devDependencies": {
     "grunt": "^1.0.1",
     "grunt-angular-templates": "^1.1.0",
@@ -23,7 +25,9 @@
     "time-grunt": "^1.4.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "http-server -o",
+    "prestart": "bower install && npm install"
   },
   "author": "Yuvraj Chauhan",
   "license": "ISC"
