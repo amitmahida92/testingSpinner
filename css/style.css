@@ -202,7 +202,7 @@ tags-input .autocomplete .suggestion-item label {
 
 .chart-container input[type="checkbox"]+label {
   padding-left: 24px;
-  font-size: 14px;
+  font-size: 13px;
   line-height: 22px;
 }
 
@@ -331,16 +331,19 @@ input:not([type]):focus:not([readonly]), input[type=text]:focus:not([readonly]),
 }
 
 .card .card-title {
-  font-size: 17px;
+  font-size: 15px;
   line-height: 40px;
   border-bottom: 2px solid #d5d5d6;
-  padding: 15px 15px;
+  padding: 10px 10px;
   display: block;
   width: 100%;
   font-weight: 600;
-  /* margin-bottom: 15px; */
   opacity: 1;
   cursor: pointer;
+}
+
+.card .card-title label{
+  font-size: 15px; 
 }
 
 .chart-doughnut {
@@ -1251,7 +1254,7 @@ span.card-title.active {
   font-weight: normal;
 }
 
-inspector-stylesheet:1 .material-tooltip .backdrop {
+.material-tooltip .backdrop {
   background-color: #2e66a6;
   font-size: 6px;
 }
@@ -1264,10 +1267,6 @@ inspector-stylesheet:1 .material-tooltip .backdrop {
   padding-top: 10px;
   color: #f00;
   font-size: 25px;
-}
-
-.compliance-tooltip table tbody tr td:first-child {
-  /* color: rgb(45, 95, 170) !important; */
 }
 
 div {
@@ -1285,10 +1284,14 @@ div {
 
 .card-title span {
   display: inline-block;
+  height: 42px;
+  line-height: 46px;
 }
 
 .btn-floating i {
   color: #00aa80 !important;
+  width: auto;
+  padding-left: 4px;
 }
 
 .btn-floating i:hover, .btn-floating i:focus {
@@ -1298,95 +1301,6 @@ div {
 .modal-table {
   width: 825px;
   overflow-x: scroll;
-}
-
-@media only screen and (min-width: 1200px) {
-  html {
-    font-size: 14px !important;
-  }
-  span .right {
-    font-size: 6px;
-  }
-  .card .card-title {
-    font-size: 15px;
-    padding: 10px 10px;
-  }
-}
-
-@media screen and (max-width: 767px) {
-  .table-responsive {
-    width: 100%;
-    margin-bottom: 15px;
-    overflow-y: hidden;
-    -ms-overflow-style: -ms-autohiding-scrollbar;
-    border: 1px solid #ddd;
-  }
-  .table-responsive > .table {
-    margin-bottom: 0;
-  }
-  .table-responsive > .table > thead > tr > th, .table-responsive > .table > tbody > tr > th, .table-responsive > .table > tfoot > tr > th, .table-responsive > .table > thead > tr > td, .table-responsive > .table > tbody > tr > td, .table-responsive > .table > tfoot > tr > td {
-    white-space: nowrap;
-  }
-  .table-responsive > .table-bordered {
-    border: 0;
-  }
-  .table-responsive > .table-bordered > thead > tr > th:first-child, .table-responsive > .table-bordered > tbody > tr > th:first-child, .table-responsive > .table-bordered > tfoot > tr > th:first-child, .table-responsive > .table-bordered > thead > tr > td:first-child, .table-responsive > .table-bordered > tbody > tr > td:first-child, .table-responsive > .table-bordered > tfoot > tr > td:first-child {
-    border-left: 0;
-  }
-  .table-responsive > .table-bordered > thead > tr > th:last-child, .table-responsive > .table-bordered > tbody > tr > th:last-child, .table-responsive > .table-bordered > tfoot > tr > th:last-child, .table-responsive > .table-bordered > thead > tr > td:last-child, .table-responsive > .table-bordered > tbody > tr > td:last-child, .table-responsive > .table-bordered > tfoot > tr > td:last-child {
-    border-right: 0;
-  }
-  .table-responsive > .table-bordered > tbody > tr:last-child > th, .table-responsive > .table-bordered > tfoot > tr:last-child > th, .table-responsive > .table-bordered > tbody > tr:last-child > td, .table-responsive > .table-bordered > tfoot > tr:last-child > td {
-    border-bottom: 0;
-  }
-}
-
-@media only screen and (max-width: 640px) {
-  .m7-col {
-    width: 50%
-  }
-}
-
-@media screen and (max-width:563px) {
-  .daterangepicker .calendar {
-    max-width: 100%;
-    width: 100%;
-    margin: 0;
-  }
-  .daterangepicker .input-mini {
-    width: 86%;
-    padding: 0 7%;
-    margin: 0;
-    background: #fff;
-  }
-  .daterangepicker.dropdown-menu {
-    padding: 10px;
-  }
-  .daterangepicker .range_inputs {
-    text-align: center
-  }
-  .filterlables {
-    width: 100%;
-    display: block;
-  }
-}
-
-@media only screen and (max-width: 992px) {
-  nav .brand-logo {
-    left: 0;
-    -webkit-transform: translateX(0%);
-    transform: translateX(0%);
-    line-height: 56px;
-  }
-  nav .brand-logo {
-    left: 0;
-    -webkit-transform: translateX(0%);
-    transform: translateX(0%);
-    line-height: 56px;
-  }
-  .m7-col {
-    width: 25%
-  }
 }
 
 .chartWrapper1 {
@@ -1437,19 +1351,20 @@ div {
 
 .verticleAxisLabel {
   position: absolute;
+  bottom: 0;
   top: 0;
-  left: 0px;
+  left: 0;
   z-index: 999;
   height: 100%;
-  width: 1%;
+  width: 15px;
   border-radius: 18%;
-  margin-left: 5px;
+  padding: 2px;
   writing-mode: tb;
   text-align: center;
   transform: rotate(180deg);
   background: #f1f1f1;
   pointer-events: none;
-  color: rgb(111,111,111);
+  color: rgb(111, 111, 111);
   font-size: small;
 }
 
@@ -1461,7 +1376,14 @@ div {
   background: #f1f1f1;
   width: 100%;
   text-align: center;
-  color: rgb(111,111,111);
+  color: rgb(111, 111, 111);
   font-size: small;
   pointer-events: none;
+}
+
+.no-data-found {
+  position: absolute;
+  top: 45%;
+  left: 40%;
+  font-size: 20px;
 }

@@ -20,12 +20,19 @@
         vm.searchCampaign = '';
         vm.selectedCampaign = '';
         var tempSelectedFrame = '';
+        var filteredSummary = [];
 
         // Chart summary variables
         vm.campaignSummary = [];
+        vm.cachedCampaignSummary = [];
         vm.frameSummary = [];
+        vm.cachedFrameSummary = [];
+        vm.chachedChannelSummaryByAudience = [];
+        vm.chachedChannelSummaryByImpression = [];
         vm.daySummary = [];
+        vm.cachedDaySummary = [];
         vm.spanSummary = [];
+        vm.cachedSpanSummary = [];
 
         // External link to ccp
         vm.ccpLink = CCP_LINK;
@@ -77,10 +84,10 @@
         vm.dayData = {};
         vm.hourData = {};
 
-        //Filter Object//
+        // Filter Object
 
-        vm.filterObject = {}
-        vm.cachedFilterObject = {}
+        vm.filterObject = {};
+        vm.cachedFilterObject = {};
 
         // Chart Options
         vm.campaignOptions = _.clone(configureOptions.HORIZONTAL_BAR);
@@ -97,7 +104,6 @@
         vm.selectedMarketingNames = [];
         vm.selectedSpecialists = [];
         vm.selectedChannel = [];
-        vm.isFrameDashbaord = 3; // default selection for graph        
 
         // Chart level filters
         vm.campaign = {
@@ -129,19 +135,68 @@
         vm.campaignBar = {};
 
         //------------------------------------------------------------------------------------------------------------------
-        //                                              Chart Click Events
+        //                                            Date Range Configuration
         //------------------------------------------------------------------------------------------------------------------
 
-        // Doughnut Chart Click
+        var DateRangePicker = {
+            maxDate: new Date(),
+            locale: {
+                separator: ' : ',
+                format: DATE_FORMAT
+            },
+            ranges: {
+                'Today': [moment(), moment()],
+                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            },
+            alwaysShowCalendars: true,
+            opens: 'center',
+            eventHandlers: {
+                'apply.daterangepicker': function (ev, picker) {
+                    vm.datePicker = {
+                        date: {
+                            startDate: (typeof vm.datePicker.date.startDate == 'string' ? vm.datePicker.date.startDate : vm.datePicker.date.startDate.format(DATE_FORMAT)),
+                            endDate: (typeof vm.datePicker.date.endDate == 'string' ? vm.datePicker.date.endDate : vm.datePicker.date.endDate.format(DATE_FORMAT))
+                        }
+                    };
+                    vm.showPlayer = false;
+                    vm.showDay = false;
+                    vm.showHour = false;
+                    getSummaries();
+                }
+            }
+        };
 
-        vm.onChannelClick = function (channelid, channelValue) {            
-            if(channelValue == 0){
+        // Configuration for DateRangePicker
+
+        vm.datePickerOptions = DateRangePicker;
+
+        vm.datePicker = {
+            date: {
+                startDate: moment.Today,
+                endDate: moment.Today
+            }
+        };
+
+        /**
+         * This function fitlers campaigns with respect to business areas.
+         * @param {any} channelid 
+         * @param {any} channelValue 
+         * @returns 
+         */
+        function onChannelClick(channelid, channelValue) {
+            if (channelValue == 0) {
                 // Amit : CC-206 : Campaign Compliance Gauge should not be clickable which has 0.00% data.	                
                 return;
             }
-            // below condition added for CC-135
-            if (vm.searchCampaign && vm.searchCampaign.trim().length > 6)
+
+            if (vm.searchCampaign && vm.searchCampaign.trim().length > 6) {
+                // this condition added for CC-135
                 return;
+            }
 
             if (vm.selectedChannel.length > 0) {
                 if (_.includes(vm.selectedChannel, channelid)) {
@@ -150,19 +205,16 @@
                 } else {
                     vm.selectedChannel.push(channelid);
                 }
-            }
-            else {
+            } else {
                 vm.selectedChannel.push(channelid);
             }
+            applyFilterOn(vm.selectedChannel, 'campaignSummary');
+        }
 
-            getSummaries();
-            checkAllcheckBoxes();
-        };
-
-        vm.compaliantcheck = function (compaliant, noncompaliant, chart, flag) {
+        vm.compliantcheck = function (compaliant, noncompaliant, chart, flag) {
+            var data = [];
             if (chart === 'campaign') {
-                var data = _.cloneDeep(vm.campaignSummary);
-
+                data = _.cloneDeep(vm.campaignSummary);
                 if (!compaliant) {
                     data = vm.campaignSummary.filter(function (obj) {
                         return obj.failedAudience == true;
@@ -230,26 +282,27 @@
                     }
                 }
                 generateChart('campaign', data, flag);
+
             }
 
             if (chart == "player") {
 
-                var data = _.cloneDeep(vm.frameSummary);
+                data = _.cloneDeep(vm.frameSummary);
 
                 if (!compaliant) {
-                    var data = vm.frameSummary.filter(function (obj) {
+                    data = vm.frameSummary.filter(function (obj) {
                         return obj.failedAudience == true;
                     });
                 }
 
                 if (!noncompaliant) {
-                    var data = vm.frameSummary.filter(function (obj) {
+                    data = vm.frameSummary.filter(function (obj) {
                         return obj.failedAudience == false;
                     });
                 }
 
                 if (!compaliant && !noncompaliant) {
-                    var data = [];
+                    data = [];
                 }
 
                 if (vm.selectedFrame != '') {
@@ -271,26 +324,27 @@
                     }
                 }
                 generateChart('player', data, false);
+
             }
 
             if (chart == "day") {
 
-                var data = _.cloneDeep(vm.daySummary);
+                data = _.cloneDeep(vm.daySummary);
 
                 if (!compaliant) {
-                    var data = vm.daySummary.filter(function (obj) {
+                    data = vm.daySummary.filter(function (obj) {
                         return obj.failedAudience == true;
                     });
                 }
 
                 if (!noncompaliant) {
-                    var data = vm.daySummary.filter(function (obj) {
+                    data = vm.daySummary.filter(function (obj) {
                         return obj.failedAudience == false;
                     });
                 }
 
                 if (!compaliant && !noncompaliant) {
-                    var data = [];
+                    data = [];
                 }
 
                 if (vm.selectedDay != '') {
@@ -306,36 +360,37 @@
                     }
                 }
                 generateChart('day', data, false);
+
             }
 
             if (chart == "hour") {
 
-                var data = _.cloneDeep(vm.spanSummary);
+                data = _.cloneDeep(vm.spanSummary);
 
                 if (!compaliant) {
-                    var data = vm.spanSummary.filter(function (obj) {
+                    data = vm.spanSummary.filter(function (obj) {
                         return obj.failedAudience == true;
                     });
                 }
 
                 if (!noncompaliant) {
-                    var data = vm.spanSummary.filter(function (obj) {
+                    data = vm.spanSummary.filter(function (obj) {
                         return obj.failedAudience == false;
                     });
                 }
 
                 if (!compaliant && !noncompaliant) {
-                    var data = [];
+                    data = [];
                 }
 
                 generateChart('hour', data, false);
+
 
             }
 
             highlightSelectedBar();
             setToolTips();
         };
-
 
         // First Chart
         vm.onCampaignClick = function (points, evt) {
@@ -397,7 +452,7 @@
             } else {
                 return false;
             }
-        }
+        };
 
         // Second Chart
         vm.onPlayerClick = function (points, evt) {
@@ -451,7 +506,7 @@
             } else {
                 return false;
             }
-        }
+        };
 
         // Third Chart
         vm.onDayClick = function (points, evt) {
@@ -470,37 +525,10 @@
             } else {
                 return false;
             }
-        }
-
-        //Select Dashboard Type//
-
-        vm.selectDashBoardType = function () {
+        };
 
 
-            vm.summary = vm.channelSummaryByAudience;
-
-            vm.channelSummaryByImpression = vm.channelSummaryByImpression
-
-            if (vm.campaignSummary)
-                vm.compaliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign', false);
-            if (vm.frameSummary)
-                vm.compaliantcheck(vm.player.compaliant, vm.player.noncompaliant, 'player', false);
-            if (vm.daySummary)
-                vm.compaliantcheck(vm.day.compaliant, vm.day.noncompaliant, 'day', false);
-            if (vm.spanSummary)
-                vm.compaliantcheck(vm.hour.compaliant, vm.hour.noncompaliant, 'hour', false);
-
-            highlightSelectedBar();
-            setToolTips();
-        }
-
-
-        //-----------------------------------------------------------------------------------------------------------------------//
-
-
-        //------------------------------------------------------------------------------------------------------------------
-        //                                              Code to fill the drop downs
-        //------------------------------------------------------------------------------------------------------------------
+        // Code to fill the drop downs        
         vm.loadmarketingNames = function ($query) {
             if ($query == '')
                 return vm.marketingNames;
@@ -509,7 +537,7 @@
                     return marketingName.marketingName.toLowerCase().indexOf($query.toLowerCase()) != -1;
                 });
             }
-        }
+        };
 
         vm.loadSpecialist = function ($query) {
             if ($query == '')
@@ -519,7 +547,8 @@
                     return specialist.organisationName.toLowerCase().indexOf($query.toLowerCase()) != -1;
                 });
             }
-        }
+        };
+
 
         vm.removeTags = function (index, arr) {
             checkAllcheckBoxes();
@@ -533,9 +562,318 @@
             }.bind(this), 0);
         };
 
-        vm.onAddTags = function () {
-            checkAllcheckBoxes();
-            getSummaries();
+
+        function resetAllFilters() {
+            if (vm.cachedCampaignSummary.length > 0) {
+                vm.campaignSummary = vm.cachedCampaignSummary;
+                vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign', true);
+                if (vm.selectedChannel.length == 0) {
+                    filterSummaries(vm.campaignSummary);
+                    filterChartData();
+                }
+            }
+        }
+
+        /**
+         * This funtion filters campaign summary at UI.
+         * @param {any} data 
+         * @param {any} key 
+         * @author Amit Mahida
+         */
+        function applyFilterOn(data, key) {            
+            var innerFilteredCampaigns;
+            if (data.length > 0) {
+                filteredSummary = [];
+                innerFilteredCampaigns = [];
+
+                if (key == 'specialist') {
+                    if (vm.selectedMarketingNames.length > 0 || vm.selectedChannel.length > 0) {
+                        if (vm.selectedChannel.length > 0) {
+                            vm.selectedChannel.forEach(function (element) {
+                                vm.campaignSummary.forEach(function (inElement) {
+                                    if (element === inElement.businessAreaCode) {
+                                        filteredSummary.push(inElement);
+                                    }
+                                }, this);
+                            });
+                        }
+                        if (vm.selectedMarketingNames.length > 0) {
+                            vm.selectedMarketingNames.forEach(function (element) {
+                                vm.campaignSummary.forEach(function (inElement) {
+                                    if (element.marketingNameId === parseInt(inElement.marketingNameCode)) {
+                                        filteredSummary.push(inElement);
+                                    }
+                                }, this);
+                            });
+                        }
+                        data.forEach(function (element) {
+                            filteredSummary.forEach(function (inElement) {
+                                if (element.organisationId == inElement.specialistCode) {
+                                    innerFilteredCampaigns.push(inElement);
+                                }
+                            }, this);
+                        });
+                        filteredSummary = _.cloneDeep(innerFilteredCampaigns);
+                        innerFilteredCampaigns = [];
+                    } else {
+                        data.forEach(function (element) {
+                            vm.cachedCampaignSummary.forEach(function (inElement) {
+                                if (element.organisationId == inElement.specialistCode) {
+                                    filteredSummary.push(inElement);
+                                }
+                            }, this);
+                        });
+                    }
+                }
+                if (key == 'marketingName') {
+                    if (vm.selectedSpecialists.length > 0 || vm.selectedChannel.length > 0) {
+                        if (vm.selectedSpecialists.length > 0) {
+                            vm.selectedSpecialists.forEach(function (element) {
+                                vm.campaignSummary.forEach(function (inElement) {
+                                    if (element.organisationId == inElement.specialistCode) {
+                                        filteredSummary.push(inElement);
+                                    }
+                                }, this);
+                            });
+                        }
+                        if (vm.selectedChannel.length > 0) {
+                            vm.selectedChannel.forEach(function (element) {
+                                vm.campaignSummary.forEach(function (inElement) {
+                                    if (element === inElement.businessAreaCode) {
+                                        filteredSummary.push(inElement);
+                                    }
+                                }, this);
+                            });
+                        }
+                        data.forEach(function (element) {
+                            filteredSummary.forEach(function (inElement) {
+                                if (element.marketingNameId === parseInt(inElement.marketingNameCode)) {
+                                    innerFilteredCampaigns.push(inElement);
+                                }
+                            }, this);
+                        });
+                        filteredSummary = _.cloneDeep(innerFilteredCampaigns);
+                        innerFilteredCampaigns = [];
+                    } else {
+                        data.forEach(function (element) {
+                            vm.cachedCampaignSummary.forEach(function (inElement) {
+                                if (element.marketingNameId === parseInt(inElement.marketingNameCode)) {
+                                    filteredSummary.push(inElement);
+                                }
+                            }, this);
+                        });
+                    }
+                }
+                if (key == 'campaignSummary') {
+                    vm.channelSummaryByAudience = _.map(vm.channelSummaryByAudience, function (obj) {
+                        return ((vm.selectedChannel.indexOf(obj.id) === -1) ? angular.extend(obj, { guageColors: vm.defaultGuageColors }) : angular.extend(obj, { guageColors: vm.selectedGuageColors }));
+                    });                    
+                    if (vm.selectedSpecialists.length > 0 || vm.selectedMarketingNames.length > 0) {
+                        resetCharts();
+                        if (vm.selectedSpecialists.length > 0) {
+                            vm.selectedSpecialists.forEach(function (element) {
+                                vm.campaignSummary.forEach(function (inElement) {
+                                    if (element.organisationId == inElement.specialistCode) {
+                                        filteredSummary.push(inElement);
+                                    }
+                                }, this);
+                            });                            
+                        }
+                        if (vm.selectedMarketingNames.length > 0) {
+                            vm.selectedMarketingNames.forEach(function (element) {
+                                vm.campaignSummary.forEach(function (inElement) {
+                                    if (element.marketingNameId === parseInt(inElement.marketingNameCode)) {
+                                        filteredSummary.push(inElement);
+                                    }
+                                }, this);
+                            });
+                        }
+                        data.forEach(function (element) {
+                            filteredSummary.forEach(function (inElement) {
+                                if (element === inElement.businessAreaCode) {
+                                    innerFilteredCampaigns.push(inElement);
+                                }
+                            }, this);
+                        });
+
+                        filteredSummary = _.cloneDeep(innerFilteredCampaigns);
+                        innerFilteredCampaigns = [];
+
+                    } else {
+                        data.forEach(function (element) {
+                            vm.cachedCampaignSummary.forEach(function (inElement) {
+                                if (element === inElement.businessAreaCode) {
+                                    filteredSummary.push(inElement);
+                                }
+                            }, this);
+                        });
+                    }
+                }
+
+                filteredSummary = _.uniqBy(filteredSummary, function (e) {
+                    return e.id;
+                });
+                vm.campaignSummary = _.cloneDeep(filteredSummary);
+                vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign', true);
+                if (vm.selectedChannel.length == 0) {
+                    filterSummaries(vm.campaignSummary);
+                    filterChartData();
+                }
+            } else {
+                filteredSummary = [];
+                innerFilteredCampaigns = [];
+                if (key == 'specialist') {
+                    if (vm.selectedMarketingNames.length > 0) {
+                        vm.selectedMarketingNames.forEach(function (element) {
+                            vm.cachedCampaignSummary.forEach(function (inElement) {
+                                if (element.marketingNameId === parseInt(inElement.marketingNameCode)) {
+                                    filteredSummary.push(inElement);
+                                }
+                            }, this);
+                        });
+                    }
+                    if (vm.selectedChannel.length > 0) {
+                        vm.selectedChannel.forEach(function (element) {
+                            vm.cachedCampaignSummary.forEach(function (inElement) {
+                                if (element === inElement.businessAreaCode) {
+                                    filteredSummary.push(inElement);
+                                }
+                            }, this);
+                        });
+                    }
+                    if (vm.selectedMarketingNames.length > 0 && vm.selectedChannel.length > 0) {
+                        vm.selectedMarketingNames.forEach(function (element) {
+                            vm.cachedCampaignSummary.forEach(function (inElement) {
+                                if (element.marketingNameId === parseInt(inElement.marketingNameCode)) {
+                                    filteredSummary.push(inElement);
+                                }
+                            }, this);
+                        });
+                        vm.selectedChannel.forEach(function (element) {
+                            filteredSummary.forEach(function (inElement) {
+                                if (element === inElement.businessAreaCode) {
+                                    innerFilteredCampaigns.push(inElement);
+                                }
+                            }, this);
+                        });
+                        filteredSummary = _.cloneDeep(innerFilteredCampaigns);
+                        innerFilteredCampaigns = [];
+                    }
+                    if (vm.selectedMarketingNames.length == 0 && vm.selectedChannel.length == 0) {
+                        resetAllFilters();
+                        return;
+                    }
+                    vm.campaignSummary = _.cloneDeep(filteredSummary);
+                    vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign', true);
+                }
+                if (key == 'marketingName') {
+                    if (vm.selectedSpecialists.length > 0) {
+                        vm.selectedSpecialists.forEach(function (element) {
+                            vm.cachedCampaignSummary.forEach(function (inElement) {
+                                if (element.organisationId == inElement.specialistCode) {
+                                    filteredSummary.push(inElement);
+                                }
+                            }, this);
+                        });
+                    }
+                    if (vm.selectedChannel.length > 0) {
+                        vm.selectedChannel.forEach(function (element) {
+                            vm.cachedCampaignSummary.forEach(function (inElement) {
+                                if (element === inElement.businessAreaCode) {
+                                    filteredSummary.push(inElement);
+                                }
+                            }, this);
+                        });
+
+                    }
+
+                    if (vm.selectedSpecialists.length > 0 && vm.selectedChannel.length > 0) {
+                        vm.selectedSpecialists.forEach(function (element) {
+                            vm.cachedCampaignSummary.forEach(function (inElement) {
+                                if (element.organisationId == inElement.specialistCode) {
+                                    filteredSummary.push(inElement);
+                                }
+                            }, this);
+                        });
+                        vm.selectedChannel.forEach(function (element) {
+                            filteredSummary.forEach(function (inElement) {
+                                if (element === inElement.businessAreaCode) {
+                                    innerFilteredCampaigns.push(inElement);
+                                }
+                            }, this);
+                        });
+                        filteredSummary = _.cloneDeep(innerFilteredCampaigns);
+                        innerFilteredCampaigns = [];
+                    }
+                    if (vm.selectedSpecialists.length == 0 && vm.selectedChannel.length == 0) {
+                        resetAllFilters();
+                        return;
+                    }
+                    vm.campaignSummary = _.cloneDeep(filteredSummary);
+                    vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign', true);
+
+                }
+                if (key == 'campaignSummary') {
+                    vm.channelSummaryByAudience = _.map(vm.channelSummaryByAudience, function (obj) {
+                        return ((vm.selectedChannel.indexOf(obj.id) === -1) ? angular.extend(obj, { guageColors: vm.defaultGuageColors }) : angular.extend(obj, { guageColors: vm.selectedGuageColors }));
+                    });                    
+                    if (vm.selectedMarketingNames.length > 0) {
+                        vm.selectedMarketingNames.forEach(function (element) {
+                            vm.cachedCampaignSummary.forEach(function (inElement) {
+                                if (element.marketingNameId === parseInt(inElement.marketingNameCode)) {
+                                    filteredSummary.push(inElement);
+                                }
+                            }, this);
+                        });
+                        resetCharts();
+                    }
+                    if (vm.selectedSpecialists.length > 0) {
+                        vm.selectedSpecialists.forEach(function (element) {
+                            vm.cachedCampaignSummary.forEach(function (inElement) {
+                                if (element.organisationId == inElement.specialistCode) {
+                                    filteredSummary.push(inElement);
+                                }
+                            }, this);
+                        });
+                        resetCharts();
+                    }
+                    if (vm.selectedSpecialists.length > 0 && vm.selectedMarketingNames.length > 0) {
+                        vm.selectedMarketingNames.forEach(function (element) {
+                            vm.cachedCampaignSummary.forEach(function (inElement) {
+                                if (element.marketingNameId === parseInt(inElement.marketingNameCode)) {
+                                    filteredSummary.push(inElement);
+                                }
+                            }, this);
+                        });
+                        vm.selectedSpecialists.forEach(function (element) {
+                            filteredSummary.forEach(function (inElement) {
+                                if (element.organisationId == inElement.specialistCode) {
+                                    innerFilteredCampaigns.push(inElement);
+                                }
+                            }, this);
+                        });
+                        filteredSummary = _.cloneDeep(innerFilteredCampaigns);
+                        innerFilteredCampaigns = [];
+                        resetCharts();
+                    }
+                    if (vm.selectedSpecialists.length == 0 && vm.selectedMarketingNames.length == 0) {
+                        resetAllFilters();
+                        resetCharts();
+                        return;
+                    }
+                    vm.campaignSummary = _.cloneDeep(filteredSummary);
+                    vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign', true);
+                }
+            }
+            return filteredSummary;
+        }
+
+        vm.filterOnSpecialist = function () {
+            applyFilterOn(vm.selectedSpecialists, 'specialist');
+        };
+
+        vm.filterOnMarketingName = function () {
+            applyFilterOn(vm.selectedMarketingNames, 'marketingName');
         };
 
         /**
@@ -544,28 +882,28 @@
          * @param {*} data 
          */
         function filterSummaries(data) {
-
             var totalCampaigns = _.groupBy(data, 'businessAreaCode');
             var compliantCampaignsForBusinessArea, totalCampaignsForBusinessArea;
+            var percentage = 0;
 
             // black charts (Audience Compliance)
             for (var index = 0; index < vm.channelSummaryByImpression.length; index++) {
                 var inelement = vm.channelSummaryByImpression[index];
 
                 if (totalCampaigns[inelement.id]) {
-                    totalCampaignsForBusinessArea = totalCampaigns[inelement['id']];
+                    totalCampaignsForBusinessArea = totalCampaigns[inelement.id];
                     var sumOfActual = 0, sumOfTarget = 0;
 
                     if (totalCampaignsForBusinessArea.length > 0) {
                         for (var index2 = 0; index2 < totalCampaignsForBusinessArea.length; index2++) {
                             var inelement1 = totalCampaignsForBusinessArea[index2];
-                            sumOfActual += inelement1['audienceValue'];
-                            sumOfTarget += inelement1['value'];
+                            sumOfActual += inelement1.audienceValue;
+                            sumOfTarget += inelement1.value;
                         }
                     }
-                    var percentage = sumOfTarget == 0 ? 0 : ((sumOfActual / sumOfTarget) * 100);
-                    vm.channelSummaryByImpression[index].percentage = percentage;
-                    vm.channelSummaryByImpression[index].percentageDisplay = parseFloat(percentage).toFixed(2);
+                    percentage = (sumOfTarget == 0) ? 0 : ((sumOfActual / sumOfTarget) * 100);
+                    vm.channelSummaryByImpression[index].percentage = percentage > 100 ? 100 : percentage;
+                    vm.channelSummaryByImpression[index].percentageDisplay = percentage > 100 ? 100 : parseFloat(percentage).toFixed(2);
                 } else {
                     vm.channelSummaryByImpression[index].percentage = 0;
                     vm.channelSummaryByImpression[index].percentageDisplay = 0;
@@ -573,19 +911,19 @@
             }
 
             // blue charts (Campaign Compliance)
-            for (var index1 = 0; index1 < vm.summary.length; index1++) {
-                var inelement1 = vm.summary[index1];
-                if (totalCampaigns[inelement1['id']]) {
-                    totalCampaignsForBusinessArea = totalCampaigns[inelement1['id']];
+            for (var index1 = 0; index1 < vm.channelSummaryByAudience.length; index1++) {
+                var inelement2 = vm.channelSummaryByAudience[index1];
+                if (totalCampaigns[inelement2.id]) {
+                    totalCampaignsForBusinessArea = totalCampaigns[inelement2.id];
                     if (totalCampaignsForBusinessArea.length > 0) {
                         compliantCampaignsForBusinessArea = totalCampaignsForBusinessArea.filter(function (obj) {
                             return obj.failedAudience == false;
                         });
-                        var percentage = (compliantCampaignsForBusinessArea.length / totalCampaignsForBusinessArea.length) * 100;
-                        vm.summary[index1].value = parseFloat(percentage).toFixed(2);
+                        percentage = (compliantCampaignsForBusinessArea.length / totalCampaignsForBusinessArea.length) * 100;
+                        vm.channelSummaryByAudience[index1].value = percentage > 100 ? 100 : parseFloat(percentage).toFixed(2);
                     }
                 } else {
-                    vm.summary[index1].value = 0;
+                    vm.channelSummaryByAudience[index1].value = 0;
                 }
             }
         }
@@ -630,19 +968,19 @@
             } else {
                 vm.showPlayer = !_.isUndefined(vm.frameSummary) && vm.frameSummary.length > 0 ? true : false;
                 if (vm.showPlayer && vm.selectedCampaign != '') {
-                    vm.compaliantcheck(vm.player.compaliant, vm.player.noncompaliant, 'player');
+                    vm.compliantcheck(vm.player.compaliant, vm.player.noncompaliant, 'player');
                 } else {
                     vm.showPlayer = false;
                 }
                 vm.showDay = !_.isUndefined(vm.daySummary) && vm.daySummary.length > 0 ? true : false;
                 if (vm.showDay && vm.selectedFrame != '') {
-                    vm.compaliantcheck(vm.day.compaliant, vm.day.noncompaliant, 'day');
+                    vm.compliantcheck(vm.day.compaliant, vm.day.noncompaliant, 'day');
                 } else {
                     vm.showDay = false;
                 }
                 vm.showHour = !_.isUndefined(vm.spanSummary) && vm.spanSummary.length > 0 ? true : false;
                 if (vm.showHour && vm.selectedDay != '') {
-                    vm.compaliantcheck(vm.hour.compaliant, vm.hour.noncompaliant, 'hour')
+                    vm.compliantcheck(vm.hour.compaliant, vm.hour.noncompaliant, 'hour');
                 } else {
                     vm.showHour = false;
                 }
@@ -661,7 +999,7 @@
 
                 if (substringArray.indexOf(true) > -1) {
                     var data = vm.campaignSummary.filter(function (obj) {
-                        return obj.id.indexOf(vm.searchCampaign.toUpperCase()) > -1
+                        return obj.id.indexOf(vm.searchCampaign.toUpperCase()) > -1;
                     });
                     vm.campaignSummary = _.cloneDeep(data);
                     if (data.length === 0) {
@@ -672,19 +1010,19 @@
                     }
                     filterSummaries(data);
                     filterChartData();
-                    vm.compaliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign', false);
+                    vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign', false);
                 } else {
                     console.log('Please enter valid campaign Reference');
                 }
             } else {
                 if (vm.searchCampaign.trim().length == 0) {
-                    vm.triggerSearchAfterCampaignRefRemoved = true;
-                    getSummaries();
+                    vm.channelSummaryByAudience = vm.chachedChannelSummaryByAudience;
+                    vm.channelSummaryByImpression = vm.chachedChannelSummaryByImpression;
+                    applyParallelFilters();
                 }
                 return false;
             }
-
-        }
+        };
 
         /**
          * This function resets the state of chart level checkbox filters
@@ -794,14 +1132,16 @@
                 };
 
                 if (vm.configData.serviceCalls)
-                    loadServiceCallKeys(vm.configData.serviceCalls)
+                    loadServiceCallKeys(vm.configData.serviceCalls);
                 if (vm.configData.specialists)
                     vm.specialists = vm.configData.specialists;
                 if (vm.configData.marketingNames)
                     vm.marketingNames = vm.configData.marketingNames;
 
                 MAX_INACTIVE_INTERVAL = vm.configData.systemData.maxInactiveInterval || MAX_INACTIVE_INTERVAL;
+
                 getSummaries();
+
             });
 
             setTimeout(function () {
@@ -830,6 +1170,7 @@
          * @param {any} toggleOtherCharts 
          */
         function generateChart(type, chartData, toggleOtherCharts) {
+            var campaignId = '', campaignData = '';
             switch (type) {
                 case 'campaign':
                     vm.campaignData = {
@@ -837,7 +1178,7 @@
                         datasets: [{
                             backgroundColor: [],
                             data: [],
-                            compaliantcheck: [],
+                            compliantcheck: [],
                             brandName: [],
                             advertiserName: []
                         }]
@@ -860,8 +1201,19 @@
                             targetCtx.canvas.height = copyHeight;
                             targetCtx.drawImage(sourceCanvas, 0, 0, copyWidth, copyHeight, 0, 0, copyWidth, copyHeight);
                             vm.campaignYAxisLabel = this.chart.options.scales.yAxes[0].scaleLabel.labelString;
+                        },
+                        onComplete: function (chart) {
+                            var sourceCanvas = this.chart.ctx.canvas;
+                            var copyHeight = this.scales['x-axis-0'].height - 4;
+                            var copyWidth = sourceCanvas.width;
+                            var targetCtx = document.getElementById("campaignXAxis").getContext("2d");
+                            targetCtx.canvas.width = sourceCanvas.width;
+                            targetCtx.canvas.style.width = sourceCanvas.scrollWidth + 'px';
+                            targetCtx.canvas.height = copyHeight;
+                            targetCtx.drawImage(sourceCanvas, 0, 0, copyWidth, copyHeight, 0, 0, copyWidth, copyHeight);
+                            vm.campaignYAxisLabel = this.chart.options.scales.yAxes[0].scaleLabel.labelString;
                         }
-                    }
+                    };
 
                     vm.campaignOptions.size.height = calculateHeightForCampaign(_.clone(configureOptions.HORIZONTAL_BAR.size.height), chartData.length);
 
@@ -877,10 +1229,10 @@
                         if (obj.failedAudience) {
                             ++vm.campaign.noncompliantCount;
                             vm.campaignData.datasets[0].backgroundColor.push(RED_COLOR);
-                            vm.campaignData.datasets[0].compaliantcheck.push(false);
+                            vm.campaignData.datasets[0].compliantcheck.push(false);
                         } else {
                             vm.campaignData.datasets[0].backgroundColor.push(BLUE_COLOR);
-                            vm.campaignData.datasets[0].compaliantcheck.push(true);
+                            vm.campaignData.datasets[0].compliantcheck.push(true);
                             ++vm.campaign.compliantCount;
                         }
                         vm.campaignDetails.campaignDetails.push(obj);
@@ -891,7 +1243,7 @@
                         vm.showCampaign = true;
                     }
 
-                    var campaignId = '', campaignData = '';
+
                     vm.campaignOptions.tooltips = {
                         enabled: true,
                         mode: 'index',
@@ -906,7 +1258,7 @@
                             backgroundColor: [],
                             borderWidth: 1,
                             data: [],
-                            compaliantcheck: []
+                            compliantcheck: []
                         }]
                     };
 
@@ -925,15 +1277,15 @@
                         vm.playerData.datasets[0].data.push(obj.audienceValue);
                         if (obj.failedAudience) {
                             vm.playerData.datasets[0].backgroundColor.push(RED_COLOR);
-                            vm.playerData.datasets[0].compaliantcheck.push(false);
+                            vm.playerData.datasets[0].compliantcheck.push(false);
                             ++vm.player.noncompliantCount;
                         } else {
                             vm.playerData.datasets[0].backgroundColor.push(BLUE_COLOR);
-                            vm.playerData.datasets[0].compaliantcheck.push(true);
+                            vm.playerData.datasets[0].compliantcheck.push(true);
                             ++vm.player.compliantCount;
                         }
 
-                        vm.playerDetails.playerDetails.push(obj)
+                        vm.playerDetails.playerDetails.push(obj);
                     });
 
                     if (toggleOtherCharts) {
@@ -942,10 +1294,18 @@
                         vm.showHour = false;
                     }
 
-
-                    var campaignId = '', campaignData = '';
-
                     vm.barOptions.animation = {
+                        onComplete: function (chart) {
+                            var sourceCanvas = this.chart.ctx.canvas;
+                            var copyHeight = sourceCanvas.height;
+                            var copyWidth = this.scales['y-axis-0'].width;
+                            var targetCtx = document.getElementById("playerAxis").getContext("2d");
+                            targetCtx.canvas.width = copyWidth;
+                            targetCtx.canvas.style.height = sourceCanvas.offsetHeight + 'px';
+                            targetCtx.canvas.height = copyHeight;
+                            targetCtx.drawImage(sourceCanvas, 0, 0, copyWidth, copyHeight, 0, 0, copyWidth, copyHeight);
+                            vm.playerXAxisLabel = this.chart.options.scales.xAxes[0].scaleLabel.labelString;
+                        },
                         onProgress: function (chart) {
                             var sourceCanvas = this.chart.ctx.canvas;
                             var copyHeight = sourceCanvas.height;
@@ -957,7 +1317,7 @@
                             targetCtx.drawImage(sourceCanvas, 0, 0, copyWidth, copyHeight, 0, 0, copyWidth, copyHeight);
                             vm.playerXAxisLabel = this.chart.options.scales.xAxes[0].scaleLabel.labelString;
                         }
-                    }
+                    };
 
                     vm.barOptions.tooltips = {
                         enabled: false,
@@ -983,7 +1343,7 @@
 
                     vm.dayDetails = {
                         dayDetails: []
-                    }
+                    };
 
                     vm.dayChartWidth = calculateWidthForPlayer(chartData.length);
 
@@ -998,8 +1358,19 @@
                             targetCtx.canvas.height = copyHeight;
                             targetCtx.drawImage(sourceCanvas, 0, 0, copyWidth, copyHeight, 0, 0, copyWidth, copyHeight);
                             vm.dayXAxisLabel = this.chart.options.scales.xAxes[0].scaleLabel.labelString;
+                        },
+                        onComplete: function (chart) {
+                            var sourceCanvas = this.chart.ctx.canvas;
+                            var copyHeight = sourceCanvas.height;
+                            var copyWidth = this.scales['y-axis-0'].width;
+                            var targetCtx = document.getElementById("dayAxis").getContext("2d");
+                            targetCtx.canvas.width = copyWidth;
+                            targetCtx.canvas.style.height = sourceCanvas.offsetHeight + 'px';
+                            targetCtx.canvas.height = copyHeight;
+                            targetCtx.drawImage(sourceCanvas, 0, 0, copyWidth, copyHeight, 0, 0, copyWidth, copyHeight);
+                            vm.dayXAxisLabel = this.chart.options.scales.xAxes[0].scaleLabel.labelString;
                         }
-                    }
+                    };
 
                     vm.dayOptions.size.width = calculateWidthForCampaign(vm.dayOptions.size.width, chartData.length);
                     _.forEach(chartData, function (obj) {
@@ -1035,7 +1406,7 @@
 
                     vm.hourDetails = {
                         hourDetails: []
-                    }
+                    };
 
                     // Commented the below code based on Ravi R confirmation as he wanted sorting by Hour
                     // chartData = _.sortBy(chartData, 'value').reverse(); // for hour data we will not get avgValue, Nishit, CCP-290
@@ -1055,7 +1426,7 @@
                             if (!angular.isUndefined(obj.failedAudience))
                                 ++vm.hour.noncompliantCount;
                         }
-                        vm.hourDetails.hourDetails.push(obj)
+                        vm.hourDetails.hourDetails.push(obj);
                     });
 
                     if (toggleOtherCharts)
@@ -1067,6 +1438,23 @@
 
         vm.closeTooltip = function (id) {
             $('#' + id).hide();
+        };
+
+        function applyParallelFilters() {
+            if (vm.searchCampaign != '') {
+                vm.searchCampaignRef();
+            } else {
+                filterChartData();
+            }
+            if (vm.selectedSpecialists.length > 0) {
+                vm.filterOnSpecialist();
+            }
+            if (vm.selectedMarketingNames.length > 0) {
+                vm.filterOnMarketingName();
+            }
+            if (vm.selectedChannel.length > 0) {
+                applyFilterOn(vm.selectedChannel, 'campaignSummary');
+            }
         }
 
         /**
@@ -1079,56 +1467,36 @@
             var requestParameter = {};
 
             if (vm.datePicker.date) {
-                requestParameter["startDate"] = vm.filterObject.startDate;
-                requestParameter["endDate"] = vm.filterObject.endDate;
+                requestParameter.startDate = vm.filterObject.startDate;
+                requestParameter.endDate = vm.filterObject.endDate;
             }
-            if (vm.filterObject.specialists)
-                requestParameter["specialists"] = JSON.stringify(vm.filterObject.specialists);
-            if (vm.filterObject.marketingNames)
-                requestParameter["marketingNames"] = JSON.stringify(vm.filterObject.marketingNames);
-            if (vm.filterObject.channels)
-                requestParameter["channels"] = JSON.stringify(vm.filterObject.channels);
 
-            if (filterChanged) {
-                requestParameter["filterChange"] = filterChanged;
-            } else {
-                if (vm.triggerSearchAfterCampaignRefRemoved) {
-                    requestParameter["filterChange"] = vm.triggerSearchAfterCampaignRefRemoved;
-                    vm.triggerSearchAfterCampaignRefRemoved = false;
-                } else {
-                    requestParameter["filterChange"] = filterChanged;
-                }
-            }
+            requestParameter.filterChange = filterChanged;
 
             if (!_.isUndefined(vm.selectedCampaign) && vm.selectedCampaign != '')
-                requestParameter["campaignId"] = vm.selectedCampaign;
+                requestParameter.campaignId = vm.selectedCampaign;
             if (!_.isUndefined(vm.selectedFrame) && vm.selectedFrame != '') {
-                requestParameter["extendedCodeId"] = vm.selectedFrame;
+                requestParameter.extendedCodeId = vm.selectedFrame;
             } else {
                 if (!_.isUndefined(tempSelectedFrame) && tempSelectedFrame != '') {
-                    requestParameter["extendedCodeId"] = tempSelectedFrame;
+                    requestParameter.extendedCodeId = tempSelectedFrame;
                     vm.selectedFrame = tempSelectedFrame;
                 }
             }
 
             if (!_.isUndefined(vm.selectedDay) && vm.selectedDay != '')
-                requestParameter["dayId"] = vm.selectedDay;
+                requestParameter.dayId = vm.selectedDay;
 
             if (_.isUndefined(requestParameter.startDate) || _.isUndefined(requestParameter.endDate)) {
                 return;
             }
-            filterService.getSummaries(requestParameter).then(function (data) {
+            filterService.getSummaries(requestParameter).then(function (response) {
                 vm.cachedFilterObject = _.cloneDeep(vm.filterObject);
-                if (data && data.data) {
-                    var data = data.data;
+                if (response && response.data) {
+                    var data = response.data;
                     if (data.channelSummary && data.channelSummary.length > 0) {
-                        vm.channelSummary = data.channelSummary;
                         vm.channelSummaryByAudience = data.channelSummaryByAudience;
                         vm.channelSummaryByImpression = data.channelSummaryByImpression;
-
-                        vm.channelSummary = _.map(vm.channelSummary, function (obj) {
-                            return ((vm.selectedChannel.indexOf(obj.id) === -1) ? angular.extend(obj, { guageColors: vm.defaultGuageColors }) : angular.extend(obj, { guageColors: vm.selectedGuageColors }));
-                        });
 
                         vm.channelSummaryByAudience = _.map(vm.channelSummaryByAudience, function (obj) {
                             return ((vm.selectedChannel.indexOf(obj.id) === -1) ? angular.extend(obj, { guageColors: vm.defaultGuageColors }) : angular.extend(obj, { guageColors: vm.selectedGuageColors }));
@@ -1143,14 +1511,15 @@
                             } else {
                                 percentage = "0.00";
                             }
-
                             var moreData = {
-                                percentageDisplay: _.cloneDeep(percentage),
+                                percentageDisplay: percentage,
                                 percentage: (percentage > 100 ? 100 : percentage),
-                            }
+                            };
                             return (angular.extend(obj, { guageColors: vm.impressionGaugeColors }, moreData));
                         });
-                        vm.summary = vm.channelSummaryByAudience;
+
+                        vm.chachedChannelSummaryByAudience = _.cloneDeep(vm.channelSummaryByAudience);
+                        vm.chachedChannelSummaryByImpression = _.cloneDeep(vm.channelSummaryByImpression);
                     }
                     if (data.campaignSummary) {
                         if (data.campaignSummary.length > 0) {
@@ -1161,7 +1530,8 @@
                                 obj.audienceValue = parseFloat(obj.audienceValue);
                                 return obj;
                             });
-                            vm.compaliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign', true);
+                            vm.cachedCampaignSummary = _.cloneDeep(vm.campaignSummary);
+                            vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign', true);
                         } else {
                             vm.campaignSummary = [];
                             vm.campaignData = {};
@@ -1171,15 +1541,14 @@
                     }
                     if (data.frameSummary) {
                         if (data.frameSummary.length > 0) {
-                            // vm.barOptions.size = _.clone(configureOptions.BAR_PLAYER.size); // after change in filter need to reset size
                             vm.frameSummary = _.map(data.frameSummary, function (obj) {
                                 obj.value = parseFloat(obj.value);
                                 obj.avgValue = parseFloat(obj.avgValue);
                                 obj.audienceValue = parseFloat(obj.audienceValue);
                                 return obj;
                             });
-
                             generateChart('player', vm.frameSummary, true);
+
                             vm.showPlayer = true;
                         }
                         else {
@@ -1197,6 +1566,7 @@
                                 return obj;
                             });
                             generateChart('day', vm.daySummary, true);
+
                             vm.showDay = true;
                         }
                         else {
@@ -1222,14 +1592,21 @@
                             vm.showHour = false;
                         }
                     }
+
+                    applyParallelFilters();
                     highlightSelectedBar();
                 }
-                if (vm.searchCampaign != '') {
-                    vm.searchCampaignRef();
-                } else {
-                    filterChartData();
-                }
+
             });
+        }
+
+        /**
+         * @param {any} bodyItem 
+         * @returns html
+         * @author Amit Mahida
+         */
+        function getBody(bodyItem) {
+            return bodyItem.lines;
         }
 
         /**
@@ -1239,19 +1616,17 @@
          * @author Amit Mahida
          */
         function frameTooltip(tooltipModel, chart) {
+            var tooltipEl;
             if (tooltipModel.dataPoints) {
                 var tooltipData = vm.frameSummary.filter(function (obj) {
                     return obj.label == tooltipModel.dataPoints[0].xLabel;
                 });
+
                 if (tooltipData) {
                     tooltipData = tooltipData[0].tooltipData;
                 }
 
-                var tooltipEl = document.getElementById('player-tooltip');
-
-                function getBody(bodyItem) {
-                    return bodyItem.lines;
-                }
+                tooltipEl = document.getElementById('player-tooltip');
 
                 // Set Text
                 if (tooltipModel.body) {
@@ -1266,8 +1641,8 @@
                         style += '; border-color:' + colors.borderColor;
                         style += '; border-width: 2px';
                         var span = '<span class="chartjs-tooltip-key" style="' + style + '"></span>';
-                        innerHtml += '<tr><td style="font-weight:600;color: #fcfcfc;">' + body['key'] + ' </td></tr>';
-                        innerHtml += '<tr><td style="color: #fcfcfc;">' + body['value'] + ' </td></tr>';
+                        innerHtml += '<tr><td style="font-weight:600;color: #fcfcfc;">' + body.key + ' </td></tr>';
+                        innerHtml += '<tr><td style="color: #fcfcfc;">' + body.value + ' </td></tr>';
                     });
                     innerHtml += '</tbody>';
 
@@ -1286,7 +1661,7 @@
                 tooltipEl.style.display = 'block';
                 tooltipEl.style.height = 'auto';
             } else {
-                var tooltipEl = document.getElementById('player-tooltip');
+                tooltipEl = document.getElementById('player-tooltip');
                 tooltipEl.style.display = 'none';
             }
         }
@@ -1295,21 +1670,22 @@
          * @desc This function handles the state of selected bar from the summary chart
          */
         function highlightSelectedBar() {
+            var index;
             if (!_.isUndefined(vm.selectedCampaign) && !_.isNull(vm.selectedCampaign)) {
                 if (!_.isEmpty(vm.campaignData)) {
                     vm.campaignData.datasets[0].backgroundColor = [];
                     _.forEach(vm.campaignDetails.campaignDetails, function (obj, key) {
                         if (obj.failedAudience) {
-                            vm.campaignData.datasets[0].compaliantcheck.push(false);
+                            vm.campaignData.datasets[0].compliantcheck.push(false);
                             vm.campaignData.datasets[0].backgroundColor.push(RED_COLOR);
                         }
                         else {
                             vm.campaignData.datasets[0].backgroundColor.push(BLUE_COLOR);
-                            vm.campaignData.datasets[0].compaliantcheck.push(true);
+                            vm.campaignData.datasets[0].compliantcheck.push(true);
                         }
                     });
 
-                    var index = _.findIndex(vm.campaignDetails.campaignDetails, function (o) { return o.id == vm.selectedCampaign; });
+                    index = _.findIndex(vm.campaignDetails.campaignDetails, function (o) { return o.id == vm.selectedCampaign; });
                     if (index > -1) {
                         vm.campaignData.datasets[0].backgroundColor[index] = GREEN_COLOR;
                         vm.campaignBar.selectedCampaign = vm.selectedCampaign.split(':')[0];
@@ -1330,13 +1706,13 @@
                     _.forEach(vm.playerDetails.playerDetails, function (obj, key) {
                         if (obj.failedAudience) {
                             vm.playerData.datasets[0].backgroundColor.push(RED_COLOR);
-                            vm.playerData.datasets[0].compaliantcheck.push(false);
+                            vm.playerData.datasets[0].compliantcheck.push(false);
                         } else {
                             vm.playerData.datasets[0].backgroundColor.push(BLUE_COLOR);
-                            vm.playerData.datasets[0].compaliantcheck.push(true);
+                            vm.playerData.datasets[0].compliantcheck.push(true);
                         }
                     });
-                    var index = _.findIndex(vm.playerDetails.playerDetails, function (o) { return o.id == vm.selectedFrame; });
+                    index = _.findIndex(vm.playerDetails.playerDetails, function (o) { return o.id == vm.selectedFrame; });
                     if (index > -1) {
                         vm.playerData.datasets[0].backgroundColor[index] = GREEN_COLOR;
                         vm.campaignBar.selectedFrame = vm.selectedFrame;
@@ -1356,26 +1732,9 @@
                             vm.dayData.datasets[0].backgroundColor.push(BLUE_COLOR);
                         }
                     });
-                    var index = _.findIndex(vm.dayDetails.dayDetails, function (o) { return o.id == vm.selectedDay; });
+                    index = _.findIndex(vm.dayDetails.dayDetails, function (o) { return o.id == vm.selectedDay; });
                     if (index > -1)
                         vm.dayData.datasets[0].backgroundColor[index] = GREEN_COLOR;
-                }
-            }
-
-            if (!_.isUndefined(vm.selectedDay) && !_.isNull(vm.selectedDay)) {
-                if (!_.isEmpty(vm.dayData)) {
-                    vm.dayData.datasets[0].backgroundColor = [];
-                    _.forEach(vm.dayDetails.dayDetails, function (obj, key) {
-                        if (obj.failedAudience) {
-                            vm.dayData.datasets[0].backgroundColor.push(RED_COLOR);
-                        } else {
-                            vm.dayData.datasets[0].backgroundColor.push(BLUE_COLOR);
-                        }
-                    });
-                    var index = _.findIndex(vm.dayDetails.dayDetails, function (o) { return o.id == vm.selectedDay; });
-                    if (index > -1) {
-                        vm.dayData.datasets[0].backgroundColor[index] = GREEN_COLOR;
-                    }
                 }
             }
         }
@@ -1422,38 +1781,22 @@
         }
 
         function createFilterOject() {
-            vm.filterObject = {}
+            vm.filterObject = {};
 
             if (vm.datePicker.date) {
-                vm.filterObject["startDate"] = vm.datePicker.date.startDate;
-                vm.filterObject["endDate"] = vm.datePicker.date.endDate;
-            }
-            if (vm.selectedSpecialists && vm.selectedSpecialists.length > 0) {
-                var specialists = [];
-                _.forEach(vm.selectedSpecialists, function (obj) {
-                    specialists.push(obj.organisationId);
-                })
-                vm.filterObject["specialists"] = specialists
-            }
-            if (vm.selectedMarketingNames && vm.selectedMarketingNames.length > 0) {
-                var marketingNames = [];
-                _.forEach(vm.selectedMarketingNames, function (obj) {
-                    marketingNames.push(obj.marketingNameId);
-                })
-                vm.filterObject["marketingNames"] = marketingNames;
-            }
-            if (vm.selectedChannel && vm.selectedChannel.length > 0)
-                vm.filterObject["channels"] = vm.selectedChannel
+                vm.filterObject.startDate = vm.datePicker.date.startDate;
+                vm.filterObject.endDate = vm.datePicker.date.endDate;
+            }            
         }
 
         function calculateHeightForCampaign(defaultHeight, totalRecords) {
             var _defaultHeight = defaultHeight;
-            return ((totalRecords * 16) < _defaultHeight ? _defaultHeight : defaultHeight += (totalRecords * 17)) // made 17 from 22 for CC-157, Nishit
+            return ((totalRecords * 16) < _defaultHeight ? _defaultHeight : defaultHeight += (totalRecords * 17)); // made 17 from 22 for CC-157, Nishit
         }
 
         function calculateWidthForCampaign(defaultWidth, totalRecords) {
             var _defaultWidth = defaultWidth;
-            return ((totalRecords * 31) < _defaultWidth ? _defaultWidth : defaultWidth += (totalRecords * 38)) // Nishit, CCP-291, CC-23
+            return ((totalRecords * 31) < _defaultWidth ? _defaultWidth : defaultWidth += (totalRecords * 38)); // Nishit, CCP-291, CC-23
         }
 
         function calculateWidthForPlayer(totalRecords) {
@@ -1466,54 +1809,7 @@
             }
         }
 
-
-        //------------------------------------------------------------------------------------------------------------------
-        //                                            Date Range Configuration
-        //------------------------------------------------------------------------------------------------------------------
-
-        var DATERANGEPICKER = {
-            maxDate: new Date(),
-            locale: {
-                separator: ' : ',
-                format: DATE_FORMAT
-            },
-            ranges: {
-                'Today': [moment(), moment()],
-                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                'This Month': [moment().startOf('month'), moment().endOf('month')],
-                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-            },
-            alwaysShowCalendars: true,
-            opens: 'center',
-            eventHandlers: {
-                'apply.daterangepicker': function (ev, picker) {
-                    vm.datePicker = {
-                        date: {
-                            startDate: (typeof vm.datePicker.date.startDate == 'string' ? vm.datePicker.date.startDate : vm.datePicker.date.startDate.format(DATE_FORMAT)),
-                            endDate: (typeof vm.datePicker.date.endDate == 'string' ? vm.datePicker.date.endDate : vm.datePicker.date.endDate.format(DATE_FORMAT))
-                        }
-                    };
-                    vm.showPlayer = false;
-                    vm.showDay = false;
-                    vm.showHour = false;
-                    getSummaries();
-                }
-            }
-        }
-        // Configuration for DateRangePicker
-
-        vm.datePickerOptions = DATERANGEPICKER;
-
-        vm.datePicker = {
-            date: {
-                startDate: moment.Today,
-                endDate: moment.Today
-            }
-        };
-
-        vm.showHideFilters = function () {
+        function showHideFilters() {
             if (vm.showFilter) {
                 $('#filtersArea').slideUp();
                 vm.showFilter = false;
@@ -1522,6 +1818,10 @@
                 vm.showFilter = true;
             }
         }
+
+        // two way binded functions
+        vm.showHideFilters = showHideFilters;
+        vm.onChannelClick = onChannelClick;
         getInitialConfig();
     }
 })();
