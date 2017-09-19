@@ -1305,6 +1305,7 @@ div {
 
 .chartWrapper1 {
   position: relative;
+  margin: 10px;
 }
 
 .chartWrapper1 > canvas {
@@ -1314,17 +1315,18 @@ div {
   pointer-events: none !important;
   background: #f1f1f1;
   z-index: 999;
-  margin-left: 5px;
+  /* margin-left: 5px; */
 }
 
 .chartAreaWrapper1 {
   height: 387px;
-  margin: 5px;
+  /* margin: 5px; */
   overflow-y: scroll;
 }
 
 .chartWrapper {
   position: relative;
+  margin: 10px;
 }
 
 .chartWrapper > canvas {
@@ -1334,18 +1336,18 @@ div {
   pointer-events: none !important;
   background: #f1f1f1;
   z-index: 999;
-  margin-left: 5px;
+  /* margin-left: 5px; */
 }
 
 .chartAreaWrapper {
-  margin: 5px;
+  /* margin: 5px; */
   height: 387px;
   overflow-x: scroll;
 }
 
 .chartAreaWrapperForDay {
-  margin: 10px;
-  height: 154px;
+  /* margin: 10px; */
+  height: 158px;
   overflow-x: scroll;
 }
 
@@ -1356,9 +1358,7 @@ div {
   left: 0;
   z-index: 999;
   height: 100%;
-  width: 15px;
-  border-radius: 18%;
-  padding: 2px;
+  width: 12px;  
   writing-mode: tb;
   text-align: center;
   transform: rotate(180deg);

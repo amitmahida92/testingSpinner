@@ -33,6 +33,7 @@
         vm.cachedDaySummary = [];
         vm.spanSummary = [];
         vm.cachedSpanSummary = [];
+        var resolutionCounter = 0;
 
         // External link to ccp
         vm.ccpLink = CCP_LINK;
@@ -600,6 +601,7 @@
         }
 
         /**
+         * 
          * 
          */
         function resetAllFilters() {
@@ -1245,6 +1247,8 @@
                         campaignDetails: []
                     };
 
+                    
+
                     vm.campaignOptions.animation = {
                         onProgress: function (chart) {
                             var sourceCanvas = this.chart.ctx.canvas;
@@ -1256,6 +1260,13 @@
                             targetCtx.canvas.height = copyHeight;
                             targetCtx.drawImage(sourceCanvas, 0, 0, copyWidth, copyHeight, 0, 0, copyWidth, copyHeight);
                             vm.campaignYAxisLabel = this.chart.options.scales.yAxes[0].scaleLabel.labelString;
+                            // Amit : resolution patch 1366*768 px
+                            if (resolutionCounter <= 2) {
+                                $('.chart-container').width($('.chart-container').width() - 1);
+                                $('.chart-container').width($('.chart-container').width() + 1);
+                            }
+
+                            resolutionCounter++;
                         },
                         onComplete: function (chart) {
                             var sourceCanvas = this.chart.ctx.canvas;
@@ -1267,6 +1278,13 @@
                             targetCtx.canvas.height = copyHeight;
                             targetCtx.drawImage(sourceCanvas, 0, 0, copyWidth, copyHeight, 0, 0, copyWidth, copyHeight);
                             vm.campaignYAxisLabel = this.chart.options.scales.yAxes[0].scaleLabel.labelString;
+
+                            //Amit : resolution patch 1366*768 px
+                            if (resolutionCounter <= 2) {
+                                $('.chart-container').width($('.chart-container').width() - 1);
+                                $('.chart-container').width($('.chart-container').width() + 1);
+                            }
+                            resolutionCounter++;
                         }
                     };
 
@@ -1835,7 +1853,7 @@
                 resetCharts();
                 return true;
             }
-        }        
+        }
 
         /**
          * @desc

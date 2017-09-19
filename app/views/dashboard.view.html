@@ -237,7 +237,7 @@
                         chart-click="vm.onDayClick" chart-dataset-override="vm.dayDetails"></canvas>
                     </div>
                 </div>
-                <canvas id="dayAxis" style="margin-left: 10px;" ng-if="vm.dayData.datasets[0].data.length > 0"></canvas>
+                <canvas id="dayAxis" ng-if="vm.dayData.datasets[0].data.length > 0"></canvas>
                 <div class="horizontalAxisLabel" style="top: 85%;" ng-if="vm.dayData.datasets[0].data.length > 0">
                     {{vm.dayXAxisLabel}}
                 </div>
@@ -248,7 +248,7 @@
     <div class="col s12 m6 chart-container" ng-show="vm.showHour" ng-class="{'fullscreen-chart animated zoomIn' : vm.fullscreenFor == 'hour', 'hide-chart' : vm.fullscreenFor != 'hour' && vm.fullscreenFor != ''}">
         <div class="card">
             <span class="card-title">                
-				{{vm.userBundle["popboard.impressions.time.heading"]}}               
+				<span>{{vm.userBundle["popboard.impressions.time.heading"]}}</span>
             
                 <a id="impressionstimetooltip" class="btn-floating btn-flat blue-text
                     btn_popover" data-html="true" data-position="left" data-delay="75"> 
