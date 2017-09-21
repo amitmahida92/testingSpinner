@@ -16,4 +16,4 @@ var CHART_HOVER_TOOLTIP = DEBUG ? 'data/hover_tooltip.json' : '../../Service/pop
 
 var HTTP_METHOD = DEBUG ? "GET" : "POST";
 var CONFIG_URL = SERVICE_BASE_URL + (DEBUG ? INITIAL_CONFIG_URL : INITIAL_CONFIG_URL_BOS);
-var frontEndVersion = "1.0.1.29 campaign compliance";
+var frontEndVersion = "1.0.1.30 campaign compliance";
