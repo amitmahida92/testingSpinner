@@ -183,10 +183,11 @@
         };
 
         /**
-         * This function fitlers campaigns with respect to business areas.
+         * @desc This function filters campaigns with respect to business areas.
          * @param {any} channelid 
          * @param {any} channelValue 
-         * @returns 
+         * @returns void
+         * @author Amit Mahida
          */
         function onChannelClick(channelid, channelValue) {
             if (channelValue == 0) {
@@ -213,7 +214,7 @@
         }
 
         /**
-         * @desc 
+         * @desc It handles the mutual filters if applied any and generates/ regenerates the charts again.  
          * @param {any} compaliant 
          * @param {any} noncompaliant 
          * @param {any} chart 
@@ -248,7 +249,7 @@
                         if (element.avgValue != 0) {
                             isAllSelectedCampaignHasNullAvgValue = false;
                         }
-                    }, this);
+                    });
 
                     if (isSearchedCampaignInNewData.length == 0) {
                         vm.showPlayer = false;
@@ -290,7 +291,6 @@
                     }
                 }
                 generateChart('campaign', data, flag);
-
             }
 
             if (chart == "player") {
@@ -332,7 +332,6 @@
                     }
                 }
                 generateChart('player', data, false);
-
             }
 
             if (chart == "day") {
@@ -368,7 +367,6 @@
                     }
                 }
                 generateChart('day', data, false);
-
             }
 
             if (chart == "hour") {
@@ -392,8 +390,6 @@
                 }
 
                 generateChart('hour', data, false);
-
-
             }
 
             highlightSelectedBar();
@@ -401,10 +397,12 @@
         }
 
         /**
-         * @desc
+         * @desc It makes server call to get frames for selected campaign. 
+         * @desc It also makes server call for zendesk ticket for non compliant campaigns.
          * @param {any} points 
          * @param {any} evt 
-         * @returns 
+         * @returns void
+         * @author Amit Mahida
          */
         function onCampaignClick(points, evt) {
             if (points.length > 0 && (vm.campaign.compaliant || vm.campaign.noncompaliant)) { // condition added for CC-115
@@ -417,18 +415,17 @@
                 }
 
                 vm.selectedCampaign = campaign.id;
-
                 vm.campaignBar.selectedCampaign = _.cloneDeep(vm.selectedCampaign);
                 vm.campaignBar.brandName = campaign.brandName;
                 vm.campaignBar.advertiserName = campaign.advertiserName;
-                //-- Clear the Children Graph and Children Request Parameters//
+                
                 vm.selectedFrame = '';
-                vm.selectedDay = '';
-                //-----------------------------------------------------------//
+                vm.selectedDay = '';               
 
                 vm.playerData = {};
                 vm.player.compaliant = true;
                 vm.player.noncompaliant = true;
+
                 vm.selectedFrame = '';
                 tempSelectedFrame = '';
 
@@ -441,7 +438,6 @@
                         "startDate": vm.datePicker.date.startDate
                     };
                     filterService.getTooltipData(params).then(function (response) {
-
                         if (response) {
                             var campaignData = response.data[campaignId];
                             if (campaignData && campaignData.length > 0) {
@@ -450,13 +446,11 @@
                                 vm.zendeskTableBody = campaignData;
                             } else {
                                 $('#compliance-tooltip').hide();
-                                vm.isZendeskTicketAvailable = false;
-                                // Materialize.toast(response.message, TOASTER_TIME_INTERVAL, 'rounded');
+                                vm.isZendeskTicketAvailable = false;                                
                             }
                         } else {
                             $('#compliance-tooltip').hide();
-                            vm.isZendeskTicketAvailable = false;
-                            // Materialize.toast(response.message, TOASTER_TIME_INTERVAL, 'rounded');
+                            vm.isZendeskTicketAvailable = false;                            
                         }
                     });
                 } else {
@@ -468,10 +462,11 @@
         }
 
         /**
-         * @desc
+         * @desc It makes server call to get frames for selected player.
+         * @desc It also makes server call for zendesk ticket for non compliant frames. 
          * @param {any} points 
          * @param {any} evt 
-         * @returns 
+         * @returns boolean
          */
         function onPlayerClick(points, evt) {
             if (points.length > 0) {
@@ -482,16 +477,15 @@
                     return false;
                 }
 
-                vm.selectedFrame = player.id; // Value of particluar bar
-                vm.campaignBar.selectedFrame = _.cloneDeep(vm.selectedFrame);
-                //-- Clear the Children Graph and Children Request Parameters
-                vm.selectedDay = '';
-                //-----------------------------------------------------------//
+                vm.selectedFrame = player.id; 
+                vm.campaignBar.selectedFrame = _.cloneDeep(vm.selectedFrame);                
+                vm.selectedDay = '';                
                 vm.dayData = [];
                 vm.day.compaliant = true;
                 vm.day.noncompaliant = true;
                 vm.selectedDay = '';
                 getSummaries();
+                
                 var displayUnitId = player.label;
 
                 if (displayUnitId && player.failedAudience) {
@@ -527,7 +521,7 @@
         }
 
         /**
-         * @desc
+         * 
          * @param {any} points 
          * @param {any} evt 
          * @returns 
@@ -1072,9 +1066,8 @@
                 }
             } else {
                 if (vm.searchCampaign.trim().length == 0) {
-                    vm.channelSummaryByAudience = vm.chachedChannelSummaryByAudience;
-                    vm.channelSummaryByImpression = vm.chachedChannelSummaryByImpression;
-                    // vm.campaignSummary = vm.cachedCampaignSummary;
+                    vm.channelSummaryByAudience = _.cloneDeep(vm.chachedChannelSummaryByAudience);
+                    vm.channelSummaryByImpression = _.cloneDeep(vm.chachedChannelSummaryByImpression);
                     applyParallelFilters();
                 }
                 return false;
@@ -1532,11 +1525,9 @@
             }
             if (vm.selectedSpecialists.length > 0) {
                 vm.filterOnSpecialist();
-            }
-            if (vm.selectedMarketingNames.length > 0) {
+            } else if (vm.selectedMarketingNames.length > 0) {
                 vm.filterOnMarketingName();
-            }
-            if (vm.selectedChannel.length > 0) {
+            } else if (vm.selectedChannel.length > 0) {
                 applyFilterOn(vm.selectedChannel, 'campaignSummary');
             }
         }
@@ -1676,7 +1667,6 @@
                             vm.showHour = false;
                         }
                     }
-
                     applyParallelFilters();
                     highlightSelectedBar();
                 }
