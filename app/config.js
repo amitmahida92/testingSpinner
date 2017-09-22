@@ -7,7 +7,7 @@ var COMPLAINCE_PERCENTAGE = 90;
 var RED_COLOR = "#F44336";
 var BLUE_COLOR = "#0d65b6";
 var GREEN_COLOR = "#9be52a";
-var SERVICE_BASE_URL = 'http://campaign-compliance.dev.aws.jcdecaux.co.uk:8190/';
+var SERVICE_BASE_URL = ''; // 'http://campaign-compliance.dev.aws.jcdecaux.co.uk:8190/';
 var INITIAL_CONFIG_URL =  false ? 'Service/popboard/config' : 'data/config.json'; //  'config';
 var INITIAL_CONFIG_URL_BOS = '../../Service/popboard/config'; // 'http://172.16.3.241:8082/Service/popboard/';
 var CCP_LINK = '/Service/popboard/ccplink?campaignId=';

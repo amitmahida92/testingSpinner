@@ -521,7 +521,7 @@
         }
 
         /**
-         * @desc
+         * 
          * @param {any} points 
          * @param {any} evt 
          * @returns 
