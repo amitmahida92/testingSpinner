@@ -1247,8 +1247,6 @@
                         campaignDetails: []
                     };
 
-                    
-
                     vm.campaignOptions.animation = {
                         onProgress: function (chart) {
                             var sourceCanvas = this.chart.ctx.canvas;
@@ -1289,6 +1287,11 @@
                     };
 
                     vm.campaignOptions.size.height = calculateHeightForCampaign(_.clone(configureOptions.HORIZONTAL_BAR.size.height), chartData.length);
+
+                    if (chartData.length > 1185) {
+                        Materialize.toast("Please decrease the date range to view the graph", TOASTER_TIME_INTERVAL, 'rounded');
+                        return;
+                    }
 
                     chartData = _.sortBy(chartData, 'avgValue').reverse();
 

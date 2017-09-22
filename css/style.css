@@ -1291,7 +1291,7 @@ div {
 .btn-floating i {
   color: #00aa80 !important;
   width: auto;
-  padding-left: 4px;
+  padding-left: 3px;
 }
 
 .btn-floating i:hover, .btn-floating i:focus {

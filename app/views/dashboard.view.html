@@ -129,14 +129,13 @@
                 data-delay="75"> 
                     <i class="material-icons blue-text">info_outline</i>
                 </a>
-            <span class="right">
+                <span class="right">
                     <input type="checkbox" class="filled-in" id="campaign_compaliant" ng-click="vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign')" ng-model="vm.campaign.compaliant" />
                     <label for="campaign_compaliant">Compliant ({{vm.campaign.compliantCount}})</label>
                     <input type="checkbox" class="filled-in" id="campaign_non_compaliant" ng-model="vm.campaign.noncompaliant" ng-click="vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign')" />
                     <label for="campaign_non_compaliant">Non Compliant ({{vm.campaign.noncompliantCount}})</label>
                     <i ng-click="vm.fullscreenFor == 'campaign' ? vm.fullscreenFor = '' :  vm.fullscreenFor = 'campaign'" class="small material-icons fullscreen-icon">{{ vm.fullscreenFor == 'campaign' ? 'fullscreen_exit' : 'fullscreen' }}</i>
-                    
-            </span>
+                </span>
             </span>
 
             <div class="chartWrapper1">
@@ -155,6 +154,7 @@
                     {{vm.userBundle["common.campaign.compliance.nodata"] ? vm.userBundle["common.campaign.compliance.nodata"] : 'No Campaigns
                     Found!'}}
                 </div>
+                
             </div>            
         </div>        
     </div>
