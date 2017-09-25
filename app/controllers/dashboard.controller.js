@@ -624,6 +624,7 @@
                 $("body").trigger('click');
             }.bind(this), 0);
         };
+        
 
         vm.onAddTags = function () {
             checkAllcheckBoxes();
