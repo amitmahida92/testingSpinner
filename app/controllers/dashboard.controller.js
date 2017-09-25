@@ -620,7 +620,6 @@
             if (data.length > 0) {
                 filteredSummary = [];
                 innerFilteredCampaigns = [];
-                
 
                 if (key == 'specialist') {
                     if (vm.selectedMarketingNames.length > 0 || vm.selectedChannel.length > 0) {
