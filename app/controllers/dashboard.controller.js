@@ -614,7 +614,6 @@
         }
 
         vm.removeTags = function (index, arr) {
-            
             checkAllcheckBoxes();
             setTimeout(function () {
                 if (arr === "selectedMarketingNames") {
