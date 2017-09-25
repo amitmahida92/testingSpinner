@@ -254,15 +254,15 @@
                     if (isSearchedCampaignInNewData.length == 0) {
                         vm.showPlayer = false;
                         vm.showDay = false;
-                        vm.showHour = false;
-                        tempSelectedFrame = vm.selectedFrame;
+                        vm.showHour = false;                        
+                        // tempSelectedFrame = _.clone(vm.selectedFrame);
                         vm.campaignBar.selectedFrame = '';
                         vm.selectedFrame = '';
                     } else {
                         if (vm.selectedCampaign != '' && !isAllSelectedCampaignHasNullAvgValue) {
                             if (tempSelectedFrame != '') {
-                                vm.campaignBar.selectedFrame = tempSelectedFrame;
-                                vm.selectedFrame = tempSelectedFrame;
+                                vm.campaignBar.selectedFrame = _.clone(tempSelectedFrame);
+                                vm.selectedFrame = _.clone(tempSelectedFrame);
                                 vm.showPlayer = true;
                                 setTimeout(function () {
                                     $('#player').height('367');
@@ -275,7 +275,7 @@
                             if (vm.frameSummary.length > 0 && vm.selectedFrame == '') {
                                 vm.showPlayer = true;
                             }
-                        } else {
+                        } else {                            
                             vm.selectedCampaign = '';
                             vm.selectedFrame = '';
                             tempSelectedFrame = '';
@@ -418,9 +418,8 @@
                 vm.campaignBar.selectedCampaign = _.cloneDeep(vm.selectedCampaign);
                 vm.campaignBar.brandName = campaign.brandName;
                 vm.campaignBar.advertiserName = campaign.advertiserName;
-                
-                vm.selectedFrame = '';
-                vm.selectedDay = '';               
+
+                vm.selectedDay = '';
 
                 vm.playerData = {};
                 vm.player.compaliant = true;
@@ -446,11 +445,11 @@
                                 vm.zendeskTableBody = campaignData;
                             } else {
                                 $('#compliance-tooltip').hide();
-                                vm.isZendeskTicketAvailable = false;                                
+                                vm.isZendeskTicketAvailable = false;
                             }
                         } else {
                             $('#compliance-tooltip').hide();
-                            vm.isZendeskTicketAvailable = false;                            
+                            vm.isZendeskTicketAvailable = false;
                         }
                     });
                 } else {
@@ -477,15 +476,16 @@
                     return false;
                 }
 
-                vm.selectedFrame = player.id; 
-                vm.campaignBar.selectedFrame = _.cloneDeep(vm.selectedFrame);                
-                vm.selectedDay = '';                
+                vm.selectedFrame = player.id;
+                tempSelectedFrame = _.clone(player.id);
+                vm.campaignBar.selectedFrame = _.cloneDeep(vm.selectedFrame);
+                vm.selectedDay = '';
                 vm.dayData = [];
                 vm.day.compaliant = true;
                 vm.day.noncompaliant = true;
                 vm.selectedDay = '';
                 getSummaries();
-                
+
                 var displayUnitId = player.label;
 
                 if (displayUnitId && player.failedAudience) {
@@ -583,6 +583,7 @@
          * @param {any} arr 
          */
         function removeTags(index, arr) {
+            
             checkAllcheckBoxes();
             setTimeout(function () {
                 if (arr === "selectedMarketingNames") {
@@ -590,8 +591,8 @@
                 } else {
                     $("#" + arr + " li").filter(function () { return $.text([this]) === vm[arr][index].organisationName; }).trigger('click');
                 }
-                $("body").trigger('click');
-            }.bind(this), 0);
+                $("body").trigger('click');                
+            }.bind(this), 0);            
         }
 
         /**
@@ -599,8 +600,8 @@
          * 
          */
         function resetAllFilters() {
-            if (vm.cachedCampaignSummary.length > 0) {
-                vm.campaignSummary = vm.cachedCampaignSummary;
+            if (vm.cachedCampaignSummary.length > 0) {                
+                vm.campaignSummary = _.cloneDeep(vm.cachedCampaignSummary);
                 vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign', true);
                 if (vm.selectedChannel.length == 0) {
                     filterSummaries(vm.campaignSummary);
@@ -617,15 +618,22 @@
          */
         function applyFilterOn(data, key) {
             var innerFilteredCampaigns;
+            var summaryToFilter = [];
+            
             if (data.length > 0) {
                 filteredSummary = [];
                 innerFilteredCampaigns = [];
+                if (data.length > 1) {
+                    summaryToFilter = _.cloneDeep(vm.cachedCampaignSummary);
+                } else {
+                    summaryToFilter = _.cloneDeep(vm.campaignSummary);
+                }
 
                 if (key == 'specialist') {
                     if (vm.selectedMarketingNames.length > 0 || vm.selectedChannel.length > 0) {
                         if (vm.selectedChannel.length > 0) {
                             vm.selectedChannel.forEach(function (element) {
-                                vm.campaignSummary.forEach(function (inElement) {
+                                summaryToFilter.forEach(function (inElement) {
                                     if (element === inElement.businessAreaCode) {
                                         filteredSummary.push(inElement);
                                     }
@@ -634,7 +642,7 @@
                         }
                         if (vm.selectedMarketingNames.length > 0) {
                             vm.selectedMarketingNames.forEach(function (element) {
-                                vm.campaignSummary.forEach(function (inElement) {
+                                summaryToFilter.forEach(function (inElement) {
                                     if (element.marketingNameId === parseInt(inElement.marketingNameCode)) {
                                         filteredSummary.push(inElement);
                                     }
@@ -664,7 +672,7 @@
                     if (vm.selectedSpecialists.length > 0 || vm.selectedChannel.length > 0) {
                         if (vm.selectedSpecialists.length > 0) {
                             vm.selectedSpecialists.forEach(function (element) {
-                                vm.campaignSummary.forEach(function (inElement) {
+                                summaryToFilter.forEach(function (inElement) {
                                     if (element.organisationId == inElement.specialistCode) {
                                         filteredSummary.push(inElement);
                                     }
@@ -673,7 +681,7 @@
                         }
                         if (vm.selectedChannel.length > 0) {
                             vm.selectedChannel.forEach(function (element) {
-                                vm.campaignSummary.forEach(function (inElement) {
+                                summaryToFilter.forEach(function (inElement) {
                                     if (element === inElement.businessAreaCode) {
                                         filteredSummary.push(inElement);
                                     }
@@ -750,8 +758,9 @@
                 vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign', true);
                 if (vm.selectedChannel.length == 0) {
                     filterSummaries(vm.campaignSummary);
-                    filterChartData();
-                }
+                    filterChartData();                    
+                }                
+                refreshCharts();
             } else {
                 filteredSummary = [];
                 innerFilteredCampaigns = [];
@@ -793,8 +802,9 @@
                         filteredSummary = _.cloneDeep(innerFilteredCampaigns);
                         innerFilteredCampaigns = [];
                     }
-                    if (vm.selectedMarketingNames.length == 0 && vm.selectedChannel.length == 0) {
+                    if (vm.selectedMarketingNames.length == 0 && vm.selectedChannel.length == 0) {                        
                         resetAllFilters();
+                        refreshCharts();
                         return;
                     }
                     vm.campaignSummary = _.cloneDeep(filteredSummary);
@@ -842,6 +852,7 @@
                     }
                     if (vm.selectedSpecialists.length == 0 && vm.selectedChannel.length == 0) {
                         resetAllFilters();
+                        refreshCharts();
                         return;
                     }
                     vm.campaignSummary = _.cloneDeep(filteredSummary);
@@ -895,6 +906,7 @@
                     if (vm.selectedSpecialists.length == 0 && vm.selectedMarketingNames.length == 0) {
                         resetAllFilters();
                         resetCharts();
+                        refreshCharts();
                         return;
                     }
                     vm.campaignSummary = _.cloneDeep(filteredSummary);
@@ -905,13 +917,18 @@
                     filterChartData();
                 }
             }
+
+            if (vm.searchCampaign != '') {
+                vm.searchCampaignRef();
+            } 
+            refreshCharts();      
             return filteredSummary;
         }
 
         /**
          * @desc
          */
-        function filterOnSpecialist() {
+        function filterOnSpecialist() {            
             applyFilterOn(vm.selectedSpecialists, 'specialist');
         }
 
@@ -919,7 +936,7 @@
          * 
          * @desc
          */
-        function filterOnMarketingName() {
+        function filterOnMarketingName() {            
             applyFilterOn(vm.selectedMarketingNames, 'marketingName');
         }
 
@@ -1181,12 +1198,18 @@
                     }
                 };
 
-                if (vm.configData.serviceCalls)
+                if (vm.configData.serviceCalls){
                     loadServiceCallKeys(vm.configData.serviceCalls);
-                if (vm.configData.specialists)
+                }
+
+                if (vm.configData.specialists){
                     vm.specialists = vm.configData.specialists;
-                if (vm.configData.marketingNames)
-                    vm.marketingNames = vm.configData.marketingNames;
+                }
+                    
+                if (vm.configData.marketingNames){                    
+                    vm.marketingNames = _.sortBy(vm.configData.marketingNames, [function(o) { return o.marketingName; }]);
+                }
+                    
 
                 MAX_INACTIVE_INTERVAL = vm.configData.systemData.maxInactiveInterval || MAX_INACTIVE_INTERVAL;
 
@@ -1517,12 +1540,7 @@
          * @desc
          */
         function applyParallelFilters() {
-            if (vm.searchCampaign != '') {
-                vm.searchCampaignRef();
-            } else {
-                vm.campaignSummary = vm.cachedCampaignSummary;
-                filterChartData();
-            }
+            
             if (vm.selectedSpecialists.length > 0) {
                 vm.filterOnSpecialist();
             } else if (vm.selectedMarketingNames.length > 0) {
@@ -1530,6 +1548,8 @@
             } else if (vm.selectedChannel.length > 0) {
                 applyFilterOn(vm.selectedChannel, 'campaignSummary');
             }
+
+            
         }
 
         /**
@@ -1548,8 +1568,10 @@
 
             requestParameter.filterChange = filterChanged;
 
-            if (!_.isUndefined(vm.selectedCampaign) && vm.selectedCampaign != '')
+            if (!_.isUndefined(vm.selectedCampaign) && vm.selectedCampaign != ''){
                 requestParameter.campaignId = vm.selectedCampaign;
+            }               
+            
             if (!_.isUndefined(vm.selectedFrame) && vm.selectedFrame != '') {
                 requestParameter.extendedCodeId = vm.selectedFrame;
             } else {
@@ -1908,6 +1930,15 @@
                 $('#filtersArea').slideDown("slow");
                 vm.showFilter = true;
             }
+        }
+
+        function refreshCharts() {
+            $('#campaign').width($('#campaign').width() - 1);
+            $('#campaign').width($('#campaign').width() + 1);
+            $('#player').width($('#player').width() - 1);
+            $('#player').width($('#player').width() + 1);
+            $('#day').width($('#day').width() - 1);
+            $('#day').width($('#day').width() + 1);            
         }
 
         // two way binded functions
