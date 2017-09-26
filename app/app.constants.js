@@ -25,6 +25,7 @@
             },
             scales: {
                 xAxes: [{
+                    stacked: true,
                     scaleLabel: {
                         display: true,
                         labelString: 'Performance'
@@ -32,6 +33,7 @@
                     position: 'top'
                 }],
                 yAxes: [{
+                    stacked: true,
                     scaleLabel: {
                         display: true,
                         labelString: 'Campaign'
@@ -40,6 +42,43 @@
                         suggestedMin: 0,
                         suggestedMax: 100,
                     },
+                    // categorySpacing: 30, // spacing beterrn bars
+                    // barPercentage: 0.35, // accepts value between 0 to 1
+                    barThickness: 15 // need to make global
+                }]
+            },
+            size: {
+                height: 364,
+            }
+        },
+        HORIZONTAL_STACKED_BAR: {
+            responsive: true,
+            maintainAspectRatio: false,
+            onResize: function (chart, size) {
+                // This will be called when we resize the chart and can be helpful to calculate the height and width for chart
+            },
+            legend: {
+                display: false
+            },
+            scales: {
+                xAxes: [{
+                    stacked: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Compliance'
+                    },
+                    position: 'top'
+                }],
+                yAxes: [{
+                    stacked: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Campaign'
+                    },
+                    // ticks: {
+                    //     suggestedMin: 0,
+                    //     suggestedMax: 100,
+                    // },
                     // categorySpacing: 30, // spacing beterrn bars
                     // barPercentage: 0.35, // accepts value between 0 to 1
                     barThickness: 15 // need to make global

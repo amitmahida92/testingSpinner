@@ -138,7 +138,7 @@
                 </span>
             </span>
 
-            <div class="chartWrapper1">
+            <div class="chartWrapper1"  ng-hide="vm.campaignSummaryCheck">
                 <div class="chartAreaWrapper1">
                     <div ng-style='{"height":vm.campaignOptions.size.height}' style="width: 100%;">
                         <canvas id="campaign" class="chart-horizontal-bar" chart-data="vm.campaignData.datasets[0].data" chart-options="vm.campaignOptions"
@@ -154,9 +154,27 @@
                     {{vm.userBundle["common.campaign.compliance.nodata"] ? vm.userBundle["common.campaign.compliance.nodata"] : 'No Campaigns
                     Found!'}}
                 </div>
-                
-            </div>            
-        </div>        
+            </div>
+            
+            <div class="chartWrapper1" ng-hide="!vm.campaignSummaryCheck">
+                <div class="chartAreaWrapper1">
+                    <div ng-style='{"height":vm.campaignOptions.size.height}' style="width: 100%;">
+                        <canvas id="campaign" class="chart-horizontal-bar" chart-data="vm.impressionsData.data" chart-options="vm.impressionsOptions"
+                            chart-colors="vm.impressionsData.colors" chart-labels="vm.impressionsData.labels"
+                             chart-click="vm.onCampaignClick"></canvas>
+                    </div>
+                </div>
+                <canvas id="campaignXAxis1" ng-if="vm.campaignData.data.length > 0"></canvas>
+                <div class="verticleAxisLabel" ng-if="vm.campaignData.data.length > 0">
+                    {{vm.campaignYAxisLabel}}
+                </div>
+                <div ng-if="vm.campaignData.data.length == 0" class="no-data-found">
+                    {{vm.userBundle["common.campaign.compliance.nodata"] ? vm.userBundle["common.campaign.compliance.nodata"] : 'No Campaigns
+                    Found!'}}
+                </div>
+
+            </div> 
+        </div>
     </div>
 
     <div class="col s12 m6 chart-container" ng-show="vm.showPlayer" ng-class="{'fullscreen-chart animated zoomIn' : vm.fullscreenFor == 'player', 'hide-chart' : vm.fullscreenFor != 'player' && vm.fullscreenFor != ''}">
