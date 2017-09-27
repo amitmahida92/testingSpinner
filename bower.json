@@ -17,7 +17,8 @@
     "angular-daterangepicker": "^0.2.2",
     "materialize": "^0.97.8",
     "components-font-awesome": "^4.7.0",
-    "angular-materialize": "^0.2.2"
+    "angular-materialize": "^0.2.2",
+    "chart.js": "^2.7.0"
   },
   "appPath": "app",
   "moduleName": "reportingDashboard",

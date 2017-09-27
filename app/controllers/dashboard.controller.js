@@ -462,6 +462,70 @@
         }
 
         /**
+         * @desc It makes server call to get frames for selected campaign, when clicked on impressions. 
+         * @desc It also makes server call for zendesk ticket for non compliant campaigns.
+         * @param {any} points
+         * @param {any} evt
+         * @returns void
+         * @author Nishit
+         */
+        function onImpressionClick(points, evt) {
+            if (points.length > 0 && (vm.campaign.compaliant || vm.campaign.noncompaliant)) { // condition added for CC-115
+
+                $('#compliance-tooltip').hide();
+                var campaign = points[0]['_chart'].config.data.datasets[points[0]['_datasetIndex']] // .data[points[0]['_index']];
+
+                if (campaign.data[points[0]['_index']] == 0) {
+                    return false;
+                }
+
+                vm.selectedCampaign = campaign.id[points[0]['_index']];
+                vm.campaignBar.selectedCampaign = _.cloneDeep(vm.selectedCampaign);
+                vm.campaignBar.brandName = campaign.brandName[points[0]['_index']];
+                vm.campaignBar.advertiserName = campaign.advertiserName[points[0]['_index']];
+
+                vm.selectedDay = '';
+
+                vm.playerData = {};
+                vm.player.compaliant = true;
+                vm.player.noncompaliant = true;
+
+                vm.selectedFrame = '';
+                tempSelectedFrame = '';
+
+                getSummaries();
+                var campaignId = vm.selectedCampaign.split(':')[1];
+                debugger
+                if (campaignId && campaign.failedAudience[points[0]['_index']]) {
+                    var params = {
+                        "id": campaignId,
+                        "startDate": vm.datePicker.date.startDate
+                    };
+                    filterService.getTooltipData(params).then(function (response) {
+                        if (response) {
+                            var campaignData = response.data[campaignId];
+                            if (campaignData && campaignData.length > 0) {
+                                vm.isZendeskTicketAvailable = true;
+                                vm.zendeskTableHeaders = Object.keys(campaignData[0]);
+                                vm.zendeskTableBody = campaignData;
+                            } else {
+                                $('#compliance-tooltip').hide();
+                                vm.isZendeskTicketAvailable = false;
+                            }
+                        } else {
+                            $('#compliance-tooltip').hide();
+                            vm.isZendeskTicketAvailable = false;
+                        }
+                    });
+                } else {
+                    vm.isZendeskTicketAvailable = false;
+                }
+            } else {
+                return false;
+            }
+        }
+
+        /**
          * @desc It makes server call to get frames for selected player.
          * @desc It also makes server call for zendesk ticket for non compliant frames. 
          * @param {any} points 
@@ -1244,7 +1308,6 @@
          * @param {any} toggleOtherCharts 
          */
         function generateChart(type, chartData, toggleOtherCharts) {
-            debugger
             var campaignId = '', campaignData = '';
             switch (type) {
                 case 'campaign':
@@ -1261,11 +1324,10 @@
 
                     vm.impressionsData = {
                         labels: [],
-                        data: [[],[]],
-                        backgroundColor : [[],[]],
-                        colors :[{
+                        data: [[], []],
+                        colors: [{
                             backgroundColor: []
-                        },{
+                        }, {
                             backgroundColor: []
                         }]
                     };
@@ -1276,6 +1338,16 @@
                     vm.campaignDetails = {
                         campaignDetails: []
                     };
+
+                    vm.impressionsDetails = [
+                        {
+                            advertiserName: [],
+                            brandName: [],
+                            id: [],
+                            failedAudience: [],
+                            difference: []
+                        }
+                    ]
 
                     vm.campaignOptions.animation = {
                         onProgress: function (chart) {
@@ -1317,7 +1389,7 @@
                     };
 
                     vm.campaignOptions.size.height = calculateHeightForCampaign(_.clone(configureOptions.HORIZONTAL_BAR.size.height), chartData.length);
-                    vm.impressionsOptions.size.height= _.cloneDeep(vm.campaignOptions.size.height);
+                    vm.impressionsOptions.size.height = _.cloneDeep(vm.campaignOptions.size.height);
 
                     if (chartData.length > 1185) {
                         Materialize.toast("Please decrease the date range to view the graph", TOASTER_TIME_INTERVAL, 'rounded');
@@ -1345,25 +1417,30 @@
                         vm.campaignDetails.campaignDetails.push(obj);
                     });
 
-                    vm.impressionsData.labels = vm.campaignData.labels;
-
+                    // CC-226
                     chartData = _.sortBy(chartData, 'audienceValue').reverse();
 
-                    _.forEach(chartData, function (obj) {
-                        var difference = obj.value - obj.audienceValue;
-                        if (difference > 0) {
-                            vm.impressionsData.colors[0].backgroundColor.push(BLUE_COLOR);
-                            vm.impressionsData.data[0].push(obj.audienceValue);
+                    _.forEach(chartData, function (obj, key) {
+                        vm.impressionsData.labels[key] = obj.label;
+                        obj['difference'] = obj.audienceValue - obj.value;
 
+                        vm.impressionsData.colors[0].backgroundColor.push(BLUE_COLOR);
+                        vm.impressionsData.data[0].push((obj.audienceValue - obj.difference).toFixed(2));
+
+                        if (obj.difference > 0) {
                             vm.impressionsData.colors[1].backgroundColor.push(GREEN_COLOR);
-                            vm.impressionsData.data[1].push(difference.toFixed(2));
+                            vm.impressionsData.data[1].push(obj.difference.toFixed(2));
                         } else {
-                            vm.impressionsData.colors[0].backgroundColor.push(BLUE_COLOR);
-                            vm.impressionsData.data[0].push(obj.audienceValue);
-
                             vm.impressionsData.colors[1].backgroundColor.push(RED_COLOR);
-                            vm.impressionsData.data[1].push((difference * -1).toFixed(2));
+                            vm.impressionsData.data[1].push((obj.difference * -1).toFixed(2));
                         }
+
+                        // for data override
+                        vm.impressionsDetails[0].advertiserName.push(obj.advertiserName);
+                        vm.impressionsDetails[0].brandName.push(obj.brandName);
+                        vm.impressionsDetails[0].id.push(obj.id);
+                        vm.impressionsDetails[0].failedAudience.push(obj.failedAudience);
+                        vm.impressionsDetails[0].difference.push(obj.difference);
                     });
 
                     vm.campaignOptions.tooltips = {
@@ -1806,6 +1883,8 @@
             var index;
             if (!_.isUndefined(vm.selectedCampaign) && !_.isNull(vm.selectedCampaign)) {
                 if (!_.isEmpty(vm.campaignData)) {
+
+                    // below code is needed, when you select another bar need to reset background color for previous bar
                     vm.campaignData.datasets[0].backgroundColor = [];
                     _.forEach(vm.campaignDetails.campaignDetails, function (obj, key) {
                         if (obj.failedAudience) {
@@ -1832,9 +1911,47 @@
                     }
 
                 }
+
+                if (!_.isEmpty(vm.impressionsData)) {
+
+                    // below code is needed, when you select another bar need to reset background color for previous bar
+                    vm.impressionsData.colors = [{
+                        backgroundColor: []
+                    }, {
+                        backgroundColor: []
+                    }]
+                    var allImpressionsData = vm.impressionsDetails[0].id;
+
+                    _.forEach(allImpressionsData, function (data, index) {
+                        debugger
+                        vm.impressionsData.colors[0].backgroundColor[index] = BLUE_COLOR;
+
+                        if (vm.impressionsDetails[0].difference[index] > 0) {
+                            vm.impressionsData.colors[1].backgroundColor[index] = GREEN_COLOR;
+                        }
+                        else {
+                            vm.impressionsData.colors[1].backgroundColor[index] = RED_COLOR;
+                        }
+                    });
+
+                    index = _.findIndex(allImpressionsData, function (o) { return o == vm.selectedCampaign; });
+                    if (index > -1) {
+                        vm.impressionsData.colors[0].backgroundColor[index] = GREEN_COLOR;
+                        vm.impressionsData.colors[1].backgroundColor[index] = GREEN_COLOR;
+                        vm.campaignBar.selectedCampaign = vm.selectedCampaign.split(':')[0];
+                        vm.campaignBar.brandName = vm.impressionsData[0].brandName[index];
+                        vm.campaignBar.advertiserName = vm.impressionsData[0].advertiserName[index];
+                    } else {
+                        vm.campaignBar.selectedCampaign = null;
+                        vm.campaignBar.selectedFrame = null; // when no campaign is selected no frame should be selected
+                        vm.campaignBar.brandName = null;
+                        vm.campaignBar.advertiserName = null;
+                    }
+                }
             }
             if (!_.isUndefined(vm.selectedFrame) && !_.isNull(vm.selectedFrame)) {
                 if (!_.isEmpty(vm.playerData)) {
+                    // below code is needed, when you select another bar need to reset background color for previous bar
                     vm.playerData.datasets[0].backgroundColor = [];
                     _.forEach(vm.playerDetails.playerDetails, function (obj, key) {
                         if (obj.failedAudience) {
@@ -1857,6 +1974,7 @@
             }
             if (!_.isUndefined(vm.selectedDay) && !_.isNull(vm.selectedDay)) {
                 if (!_.isEmpty(vm.dayData)) {
+                    // below code is needed, when you select another bar need to reset background color for previous bar
                     vm.dayData.datasets[0].backgroundColor = [];
                     _.forEach(vm.dayDetails.dayDetails, function (obj, key) {
                         if (obj.failedAudience) {
@@ -1983,6 +2101,7 @@
         vm.onChannelClick = onChannelClick;
         vm.compliantcheck = compliantcheck;
         vm.onCampaignClick = onCampaignClick;
+        vm.onImpressionClick = onImpressionClick;
         vm.onPlayerClick = onPlayerClick;
         vm.onDayClick = onDayClick;
         vm.loadmarketingNames = loadmarketingNames;

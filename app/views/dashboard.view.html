@@ -161,7 +161,7 @@
                     <div ng-style='{"height":vm.campaignOptions.size.height}' style="width: 100%;">
                         <canvas id="campaign" class="chart-horizontal-bar" chart-data="vm.impressionsData.data" chart-options="vm.impressionsOptions"
                             chart-colors="vm.impressionsData.colors" chart-labels="vm.impressionsData.labels"
-                             chart-click="vm.onCampaignClick"></canvas>
+                              chart-dataset-override="vm.impressionsDetails" chart-click="vm.onImpressionClick"></canvas>
                     </div>
                 </div>
                 <canvas id="campaignXAxis1" ng-if="vm.campaignData.data.length > 0"></canvas>
