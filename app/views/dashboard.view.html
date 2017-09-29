@@ -129,7 +129,7 @@
                 data-delay="75"> 
                     <i class="material-icons blue-text">info_outline</i>
                 </a>
-                <span class="right">
+            <span class="right">
                     <input type="checkbox" class="filled-in" id="campaign_compaliant" ng-click="vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign')" ng-model="vm.campaign.compaliant" />
                     <label for="campaign_compaliant">Compliant ({{vm.campaign.compliantCount}})</label>
                     <input type="checkbox" class="filled-in" id="campaign_non_compaliant" ng-model="vm.campaign.noncompaliant" ng-click="vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign')" />
@@ -138,7 +138,7 @@
                 </span>
             </span>
 
-            <div class="chartWrapper1"  ng-hide="vm.campaignSummaryCheck">
+            <div class="chartWrapper1" ng-hide="vm.campaignSummaryCheck">
                 <div class="chartAreaWrapper1">
                     <div ng-style='{"height":vm.campaignOptions.size.height}' style="width: 100%;">
                         <canvas id="campaign" class="chart-horizontal-bar" chart-data="vm.campaignData.datasets[0].data" chart-options="vm.campaignOptions"
@@ -155,13 +155,13 @@
                     Found!'}}
                 </div>
             </div>
-            
+
             <div class="chartWrapper1" ng-hide="!vm.campaignSummaryCheck">
                 <div class="chartAreaWrapper1">
                     <div ng-style='{"height":vm.campaignOptions.size.height}' style="width: 100%;">
                         <canvas id="campaign" class="chart-horizontal-bar" chart-data="vm.impressionsData.data" chart-options="vm.impressionsOptions"
-                            chart-colors="vm.impressionsData.colors" chart-labels="vm.impressionsData.labels"
-                              chart-dataset-override="vm.impressionsDetails" chart-click="vm.onImpressionClick"></canvas>
+                            chart-colors="vm.impressionsData.colors" chart-labels="vm.impressionsData.labels" chart-dataset-override="vm.impressionsDetails"
+                            chart-click="vm.onImpressionClick"></canvas>
                     </div>
                 </div>
                 <canvas id="campaignXAxis1" ng-if="vm.campaignData.data.length > 0"></canvas>
@@ -173,7 +173,7 @@
                     Found!'}}
                 </div>
 
-            </div> 
+            </div>
         </div>
     </div>
 
@@ -210,7 +210,7 @@
                 <div class="horizontalAxisLabel" ng-if="vm.playerData.datasets[0].data.length > 0">
                     {{vm.playerXAxisLabel}}
                 </div>
-            </div>            
+            </div>
         </div>
 
         <div class="compliance-tooltip tooltip_custom" id="player-tooltip">
@@ -250,9 +250,8 @@
             <div class="chartWrapper">
                 <div class="chartAreaWrapperForDay">
                     <div ng-style="{'width': vm.dayChartWidth}" style="height: 150px;">
-                        <canvas id="day" class="chart chart-bar" chart-data="vm.dayData.datasets[0].data" chart-options="vm.dayOptions" 
-                        chart-colors="vm.dayData.datasets[0].backgroundColor"chart-labels="vm.dayData.labels" 
-                        chart-click="vm.onDayClick" chart-dataset-override="vm.dayDetails"></canvas>
+                        <canvas id="day" class="chart chart-bar" chart-data="vm.dayData.datasets[0].data" chart-options="vm.dayOptions" chart-colors="vm.dayData.datasets[0].backgroundColor"
+                            chart-labels="vm.dayData.labels" chart-click="vm.onDayClick" chart-dataset-override="vm.dayDetails"></canvas>
                     </div>
                 </div>
                 <canvas id="dayAxis" ng-if="vm.dayData.datasets[0].data.length > 0"></canvas>
@@ -267,12 +266,12 @@
         <div class="card">
             <span class="card-title">                
 				<span>{{vm.userBundle["popboard.impressions.time.heading"]}}</span>
-            
-                <a id="impressionstimetooltip" class="btn-floating btn-flat blue-text
+
+            <a id="impressionstimetooltip" class="btn-floating btn-flat blue-text
                     btn_popover" data-html="true" data-position="left" data-delay="75"> 
                     <i class="material-icons blue-text">info_outline</i>
                 </a>
-                <span class="right">
+            <span class="right">
                     <input type="checkbox" class="filled-in" id="hour_compaliant" ng-model="vm.hour.compaliant"  ng-click="vm.compliantcheck(vm.hour.compaliant, vm.hour.noncompaliant, 'hour')"  />
                     <label for="hour_compaliant">Compliant ({{vm.hour.noncompliantCount}})</label> &nbsp;&nbsp;
                     <input type="checkbox" class="filled-in" id="hour_non_compaliant" ng-model="vm.hour.noncompaliant" ng-click="vm.compliantcheck(vm.hour.compaliant, vm.hour.noncompaliant, 'hour')" />
@@ -307,9 +306,10 @@
                         <div class="nav-wrapper">
                             <ul class="right hide-on-med-and-down">
                                 <li><a data-target='demoModal' modal ng-disabled="!vm.isZendeskTicketAvailable" class="waves-effect waves-light btn">Support Ticket<i class="material-icons right">help_outline</i></a></li>
-                                <li><a ng-disabled="!vm.campaignBar.selectedCampaign" target="_blank" href="{{vm.ccpLink}}{{vm.campaignBar.selectedCampaign}}"
-                                        class="waves-effect waves-light btn">Campaign Portal<i class="material-icons right">present_to_all</i></a></li>
-                                <li><a href="#" class="waves-effect waves-light btn"><i class="material-icons right">important_devices</i>SmartContent</a></li>
+                                <li><a ng-disabled="!vm.campaignBar.selectedCampaign" class="waves-effect waves-light btn" target="_blank"
+                                        href="{{vm.ccpLink}}{{vm.campaignBar.selectedCampaign}}">Campaign Portal
+                                        <i class="material-icons right">present_to_all</i></a></li>
+                                <li><a href="{{vm.smartContentURL}}" target="_blank" class="waves-effect waves-light btn" ng-disabled="vm.selectedCampaign == ''"><i class="material-icons right">important_devices</i>SmartContent</a></li>
                             </ul>
                         </div>
                     </nav>

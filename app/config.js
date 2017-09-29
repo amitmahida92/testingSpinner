@@ -7,6 +7,7 @@ var COMPLAINCE_PERCENTAGE = 90;
 var RED_COLOR = "#F44336";
 var BLUE_COLOR = "#0d65b6";
 var GREEN_COLOR = "#9be52a";
+var DARK_GREEN_COLOR = "#008000";
 var SERVICE_BASE_URL = 'http://campaign-compliance.dev.aws.jcdecaux.co.uk:8190/';
 var INITIAL_CONFIG_URL =  false ? 'Service/popboard/config' : 'data/config.json'; //  'config';
 var INITIAL_CONFIG_URL_BOS = '../../Service/popboard/config'; // 'http://172.16.3.241:8082/Service/popboard/';
@@ -16,4 +17,6 @@ var CHART_HOVER_TOOLTIP = DEBUG ? 'data/hover_tooltip.json' : '../../Service/pop
 
 var HTTP_METHOD = DEBUG ? "GET" : "POST";
 var CONFIG_URL = SERVICE_BASE_URL + (DEBUG ? INITIAL_CONFIG_URL : INITIAL_CONFIG_URL_BOS);
-var frontEndVersion = "1.0.1.31 campaign compliance";
+var frontEndVersion = "1.0.1.32 campaign compliance";
+// smart content sample url
+// http://smartcontent.jdecaux.com/api/v2/smartbrics/sm_1234532/reporting

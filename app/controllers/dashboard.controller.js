@@ -34,6 +34,7 @@
         vm.spanSummary = [];
         vm.cachedSpanSummary = [];
         var resolutionCounter = 0;
+        vm.smartContentURL = ''; // url for smart content
 
         // External link to ccp
         vm.ccpLink = CCP_LINK;
@@ -175,14 +176,12 @@
         // Configuration for DateRangePicker
 
         vm.datePickerOptions = DateRangePicker;
-
         vm.datePicker = {
             date: {
                 startDate: moment.Today,
                 endDate: moment.Today
             }
         };
-
         /**
          * @desc This function filters campaigns with respect to business areas.
          * @param {any} channelid 
@@ -431,6 +430,7 @@
 
                 getSummaries();
                 var campaignId = vm.selectedCampaign.split(':')[1];
+                vm.smartContentURL = 'https://smartcontent.jcdecaux.com/api/v2/smartbrics/' + campaignId + '/reporting';
 
                 if (campaignId && campaign.failedAudience) {
                     var params = {
@@ -495,7 +495,7 @@
 
                 getSummaries();
                 var campaignId = vm.selectedCampaign.split(':')[1];
-                debugger
+                vm.smartContentURL = 'https://smartcontent.jcdecaux.com/api/v2/smartbrics/' + campaignId + '/reporting';
                 if (campaignId && campaign.failedAudience[points[0]['_index']]) {
                     var params = {
                         "id": campaignId,
@@ -1151,6 +1151,8 @@
                     vm.channelSummaryByAudience = _.cloneDeep(vm.chachedChannelSummaryByAudience);
                     vm.channelSummaryByImpression = _.cloneDeep(vm.chachedChannelSummaryByImpression);
                     applyParallelFilters();
+                    vm.campaignSummary = _.cloneDeep(vm.cachedCampaignSummary);
+                    vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign', true);
                 }
                 return false;
             }
@@ -1256,10 +1258,11 @@
                     COMPLAINCE_PERCENTAGE = vm.configData.complainceLevel;
                 }
 
+                var oneWeekAgo = new Date();
                 vm.datePicker = {
                     date: {
-                        startDate: vm.configData.defaultStartDate,
-                        endDate: vm.configData.defaultEndDate
+                        startDate: moment(new Date(oneWeekAgo.setDate(oneWeekAgo.getDate() -1))).format(DATE_FORMAT),
+                        endDate: moment(new Date(oneWeekAgo.setDate(oneWeekAgo.getDate() -5))).format(DATE_FORMAT)
                     }
                 };
 
@@ -1428,7 +1431,7 @@
                         vm.impressionsData.data[0].push((obj.audienceValue - obj.difference).toFixed(2));
 
                         if (obj.difference > 0) {
-                            vm.impressionsData.colors[1].backgroundColor.push(GREEN_COLOR);
+                            vm.impressionsData.colors[1].backgroundColor.push(DARK_GREEN_COLOR);
                             vm.impressionsData.data[1].push(obj.difference.toFixed(2));
                         } else {
                             vm.impressionsData.colors[1].backgroundColor.push(RED_COLOR);
@@ -1923,11 +1926,10 @@
                     var allImpressionsData = vm.impressionsDetails[0].id;
 
                     _.forEach(allImpressionsData, function (data, index) {
-                        debugger
                         vm.impressionsData.colors[0].backgroundColor[index] = BLUE_COLOR;
 
                         if (vm.impressionsDetails[0].difference[index] > 0) {
-                            vm.impressionsData.colors[1].backgroundColor[index] = GREEN_COLOR;
+                            vm.impressionsData.colors[1].backgroundColor[index] = DARK_GREEN_COLOR;
                         }
                         else {
                             vm.impressionsData.colors[1].backgroundColor[index] = RED_COLOR;
