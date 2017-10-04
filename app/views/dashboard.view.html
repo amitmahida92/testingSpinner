@@ -34,7 +34,7 @@
             <div class="row no-margin input-row">
                 <div class=" col s12 m2">
                     <label for="">{{vm.userBundle['common.dateRange']}}</label>
-                    <!--<input placeholder="Select date range" id="first_name" type="text" class=" no-margin">-->
+                    <!--<input placeholder="Select date range" id="first_name" type="text" class=" no-margin">-->                    
                     <input date-range-picker id="dateRange" class="no-margin" type="text" placeholder="Select Date Range" ng-model="vm.datePicker.date"
                         options="vm.datePickerOptions" ng-change="vm.dateChanged()" />
                     <i class="material-icons inputicon">date_range</i>

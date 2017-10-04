@@ -40,8 +40,7 @@
         vm.ccpLink = CCP_LINK;
 
         vm.frontEndVersion = frontEndVersion;
-        vm.DASHBOARD_TYPES = [
-            {
+        vm.DASHBOARD_TYPES = [{
                 id: 1,
                 name: "Frame Dashboard",
                 image: 'logo0.png',
@@ -55,8 +54,7 @@
             }
         ];
 
-        vm.graphOptions = [
-            {
+        vm.graphOptions = [{
                 id: 1,
                 name: "Frame",
             },
@@ -652,9 +650,13 @@
             checkAllcheckBoxes();
             setTimeout(function () {
                 if (arr === "selectedMarketingNames") {
-                    $("#" + arr + " li").filter(function () { return $.text([this]) === vm[arr][index].marketingName; }).trigger('click');
+                    $("#" + arr + " li").filter(function () {
+                        return $.text([this]) === vm[arr][index].marketingName;
+                    }).trigger('click');
                 } else {
-                    $("#" + arr + " li").filter(function () { return $.text([this]) === vm[arr][index].organisationName; }).trigger('click');
+                    $("#" + arr + " li").filter(function () {
+                        return $.text([this]) === vm[arr][index].organisationName;
+                    }).trigger('click');
                 }
                 vm.searchCampaignRef();
                 $("body").trigger('click');
@@ -775,7 +777,11 @@
                 }
                 if (key == 'campaignSummary') {
                     vm.channelSummaryByAudience = _.map(vm.channelSummaryByAudience, function (obj) {
-                        return ((vm.selectedChannel.indexOf(obj.id) === -1) ? angular.extend(obj, { guageColors: vm.defaultGuageColors }) : angular.extend(obj, { guageColors: vm.selectedGuageColors }));
+                        return ((vm.selectedChannel.indexOf(obj.id) === -1) ? angular.extend(obj, {
+                            guageColors: vm.defaultGuageColors
+                        }) : angular.extend(obj, {
+                            guageColors: vm.selectedGuageColors
+                        }));
                     });
                     if (vm.selectedSpecialists.length > 0 || vm.selectedMarketingNames.length > 0) {
                         resetCharts();
@@ -927,7 +933,11 @@
                 }
                 if (key == 'campaignSummary') {
                     vm.channelSummaryByAudience = _.map(vm.channelSummaryByAudience, function (obj) {
-                        return ((vm.selectedChannel.indexOf(obj.id) === -1) ? angular.extend(obj, { guageColors: vm.defaultGuageColors }) : angular.extend(obj, { guageColors: vm.selectedGuageColors }));
+                        return ((vm.selectedChannel.indexOf(obj.id) === -1) ? angular.extend(obj, {
+                            guageColors: vm.defaultGuageColors
+                        }) : angular.extend(obj, {
+                            guageColors: vm.selectedGuageColors
+                        }));
                     });
                     if (vm.selectedMarketingNames && vm.selectedMarketingNames.length > 0) {
                         vm.selectedMarketingNames.forEach(function (element) {
@@ -1024,7 +1034,8 @@
 
                 if (totalCampaigns[inelement.id]) {
                     totalCampaignsForBusinessArea = totalCampaigns[inelement.id];
-                    var sumOfActual = 0, sumOfTarget = 0;
+                    var sumOfActual = 0,
+                        sumOfTarget = 0;
 
                     if (totalCampaignsForBusinessArea.length > 0) {
                         for (var index2 = 0; index2 < totalCampaignsForBusinessArea.length; index2++) {
@@ -1263,11 +1274,11 @@
                     COMPLAINCE_PERCENTAGE = vm.configData.complainceLevel;
                 }
 
-                var oneWeekAgo = new Date();
+                var oneWeekAgo = new Date(new Date().setDate(new Date().getDate() - 6));                
                 vm.datePicker = {
                     date: {
-                        endDate: moment(new Date(oneWeekAgo.setDate(oneWeekAgo.getDate() -1))).format(DATE_FORMAT),
-                        startDate: moment(new Date(oneWeekAgo.setDate(oneWeekAgo.getDate() -6))).format(DATE_FORMAT)
+                        startDate: moment(oneWeekAgo).format(DATE_FORMAT),
+                        endDate: moment(new Date()).format(DATE_FORMAT)
                     }
                 };
 
@@ -1280,7 +1291,9 @@
                 }
 
                 if (vm.configData.marketingNames) {
-                    vm.marketingNames = _.sortBy(vm.configData.marketingNames, [function (o) { return o.marketingName; }]);
+                    vm.marketingNames = _.sortBy(vm.configData.marketingNames, [function (o) {
+                        return o.marketingName;
+                    }]);
                 }
 
 
@@ -1316,7 +1329,8 @@
          * @param {any} toggleOtherCharts 
          */
         function generateChart(type, chartData, toggleOtherCharts) {
-            var campaignId = '', campaignData = '';
+            var campaignId = '',
+                campaignData = '';
             switch (type) {
                 case 'campaign':
                     vm.campaignData = {
@@ -1332,7 +1346,10 @@
 
                     vm.impressionsData = {
                         labels: [],
-                        data: [[], []],
+                        data: [
+                            [],
+                            []
+                        ],
                         colors: [{
                             backgroundColor: []
                         }, {
@@ -1347,15 +1364,13 @@
                         campaignDetails: []
                     };
 
-                    vm.impressionsDetails = [
-                        {
-                            advertiserName: [],
-                            brandName: [],
-                            id: [],
-                            failedAudience: [],
-                            difference: []
-                        }
-                    ]
+                    vm.impressionsDetails = [{
+                        advertiserName: [],
+                        brandName: [],
+                        id: [],
+                        failedAudience: [],
+                        difference: []
+                    }]
 
                     vm.campaignOptions.animation = {
                         onProgress: function (chart) {
@@ -1638,8 +1653,7 @@
                         if (obj.failedAudience) {
                             vm.hourData.datasets[0].backgroundColor.push(RED_COLOR);
                             ++vm.hour.compliantCount;
-                        }
-                        else {
+                        } else {
                             vm.hourData.datasets[0].backgroundColor.push(BLUE_COLOR);
                             if (!angular.isUndefined(obj.failedAudience))
                                 ++vm.hour.noncompliantCount;
@@ -1674,8 +1688,6 @@
             } else if (vm.selectedChannel.length > 0) {
                 applyFilterOn(vm.selectedChannel, 'campaignSummary');
             }
-
-
         }
 
         /**
@@ -1723,7 +1735,11 @@
                         vm.channelSummaryByImpression = data.channelSummaryByImpression;
 
                         vm.channelSummaryByAudience = _.map(vm.channelSummaryByAudience, function (obj) {
-                            return ((vm.selectedChannel.indexOf(obj.id) === -1) ? angular.extend(obj, { guageColors: vm.defaultGuageColors }) : angular.extend(obj, { guageColors: vm.selectedGuageColors }));
+                            return ((vm.selectedChannel.indexOf(obj.id) === -1) ? angular.extend(obj, {
+                                guageColors: vm.defaultGuageColors
+                            }) : angular.extend(obj, {
+                                guageColors: vm.selectedGuageColors
+                            }));
                         });
 
                         vm.channelSummaryByImpression = _.map(vm.channelSummaryByImpression, function (obj) {
@@ -1739,7 +1755,9 @@
                                 percentageDisplay: percentage,
                                 percentage: (percentage > 100 ? 100 : percentage),
                             };
-                            return (angular.extend(obj, { guageColors: vm.impressionGaugeColors }, moreData));
+                            return (angular.extend(obj, {
+                                guageColors: vm.impressionGaugeColors
+                            }, moreData));
                         });
 
                         vm.chachedChannelSummaryByAudience = _.cloneDeep(vm.channelSummaryByAudience);
@@ -1774,8 +1792,7 @@
                             generateChart('player', vm.frameSummary, true);
 
                             vm.showPlayer = true;
-                        }
-                        else {
+                        } else {
                             vm.playerData = {};
                             vm.showPlayer = false;
                         }
@@ -1792,8 +1809,7 @@
                             generateChart('day', vm.daySummary, true);
 
                             vm.showDay = true;
-                        }
-                        else {
+                        } else {
                             vm.dayData = {};
                             vm.showDay = false;
                         }
@@ -1810,8 +1826,7 @@
                             });
                             generateChart('hour', vm.spanSummary, true);
                             vm.showHour = true;
-                        }
-                        else {
+                        } else {
                             vm.hourData = {};
                             vm.showHour = false;
                         }
@@ -1903,14 +1918,15 @@
                         if (obj.failedAudience) {
                             vm.campaignData.datasets[0].compliantcheck.push(false);
                             vm.campaignData.datasets[0].backgroundColor.push(RED_COLOR);
-                        }
-                        else {
+                        } else {
                             vm.campaignData.datasets[0].backgroundColor.push(BLUE_COLOR);
                             vm.campaignData.datasets[0].compliantcheck.push(true);
                         }
                     });
 
-                    index = _.findIndex(vm.campaignDetails.campaignDetails, function (o) { return o.id == vm.selectedCampaign; });
+                    index = _.findIndex(vm.campaignDetails.campaignDetails, function (o) {
+                        return o.id == vm.selectedCampaign;
+                    });
                     if (index > -1) {
                         vm.campaignData.datasets[0].backgroundColor[index] = GREEN_COLOR;
                         vm.campaignBar.selectedCampaign = vm.selectedCampaign.split(':')[0];
@@ -1940,13 +1956,14 @@
 
                         if (vm.impressionsDetails[0].difference[index] > 0) {
                             vm.impressionsData.colors[1].backgroundColor[index] = DARK_GREEN_COLOR;
-                        }
-                        else {
+                        } else {
                             vm.impressionsData.colors[1].backgroundColor[index] = RED_COLOR;
                         }
                     });
 
-                    index = _.findIndex(allImpressionsData, function (o) { return o == vm.selectedCampaign; });
+                    index = _.findIndex(allImpressionsData, function (o) {
+                        return o == vm.selectedCampaign;
+                    });
                     if (index > -1) {
                         vm.impressionsData.colors[0].backgroundColor[index] = GREEN_COLOR;
                         vm.impressionsData.colors[1].backgroundColor[index] = GREEN_COLOR;
@@ -1974,7 +1991,9 @@
                             vm.playerData.datasets[0].compliantcheck.push(true);
                         }
                     });
-                    index = _.findIndex(vm.playerDetails.playerDetails, function (o) { return o.id == vm.selectedFrame; });
+                    index = _.findIndex(vm.playerDetails.playerDetails, function (o) {
+                        return o.id == vm.selectedFrame;
+                    });
                     if (index > -1) {
                         vm.playerData.datasets[0].backgroundColor[index] = GREEN_COLOR;
                         vm.campaignBar.selectedFrame = vm.selectedFrame;
@@ -1995,7 +2014,9 @@
                             vm.dayData.datasets[0].backgroundColor.push(BLUE_COLOR);
                         }
                     });
-                    index = _.findIndex(vm.dayDetails.dayDetails, function (o) { return o.id == vm.selectedDay; });
+                    index = _.findIndex(vm.dayDetails.dayDetails, function (o) {
+                        return o.id == vm.selectedDay;
+                    });
                     if (index > -1)
                         vm.dayData.datasets[0].backgroundColor[index] = GREEN_COLOR;
                 }
