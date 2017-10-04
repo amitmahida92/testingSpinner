@@ -7,9 +7,9 @@
 
     /**
      * 
-     * @param {any} filterService 
-     * @param {any} configureOptions 
-     * @param {any} Webworker 
+     * @param {any} filterService
+     * @param {any} configureOptions
+     * @param {any} Webworker
      */
     function DashboardCtrl(filterService, configureOptions, Webworker) {
         var vm = this;
@@ -656,6 +656,7 @@
                 } else {
                     $("#" + arr + " li").filter(function () { return $.text([this]) === vm[arr][index].organisationName; }).trigger('click');
                 }
+                vm.searchCampaignRef();
                 $("body").trigger('click');
             }.bind(this), 0);
         }
@@ -983,9 +984,11 @@
                 }
             }
 
-            if (vm.searchCampaign != '') {
-                vm.searchCampaignRef();
-            }
+            //commenting it as it goes in loop
+            // if (vm.searchCampaign != '') {
+            //     vm.searchCampaignRef();
+            // }
+
             refreshCharts();
             return filteredSummary;
         }
@@ -1130,6 +1133,7 @@
                 });
 
                 if (substringArray.indexOf(true) > -1) {
+                    vm.campaignSummary = vm.cachedCampaignSummary.length > 0 ? _.cloneDeep(vm.cachedCampaignSummary) : _.cloneDeep(vm.campaignSummary);
                     var data = vm.campaignSummary.filter(function (obj) {
                         return obj.id.indexOf(vm.searchCampaign.toUpperCase()) > -1;
                     });
@@ -1147,13 +1151,14 @@
                     console.log('Please enter valid campaign Reference');
                 }
             } else {
-                if (vm.searchCampaign.trim().length == 0) {
+                // removed for CC-281
+               // if (vm.searchCampaign.trim().length == 0) {
                     vm.channelSummaryByAudience = _.cloneDeep(vm.chachedChannelSummaryByAudience);
                     vm.channelSummaryByImpression = _.cloneDeep(vm.chachedChannelSummaryByImpression);
                     applyParallelFilters();
                     vm.campaignSummary = _.cloneDeep(vm.cachedCampaignSummary);
                     vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign', true);
-                }
+                //}
                 return false;
             }
         }
@@ -1421,19 +1426,23 @@
                     });
 
                     // CC-226
-                    chartData = _.sortBy(chartData, 'audienceValue').reverse();
+                    chartData = _.sortBy(chartData, 'value').reverse();
 
-                    _.forEach(chartData, function (obj, key) {
-                        vm.impressionsData.labels[key] = obj.label;
-                        obj['difference'] = obj.audienceValue - obj.value;
+                    _.forEach(chartData, function (obj) {
+                        vm.impressionsData.labels.push(obj.label)
+                        obj['difference'] = obj.value - obj.audienceValue;
 
                         vm.impressionsData.colors[0].backgroundColor.push(BLUE_COLOR);
-                        vm.impressionsData.data[0].push((obj.audienceValue - obj.difference).toFixed(2));
+                        if (obj.audienceValue == 0) {
+                            vm.impressionsData.data[0].push((obj.audienceValue).toFixed(2));
+                        }
 
                         if (obj.difference > 0) {
+                            vm.impressionsData.data[0].push((obj.audienceValue + obj.difference).toFixed(2));
                             vm.impressionsData.colors[1].backgroundColor.push(DARK_GREEN_COLOR);
                             vm.impressionsData.data[1].push(obj.difference.toFixed(2));
                         } else {
+                            vm.impressionsData.data[0].push((obj.audienceValue + obj.difference).toFixed(2));
                             vm.impressionsData.colors[1].backgroundColor.push(RED_COLOR);
                             vm.impressionsData.data[1].push((obj.difference * -1).toFixed(2));
                         }
@@ -1941,8 +1950,8 @@
                         vm.impressionsData.colors[0].backgroundColor[index] = GREEN_COLOR;
                         vm.impressionsData.colors[1].backgroundColor[index] = GREEN_COLOR;
                         vm.campaignBar.selectedCampaign = vm.selectedCampaign.split(':')[0];
-                        vm.campaignBar.brandName = vm.impressionsData[0].brandName[index];
-                        vm.campaignBar.advertiserName = vm.impressionsData[0].advertiserName[index];
+                        vm.campaignBar.brandName = vm.impressionsDetails[0].brandName[index];
+                        vm.campaignBar.advertiserName = vm.impressionsDetails[0].advertiserName[index];
                     } else {
                         vm.campaignBar.selectedCampaign = null;
                         vm.campaignBar.selectedFrame = null; // when no campaign is selected no frame should be selected
@@ -2068,11 +2077,11 @@
          */
         function calculateWidthForPlayer(totalRecords) {
             if (totalRecords <= 4) {
-                return totalRecords * 320;
+                return totalRecords * 300;
             } else if (totalRecords <= 10) {
-                return totalRecords * 150;
+                return totalRecords * 120;
             } else {
-                return totalRecords * 80;
+                return totalRecords * 60;
             }
         }
 
