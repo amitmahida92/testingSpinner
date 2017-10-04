@@ -1266,8 +1266,8 @@
                 var oneWeekAgo = new Date();
                 vm.datePicker = {
                     date: {
-                        startDate: moment(new Date(oneWeekAgo.setDate(oneWeekAgo.getDate() -1))).format(DATE_FORMAT),
-                        endDate: moment(new Date(oneWeekAgo.setDate(oneWeekAgo.getDate() -5))).format(DATE_FORMAT)
+                        endDate: moment(new Date(oneWeekAgo.setDate(oneWeekAgo.getDate() -1))).format(DATE_FORMAT),
+                        startDate: moment(new Date(oneWeekAgo.setDate(oneWeekAgo.getDate() -6))).format(DATE_FORMAT)
                     }
                 };
 
@@ -1688,6 +1688,7 @@
             var requestParameter = {};
 
             if (vm.datePicker.date) {
+                debugger
                 requestParameter.startDate = vm.filterObject.startDate;
                 requestParameter.endDate = vm.filterObject.endDate;
             }
