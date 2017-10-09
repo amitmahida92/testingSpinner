@@ -8,6 +8,7 @@
         'ngWebworker',
         'angular-loading-bar',
         'daterangepicker',
-        'ui.materialize'
+        'ui.materialize',
+        'angular-linq'
     ]);
 })();

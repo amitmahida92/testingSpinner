@@ -3,7 +3,7 @@
 
     angular.module('reportingDashboard').controller('DashboardCtrl', DashboardCtrl);
 
-    DashboardCtrl.$inject = ['filterService', 'configureOptions', 'Webworker'];
+    DashboardCtrl.$inject = ['filterService', 'configureOptions', 'Webworker', '$linq'];
 
     /**
      * 
@@ -11,7 +11,7 @@
      * @param {any} configureOptions
      * @param {any} Webworker
      */
-    function DashboardCtrl(filterService, configureOptions, Webworker) {
+    function DashboardCtrl(filterService, configureOptions, Webworker, $linq) {
         var vm = this;
 
         vm.fullscreenFor = '';
@@ -737,7 +737,7 @@
                     }
                 }
                 if (key == 'marketingName') {
-                    if ((vm.selectedSpecialists && vm.selectedSpecialists.length > 0) || vm.selectedChannel.length > 0) {
+                    if (vm.selectedSpecialists.length > 0 || vm.selectedChannel.length > 0) {
                         if (vm.selectedSpecialists.length > 0) {
                             vm.selectedSpecialists.forEach(function (element) {
                                 summaryToFilter.forEach(function (inElement) {
@@ -767,11 +767,16 @@
                         innerFilteredCampaigns = [];
                     } else {
                         data.forEach(function (element) {
-                            vm.cachedCampaignSummary.forEach(function (inElement) {
-                                if (element.marketingNameId === parseInt(inElement.marketingNameCode)) {
-                                    filteredSummary.push(inElement);
-                                }
-                            }, this);
+                            filteredSummary = $linq.Enumerable().From(vm.cachedCampaignSummary).Where(function (x) {
+                                return element.marketingNameId === parseInt(x.marketingNameCode);
+                            }).Select(function (x) {
+                                return x;
+                            }).ToArray();
+                            // vm.cachedCampaignSummary.forEach(function (inElement) {
+                            //     if (element.marketingNameId === parseInt(inElement.marketingNameCode)) {
+                            //         filteredSummary.push(inElement);
+                            //     }
+                            // }, this);
                         });
                     }
                 }
@@ -1163,12 +1168,12 @@
                 }
             } else {
                 // removed for CC-281
-               // if (vm.searchCampaign.trim().length == 0) {
-                    vm.channelSummaryByAudience = _.cloneDeep(vm.chachedChannelSummaryByAudience);
-                    vm.channelSummaryByImpression = _.cloneDeep(vm.chachedChannelSummaryByImpression);
-                    applyParallelFilters();
-                    vm.campaignSummary = _.cloneDeep(vm.cachedCampaignSummary);
-                    vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign', true);
+                // if (vm.searchCampaign.trim().length == 0) {
+                vm.channelSummaryByAudience = _.cloneDeep(vm.chachedChannelSummaryByAudience);
+                vm.channelSummaryByImpression = _.cloneDeep(vm.chachedChannelSummaryByImpression);
+                applyParallelFilters();
+                vm.campaignSummary = _.cloneDeep(vm.cachedCampaignSummary);
+                vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign', true);
                 //}
                 return false;
             }
@@ -1274,7 +1279,7 @@
                     COMPLAINCE_PERCENTAGE = vm.configData.complainceLevel;
                 }
 
-                var oneWeekAgo = new Date(new Date().setDate(new Date().getDate() - 6));                
+                var oneWeekAgo = new Date(new Date().setDate(new Date().getDate() - 6));
                 vm.datePicker = {
                     date: {
                         startDate: moment(oneWeekAgo).format(DATE_FORMAT),
@@ -1700,7 +1705,6 @@
             var requestParameter = {};
 
             if (vm.datePicker.date) {
-                debugger
                 requestParameter.startDate = vm.filterObject.startDate;
                 requestParameter.endDate = vm.filterObject.endDate;
             }
