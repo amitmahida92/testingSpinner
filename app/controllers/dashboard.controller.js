@@ -658,7 +658,7 @@
                         return $.text([this]) === vm[arr][index].organisationName;
                     }).trigger('click');
                 }
-                vm.searchCampaignRef();
+                // vm.searchCampaignRef();
                 $("body").trigger('click');
             }.bind(this), 0);
         }
@@ -727,6 +727,7 @@
                         filteredSummary = _.cloneDeep(innerFilteredCampaigns);
                         innerFilteredCampaigns = [];
                     } else {
+
                         data.forEach(function (element) {
                             vm.cachedCampaignSummary.forEach(function (inElement) {
                                 if (element.organisationId == inElement.specialistCode) {
@@ -734,6 +735,12 @@
                                 }
                             }, this);
                         });
+                        filteredSummary = _.uniqBy(filteredSummary, function (e) {
+                            return e.id;
+                        });
+                        if (vm.selectedChannel.length == 0) {
+                            filterSummaries(filteredSummary);
+                        }
                     }
                 }
                 if (key == 'marketingName') {
@@ -999,10 +1006,9 @@
                 }
             }
 
-            //commenting it as it goes in loop
-            // if (vm.searchCampaign != '') {
-            //     vm.searchCampaignRef();
-            // }
+            if (vm.searchCampaign != '') {
+                vm.searchCampaignRef();
+            }
 
             refreshCharts();
             return filteredSummary;
