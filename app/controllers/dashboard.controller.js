@@ -473,9 +473,10 @@
                 $('#compliance-tooltip').hide();
                 var campaign = points[0]['_chart'].config.data.datasets[points[0]['_datasetIndex']] // .data[points[0]['_index']];
 
-                if (campaign.data[points[0]['_index']] == 0) {
-                    return false;
-                }
+                // Amit : CC-308 : In Audience Summary graph, If colemete bar color is green then user can't click on that.
+                // if (campaign.data[points[0]['_index']] == 0) {
+                //     return false;
+                // }
 
                 vm.selectedCampaign = campaign.id[points[0]['_index']];
                 vm.campaignBar.selectedCampaign = _.cloneDeep(vm.selectedCampaign);
@@ -493,7 +494,7 @@
 
                 getSummaries();
                 var campaignId = vm.selectedCampaign.split(':')[1];
-                vm.smartContentURL = 'https://smartcontent.jcdecaux.com/api/v2/smartbrics/' + campaignId + '/reporting';
+                vm.smartContentURL = SMART_CONTENT_LINK + campaignId + '/reporting';
                 if (campaignId && campaign.failedAudience[points[0]['_index']]) {
                     var params = {
                         "id": campaignId,
@@ -1542,7 +1543,7 @@
                         onComplete: function (chart) {
                             var sourceCanvas = this.chart.ctx.canvas;
                             var copyHeight = sourceCanvas.height;
-                            var copyWidth = this.scales['y-axis-0'].width;
+                            var copyWidth = this.scales['y-axis-0'].width + 5;
                             var targetCtx = document.getElementById("playerAxis").getContext("2d");
                             targetCtx.canvas.width = copyWidth;
                             targetCtx.canvas.style.height = sourceCanvas.offsetHeight + 'px';
@@ -1553,7 +1554,7 @@
                         onProgress: function (chart) {
                             var sourceCanvas = this.chart.ctx.canvas;
                             var copyHeight = sourceCanvas.height;
-                            var copyWidth = this.scales['y-axis-0'].width;
+                            var copyWidth = this.scales['y-axis-0'].width + 5;
                             var targetCtx = document.getElementById("playerAxis").getContext("2d");
                             targetCtx.canvas.width = copyWidth;
                             targetCtx.canvas.style.height = sourceCanvas.offsetHeight + 'px';
@@ -2112,7 +2113,9 @@
                 return totalRecords * 300;
             } else if (totalRecords <= 10) {
                 return totalRecords * 120;
-            } else {
+            } else if (totalRecords <= 100) {
+                return totalRecords * 110;
+            }else {
                 return totalRecords * 60;
             }
         }
