@@ -100,7 +100,7 @@
                         display: true,
                         labelString: 'Player'
                     },
-                     barThickness: 15 // need to make global
+                    barThickness: 15 // need to make global
                 }],
                 yAxes: [{
                     scaleLabel: {
@@ -109,7 +109,7 @@
                     },
                     ticks: {
                         suggestedMin: 0,
-                        suggestedMax: 100,
+                        suggestedMax: 50,
                     }
                 }]
             },
