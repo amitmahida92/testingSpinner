@@ -659,7 +659,6 @@
                         return $.text([this]) === vm[arr][index].organisationName;
                     }).trigger('click');
                 }
-                // vm.searchCampaignRef();
                 $("body").trigger('click');
             }.bind(this), 0);
         }
@@ -1150,7 +1149,7 @@
          * @author Amit Mahida
          */
         function searchCampaignRef() {
-            if (vm.searchCampaign && vm.searchCampaign.trim().length > 6) {
+            if (vm.searchCampaign && vm.searchCampaign.trim().length >= 5) {
                 var substringArray = _.map(['SM', 'SB', 'BK'], function (substring) {
                     return vm.searchCampaign.toUpperCase().indexOf(substring) > -1;
                 });
@@ -1174,14 +1173,11 @@
                     console.log('Please enter valid campaign Reference');
                 }
             } else {
-                // removed for CC-281
-                // if (vm.searchCampaign.trim().length == 0) {
-                vm.channelSummaryByAudience = _.cloneDeep(vm.chachedChannelSummaryByAudience);
-                vm.channelSummaryByImpression = _.cloneDeep(vm.chachedChannelSummaryByImpression);
-                applyParallelFilters();
-                vm.campaignSummary = _.cloneDeep(vm.cachedCampaignSummary);
-                vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign', true);
-                //}
+                if (vm.searchCampaign.trim().length == 0) {
+                    vm.channelSummaryByAudience = _.cloneDeep(vm.chachedChannelSummaryByAudience);
+                    vm.channelSummaryByImpression = _.cloneDeep(vm.chachedChannelSummaryByImpression);
+                    applyParallelFilters();
+                }
                 return false;
             }
         }
@@ -1456,8 +1452,8 @@
                     chartData = _.sortBy(chartData, 'value').reverse();
 
                     _.forEach(chartData, function (obj) {
-                        vm.impressionsData.labels.push(obj.label)
-                        obj['difference'] = obj.value - obj.audienceValue;
+                        vm.impressionsData.labels.push(obj.label);
+                        obj.difference = obj.value - obj.audienceValue;
 
                         vm.impressionsData.colors[0].backgroundColor.push(BLUE_COLOR);
                         if (obj.audienceValue == 0) {
@@ -1692,13 +1688,15 @@
          * @desc
          */
         function applyParallelFilters() {
-
             if (vm.selectedSpecialists.length > 0) {
                 vm.filterOnSpecialist();
             } else if (vm.selectedMarketingNames.length > 0) {
                 vm.filterOnMarketingName();
             } else if (vm.selectedChannel.length > 0) {
                 applyFilterOn(vm.selectedChannel, 'campaignSummary');
+            } else {
+                vm.campaignSummary = _.cloneDeep(vm.cachedCampaignSummary);
+                vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign', true);
             }
         }
 
@@ -2115,7 +2113,7 @@
                 return totalRecords * 120;
             } else if (totalRecords <= 100) {
                 return totalRecords * 110;
-            }else {
+            } else {
                 return totalRecords * 60;
             }
         }
