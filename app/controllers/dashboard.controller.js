@@ -41,31 +41,31 @@
 
         vm.frontEndVersion = frontEndVersion;
         vm.DASHBOARD_TYPES = [{
-                id: 1,
-                name: "Frame Dashboard",
-                image: 'logo0.png',
-                routeURL: 'dashboard'
-            },
-            {
-                id: 2,
-                name: "Share Of Time",
-                image: 'logo1.png',
-                routeURL: 'shareoftime'
-            }
+            id: 1,
+            name: "Frame Dashboard",
+            image: 'logo0.png',
+            routeURL: 'dashboard'
+        },
+        {
+            id: 2,
+            name: "Share Of Time",
+            image: 'logo1.png',
+            routeURL: 'shareoftime'
+        }
         ];
 
         vm.graphOptions = [{
-                id: 1,
-                name: "Frame",
-            },
-            {
-                id: 2,
-                name: "SoT"
-            },
-            {
-                id: 3,
-                name: "Impressions"
-            }
+            id: 1,
+            name: "Frame",
+        },
+        {
+            id: 2,
+            name: "SoT"
+        },
+        {
+            id: 3,
+            name: "Impressions"
+        }
         ];
 
         // Show/Hide flags
@@ -1452,20 +1452,20 @@
                     chartData = _.sortBy(chartData, 'value').reverse();
 
                     _.forEach(chartData, function (obj) {
-                        vm.impressionsData.labels.push(obj.label);
-                        obj.difference = obj.value - obj.audienceValue;
+                        vm.impressionsData.labels.push(obj.label)
+                        obj['difference'] = obj.audienceValue - obj.value;
 
                         vm.impressionsData.colors[0].backgroundColor.push(BLUE_COLOR);
-                        if (obj.audienceValue == 0) {
-                            vm.impressionsData.data[0].push((obj.audienceValue).toFixed(2));
-                        }
+                        // if (obj.audienceValue == 0) {
+                        vm.impressionsData.data[0].push((obj.value).toFixed(2));
+                        //  }
 
                         if (obj.difference > 0) {
-                            vm.impressionsData.data[0].push((obj.audienceValue + obj.difference).toFixed(2));
+                            //   vm.impressionsData.data[0].push((obj.audienceValue + obj.difference).toFixed(2));
                             vm.impressionsData.colors[1].backgroundColor.push(DARK_GREEN_COLOR);
                             vm.impressionsData.data[1].push(obj.difference.toFixed(2));
                         } else {
-                            vm.impressionsData.data[0].push((obj.audienceValue + obj.difference).toFixed(2));
+                            //      vm.impressionsData.data[0].push((obj.audienceValue + obj.difference).toFixed(2));
                             vm.impressionsData.colors[1].backgroundColor.push(RED_COLOR);
                             vm.impressionsData.data[1].push((obj.difference * -1).toFixed(2));
                         }
