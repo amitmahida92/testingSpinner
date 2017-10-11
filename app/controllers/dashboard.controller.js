@@ -1002,6 +1002,7 @@
                         if (vm.searchCampaign != '') {
                             vm.searchCampaignRef();
                         }
+                        vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign', true);
                         return;
                     }
                     vm.campaignSummary = _.cloneDeep(filteredSummary);
@@ -1156,7 +1157,7 @@
          * @author Amit Mahida
          */
         function searchCampaignRef() {
-            if (vm.searchCampaign && vm.searchCampaign.trim().length >= 5) {
+            if (vm.searchCampaign && vm.searchCampaign.trim().length >= 3) {
                 var substringArray = _.map(['SM', 'SB', 'BK'], function (substring) {
                     return vm.searchCampaign.toUpperCase().indexOf(substring) > -1;
                 });
