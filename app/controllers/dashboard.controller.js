@@ -1296,12 +1296,11 @@
                 if (vm.configData.complainceLevel) {
                     COMPLAINCE_PERCENTAGE = vm.configData.complainceLevel;
                 }
-
-                var oneWeekAgo = new Date(new Date().setDate(new Date().getDate() - 6));
+                //CC-22
                 vm.datePicker = {
                     date: {
-                        startDate: moment(oneWeekAgo).format(DATE_FORMAT),
-                        endDate: moment(new Date()).format(DATE_FORMAT)
+                        startDate: moment(new Date(new Date().setDate(new Date().getDate() - 7))).format(DATE_FORMAT),
+                        endDate: moment(new Date(new Date().setDate(new Date().getDate() - 1))).format(DATE_FORMAT)
                     }
                 };
 
