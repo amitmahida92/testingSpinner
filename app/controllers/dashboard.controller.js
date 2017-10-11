@@ -15,7 +15,6 @@
         var vm = this;
 
         vm.fullscreenFor = '';
-        vm.triggerSearchAfterCampaignRefRemoved = false;
         vm.isZendeskTicketAvailable = false;
         vm.searchCampaign = '';
         vm.selectedCampaign = '';
@@ -253,7 +252,6 @@
                         vm.showPlayer = false;
                         vm.showDay = false;
                         vm.showHour = false;
-                        // tempSelectedFrame = _.clone(vm.selectedFrame);
                         vm.campaignBar.selectedFrame = '';
                         vm.selectedFrame = '';
                     } else {
@@ -1711,6 +1709,9 @@
             } else {
                 vm.campaignSummary = _.cloneDeep(vm.cachedCampaignSummary);
                 vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign', true);
+            }
+            if (vm.searchCampaign != '') {
+                vm.searchCampaignRef();
             }
         }
 
