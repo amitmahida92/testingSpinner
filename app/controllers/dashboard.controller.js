@@ -41,31 +41,31 @@
 
         vm.frontEndVersion = frontEndVersion;
         vm.DASHBOARD_TYPES = [{
-            id: 1,
-            name: "Frame Dashboard",
-            image: 'logo0.png',
-            routeURL: 'dashboard'
-        },
-        {
-            id: 2,
-            name: "Share Of Time",
-            image: 'logo1.png',
-            routeURL: 'shareoftime'
-        }
+                id: 1,
+                name: "Frame Dashboard",
+                image: 'logo0.png',
+                routeURL: 'dashboard'
+            },
+            {
+                id: 2,
+                name: "Share Of Time",
+                image: 'logo1.png',
+                routeURL: 'shareoftime'
+            }
         ];
 
         vm.graphOptions = [{
-            id: 1,
-            name: "Frame",
-        },
-        {
-            id: 2,
-            name: "SoT"
-        },
-        {
-            id: 3,
-            name: "Impressions"
-        }
+                id: 1,
+                name: "Frame",
+            },
+            {
+                id: 2,
+                name: "SoT"
+            },
+            {
+                id: 3,
+                name: "Impressions"
+            }
         ];
 
         // Show/Hide flags
@@ -889,6 +889,9 @@
                     if (vm.selectedMarketingNames.length == 0 && vm.selectedChannel.length == 0) {
                         resetAllFilters();
                         refreshCharts();
+                        if (vm.searchCampaign != '') {
+                            vm.searchCampaignRef();
+                        }
                         return;
                     }
                     vm.campaignSummary = _.cloneDeep(filteredSummary);
@@ -937,6 +940,9 @@
                     if (vm.selectedSpecialists.length == 0 && vm.selectedChannel.length == 0) {
                         resetAllFilters();
                         refreshCharts();
+                        if (vm.searchCampaign != '') {
+                            vm.searchCampaignRef();
+                        }
                         return;
                     }
                     vm.campaignSummary = _.cloneDeep(filteredSummary);
@@ -995,6 +1001,9 @@
                         resetAllFilters();
                         resetCharts();
                         refreshCharts();
+                        if (vm.searchCampaign != '') {
+                            vm.searchCampaignRef();
+                        }
                         return;
                     }
                     vm.campaignSummary = _.cloneDeep(filteredSummary);
@@ -1155,7 +1164,13 @@
                 });
 
                 if (substringArray.indexOf(true) > -1) {
-                    vm.campaignSummary = vm.cachedCampaignSummary.length > 0 ? _.cloneDeep(vm.cachedCampaignSummary) : _.cloneDeep(vm.campaignSummary);
+
+                    if (vm.selectedChannel.length == 0 &&
+                        vm.selectedMarketingNames.length == 0 &&
+                        vm.selectedSpecialists.length == 0) {
+                        vm.campaignSummary = _.cloneDeep(vm.cachedCampaignSummary);
+                    }
+
                     var data = vm.campaignSummary.filter(function (obj) {
                         return obj.id.indexOf(vm.searchCampaign.toUpperCase()) > -1;
                     });
