@@ -34,7 +34,7 @@
             <div class="row no-margin input-row">
                 <div class=" col s12 m2">
                     <label for="">{{vm.userBundle['common.dateRange']}}</label>
-                    <!--<input placeholder="Select date range" id="first_name" type="text" class=" no-margin">-->                    
+                    <!--<input placeholder="Select date range" id="first_name" type="text" class=" no-margin">-->
                     <input date-range-picker id="dateRange" class="no-margin" type="text" placeholder="Select Date Range" ng-model="vm.datePicker.date"
                         options="vm.datePickerOptions" ng-change="vm.dateChanged()" />
                     <i class="material-icons inputicon">date_range</i>
@@ -201,25 +201,24 @@
             <div class="chartWrapper">
                 <div class="chartAreaWrapper">
                     <div ng-style="{'width': vm.width}" style="height: 367px;">
-                        <canvas ng-cloak id="player" class="chart chart-bar" chart-data="vm.playerData.datasets[0].data" 
-                            chart-options="vm.barOptions" chart-colors="vm.playerData.datasets[0].backgroundColor"
-                            chart-labels="vm.playerData.labels" chart-click="vm.onPlayerClick" 
-                            chart-dataset-override="vm.playerDetails"
-                            height="330"></canvas>
+                        <canvas ng-cloak id="player" class="chart chart-bar" chart-data="vm.playerData.datasets[0].data" chart-options="vm.barOptions"
+                            chart-colors="vm.playerData.datasets[0].backgroundColor" chart-labels="vm.playerData.labels" chart-click="vm.onPlayerClick"
+                            chart-dataset-override="vm.playerDetails" height="330"></canvas>
                     </div>
                 </div>
                 <canvas id="playerAxis" ng-if="vm.playerData.datasets[0].data.length > 0"></canvas>
                 <div class="horizontalAxisLabel" ng-if="vm.playerData.datasets[0].data.length > 0">
                     {{vm.playerXAxisLabel}}
                 </div>
+                
             </div>
         </div>
-
         <div class="compliance-tooltip tooltip_custom" id="player-tooltip">
             <div>
                 <table></table>
             </div>
         </div>
+        
 
         <!-- <div id="frame-tooltip" class="compliance-tooltip">
             <i class="material-icons tooltip-close" ng-click="vm.closeTooltip('frame-tooltip')">close</i>

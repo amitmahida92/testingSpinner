@@ -20,10 +20,11 @@
         vm.selectedCampaign = '';
         var tempSelectedFrame = '';
         var filteredSummary = [];
+        var filteredFrameSummary = [];
 
         // Chart summary variables
         vm.campaignSummary = [];
-        vm.cachedCampaignSummary = [];
+        vm.cachedCampaignSummary = [];        
         vm.frameSummary = [];
         vm.cachedFrameSummary = [];
         vm.chachedChannelSummaryByAudience = [];
@@ -469,7 +470,7 @@
             if (points.length > 0 && (vm.campaign.compaliant || vm.campaign.noncompaliant)) { // condition added for CC-115
 
                 $('#compliance-tooltip').hide();
-                var campaign = points[0]['_chart'].config.data.datasets[points[0]['_datasetIndex']] // .data[points[0]['_index']];
+                var campaign = points[0]['_chart'].config.data.datasets[points[0]['_datasetIndex']]; // .data[points[0]['_index']];
 
                 // Amit : CC-308 : In Audience Summary graph, If colemete bar color is green then user can't click on that.
                 // if (campaign.data[points[0]['_index']] == 0) {
@@ -667,8 +668,11 @@
          */
         function resetAllFilters() {
             if (vm.cachedCampaignSummary && vm.cachedCampaignSummary.length > 0) {
-                vm.campaignSummary = _.cloneDeep(vm.cachedCampaignSummary);
+                vm.campaignSummary = _.cloneDeep(vm.cachedCampaignSummary);                
                 vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign', true);
+                
+                vm.frameSummary = _.cloneDeep(vm.cachedFrameSummary);
+                vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'player', true);
                 if (vm.selectedChannel.length == 0) {
                     filterSummaries(vm.campaignSummary);
                     filterChartData();
@@ -685,14 +689,22 @@
         function applyFilterOn(data, key) {
             var innerFilteredCampaigns;
             var summaryToFilter = [];
+            var frameSummaryToFilter = [];
 
             if (data && data.length > 0) {
                 filteredSummary = [];
+                filteredFrameSummary = [];
                 innerFilteredCampaigns = [];
                 if (data.length > 1) {
                     summaryToFilter = _.cloneDeep(vm.cachedCampaignSummary);
+                    if(vm.cachedFrameSummary.length > 0){
+                        frameSummaryToFilter = _.cloneDeep(vm.cachedFrameSummary);
+                    }                    
                 } else {
                     summaryToFilter = _.cloneDeep(vm.campaignSummary);
+                    if(vm.frameSummary) {
+                        frameSummaryToFilter = _.cloneDeep(vm.frameSummary);
+                    }                    
                 }
 
                 if (key == 'specialist') {
@@ -709,8 +721,14 @@
                         if (vm.selectedMarketingNames && vm.selectedMarketingNames.length > 0) {
                             vm.selectedMarketingNames.forEach(function (element) {
                                 summaryToFilter.forEach(function (inElement) {
-                                    if (element.marketingNameId === parseInt(inElement.marketingNameCode)) {
+                                    if (_.includes(inElement.marketingNameCode, element.marketingNameId.toString())) {
                                         filteredSummary.push(inElement);
+                                    }
+                                }, this);
+
+                                frameSummaryToFilter.forEach(function (inElement) {
+                                    if (_.includes(inElement.marketingNameCode, element.marketingNameId.toString())) {
+                                        filteredFrameSummary.push(inElement);
                                     }
                                 }, this);
                             });
@@ -725,7 +743,6 @@
                         filteredSummary = _.cloneDeep(innerFilteredCampaigns);
                         innerFilteredCampaigns = [];
                     } else {
-
                         data.forEach(function (element) {
                             vm.cachedCampaignSummary.forEach(function (inElement) {
                                 if (element.organisationId == inElement.specialistCode) {
@@ -762,26 +779,34 @@
                             });
                         }
                         data.forEach(function (element) {
-                            filteredSummary.forEach(function (inElement) {
-                                if (element.marketingNameId === parseInt(inElement.marketingNameCode)) {
+                            filteredSummary.forEach(function (inElement) {                                
+                                if (_.includes(inElement.marketingNameCode, element.marketingNameId.toString())) {
                                     innerFilteredCampaigns.push(inElement);
                                 }
                             }, this);
-                        });
+
+                            frameSummaryToFilter.forEach(function (inElement) {
+                                if (_.includes(inElement.marketingNameCode, element.marketingNameId.toString())) {
+                                    filteredFrameSummary.push(inElement);
+                                }
+                            }, this);
+                        });                       
+
                         filteredSummary = _.cloneDeep(innerFilteredCampaigns);
                         innerFilteredCampaigns = [];
-                    } else {
+                    } else {                        
                         data.forEach(function (element) {
                             filteredSummary = $linq.Enumerable().From(vm.cachedCampaignSummary).Where(function (x) {
-                                return element.marketingNameId === parseInt(x.marketingNameCode);
+                                return _.includes(x.marketingNameCode, element.marketingNameId.toString()); 
                             }).Select(function (x) {
                                 return x;
                             }).ToArray();
-                            // vm.cachedCampaignSummary.forEach(function (inElement) {
-                            //     if (element.marketingNameId === parseInt(inElement.marketingNameCode)) {
-                            //         filteredSummary.push(inElement);
-                            //     }
-                            // }, this);
+                            
+                            filteredFrameSummary = $linq.Enumerable().From(vm.cachedFrameSummary).Where(function (x) {
+                                return _.includes(x.marketingNameCode, element.marketingNameId.toString());
+                            }).Select(function (x) {
+                                return x;
+                            }).ToArray();                            
                         });
                     }
                 }
@@ -813,9 +838,16 @@
                         }
                         if (vm.selectedMarketingNames && vm.selectedMarketingNames.length > 0) {
                             vm.selectedMarketingNames.forEach(function (element) {
+                                
                                 filteredSummary.forEach(function (inElement) {
-                                    if (element.marketingNameId === parseInt(inElement.marketingNameCode)) {
+                                    if (_.includes(inElement.marketingNameCode, element.marketingNameId.toString())) {
                                         innerFilteredCampaigns.push(inElement);
+                                    }
+                                }, this);
+
+                                frameSummaryToFilter.forEach(function (inElement) {
+                                    if (_.includes(inElement.marketingNameCode, element.marketingNameId.toString())) {
+                                        filteredFrameSummary.push(inElement);
                                     }
                                 }, this);
                             });
@@ -836,8 +868,17 @@
                 filteredSummary = _.uniqBy(filteredSummary, function (e) {
                     return e.id;
                 });
-                vm.campaignSummary = _.cloneDeep(filteredSummary);
+
+                filteredFrameSummary = _.uniqBy(filteredFrameSummary, function (e) {
+                    return e.id;
+                });
+
+                vm.campaignSummary = _.cloneDeep(filteredSummary);                
                 vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign', true);
+
+                vm.frameSummary = _.cloneDeep(filteredFrameSummary);
+                vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'player', true);
+
                 if (vm.selectedChannel.length == 0) {
                     filterSummaries(vm.campaignSummary);
                     filterChartData();
@@ -845,15 +886,22 @@
                 refreshCharts();
             } else {
                 filteredSummary = [];
+                filteredFrameSummary = [];
                 innerFilteredCampaigns = [];
                 if (key == 'specialist') {
                     if (vm.selectedMarketingNames && vm.selectedMarketingNames.length > 0) {
                         vm.selectedMarketingNames.forEach(function (element) {
                             vm.cachedCampaignSummary.forEach(function (inElement) {
-                                if (element.marketingNameId === parseInt(inElement.marketingNameCode)) {
+                                if (_.includes(inElement.marketingNameCode, element.marketingNameId.toString())) {
                                     filteredSummary.push(inElement);
                                 }
                             }, this);
+
+                            vm.cachedFrameSummary.forEach(function (inElement) {
+                                if (_.includes(inElement.marketingNameCode, element.marketingNameId.toString())) {
+                                    filteredFrameSummary.push(inElement);
+                                }
+                            }, this);                            
                         });
                     }
                     if (vm.selectedChannel && vm.selectedChannel.length > 0) {
@@ -867,10 +915,18 @@
                     }
                     if (vm.selectedMarketingNames.length > 0 && vm.selectedChannel.length > 0) {
                         filteredSummary = [];
+                        filteredFrameSummary = [];
                         vm.selectedMarketingNames.forEach(function (element) {
+
                             vm.cachedCampaignSummary.forEach(function (inElement) {
-                                if (element.marketingNameId === parseInt(inElement.marketingNameCode)) {
+                                if (_.includes(inElement.marketingNameCode, element.marketingNameId.toString())) {
                                     filteredSummary.push(inElement);
+                                }
+                            }, this);
+
+                            vm.cachedFrameSummary.forEach(function (inElement) {
+                                if (_.includes(inElement.marketingNameCode, element.marketingNameId.toString())) {
+                                    filteredFrameSummary.push(inElement);
                                 }
                             }, this);
                         });
@@ -923,7 +979,7 @@
                                 if (element.organisationId == inElement.specialistCode) {
                                     filteredSummary.push(inElement);
                                 }
-                            }, this);
+                            }, this);                            
                         });
                         vm.selectedChannel.forEach(function (element) {
                             filteredSummary.forEach(function (inElement) {
@@ -958,8 +1014,14 @@
                     if (vm.selectedMarketingNames && vm.selectedMarketingNames.length > 0) {
                         vm.selectedMarketingNames.forEach(function (element) {
                             vm.cachedCampaignSummary.forEach(function (inElement) {
-                                if (element.marketingNameId === parseInt(inElement.marketingNameCode)) {
+                                if (_.includes(inElement.marketingNameCode, element.marketingNameId.toString())) {
                                     filteredSummary.push(inElement);
+                                }
+                            }, this);
+
+                            vm.cachedFrameSummary.forEach(function (inElement) {
+                                if (_.includes(inElement.marketingNameCode, element.marketingNameId.toString())) {
+                                    filteredFrameSummary.push(inElement);
                                 }
                             }, this);
                         });
@@ -979,8 +1041,14 @@
                         filteredSummary = [];
                         vm.selectedMarketingNames.forEach(function (element) {
                             vm.cachedCampaignSummary.forEach(function (inElement) {
-                                if (element.marketingNameId === parseInt(inElement.marketingNameCode)) {
+                                if (_.includes(inElement.marketingNameCode, element.marketingNameId.toString())) {
                                     filteredSummary.push(inElement);
+                                }
+                            }, this);
+
+                            vm.cachedFrameSummary.forEach(function (inElement) {
+                                if (_.includes(inElement.marketingNameCode, element.marketingNameId.toString())) {
+                                    filteredFrameSummary.push(inElement);
                                 }
                             }, this);
                         });
@@ -1468,7 +1536,7 @@
                         vm.impressionsData.labels.push(obj.label)
                         obj['difference'] = obj.audienceValue - obj.value;
 
-                        vm.impressionsData.colors[0].backgroundColor.push(BLUE_COLOR);
+                        vm.impressionsData.colors[0].backgroundColor.push(BLUE_COLOR.backgroundColor);
                         // if (obj.audienceValue == 0) {
                         vm.impressionsData.data[0].push((obj.value).toFixed(2));
                         //  }
@@ -1479,7 +1547,7 @@
                             vm.impressionsData.data[1].push(obj.difference.toFixed(2));
                         } else {
                             //      vm.impressionsData.data[0].push((obj.audienceValue + obj.difference).toFixed(2));
-                            vm.impressionsData.colors[1].backgroundColor.push(RED_COLOR);
+                            vm.impressionsData.colors[1].backgroundColor.push(RED_COLOR.backgroundColor);
                             vm.impressionsData.data[1].push((obj.difference * -1).toFixed(2));
                         }
 
@@ -1494,10 +1562,17 @@
                     vm.campaignOptions.tooltips = {
                         enabled: true,
                         mode: 'index',
-                        position: 'nearest'
+                        position: 'average',
+                        displayColors: true
                     };
 
-                    vm.impressionsOptions.tooltips = vm.campaignOptions.tooltips;
+                    vm.impressionsOptions.tooltips = {
+                        enabled: true,
+                        mode: 'index',
+                        position: 'average',
+                        yAlign: 'bottom',
+                        displayColors: true
+                    };
 
                     if (toggleOtherCharts) {
                         vm.hideWatermark = true;
@@ -1814,6 +1889,7 @@
                                 obj.audienceValue = parseFloat(obj.audienceValue);
                                 return obj;
                             });
+                            vm.cachedFrameSummary = _.cloneDeep(vm.frameSummary);
                             generateChart('player', vm.frameSummary, true);
 
                             vm.showPlayer = true;
@@ -1915,13 +1991,14 @@
                 var position = chart.canvas.getBoundingClientRect();
                 // Display, position, and set styles for font
                 tooltipEl.style.opacity = 1;
+                // tooltipEl.style.position = 'relative';
                 tooltipEl.style.left = position.left + tooltipModel.caretX - 126 + 'px';
-                tooltipEl.style.top = position.top + tooltipModel.caretY - 100 + 'px';
+                tooltipEl.style.top = position.top - 50 + 'px';
                 tooltipEl.style.fontFamily = tooltipModel._fontFamily;
                 tooltipEl.style.fontSize = tooltipModel.fontSize;
                 tooltipEl.style.fontStyle = tooltipModel._fontStyle;
                 tooltipEl.style.padding = tooltipModel.yPadding + 'px ' + tooltipModel.xPadding + 'px';
-                tooltipEl.style.display = 'block';
+                tooltipEl.style.display = 'flex';
                 tooltipEl.style.height = 'auto';
             } else {
                 tooltipEl = document.getElementById('player-tooltip');
@@ -1941,8 +2018,8 @@
                     vm.campaignData.datasets[0].backgroundColor = [];
                     _.forEach(vm.campaignDetails.campaignDetails, function (obj, key) {
                         if (obj.failedAudience) {
-                            vm.campaignData.datasets[0].compliantcheck.push(false);
                             vm.campaignData.datasets[0].backgroundColor.push(RED_COLOR);
+                            vm.campaignData.datasets[0].compliantcheck.push(false);
                         } else {
                             vm.campaignData.datasets[0].backgroundColor.push(BLUE_COLOR);
                             vm.campaignData.datasets[0].compliantcheck.push(true);
@@ -1977,12 +2054,12 @@
                     var allImpressionsData = vm.impressionsDetails[0].id;
 
                     _.forEach(allImpressionsData, function (data, index) {
-                        vm.impressionsData.colors[0].backgroundColor[index] = BLUE_COLOR;
+                        vm.impressionsData.colors[0].backgroundColor[index] = BLUE_COLOR.backgroundColor;
 
                         if (vm.impressionsDetails[0].difference[index] > 0) {
                             vm.impressionsData.colors[1].backgroundColor[index] = DARK_GREEN_COLOR;
                         } else {
-                            vm.impressionsData.colors[1].backgroundColor[index] = RED_COLOR;
+                            vm.impressionsData.colors[1].backgroundColor[index] = RED_COLOR.backgroundColor;
                         }
                     });
 
@@ -1991,7 +2068,7 @@
                     });
                     if (index > -1) {
                         vm.impressionsData.colors[0].backgroundColor[index] = GREEN_COLOR;
-                        vm.impressionsData.colors[1].backgroundColor[index] = GREEN_COLOR;
+                        // vm.impressionsData.colors[1].backgroundColor[index] = GREEN_COLOR;
                         vm.campaignBar.selectedCampaign = vm.selectedCampaign.split(':')[0];
                         vm.campaignBar.brandName = vm.impressionsDetails[0].brandName[index];
                         vm.campaignBar.advertiserName = vm.impressionsDetails[0].advertiserName[index];

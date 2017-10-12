@@ -342,8 +342,8 @@ input:not([type]):focus:not([readonly]), input[type=text]:focus:not([readonly]),
   cursor: pointer;
 }
 
-.card .card-title label{
-  font-size: 15px; 
+.card .card-title label {
+  font-size: 15px;
 }
 
 .chart-doughnut {
@@ -974,7 +974,7 @@ canvas {
 
 .compliance-tooltip table tbody {
   display: block;
-  max-height: 215px;
+  max-height: 300px;
   overflow-x: auto;
 }
 
@@ -1358,7 +1358,7 @@ div {
   left: 0;
   z-index: 999;
   height: 100%;
-  width: 12px;  
+  width: 12px;
   writing-mode: tb;
   text-align: center;
   transform: rotate(180deg);
@@ -1386,4 +1386,8 @@ div {
   top: 45%;
   left: 40%;
   font-size: 20px;
+}
+
+tooltips {
+  text-align: center;
 }

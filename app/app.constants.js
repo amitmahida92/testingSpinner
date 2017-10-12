@@ -24,11 +24,11 @@
                 display: false
             },
             scales: {
-                xAxes: [{
-                    stacked: true,
+                xAxes: [{       
+                    stacked: true,             
                     scaleLabel: {
                         display: true,
-                        labelString: 'Performance'
+                        labelString: ''
                     },
                     position: 'top'
                 }],
@@ -36,7 +36,7 @@
                     stacked: true,
                     scaleLabel: {
                         display: true,
-                        labelString: 'Campaign'
+                        labelString: ''
                     },
                     ticks: {
                         suggestedMin: 0,
@@ -48,7 +48,7 @@
                 }]
             },
             size: {
-                height: 364,
+                height: 364
             }
         },
         HORIZONTAL_STACKED_BAR: {
