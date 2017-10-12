@@ -476,8 +476,7 @@
                 // Amit : CC-308 : In Audience Summary graph, If colemete bar color is green then user can't click on that.
                 // if (campaign.data[points[0]['_index']] == 0) {
                 //     return false;
-                // }
-                debugger
+                // }                
                 vm.selectedCampaign = campaign.id[points[0]['_index']];
                 vm.campaignBar.selectedCampaign = _.cloneDeep(vm.selectedCampaign);
                 vm.campaignBar.brandName = campaign.brandName[points[0]['_index']];
@@ -2202,7 +2201,7 @@
                 return totalRecords * 300;
             } else if (totalRecords <= 10) {
                 return totalRecords * 120;
-            } else if (totalRecords <= 100) {
+            } else if (totalRecords <= 500) {
                 return totalRecords * 110;
             } else {
                 return totalRecords * 60;
