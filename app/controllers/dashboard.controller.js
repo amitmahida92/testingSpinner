@@ -1537,16 +1537,13 @@
                         obj['difference'] = obj.audienceValue - obj.value;
 
                         vm.impressionsData.colors[0].backgroundColor.push(BLUE_COLOR.backgroundColor);
-                        // if (obj.audienceValue == 0) {
-                        vm.impressionsData.data[0].push((obj.value).toFixed(2));
-                        //  }
 
                         if (obj.difference > 0) {
-                            //   vm.impressionsData.data[0].push((obj.audienceValue + obj.difference).toFixed(2));
+                            vm.impressionsData.data[0].push((obj.value).toFixed(2));
                             vm.impressionsData.colors[1].backgroundColor.push(DARK_GREEN_COLOR);
                             vm.impressionsData.data[1].push(obj.difference.toFixed(2));
                         } else {
-                            //      vm.impressionsData.data[0].push((obj.audienceValue + obj.difference).toFixed(2));
+                            vm.impressionsData.data[0].push((obj.value + obj.difference).toFixed(2));
                             vm.impressionsData.colors[1].backgroundColor.push(RED_COLOR.backgroundColor);
                             vm.impressionsData.data[1].push((obj.difference * -1).toFixed(2));
                         }
