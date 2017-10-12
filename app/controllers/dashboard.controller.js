@@ -242,12 +242,12 @@
                     var isSearchedCampaignInNewData = data.filter(function (obj) {
                         return obj.id.indexOf(vm.selectedCampaign.toUpperCase()) > -1;
                     });
-                    var isAllSelectedCampaignHasNullAvgValue = true;
-                    isSearchedCampaignInNewData.forEach(function (element) {
-                        if (element.avgValue != 0) {
-                            isAllSelectedCampaignHasNullAvgValue = false;
-                        }
-                    });
+                    // var isAllSelectedCampaignHasNullAvgValue = true;
+                    // isSearchedCampaignInNewData.forEach(function (element) {
+                    //     if (element.avgValue != 0) {
+                    //         isAllSelectedCampaignHasNullAvgValue = false;
+                    //     }
+                    // });
 
                     if (isSearchedCampaignInNewData.length == 0) {
                         vm.showPlayer = false;
@@ -256,7 +256,8 @@
                         vm.campaignBar.selectedFrame = '';
                         vm.selectedFrame = '';
                     } else {
-                        if (vm.selectedCampaign != '' && !isAllSelectedCampaignHasNullAvgValue) {
+                        // && !isAllSelectedCampaignHasNullAvgValue
+                        if (vm.selectedCampaign != '' ) {
                             if (tempSelectedFrame != '') {
                                 vm.campaignBar.selectedFrame = _.clone(tempSelectedFrame);
                                 vm.selectedFrame = _.clone(tempSelectedFrame);
@@ -476,7 +477,7 @@
                 // if (campaign.data[points[0]['_index']] == 0) {
                 //     return false;
                 // }
-
+                debugger
                 vm.selectedCampaign = campaign.id[points[0]['_index']];
                 vm.campaignBar.selectedCampaign = _.cloneDeep(vm.selectedCampaign);
                 vm.campaignBar.brandName = campaign.brandName[points[0]['_index']];
