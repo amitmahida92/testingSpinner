@@ -2196,15 +2196,16 @@
          * @param {any} totalRecords 
          * @returns 
          */
+        // changed width for CC-295
         function calculateWidthForPlayer(totalRecords) {
             if (totalRecords <= 4) {
-                return totalRecords * 300;
+                return totalRecords * 150;
             } else if (totalRecords <= 10) {
-                return totalRecords * 120;
+                return totalRecords * 90;
             } else if (totalRecords <= 500) {
-                return totalRecords * 110;
-            } else {
                 return totalRecords * 60;
+            } else {
+                return totalRecords * 50;
             }
         }
 
