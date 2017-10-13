@@ -673,10 +673,10 @@
 
                 vm.frameSummary = _.cloneDeep(vm.cachedFrameSummary);
                 vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'player', true);
-                if (vm.selectedChannel.length == 0) {
-                    filterSummaries(vm.campaignSummary);
-                    filterChartData();
-                }
+                // if (vm.selectedChannel.length == 0) {
+                filterSummaries(vm.campaignSummary);
+                filterChartData();
+                // }
             }
         }
 
@@ -753,9 +753,9 @@
                         filteredSummary = _.uniqBy(filteredSummary, function (e) {
                             return e.id;
                         });
-                        if (vm.selectedChannel.length == 0) {
-                            filterSummaries(filteredSummary);
-                        }
+                        // if (vm.selectedChannel.length == 0) {
+                        filterSummaries(filteredSummary);
+                        // }
                     }
                 }
                 if (key == 'marketingName') {
@@ -879,10 +879,10 @@
                 vm.frameSummary = _.cloneDeep(filteredFrameSummary);
                 vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'player', true);
 
-                if (vm.selectedChannel.length == 0) {
-                    filterSummaries(vm.campaignSummary);
-                    filterChartData();
-                }
+                // if (vm.selectedChannel.length == 0) {
+                filterSummaries(vm.campaignSummary);
+                filterChartData();
+                // }
                 refreshCharts();
             } else {
                 filteredSummary = [];
@@ -1076,10 +1076,10 @@
                     vm.campaignSummary = _.cloneDeep(filteredSummary);
                     vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign', true);
                 }
-                if (vm.selectedChannel && vm.selectedChannel.length == 0) {
-                    filterSummaries(vm.campaignSummary);
-                    filterChartData();
-                }
+                // if (vm.selectedChannel && vm.selectedChannel.length == 0) {
+                filterSummaries(vm.campaignSummary);
+                filterChartData();
+                // }
             }
 
             if (vm.searchCampaign != '') {
