@@ -3,7 +3,7 @@
 
     angular.module('reportingDashboard').controller('DashboardCtrl', DashboardCtrl);
 
-    DashboardCtrl.$inject = ['filterService', 'configureOptions', 'Webworker', '$linq'];
+    DashboardCtrl.$inject = ['filterService', 'configureOptions', 'Webworker'];
 
     /**
      * 
@@ -11,7 +11,7 @@
      * @param {any} configureOptions
      * @param {any} Webworker
      */
-    function DashboardCtrl(filterService, configureOptions, Webworker, $linq) {
+    function DashboardCtrl(filterService, configureOptions, Webworker) {
         var vm = this;
 
         vm.fullscreenFor = '';
@@ -24,7 +24,7 @@
 
         // Chart summary variables
         vm.campaignSummary = [];
-        vm.cachedCampaignSummary = [];        
+        vm.cachedCampaignSummary = [];
         vm.frameSummary = [];
         vm.cachedFrameSummary = [];
         vm.chachedChannelSummaryByAudience = [];
@@ -257,7 +257,7 @@
                         vm.selectedFrame = '';
                     } else {
                         // && !isAllSelectedCampaignHasNullAvgValue
-                        if (vm.selectedCampaign != '' ) {
+                        if (vm.selectedCampaign != '') {
                             if (tempSelectedFrame != '') {
                                 vm.campaignBar.selectedFrame = _.clone(tempSelectedFrame);
                                 vm.selectedFrame = _.clone(tempSelectedFrame);
@@ -668,9 +668,9 @@
          */
         function resetAllFilters() {
             if (vm.cachedCampaignSummary && vm.cachedCampaignSummary.length > 0) {
-                vm.campaignSummary = _.cloneDeep(vm.cachedCampaignSummary);                
+                vm.campaignSummary = _.cloneDeep(vm.cachedCampaignSummary);
                 vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign', true);
-                
+
                 vm.frameSummary = _.cloneDeep(vm.cachedFrameSummary);
                 vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'player', true);
                 if (vm.selectedChannel.length == 0) {
@@ -697,14 +697,14 @@
                 innerFilteredCampaigns = [];
                 if (data.length > 1) {
                     summaryToFilter = _.cloneDeep(vm.cachedCampaignSummary);
-                    if(vm.cachedFrameSummary.length > 0){
+                    if (vm.cachedFrameSummary.length > 0) {
                         frameSummaryToFilter = _.cloneDeep(vm.cachedFrameSummary);
-                    }                    
+                    }
                 } else {
                     summaryToFilter = _.cloneDeep(vm.campaignSummary);
-                    if(vm.frameSummary) {
+                    if (vm.frameSummary) {
                         frameSummaryToFilter = _.cloneDeep(vm.frameSummary);
-                    }                    
+                    }
                 }
 
                 if (key == 'specialist') {
@@ -779,7 +779,7 @@
                             });
                         }
                         data.forEach(function (element) {
-                            filteredSummary.forEach(function (inElement) {                                
+                            filteredSummary.forEach(function (inElement) {
                                 if (_.includes(inElement.marketingNameCode, element.marketingNameId.toString())) {
                                     innerFilteredCampaigns.push(inElement);
                                 }
@@ -790,23 +790,23 @@
                                     filteredFrameSummary.push(inElement);
                                 }
                             }, this);
-                        });                       
+                        });
 
                         filteredSummary = _.cloneDeep(innerFilteredCampaigns);
                         innerFilteredCampaigns = [];
-                    } else {                        
+                    } else {
                         data.forEach(function (element) {
-                            filteredSummary = $linq.Enumerable().From(vm.cachedCampaignSummary).Where(function (x) {
-                                return _.includes(x.marketingNameCode, element.marketingNameId.toString()); 
-                            }).Select(function (x) {
-                                return x;
-                            }).ToArray();
-                            
-                            filteredFrameSummary = $linq.Enumerable().From(vm.cachedFrameSummary).Where(function (x) {
-                                return _.includes(x.marketingNameCode, element.marketingNameId.toString());
-                            }).Select(function (x) {
-                                return x;
-                            }).ToArray();                            
+                            vm.cachedCampaignSummary.forEach(function (inElement) {
+                                if (_.includes(inElement.marketingNameCode, element.marketingNameId.toString())) {
+                                    filteredSummary.push(inElement);
+                                }
+                            }, this);
+
+                            vm.cachedFrameSummary.forEach(function (inElement) {
+                                if (_.includes(inElement.marketingNameCode, element.marketingNameId.toString())) {
+                                    filteredFrameSummary.push(inElement);
+                                }
+                            }, this);
                         });
                     }
                 }
@@ -838,7 +838,7 @@
                         }
                         if (vm.selectedMarketingNames && vm.selectedMarketingNames.length > 0) {
                             vm.selectedMarketingNames.forEach(function (element) {
-                                
+
                                 filteredSummary.forEach(function (inElement) {
                                     if (_.includes(inElement.marketingNameCode, element.marketingNameId.toString())) {
                                         innerFilteredCampaigns.push(inElement);
@@ -873,7 +873,7 @@
                     return e.id;
                 });
 
-                vm.campaignSummary = _.cloneDeep(filteredSummary);                
+                vm.campaignSummary = _.cloneDeep(filteredSummary);
                 vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign', true);
 
                 vm.frameSummary = _.cloneDeep(filteredFrameSummary);
@@ -901,7 +901,7 @@
                                 if (_.includes(inElement.marketingNameCode, element.marketingNameId.toString())) {
                                     filteredFrameSummary.push(inElement);
                                 }
-                            }, this);                            
+                            }, this);
                         });
                     }
                     if (vm.selectedChannel && vm.selectedChannel.length > 0) {
@@ -979,7 +979,7 @@
                                 if (element.organisationId == inElement.specialistCode) {
                                     filteredSummary.push(inElement);
                                 }
-                            }, this);                            
+                            }, this);
                         });
                         vm.selectedChannel.forEach(function (element) {
                             filteredSummary.forEach(function (inElement) {
