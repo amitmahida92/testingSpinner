@@ -741,6 +741,7 @@
                             }, this);
                         });
                         filteredSummary = _.cloneDeep(innerFilteredCampaigns);
+                        filteredFrameSummary = _.cloneDeep(vm.cachedFrameSummary);
                         innerFilteredCampaigns = [];
                     } else {
                         data.forEach(function (element) {
