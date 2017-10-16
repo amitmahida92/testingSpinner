@@ -819,29 +819,21 @@
                         }));
                     });
                     if (vm.selectedSpecialists.length > 0 || vm.selectedMarketingNames.length > 0) {
-                        resetCharts();
-                        data.forEach(function (element) {
-                            vm.cachedCampaignSummary.forEach(function (inElement) {
-                                if (element === inElement.businessAreaCode) {
-                                    filteredSummary.push(inElement);
-                                }
-                            }, this);
-                        });
+                        resetCharts();                        
                         if (vm.selectedSpecialists && vm.selectedSpecialists.length > 0) {
                             vm.selectedSpecialists.forEach(function (element) {
-                                filteredSummary.forEach(function (inElement) {
+                                summaryToFilter.forEach(function (inElement) {
                                     if (element.organisationId == inElement.specialistCode) {
-                                        innerFilteredCampaigns.push(inElement);
+                                        filteredSummary.push(inElement);
                                     }
                                 }, this);
                             });
                         }
                         if (vm.selectedMarketingNames && vm.selectedMarketingNames.length > 0) {
                             vm.selectedMarketingNames.forEach(function (element) {
-
-                                filteredSummary.forEach(function (inElement) {
+                                summaryToFilter.forEach(function (inElement) {
                                     if (_.includes(inElement.marketingNameCode, element.marketingNameId.toString())) {
-                                        innerFilteredCampaigns.push(inElement);
+                                        filteredSummary.push(inElement);
                                     }
                                 }, this);
 
@@ -852,6 +844,14 @@
                                 }, this);
                             });
                         }
+
+                        data.forEach(function (element) {
+                            filteredSummary.forEach(function (inElement) {
+                                if (element === inElement.businessAreaCode) {
+                                    innerFilteredCampaigns.push(inElement);
+                                }
+                            }, this);
+                        });
                         filteredSummary = _.cloneDeep(innerFilteredCampaigns);
                         innerFilteredCampaigns = [];
 
