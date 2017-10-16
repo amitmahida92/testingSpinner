@@ -863,7 +863,8 @@
                                 }
                             }, this);
                         });
-                        filteredFrameSummary = _.cloneDeep(vm.cachedFrameSummary);
+                        // CC-337, Amit
+                        // filteredFrameSummary = _.cloneDeep(vm.cachedFrameSummary);
                     }
                 }
                 filteredSummary = _.uniqBy(filteredSummary, function (e) {
@@ -877,8 +878,9 @@
                 vm.campaignSummary = _.cloneDeep(filteredSummary);
                 vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign', true);
 
+                vm.frameSummary = _.cloneDeep(filteredFrameSummary); 
                 vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'player', true);
-                vm.frameSummary = _.cloneDeep(filteredFrameSummary); // changing sequence for CC-337, Nishit
+                
 
                 if (vm.selectedChannel.length == 0) {
                     filterSummaries(vm.campaignSummary);
