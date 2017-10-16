@@ -749,6 +749,7 @@
                                     filteredSummary.push(inElement);
                                 }
                             }, this);
+                            filteredFrameSummary = _.cloneDeep(vm.cachedFrameSummary);                            
                         });
                         filteredSummary = _.uniqBy(filteredSummary, function (e) {
                             return e.id;
@@ -758,6 +759,7 @@
                         }
                     }
                 }
+
                 if (key == 'marketingName') {
                     if (vm.selectedSpecialists.length > 0 || vm.selectedChannel.length > 0) {
                         if (vm.selectedSpecialists.length > 0) {
@@ -810,6 +812,7 @@
                         });
                     }
                 }
+
                 if (key == 'campaignSummary') {
                     vm.channelSummaryByAudience = _.map(vm.channelSummaryByAudience, function (obj) {
                         return ((vm.selectedChannel.indexOf(obj.id) === -1) ? angular.extend(obj, {
@@ -864,9 +867,10 @@
                             }, this);
                         });
                         // CC-337, Amit
-                        // filteredFrameSummary = _.cloneDeep(vm.cachedFrameSummary);
+                        filteredFrameSummary = _.cloneDeep(vm.cachedFrameSummary);
                     }
                 }
+
                 filteredSummary = _.uniqBy(filteredSummary, function (e) {
                     return e.id;
                 });
@@ -983,6 +987,7 @@
                                     filteredSummary.push(inElement);
                                 }
                             }, this);
+                            
                         });
                         vm.selectedChannel.forEach(function (element) {
                             filteredSummary.forEach(function (inElement) {
