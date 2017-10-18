@@ -3,7 +3,7 @@
 
     angular.module('reportingDashboard').controller('DashboardCtrl', DashboardCtrl);
 
-    DashboardCtrl.$inject = ['filterService', 'configureOptions', 'Webworker'];
+    DashboardCtrl.$inject = ['filterService', 'configureOptions', 'Webworker', '$linq'];
 
     /**
      * 
@@ -11,16 +11,30 @@
      * @param {any} configureOptions
      * @param {any} Webworker
      */
-    function DashboardCtrl(filterService, configureOptions, Webworker) {
+    function DashboardCtrl(filterService, configureOptions, Webworker, $linq) {
         var vm = this;
 
         vm.fullscreenFor = '';
         vm.isZendeskTicketAvailable = false;
-        vm.searchCampaign = '';
+
+        vm.filters = {
+            specialists: [],
+            marketingNames: [],
+            channels: [],
+            campaignRef: ''
+        };
+        var chachedCampaignSummaryForMultipleChannels = [];
+        var chachedCampaignSummaryForMultipleSpecialists = [];
+        var chachedCampaignSummaryForMultipleMarketingNames = [];
+
+
+        vm.channelSummaryByAudience = [];
+        vm.channelSummaryByCampaign = [];
+
+
         vm.selectedCampaign = '';
         var tempSelectedFrame = '';
-        var filteredSummary = [];
-        var filteredFrameSummary = [];
+
 
         // Chart summary variables
         vm.campaignSummary = [];
@@ -30,9 +44,7 @@
         vm.chachedChannelSummaryByAudience = [];
         vm.chachedChannelSummaryByImpression = [];
         vm.daySummary = [];
-        vm.cachedDaySummary = [];
         vm.spanSummary = [];
-        vm.cachedSpanSummary = [];
         var resolutionCounter = 0;
         vm.smartContentURL = ''; // url for smart content
 
@@ -40,6 +52,7 @@
         vm.ccpLink = CCP_LINK;
 
         vm.frontEndVersion = frontEndVersion;
+
         vm.DASHBOARD_TYPES = [{
                 id: 1,
                 name: "Frame Dashboard",
@@ -100,11 +113,6 @@
         vm.defaultGuageColors = [BLUE_COLOR, "#E0E0E0"];
         vm.selectedGuageColors = [GREEN_COLOR, "#E0E0E0"];
         vm.sampleOptions = configureOptions.DOUGHNUT;
-
-        // Filter data selected by User//
-        vm.selectedMarketingNames = [];
-        vm.selectedSpecialists = [];
-        vm.selectedChannel = [];
 
         // Chart level filters
         vm.campaign = {
@@ -180,6 +188,7 @@
                 endDate: moment.Today
             }
         };
+
         /**
          * @desc This function filters campaigns with respect to business areas.
          * @param {any} channelid 
@@ -193,22 +202,30 @@
                 return;
             }
 
-            if (vm.searchCampaign && vm.searchCampaign.trim().length > 6) {
-                // this condition added for CC-135
-                return;
-            }
+            // if (vm.searchCampaign && vm.searchCampaign.trim().length > 6) {
+            //     // this condition added for CC-135
+            //     return;
+            // }
 
-            if (vm.selectedChannel.length > 0) {
-                if (_.includes(vm.selectedChannel, channelid)) {
-                    var index = _.indexOf(vm.selectedChannel, channelid);
-                    vm.selectedChannel.splice(index, 1);
+            if (vm.filters.channels.length > 0) {
+                if (_.includes(vm.filters.channels, channelid)) {
+                    var index = _.indexOf(vm.filters.channels, channelid);
+                    vm.filters.channels.splice(index, 1);
                 } else {
-                    vm.selectedChannel.push(channelid);
+                    vm.filters.channels.push(channelid);
                 }
             } else {
-                vm.selectedChannel.push(channelid);
+                vm.filters.channels.push(channelid);
             }
-            applyFilterOn(vm.selectedChannel, 'campaignSummary');
+
+            vm.channelSummaryByCampaign = _.map(vm.channelSummaryByCampaign, function (obj) {
+                return ((vm.filters.channels.indexOf(obj.id) === -1) ? angular.extend(obj, {
+                    guageColors: vm.defaultGuageColors
+                }) : angular.extend(obj, {
+                    guageColors: vm.selectedGuageColors
+                }));
+            });
+            applyFilter('channels');
         }
 
         /**
@@ -649,13 +666,13 @@
 
             checkAllcheckBoxes();
             setTimeout(function () {
-                if (arr === "selectedMarketingNames") {
+                if (arr === "marketingNames") {
                     $("#" + arr + " li").filter(function () {
-                        return $.text([this]) === vm[arr][index].marketingName;
+                        return $.text([this]) === vm.filters.marketingNames[index].marketingName;
                     }).trigger('click');
                 } else {
                     $("#" + arr + " li").filter(function () {
-                        return $.text([this]) === vm[arr][index].organisationName;
+                        return $.text([this]) === vm.filters.specialists[index].organisationName;
                     }).trigger('click');
                 }
                 $("body").trigger('click');
@@ -673,445 +690,11 @@
 
                 vm.frameSummary = _.cloneDeep(vm.cachedFrameSummary);
                 vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'player', true);
-                if (vm.selectedChannel.length == 0) {
+                if (vm.filters.channels.length == 0) {
                     filterSummaries(vm.campaignSummary);
                     filterChartData();
                 }
             }
-        }
-
-        /**
-         * This funtion filters campaign summary at UI.
-         * @param {any} data 
-         * @param {any} key 
-         * @author Amit Mahida
-         */
-        function applyFilterOn(data, key) {
-            var innerFilteredCampaigns;
-            var summaryToFilter = [];
-            var frameSummaryToFilter = [];
-
-            if (data && data.length > 0) {
-                filteredSummary = [];
-                filteredFrameSummary = [];
-                innerFilteredCampaigns = [];
-                if (data.length > 1) {
-                    summaryToFilter = _.cloneDeep(vm.cachedCampaignSummary);
-                    if (vm.cachedFrameSummary.length > 0) {
-                        frameSummaryToFilter = _.cloneDeep(vm.cachedFrameSummary);
-                    }
-                } else {
-                    summaryToFilter = _.cloneDeep(vm.campaignSummary);
-                    if (vm.frameSummary) {
-                        frameSummaryToFilter = _.cloneDeep(vm.frameSummary);
-                    }
-                }
-
-                if (key == 'specialist') {
-                    if (vm.selectedMarketingNames.length > 0 || vm.selectedChannel.length > 0) {
-                        if (vm.selectedChannel.length > 0) {
-                            vm.selectedChannel.forEach(function (element) {
-                                summaryToFilter.forEach(function (inElement) {
-                                    if (element === inElement.businessAreaCode) {
-                                        filteredSummary.push(inElement);
-                                    }
-                                }, this);
-                            });
-                        }
-                        if (vm.selectedMarketingNames && vm.selectedMarketingNames.length > 0) {
-                            vm.selectedMarketingNames.forEach(function (element) {
-                                summaryToFilter.forEach(function (inElement) {
-                                    if (_.includes(inElement.marketingNameCode, element.marketingNameId.toString())) {
-                                        filteredSummary.push(inElement);
-                                    }
-                                }, this);
-
-                                frameSummaryToFilter.forEach(function (inElement) {
-                                    if (_.includes(inElement.marketingNameCode, element.marketingNameId.toString())) {
-                                        filteredFrameSummary.push(inElement);
-                                    }
-                                }, this);
-                            });
-                        }
-                        data.forEach(function (element) {
-                            filteredSummary.forEach(function (inElement) {
-                                if (element.organisationId == inElement.specialistCode) {
-                                    innerFilteredCampaigns.push(inElement);
-                                }
-                            }, this);
-                        });
-                        filteredSummary = _.cloneDeep(innerFilteredCampaigns);
-                        filteredFrameSummary = _.cloneDeep(vm.cachedFrameSummary);
-                        innerFilteredCampaigns = [];
-                    } else {
-                        data.forEach(function (element) {
-                            vm.cachedCampaignSummary.forEach(function (inElement) {
-                                if (element.organisationId == inElement.specialistCode) {
-                                    filteredSummary.push(inElement);
-                                }
-                            }, this);
-                            filteredFrameSummary = _.cloneDeep(vm.cachedFrameSummary);                            
-                        });
-                        filteredSummary = _.uniqBy(filteredSummary, function (e) {
-                            return e.id;
-                        });
-                        if (vm.selectedChannel.length == 0) {
-                            filterSummaries(filteredSummary);
-                        }
-                    }
-                }
-
-                if (key == 'marketingName') {
-                    if (vm.selectedSpecialists.length > 0 || vm.selectedChannel.length > 0) {
-                        if (vm.selectedSpecialists.length > 0) {
-                            vm.selectedSpecialists.forEach(function (element) {
-                                summaryToFilter.forEach(function (inElement) {
-                                    if (element.organisationId == inElement.specialistCode) {
-                                        filteredSummary.push(inElement);
-                                    }
-                                }, this);
-                            });
-                        }
-                        if (vm.selectedChannel && vm.selectedChannel.length > 0) {
-                            vm.selectedChannel.forEach(function (element) {
-                                summaryToFilter.forEach(function (inElement) {
-                                    if (element === inElement.businessAreaCode) {
-                                        filteredSummary.push(inElement);
-                                    }
-                                }, this);
-                            });
-                        }
-                        data.forEach(function (element) {
-                            filteredSummary.forEach(function (inElement) {
-                                if (_.includes(inElement.marketingNameCode, element.marketingNameId.toString())) {
-                                    innerFilteredCampaigns.push(inElement);
-                                }
-                            }, this);
-
-                            frameSummaryToFilter.forEach(function (inElement) {
-                                if (_.includes(inElement.marketingNameCode, element.marketingNameId.toString())) {
-                                    filteredFrameSummary.push(inElement);
-                                }
-                            }, this);
-                        });
-
-                        filteredSummary = _.cloneDeep(innerFilteredCampaigns);
-                        innerFilteredCampaigns = [];
-                    } else {
-                        data.forEach(function (element) {
-                            vm.cachedCampaignSummary.forEach(function (inElement) {
-                                if (_.includes(inElement.marketingNameCode, element.marketingNameId.toString())) {
-                                    filteredSummary.push(inElement);
-                                }
-                            }, this);
-
-                            vm.cachedFrameSummary.forEach(function (inElement) {
-                                if (_.includes(inElement.marketingNameCode, element.marketingNameId.toString())) {
-                                    filteredFrameSummary.push(inElement);
-                                }
-                            }, this);
-                        });
-                    }
-                }
-
-                if (key == 'campaignSummary') {
-                    vm.channelSummaryByAudience = _.map(vm.channelSummaryByAudience, function (obj) {
-                        return ((vm.selectedChannel.indexOf(obj.id) === -1) ? angular.extend(obj, {
-                            guageColors: vm.defaultGuageColors
-                        }) : angular.extend(obj, {
-                            guageColors: vm.selectedGuageColors
-                        }));
-                    });
-                    if (vm.selectedSpecialists.length > 0 || vm.selectedMarketingNames.length > 0) {
-                        resetCharts();                        
-                        if (vm.selectedSpecialists && vm.selectedSpecialists.length > 0) {
-                            vm.selectedSpecialists.forEach(function (element) {
-                                summaryToFilter.forEach(function (inElement) {
-                                    if (element.organisationId == inElement.specialistCode) {
-                                        filteredSummary.push(inElement);
-                                    }
-                                }, this);
-                            });
-                        }
-                        if (vm.selectedMarketingNames && vm.selectedMarketingNames.length > 0) {
-                            vm.selectedMarketingNames.forEach(function (element) {
-                                summaryToFilter.forEach(function (inElement) {
-                                    if (_.includes(inElement.marketingNameCode, element.marketingNameId.toString())) {
-                                        filteredSummary.push(inElement);
-                                    }
-                                }, this);
-
-                                frameSummaryToFilter.forEach(function (inElement) {
-                                    if (_.includes(inElement.marketingNameCode, element.marketingNameId.toString())) {
-                                        filteredFrameSummary.push(inElement);
-                                    }
-                                }, this);
-                            });
-                        }
-
-                        data.forEach(function (element) {
-                            filteredSummary.forEach(function (inElement) {
-                                if (element === inElement.businessAreaCode) {
-                                    innerFilteredCampaigns.push(inElement);
-                                }
-                            }, this);
-                        });
-                        filteredSummary = _.cloneDeep(innerFilteredCampaigns);
-                        innerFilteredCampaigns = [];
-
-                    } else {
-                        data.forEach(function (element) {
-                            vm.cachedCampaignSummary.forEach(function (inElement) {
-                                if (element === inElement.businessAreaCode) {
-                                    filteredSummary.push(inElement);
-                                }
-                            }, this);
-                        });
-                        // CC-337, Amit
-                        filteredFrameSummary = _.cloneDeep(vm.cachedFrameSummary);
-                    }
-                }
-
-                filteredSummary = _.uniqBy(filteredSummary, function (e) {
-                    return e.id;
-                });
-
-                filteredFrameSummary = _.uniqBy(filteredFrameSummary, function (e) {
-                    return e.id;
-                });
-
-                vm.campaignSummary = _.cloneDeep(filteredSummary);
-                vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign', true);
-
-                vm.frameSummary = _.cloneDeep(filteredFrameSummary); 
-                vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'player', true);
-                
-
-                if (vm.selectedChannel.length == 0) {
-                    filterSummaries(vm.campaignSummary);
-                    filterChartData();
-                }
-                refreshCharts();
-            } else {
-                filteredSummary = [];
-                filteredFrameSummary = [];
-                innerFilteredCampaigns = [];
-                if (key == 'specialist') {
-                    if (vm.selectedMarketingNames && vm.selectedMarketingNames.length > 0) {
-                        vm.selectedMarketingNames.forEach(function (element) {
-                            vm.cachedCampaignSummary.forEach(function (inElement) {
-                                if (_.includes(inElement.marketingNameCode, element.marketingNameId.toString())) {
-                                    filteredSummary.push(inElement);
-                                }
-                            }, this);
-
-                            vm.cachedFrameSummary.forEach(function (inElement) {
-                                if (_.includes(inElement.marketingNameCode, element.marketingNameId.toString())) {
-                                    filteredFrameSummary.push(inElement);
-                                }
-                            }, this);
-                        });
-                    }
-                    if (vm.selectedChannel && vm.selectedChannel.length > 0) {
-                        vm.selectedChannel.forEach(function (element) {
-                            vm.cachedCampaignSummary.forEach(function (inElement) {
-                                if (element === inElement.businessAreaCode) {
-                                    filteredSummary.push(inElement);
-                                }
-                            }, this);
-                        });
-                    }
-                    if (vm.selectedMarketingNames.length > 0 && vm.selectedChannel.length > 0) {
-                        filteredSummary = [];
-                        filteredFrameSummary = [];
-                        vm.selectedMarketingNames.forEach(function (element) {
-
-                            vm.cachedCampaignSummary.forEach(function (inElement) {
-                                if (_.includes(inElement.marketingNameCode, element.marketingNameId.toString())) {
-                                    filteredSummary.push(inElement);
-                                }
-                            }, this);
-
-                            vm.cachedFrameSummary.forEach(function (inElement) {
-                                if (_.includes(inElement.marketingNameCode, element.marketingNameId.toString())) {
-                                    filteredFrameSummary.push(inElement);
-                                }
-                            }, this);
-                        });
-                        vm.selectedChannel.forEach(function (element) {
-                            filteredSummary.forEach(function (inElement) {
-                                if (element === inElement.businessAreaCode) {
-                                    innerFilteredCampaigns.push(inElement);
-                                }
-                            }, this);
-                        });
-                        filteredSummary = _.cloneDeep(innerFilteredCampaigns);
-                        innerFilteredCampaigns = [];
-                    }
-                    if (vm.selectedMarketingNames.length == 0 && vm.selectedChannel.length == 0) {
-                        resetAllFilters();
-                        refreshCharts();
-                        if (vm.searchCampaign != '') {
-                            vm.searchCampaignRef();
-                        }
-                        return;
-                    }
-                    vm.campaignSummary = _.cloneDeep(filteredSummary);
-                    vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign', true);
-                }
-                if (key == 'marketingName') {
-                    if (vm.selectedSpecialists && vm.selectedSpecialists.length > 0) {
-                        vm.selectedSpecialists.forEach(function (element) {
-                            vm.cachedCampaignSummary.forEach(function (inElement) {
-                                if (element.organisationId == inElement.specialistCode) {
-                                    filteredSummary.push(inElement);
-                                }
-                            }, this);
-                        });
-                    }
-                    if (vm.selectedChannel && vm.selectedChannel.length > 0) {
-                        vm.selectedChannel.forEach(function (element) {
-                            vm.cachedCampaignSummary.forEach(function (inElement) {
-                                if (element === inElement.businessAreaCode) {
-                                    filteredSummary.push(inElement);
-                                }
-                            }, this);
-                        });
-
-                    }
-
-                    if (vm.selectedSpecialists.length > 0 && vm.selectedChannel.length > 0) {
-                        filteredSummary = [];
-                        vm.selectedSpecialists.forEach(function (element) {
-                            vm.cachedCampaignSummary.forEach(function (inElement) {
-                                if (element.organisationId == inElement.specialistCode) {
-                                    filteredSummary.push(inElement);
-                                }
-                            }, this);
-                            
-                        });
-                        vm.selectedChannel.forEach(function (element) {
-                            filteredSummary.forEach(function (inElement) {
-                                if (element === inElement.businessAreaCode) {
-                                    innerFilteredCampaigns.push(inElement);
-                                }
-                            }, this);
-                        });
-                        filteredSummary = _.cloneDeep(innerFilteredCampaigns);
-                        innerFilteredCampaigns = [];
-                    }
-                    if (vm.selectedSpecialists.length == 0 && vm.selectedChannel.length == 0) {
-                        resetAllFilters();
-                        refreshCharts();
-                        if (vm.searchCampaign != '') {
-                            vm.searchCampaignRef();
-                        }
-                        return;
-                    }
-                    vm.campaignSummary = _.cloneDeep(filteredSummary);
-                    vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign', true);
-
-                }
-                if (key == 'campaignSummary') {
-                    vm.channelSummaryByAudience = _.map(vm.channelSummaryByAudience, function (obj) {
-                        return ((vm.selectedChannel.indexOf(obj.id) === -1) ? angular.extend(obj, {
-                            guageColors: vm.defaultGuageColors
-                        }) : angular.extend(obj, {
-                            guageColors: vm.selectedGuageColors
-                        }));
-                    });
-                    if (vm.selectedMarketingNames && vm.selectedMarketingNames.length > 0) {
-                        vm.selectedMarketingNames.forEach(function (element) {
-                            vm.cachedCampaignSummary.forEach(function (inElement) {
-                                if (_.includes(inElement.marketingNameCode, element.marketingNameId.toString())) {
-                                    filteredSummary.push(inElement);
-                                }
-                            }, this);
-
-                            vm.cachedFrameSummary.forEach(function (inElement) {
-                                if (_.includes(inElement.marketingNameCode, element.marketingNameId.toString())) {
-                                    filteredFrameSummary.push(inElement);
-                                }
-                            }, this);
-                        });
-                        resetCharts();
-                    }
-                    if (vm.selectedSpecialists && vm.selectedSpecialists.length > 0) {
-                        vm.selectedSpecialists.forEach(function (element) {
-                            vm.cachedCampaignSummary.forEach(function (inElement) {
-                                if (element.organisationId == inElement.specialistCode) {
-                                    filteredSummary.push(inElement);
-                                }
-                            }, this);
-                        });
-                        resetCharts();
-                    }
-                    if (vm.selectedSpecialists.length > 0 && vm.selectedMarketingNames.length > 0) {
-                        filteredSummary = [];
-                        vm.selectedMarketingNames.forEach(function (element) {
-                            vm.cachedCampaignSummary.forEach(function (inElement) {
-                                if (_.includes(inElement.marketingNameCode, element.marketingNameId.toString())) {
-                                    filteredSummary.push(inElement);
-                                }
-                            }, this);
-
-                            vm.cachedFrameSummary.forEach(function (inElement) {
-                                if (_.includes(inElement.marketingNameCode, element.marketingNameId.toString())) {
-                                    filteredFrameSummary.push(inElement);
-                                }
-                            }, this);
-                        });
-                        vm.selectedSpecialists.forEach(function (element) {
-                            filteredSummary.forEach(function (inElement) {
-                                if (element.organisationId == inElement.specialistCode) {
-                                    innerFilteredCampaigns.push(inElement);
-                                }
-                            }, this);
-                        });
-                        filteredSummary = _.cloneDeep(innerFilteredCampaigns);
-                        innerFilteredCampaigns = [];
-                        resetCharts();
-                    }
-                    if (vm.selectedSpecialists.length == 0 && vm.selectedMarketingNames.length == 0) {
-                        resetAllFilters();
-                        resetCharts();
-                        refreshCharts();
-                        if (vm.searchCampaign != '') {
-                            vm.searchCampaignRef();
-                        }
-                        vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign', true);
-                        return;
-                    }
-                    vm.campaignSummary = _.cloneDeep(filteredSummary);
-                    vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign', true);
-                }
-                if (vm.selectedChannel && vm.selectedChannel.length == 0) {
-                    filterSummaries(vm.campaignSummary);
-                    filterChartData();
-                }
-            }
-
-            if (vm.searchCampaign != '') {
-                vm.searchCampaignRef();
-            }
-
-            refreshCharts();
-            return filteredSummary;
-        }
-
-        /**
-         * @desc
-         */
-        function filterOnSpecialist() {
-            applyFilterOn(vm.selectedSpecialists, 'specialist');
-        }
-
-        /**
-         * 
-         * @desc
-         */
-        function filterOnMarketingName() {
-            applyFilterOn(vm.selectedMarketingNames, 'marketingName');
         }
 
         /**
@@ -1125,8 +708,8 @@
             var percentage = 0;
 
             // black charts (Audience Compliance)
-            for (var index = 0; index < vm.channelSummaryByImpression.length; index++) {
-                var inelement = vm.channelSummaryByImpression[index];
+            for (var index = 0; index < vm.channelSummaryByAudience.length; index++) {
+                var inelement = vm.channelSummaryByAudience[index];
 
                 if (totalCampaigns[inelement.id]) {
                     totalCampaignsForBusinessArea = totalCampaigns[inelement.id];
@@ -1141,17 +724,17 @@
                         }
                     }
                     percentage = (sumOfTarget == 0) ? 0 : ((sumOfActual / sumOfTarget) * 100);
-                    vm.channelSummaryByImpression[index].percentage = percentage > 100 ? 100 : percentage;
-                    vm.channelSummaryByImpression[index].percentageDisplay = percentage > 100 ? 100 : parseFloat(percentage).toFixed(2);
+                    vm.channelSummaryByAudience[index].percentage = percentage > 100 ? 100 : percentage;
+                    vm.channelSummaryByAudience[index].percentageDisplay = percentage > 100 ? 100 : parseFloat(percentage).toFixed(2);
                 } else {
-                    vm.channelSummaryByImpression[index].percentage = 0;
-                    vm.channelSummaryByImpression[index].percentageDisplay = 0;
+                    vm.channelSummaryByAudience[index].percentage = 0;
+                    vm.channelSummaryByAudience[index].percentageDisplay = 0;
                 }
             }
 
             // blue charts (Campaign Compliance)
-            for (var index1 = 0; index1 < vm.channelSummaryByAudience.length; index1++) {
-                var inelement2 = vm.channelSummaryByAudience[index1];
+            for (var index1 = 0; index1 < vm.channelSummaryByCampaign.length; index1++) {
+                var inelement2 = vm.channelSummaryByCampaign[index1];
                 if (totalCampaigns[inelement2.id]) {
                     totalCampaignsForBusinessArea = totalCampaigns[inelement2.id];
                     if (totalCampaignsForBusinessArea.length > 0) {
@@ -1159,10 +742,10 @@
                             return obj.failedAudience == false;
                         });
                         percentage = (compliantCampaignsForBusinessArea.length / totalCampaignsForBusinessArea.length) * 100;
-                        vm.channelSummaryByAudience[index1].value = percentage > 100 ? 100 : parseFloat(percentage).toFixed(2);
+                        vm.channelSummaryByCampaign[index1].value = percentage > 100 ? 100 : parseFloat(percentage).toFixed(2);
                     }
                 } else {
-                    vm.channelSummaryByAudience[index1].value = 0;
+                    vm.channelSummaryByCampaign[index1].value = 0;
                 }
             }
         }
@@ -1230,50 +813,6 @@
         }
 
         /**
-         * @desc This function filters the summaries displayed in the gauge chart at UI level
-         * @author Amit Mahida
-         */
-        function searchCampaignRef() {
-            if (vm.searchCampaign && vm.searchCampaign.trim().length >= 3) {
-                var substringArray = _.map(['SM', 'SB', 'BK'], function (substring) {
-                    return vm.searchCampaign.toUpperCase().indexOf(substring) > -1;
-                });
-
-                if (substringArray.indexOf(true) > -1) {
-
-                    if (vm.selectedChannel.length == 0 &&
-                        vm.selectedMarketingNames.length == 0 &&
-                        vm.selectedSpecialists.length == 0) {
-                        vm.campaignSummary = _.cloneDeep(vm.cachedCampaignSummary);
-                    }
-
-                    var data = vm.campaignSummary.filter(function (obj) {
-                        return obj.id.indexOf(vm.searchCampaign.toUpperCase()) > -1;
-                    });
-                    vm.campaignSummary = _.cloneDeep(data);
-                    if (data.length === 0) {
-                        vm.showCampaign = false;
-                        vm.showPlayer = false;
-                        vm.showDay = false;
-                        vm.showHour = false;
-                    }
-                    filterSummaries(data);
-                    filterChartData();
-                    vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign', false);
-                } else {
-                    console.log('Please enter valid campaign Reference');
-                }
-            } else {
-                if (vm.searchCampaign.trim().length == 0) {
-                    vm.channelSummaryByAudience = _.cloneDeep(vm.chachedChannelSummaryByAudience);
-                    vm.channelSummaryByImpression = _.cloneDeep(vm.chachedChannelSummaryByImpression);
-                    applyParallelFilters();
-                }
-                return false;
-            }
-        }
-
-        /**
          * This function resets the state of chart level checkbox filters
          * @returns void
          */
@@ -1294,56 +833,57 @@
          */
         function setToolTips() {
 
-            $("#dashBoardToolTip").attr("data-tooltip", vm.userBundle['common.dashboard.tooltip']);
-            $("#dashBoardToolTip").tooltip();
+            if (!_.isUndefined(vm.userBundle)) {
+                $("#dashBoardToolTip").attr("data-tooltip", vm.userBundle['common.dashboard.tooltip']);
+                $("#dashBoardToolTip").tooltip();
 
-            $("#gaugetooltip").attr("data-tooltip", vm.userBundle['common.gauge.tooltip']);
-            $("#gaugetooltip").tooltip();
+                $("#gaugetooltip").attr("data-tooltip", vm.userBundle['common.gauge.tooltip']);
+                $("#gaugetooltip").tooltip();
 
-            $("#gaugetooltip_audience").attr("data-tooltip", vm.userBundle['common.gauge.tooltip.audience']);
-            $("#gaugetooltip_audience").tooltip();
+                $("#gaugetooltip_audience").attr("data-tooltip", vm.userBundle['common.gauge.tooltip.audience']);
+                $("#gaugetooltip_audience").tooltip();
 
-            // campaign
-            $("#framecampaigntooltip").attr("data-tooltip", vm.userBundle['popboard.frame.campaign.tooltip']);
-            $("#framecampaigntooltip").tooltip();
+                // campaign
+                $("#framecampaigntooltip").attr("data-tooltip", vm.userBundle['popboard.frame.campaign.tooltip']);
+                $("#framecampaigntooltip").tooltip();
 
-            $("#sotcampaigntooltip").attr("data-tooltip", vm.userBundle['popboard.sot.campaign.tooltip']);
-            $("#sotcampaigntooltip").tooltip();
+                $("#sotcampaigntooltip").attr("data-tooltip", vm.userBundle['popboard.sot.campaign.tooltip']);
+                $("#sotcampaigntooltip").tooltip();
 
-            $("#impressionscampaigntooltip").attr("data-tooltip", vm.userBundle['popboard.impressions.campaign.tooltip']);
-            $("#impressionscampaigntooltip").tooltip();
+                $("#impressionscampaigntooltip").attr("data-tooltip", vm.userBundle['popboard.impressions.campaign.tooltip']);
+                $("#impressionscampaigntooltip").tooltip();
 
-            // player
-            $("#frameplayertooltip").attr("data-tooltip", vm.userBundle['popboard.frame.player.tooltip']);
-            $("#frameplayertooltip").tooltip();
+                // player
+                $("#frameplayertooltip").attr("data-tooltip", vm.userBundle['popboard.frame.player.tooltip']);
+                $("#frameplayertooltip").tooltip();
 
-            $("#sotplayertooltip").attr("data-tooltip", vm.userBundle['popboard.sot.player.tooltip']);
-            $("#sotplayertooltip").tooltip();
+                $("#sotplayertooltip").attr("data-tooltip", vm.userBundle['popboard.sot.player.tooltip']);
+                $("#sotplayertooltip").tooltip();
 
-            $("#impressionsplayertooltip").attr("data-tooltip", vm.userBundle['popboard.impressions.player.tooltip']);
-            $("#impressionsplayertooltip").tooltip();
+                $("#impressionsplayertooltip").attr("data-tooltip", vm.userBundle['popboard.impressions.player.tooltip']);
+                $("#impressionsplayertooltip").tooltip();
 
 
-            //Date
-            $("#framedatetooltip").attr("data-tooltip", vm.userBundle['popboard.frame.date.tooltip']);
-            $("#framedatetooltip").tooltip();
+                //Date
+                $("#framedatetooltip").attr("data-tooltip", vm.userBundle['popboard.frame.date.tooltip']);
+                $("#framedatetooltip").tooltip();
 
-            $("#sotdatetooltip").attr("data-tooltip", vm.userBundle['popboard.sot.date.tooltip']);
-            $("#sotdatetooltip").tooltip();
+                $("#sotdatetooltip").attr("data-tooltip", vm.userBundle['popboard.sot.date.tooltip']);
+                $("#sotdatetooltip").tooltip();
 
-            $("#impressionstdatetooltip").attr("data-tooltip", vm.userBundle['popboard.impressions.date.tooltip']);
-            $("#impressionstdatetooltip").tooltip();
+                $("#impressionstdatetooltip").attr("data-tooltip", vm.userBundle['popboard.impressions.date.tooltip']);
+                $("#impressionstdatetooltip").tooltip();
 
-            // Time
-            $("#frametimetooltip").attr("data-tooltip", vm.userBundle['popboard.frame.time.tooltip']);
-            $("#frametimetooltip").tooltip();
+                // Time
+                $("#frametimetooltip").attr("data-tooltip", vm.userBundle['popboard.frame.time.tooltip']);
+                $("#frametimetooltip").tooltip();
 
-            $("#sottimetooltip").attr("data-tooltip", vm.userBundle['popboard.sot.time.tooltip']);
-            $("#sottimetooltip").tooltip();
+                $("#sottimetooltip").attr("data-tooltip", vm.userBundle['popboard.sot.time.tooltip']);
+                $("#sottimetooltip").tooltip();
 
-            $("#impressionstimetooltip").attr("data-tooltip", vm.userBundle['popboard.impressions.time.tooltip']);
-            $("#impressionstimetooltip").tooltip();
-
+                $("#impressionstimetooltip").attr("data-tooltip", vm.userBundle['popboard.impressions.time.tooltip']);
+                $("#impressionstimetooltip").tooltip();
+            }
         }
 
         /**
@@ -1509,6 +1049,33 @@
                         }
                     };
 
+
+                    vm.impressionsOptions.animation = {
+                        onProgress: function (chart) {
+                            var sourceCanvas = this.chart.ctx.canvas;
+                            var copyHeight = this.scales['x-axis-0'].height - 4;
+                            var copyWidth = sourceCanvas.width;
+                            var targetCtx = document.getElementById("campaignXAxis2").getContext("2d");
+                            targetCtx.canvas.width = sourceCanvas.width;
+                            targetCtx.canvas.style.width = sourceCanvas.scrollWidth + 'px';
+                            targetCtx.canvas.height = copyHeight;
+                            targetCtx.drawImage(sourceCanvas, 0, 0, copyWidth, copyHeight, 0, 0, copyWidth, copyHeight);
+                            vm.campaignAudienceYAxisLabel = this.chart.options.scales.yAxes[0].scaleLabel.labelString;
+
+                        },
+                        onComplete: function (chart) {
+                            var sourceCanvas = this.chart.ctx.canvas;
+                            var copyHeight = this.scales['x-axis-0'].height - 4;
+                            var copyWidth = sourceCanvas.width;
+                            var targetCtx = document.getElementById("campaignXAxis2").getContext("2d");
+                            targetCtx.canvas.width = sourceCanvas.width;
+                            targetCtx.canvas.style.width = sourceCanvas.scrollWidth + 'px';
+                            targetCtx.canvas.height = copyHeight;
+                            targetCtx.drawImage(sourceCanvas, 0, 0, copyWidth, copyHeight, 0, 0, copyWidth, copyHeight);
+                            vm.campaignAudienceYAxisLabel = this.chart.options.scales.yAxes[0].scaleLabel.labelString;
+                        }
+                    };
+
                     vm.campaignOptions.size.height = calculateHeightForCampaign(_.clone(configureOptions.HORIZONTAL_BAR.size.height), chartData.length);
                     vm.impressionsOptions.size.height = _.cloneDeep(vm.campaignOptions.size.height);
 
@@ -1576,7 +1143,7 @@
                         enabled: true,
                         mode: 'index',
                         position: 'average',
-                        yAlign: 'bottom',
+                        yAlign: 'top',
                         displayColors: true
                     };
 
@@ -1779,25 +1346,6 @@
         }
 
         /**
-         * @desc
-         */
-        function applyParallelFilters() {
-            if (vm.selectedSpecialists.length > 0) {
-                vm.filterOnSpecialist();
-            } else if (vm.selectedMarketingNames.length > 0) {
-                vm.filterOnMarketingName();
-            } else if (vm.selectedChannel.length > 0) {
-                applyFilterOn(vm.selectedChannel, 'campaignSummary');
-            } else {
-                vm.campaignSummary = _.cloneDeep(vm.cachedCampaignSummary);
-                vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign', true);
-            }
-            if (vm.searchCampaign != '') {
-                vm.searchCampaignRef();
-            }
-        }
-
-        /**
          * This function retrives all summary chart's data from the server
          * @returns void
          */
@@ -1837,18 +1385,18 @@
                 if (response && response.data) {
                     var data = response.data;
                     if (data.channelSummary && data.channelSummary.length > 0) {
-                        vm.channelSummaryByAudience = data.channelSummaryByAudience;
-                        vm.channelSummaryByImpression = data.channelSummaryByImpression;
+                        vm.channelSummaryByCampaign = data.channelSummaryByAudience;
+                        vm.channelSummaryByAudience = data.channelSummaryByImpression;
 
-                        vm.channelSummaryByAudience = _.map(vm.channelSummaryByAudience, function (obj) {
-                            return ((vm.selectedChannel.indexOf(obj.id) === -1) ? angular.extend(obj, {
+                        vm.channelSummaryByCampaign = _.map(vm.channelSummaryByCampaign, function (obj) {
+                            return ((vm.filters.channels.indexOf(obj.id) === -1) ? angular.extend(obj, {
                                 guageColors: vm.defaultGuageColors
                             }) : angular.extend(obj, {
                                 guageColors: vm.selectedGuageColors
                             }));
                         });
 
-                        vm.channelSummaryByImpression = _.map(vm.channelSummaryByImpression, function (obj) {
+                        vm.channelSummaryByAudience = _.map(vm.channelSummaryByAudience, function (obj) {
                             var percentage;
 
                             if (parseFloat(obj.value)) {
@@ -1866,8 +1414,8 @@
                             }, moreData));
                         });
 
-                        vm.chachedChannelSummaryByAudience = _.cloneDeep(vm.channelSummaryByAudience);
-                        vm.chachedChannelSummaryByImpression = _.cloneDeep(vm.channelSummaryByImpression);
+                        vm.chachedChannelSummaryByAudience = _.cloneDeep(vm.channelSummaryByCampaign);
+                        vm.chachedChannelSummaryByImpression = _.cloneDeep(vm.channelSummaryByAudience);
                     }
                     if (data.campaignSummary) {
                         if (data.campaignSummary.length > 0) {
@@ -1938,7 +1486,8 @@
                             vm.showHour = false;
                         }
                     }
-                    applyParallelFilters();
+
+                    applyAllFiltersExcept();
                     highlightSelectedBar();
                 }
 
@@ -2205,7 +1754,6 @@
          * @param {any} totalRecords 
          * @returns 
          */
-        // changed width for CC-295
         function calculateWidthForPlayer(totalRecords) {
             if (totalRecords <= 4) {
                 return totalRecords * 150;
@@ -2219,7 +1767,8 @@
         }
 
         /**
-         * @desc
+         * @description
+         * 
          */
         function showHideFilters() {
             if (vm.showFilter) {
@@ -2234,10 +1783,257 @@
         function refreshCharts() {
             $('#campaign').width($('#campaign').width() - 1);
             $('#campaign').width($('#campaign').width() + 1);
+            $('#campaignAudience').height($('#campaignAudience').height() - 1);
+            $('#campaignAudience').height($('#campaignAudience').height() + 1);
             $('#player').width($('#player').width() - 1);
             $('#player').width($('#player').width() + 1);
             $('#day').width($('#day').width() - 1);
             $('#day').width($('#day').width() + 1);
+        }
+
+        function isFiltersApplied(filterName) {
+            var alreadyHaveFilters = false;
+            for (var key in vm.filters) {
+                if (vm.filters.hasOwnProperty(key)) {
+                    var filter = vm.filters[key];
+                    if (!_.isUndefined(filterName)) {
+                        if (!_.isUndefined(filter) && filter.length > 0 && key !== filterName) {
+                            alreadyHaveFilters = true;
+                        }
+                    } else {
+                        if (!_.isUndefined(filter) && filter.length > 0) {
+                            alreadyHaveFilters = true;
+                        }
+                    }
+
+                }
+            }
+            return alreadyHaveFilters;
+        }
+
+        function applyAllFiltersExcept(filterName) {
+            var tempCampaignSummary = _.cloneDeep(vm.cachedCampaignSummary);
+            for (var key in vm.filters) {
+                if (vm.filters.hasOwnProperty(key)) {
+                    var filter = vm.filters[key];
+                    if (!_.isUndefined(filterName)) {
+                        var exceptFlag = !_.isUndefined(filterName) ? (key !== filterName) : true;
+                        if (!_.isUndefined(filter) && filter.length > 0 && exceptFlag) {
+                            switch (key) {
+                                case 'campaignRef':
+                                    var substringArray = _.map(['SM', 'SB', 'BK'], function (substring) {
+                                        return filter.toUpperCase().indexOf(substring) > -1;
+                                    });
+
+                                    if (substringArray.indexOf(true) > -1) {
+                                        tempCampaignSummary = tempCampaignSummary.filter(function (obj) {
+                                            return obj.id.indexOf(filter.toUpperCase()) > -1;
+                                        });
+                                    }
+
+                                    break;
+
+                                case 'channels':
+
+                                    var selectedChannels = _.cloneDeep(filter);
+                                    tempCampaignSummary = $linq.Enumerable()
+                                        .From(tempCampaignSummary)
+                                        .Where(function (obj) {
+                                            return _.includes(selectedChannels, obj.businessAreaCode);
+                                        }).ToArray();
+
+                                    break;
+                                case 'marketingNames':
+
+                                    var selectedMarketingNames = [];
+                                    filter.forEach(function (element) {
+                                        selectedMarketingNames.push(element.marketingNameId.toString());
+                                    });
+                                    tempCampaignSummary = $linq.Enumerable()
+                                        .From(tempCampaignSummary)
+                                        .Where(function (obj) {
+                                            return _.intersection(selectedMarketingNames, obj.marketingNameCode).length > 0;
+                                        }).ToArray();
+
+                                    vm.frameSummary = $linq.Enumerable()
+                                        .From(vm.cachedFrameSummary)
+                                        .Where(function (obj) {
+                                            return _.intersection(selectedMarketingNames, obj.marketingNameCode).length > 0;
+                                        }).ToArray();
+
+                                    break;
+                                case 'specialists':
+
+                                    var selectedSpecialists = [];
+                                    filter.forEach(function (element) {
+                                        selectedSpecialists.push(element.organisationId);
+                                    });
+                                    tempCampaignSummary = $linq.Enumerable()
+                                        .From(tempCampaignSummary)
+                                        .Where(function (obj) {
+                                            return _.includes(selectedSpecialists, obj.specialistCode)
+                                        }).ToArray();
+
+                                    break;
+
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            vm.campaignSummary = _.cloneDeep(tempCampaignSummary);
+        }
+
+        function applyFilter(filterName) {
+
+            var tempCampaignSummary = [];
+
+            if (isFiltersApplied(filterName)) {
+                tempCampaignSummary = _.cloneDeep(vm.campaignSummary);
+            } else {
+                tempCampaignSummary = _.cloneDeep(vm.cachedCampaignSummary);
+            }
+
+            switch (filterName) {
+                case 'campaignRef':
+
+                    if (vm.filters[filterName] && vm.filters[filterName].trim().length >= 1) {
+                        var substringArray = _.map(['SM', 'SB', 'BK'], function (substring) {
+                            return vm.filters[filterName].toUpperCase().indexOf(substring) > -1;
+                        });
+
+                        if (substringArray.indexOf(true) > -1) {
+                            vm.campaignSummary = tempCampaignSummary.filter(function (obj) {
+                                return obj.id.indexOf(vm.filters[filterName].toUpperCase()) > -1;
+                            });
+                        } else {
+                            console.log('Please enter valid campaign Reference');
+                        }
+                    } else {
+                        if (!isFiltersApplied(filterName)) {
+                            vm.channelSummaryByCampaign = _.cloneDeep(vm.chachedChannelSummaryByAudience);
+                            vm.channelSummaryByAudience = _.cloneDeep(vm.chachedChannelSummaryByImpression);
+                            vm.campaignSummary = _.cloneDeep(vm.cachedCampaignSummary);
+                            filterSummaries(vm.campaignSummary);
+                        } else {
+                            applyAllFiltersExcept(filterName);
+                        }
+                    }
+                    break;
+                case 'channels':
+
+                    var selectedChannels = _.cloneDeep(vm.filters[filterName]);
+                    if (selectedChannels.length === 1) {
+                        chachedCampaignSummaryForMultipleChannels = _.cloneDeep(tempCampaignSummary);
+                    } else {
+                        if (selectedChannels.length !== 0) {
+                            tempCampaignSummary = _.cloneDeep(chachedCampaignSummaryForMultipleChannels);
+                        }
+                    }
+                    vm.campaignSummary = $linq.Enumerable()
+                        .From(tempCampaignSummary)
+                        .Where(function (obj) {
+                            return _.includes(selectedChannels, obj.businessAreaCode);
+                        }).ToArray();
+
+
+                    if (selectedChannels.length === 0) {
+                        chachedCampaignSummaryForMultipleChannels = [];
+                        if (!isFiltersApplied(filterName)) {
+                            vm.campaignSummary = _.cloneDeep(vm.cachedCampaignSummary);
+                            filterSummaries(vm.campaignSummary);
+                        } else {
+                            applyAllFiltersExcept(filterName);
+                        }
+                    }
+
+                    break;
+                case 'marketingNames':
+
+                    var selectedMarketingNames = [];
+                    vm.filters[filterName].forEach(function (element) {
+                        selectedMarketingNames.push(element.marketingNameId.toString());
+                    });
+
+                    if (selectedMarketingNames.length === 1) {
+                        chachedCampaignSummaryForMultipleMarketingNames = _.cloneDeep(tempCampaignSummary);
+                    } else {
+                        if (selectedMarketingNames.length !== 0) {
+                            tempCampaignSummary = _.cloneDeep(chachedCampaignSummaryForMultipleMarketingNames);
+                        }
+                    }
+                    vm.campaignSummary = $linq.Enumerable()
+                        .From(tempCampaignSummary)
+                        .Where(function (obj) {
+                            return _.intersection(selectedMarketingNames, obj.marketingNameCode).length > 0;
+                        }).ToArray();
+
+                    vm.frameSummary = $linq.Enumerable()
+                        .From(vm.cachedFrameSummary)
+                        .Where(function (obj) {
+                            return _.intersection(selectedMarketingNames, obj.marketingNameCode).length > 0;
+                        }).ToArray();
+
+                    if (selectedMarketingNames.length == 0) {
+                        chachedCampaignSummaryForMultipleMarketingNames = [];
+                        if (!isFiltersApplied(filterName)) {
+                            vm.campaignSummary = _.cloneDeep(vm.cachedCampaignSummary);
+                            vm.frameSummary = _.cloneDeep(vm.cachedFrameSummary);
+                            filterSummaries(vm.campaignSummary);
+                        } else {
+                            applyAllFiltersExcept(filterName);
+                        }
+                    }
+
+                    break;
+                case 'specialists':
+
+                    var selectedSpecialists = [];
+                    vm.filters[filterName].forEach(function (element) {
+                        selectedSpecialists.push(element.organisationId);
+                    });
+                    if (selectedSpecialists.length === 1) {
+                        chachedCampaignSummaryForMultipleSpecialists = _.cloneDeep(tempCampaignSummary);
+                    } else {
+                        if (selectedSpecialists.length !== 0) {
+                            tempCampaignSummary = _.cloneDeep(chachedCampaignSummaryForMultipleSpecialists);
+                        }
+                    }
+                    vm.campaignSummary = $linq.Enumerable()
+                        .From(tempCampaignSummary)
+                        .Where(function (obj) {
+                            return _.includes(selectedSpecialists, obj.specialistCode)
+                        }).ToArray();
+
+                    if (selectedSpecialists.length == 0) {
+                        chachedCampaignSummaryForMultipleSpecialists = [];
+                        if (!isFiltersApplied(filterName)) {
+                            vm.campaignSummary = _.cloneDeep(vm.cachedCampaignSummary);
+                            filterSummaries(vm.campaignSummary);
+                        } else {
+                            applyAllFiltersExcept(filterName);
+                        }
+                    }
+
+                    break;
+
+                default:
+                    break;
+            }
+
+            if (filterName !== 'channels') {
+                if (!isFiltersApplied('channels')) {
+                    filterSummaries(vm.cachedCampaignSummary);
+                } else {
+                    filterSummaries(vm.campaignSummary);
+                }
+
+            }
+            vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign', true);
+            refreshCharts();
         }
 
         // two way binded functions
@@ -2251,10 +2047,9 @@
         vm.loadmarketingNames = loadmarketingNames;
         vm.loadSpecialist = loadSpecialist;
         vm.removeTags = removeTags;
-        vm.filterOnSpecialist = filterOnSpecialist;
-        vm.filterOnMarketingName = filterOnMarketingName;
-        vm.searchCampaignRef = searchCampaignRef;
         vm.closeTooltip = closeTooltip;
+        vm.applyFilter = applyFilter;
+        vm.refreshCharts = refreshCharts;
         getInitialConfig();
     }
 })();

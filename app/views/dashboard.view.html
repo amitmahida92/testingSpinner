@@ -36,28 +36,28 @@
                     <label for="">{{vm.userBundle['common.dateRange']}}</label>
                     <!--<input placeholder="Select date range" id="first_name" type="text" class=" no-margin">-->
                     <input date-range-picker id="dateRange" class="no-margin" type="text" placeholder="Select Date Range" ng-model="vm.datePicker.date"
-                        options="vm.datePickerOptions" ng-change="vm.dateChanged()" />
+                        options="vm.datePickerOptions" />
                     <i class="material-icons inputicon">date_range</i>
                 </div>
 
-                <div class="section col s12 m2" style="z-index:2" id="selectedSpecialists">
+                <div class="section col s12 m2" style="z-index:2" id="specialists">
                     <label for="">{{vm.userBundle['common.specialist']}}</label>
-                    <select ng-change="vm.filterOnSpecialist()" class="" ng-model="vm.selectedSpecialists" material-select multiple watch>
+                    <select ng-change="vm.applyFilter('specialists')" class="" ng-model="vm.filters.specialists" material-select multiple watch>
                         <option value="" disabled selected>Select Specialist</option>    
                         <option ng-value="value" ng-repeat="value in vm.specialists">{{value.organisationName}}</option>
                     </select>
                 </div>
-                <div class=" col s12 m2" style="z-index:1" id="selectedMarketingNames">
+                <div class=" col s12 m2" style="z-index:1" id="marketingNames">
                     <label for="">{{vm.userBundle['common.marketingname']}}</label>
 
-                    <select ng-change="vm.filterOnMarketingName()" class="" ng-model="vm.selectedMarketingNames" material-select multiple watch>
+                    <select ng-change="vm.applyFilter('marketingNames')" class="" ng-model="vm.filters.marketingNames" material-select multiple watch>
                         <option value="" disabled selected>Select Marketing Name</option>    
                         <option ng-value="value" ng-repeat="value in vm.marketingNames">{{value.marketingName}}</option>
                     </select>
                 </div>
                 <div class="col s12 m2" style="z-index:1">
                     <label for="">Search Campaign</label>
-                    <input id="Search" class="no-margin" ng-model="vm.searchCampaign" ng-change="vm.searchCampaignRef()" type="text" placeholder="Search Campaign"
+                    <input id="Search" class="no-margin" ng-model="vm.filters.campaignRef" ng-change="vm.applyFilter('campaignRef')" type="text" placeholder="Search Campaign"
                         ng-model-options='{ debounce: 750 }' />
                 </div>
 
@@ -65,7 +65,7 @@
                     <div class="switch right">
                         <label>
                             <span class="active"><!-- {{vm.userBundle['common.campaign.compliance.summary']}}--> Campaign<a id="gaugetooltip" class="btn-floating btn-flat blue-text right btn_popover gaugeinfo" data-position="bottom" data-delay="75"><i class="material-icons blue-text" >info_outline</i></a></span> 
-                                <input type="checkbox" ng-model="vm.campaignSummaryCheck" />
+                                <input type="checkbox" ng-model="vm.campaignSummaryCheck" ng-change="vm.refreshCharts()"/>
                                 <span class="lever"></span>
                             <span class=""><!-- {{vm.userBundle['common.audience.compliance.summary']}} --> Audience<a id="gaugetooltip_audience" class="btn-floating btn-flat blue-text right btn_popover gaugeinfo" data-position="bottom" data-delay="75"> <i class="material-icons blue-text" >info_outline</i></a></span>
                         </label>
@@ -75,21 +75,21 @@
         </form>
     </div>
 </div>
-<div class="blue-grey lighten-5 filterselection" ng-if="vm.selectedSpecialists.length > 0  || vm.selectedMarketingNames.length > 0">
-    <label ng-if="vm.selectedSpecialists.length > 0" class="filterlables"><b>{{vm.userBundle['common.specialist']}}: </b></label>
-    <div ng-repeat="specialist in vm.selectedSpecialists" class="chip">
-        {{specialist.organisationName}} <i ng-click="vm.removeTags($index, 'selectedSpecialists')" class="close material-icons">close</i>
+<div class="blue-grey lighten-5 filterselection" ng-if="vm.filters.specialists.length > 0  || vm.filters.marketingNames.length > 0">
+    <label ng-if="vm.filters.specialists.length > 0" class="filterlables"><b>{{vm.userBundle['common.specialist']}}: </b></label>
+    <div ng-repeat="specialist in vm.filters.specialists" class="chip">
+        {{specialist.organisationName}} <i ng-click="vm.removeTags($index, 'specialists')" class="close material-icons">close</i>
     </div>
-    <label ng-if="vm.selectedMarketingNames.length > 0" class="filterlables"><b>{{vm.userBundle['common.marketingname']}}: </b></label>
-    <div ng-repeat="data in vm.selectedMarketingNames" class="chip">
-        {{data.marketingName}}<i ng-click="vm.removeTags($index, 'selectedMarketingNames')" class="close material-icons">close</i>
+    <label ng-if="vm.filters.marketingNames.length > 0" class="filterlables"><b>{{vm.userBundle['common.marketingname']}}: </b></label>
+    <div ng-repeat="data in vm.filters.marketingNames" class="chip">
+        {{data.marketingName}}<i ng-click="vm.removeTags($index, 'marketingNames')" class="close material-icons">close</i>
     </div>
 </div>
 
 <div class="switching_chart_wrapper">
     <div class="row meterchart_wrap" ng-if="!vm.campaignSummaryCheck">
         <!-- blue chart -->
-        <div class="col m7-col center" ng-style="{'max-width': (100 / vm.channelSummaryByAudience.length) + '%'}" ng-repeat="channel in vm.channelSummaryByAudience">
+        <div class="col m7-col center" ng-style="{'max-width': (100 / vm.channelSummaryByCampaign.length) + '%'}" ng-repeat="channel in vm.channelSummaryByCampaign">
             <canvas id="doughnut1" class="chart chart-doughnut" chart-data="[channel.value,100-channel.value]" chart-options="vm.sampleOptions"
                 chart-colors="channel.guageColors" ng-click="vm.onChannelClick(channel.id, channel.value)">
             </canvas>
@@ -102,7 +102,7 @@
 
     <div class="row meterchart_wrap" ng-if="vm.campaignSummaryCheck">
         <!-- black chart -->
-        <div class="col m7-col center" ng-style="{'max-width': (100 / vm.channelSummaryByImpression.length) + '%'}" ng-repeat="channel in vm.channelSummaryByImpression">
+        <div class="col m7-col center" ng-style="{'max-width': (100 / vm.channelSummaryByAudience.length) + '%'}" ng-repeat="channel in vm.channelSummaryByAudience">
             <canvas id="doughnut12" class="chart chart-doughnut" chart-data="[channel.percentage,100-channel.percentage]" chart-options="vm.sampleOptions"
                 chart-colors="['#222222','#888888']">
             </canvas>
@@ -125,7 +125,7 @@
         <div class="card">
             <span class="card-title">
                 <span>{{vm.userBundle["popboard.impressions.campaign.heading"]}}</span>
-            <a id="impressionscampaigntooltip" class="btn-floating btn-flat blue-text btn_popover" data-html="true" data-position="bottom"
+                <a id="impressionscampaigntooltip" class="btn-floating btn-flat blue-text btn_popover" data-html="true" data-position="bottom"
                 data-delay="75"> 
                     <i class="material-icons blue-text">info_outline</i>
                 </a>
@@ -157,18 +157,18 @@
             </div>
 
             <div class="chartWrapper1" ng-hide="!vm.campaignSummaryCheck">
-                <div class="chartAreaWrapper1">
+                <div class="chartAreaWrapper1"  >
                     <div ng-style='{"height":vm.campaignOptions.size.height}' style="width: 100%;">
-                        <canvas id="campaign" class="chart-horizontal-bar" chart-data="vm.impressionsData.data" chart-options="vm.impressionsOptions"
+                        <canvas id="campaignAudience" ng-show="vm.impressionsData.data[0].length > 0 || vm.impressionsData.data[1].length > 0" class="chart-horizontal-bar" chart-data="vm.impressionsData.data" chart-options="vm.impressionsOptions"
                             chart-colors="vm.impressionsData.colors" chart-labels="vm.impressionsData.labels" chart-dataset-override="vm.impressionsDetails"
                             chart-click="vm.onImpressionClick"></canvas>
                     </div>
                 </div>
-                <canvas id="campaignXAxis1" ng-if="vm.campaignData.data.length > 0"></canvas>
-                <div class="verticleAxisLabel" ng-if="vm.campaignData.data.length > 0">
-                    {{vm.campaignYAxisLabel}}
+                <canvas id="campaignXAxis2" ng-show="vm.impressionsData.data[0].length > 0 || vm.impressionsData.data[1].length > 0"></canvas>
+                <div class="verticleAxisLabel" ng-show="vm.impressionsData.data[0].length > 0 || vm.impressionsData.data[1].length > 0">
+                    {{vm.campaignAudienceYAxisLabel}}
                 </div>
-                <div ng-if="vm.campaignData.data.length == 0" class="no-data-found">
+                <div ng-if="vm.impressionsData.data[0].length == 0 && vm.impressionsData.data[1].length == 0" class="no-data-found">
                     {{vm.userBundle["common.campaign.compliance.nodata"] ? vm.userBundle["common.campaign.compliance.nodata"] : 'No Campaigns
                     Found!'}}
                 </div>

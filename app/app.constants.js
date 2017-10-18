@@ -73,7 +73,7 @@
                     stacked: true,
                     scaleLabel: {
                         display: true,
-                        labelString: 'Campaign'
+                        labelString: 'Campaigns'
                     },
                     // ticks: {
                     //     suggestedMin: 0,
