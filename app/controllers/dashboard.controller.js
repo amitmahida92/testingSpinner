@@ -27,7 +27,6 @@
         var chachedCampaignSummaryForMultipleSpecialists = [];
         var chachedCampaignSummaryForMultipleMarketingNames = [];
 
-
         vm.channelSummaryByAudience = [];
         vm.channelSummaryByCampaign = [];
 
@@ -201,11 +200,6 @@
                 // Amit : CC-206 : Campaign Compliance Gauge should not be clickable which has 0.00% data.	                
                 return;
             }
-
-            // if (vm.searchCampaign && vm.searchCampaign.trim().length > 6) {
-            //     // this condition added for CC-135
-            //     return;
-            // }
 
             if (vm.filters.channels.length > 0) {
                 if (_.includes(vm.filters.channels, channelid)) {
@@ -680,24 +674,6 @@
         }
 
         /**
-         * 
-         * 
-         */
-        function resetAllFilters() {
-            if (vm.cachedCampaignSummary && vm.cachedCampaignSummary.length > 0) {
-                vm.campaignSummary = _.cloneDeep(vm.cachedCampaignSummary);
-                vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign', true);
-
-                vm.frameSummary = _.cloneDeep(vm.cachedFrameSummary);
-                vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'player', true);
-                if (vm.filters.channels.length == 0) {
-                    filterSummaries(vm.campaignSummary);
-                    filterChartData();
-                }
-            }
-        }
-
-        /**
          * @desc This function filters both summary charts based on selected filters
          * @author Amit Mahida
          * @param {*} data 
@@ -746,68 +722,6 @@
                     }
                 } else {
                     vm.channelSummaryByCampaign[index1].value = 0;
-                }
-            }
-        }
-
-        /**
-         * @desc This function filters the state of charts based on search result filtered by campaign reference
-         * @author Amit Mahida
-         * @returns void
-         */
-        function filterChartData() {
-            vm.showCampaign = !_.isUndefined(vm.campaignSummary) && vm.campaignSummary.length > 0 ? true : false;
-            var isSearchedCampaignInNewData = vm.campaignSummary.filter(function (obj) {
-                return obj.id.indexOf(vm.selectedCampaign.toUpperCase()) > -1;
-            });
-            if (vm.selectedCampaign == '') {
-                vm.showPlayer = false;
-                vm.showDay = false;
-                vm.showHour = false;
-            }
-            var isSearchedPlayerInNewData = vm.frameSummary.filter(function (obj) {
-                return obj.id.indexOf(vm.selectedFrame) > -1;
-            });
-            if (vm.selectedFrame == '') {
-                vm.showDay = false;
-                vm.showHour = false;
-            }
-            var isSearchedDayInNewData = vm.daySummary.filter(function (obj) {
-                return obj.id.indexOf(vm.selectedDay) > -1;
-            });
-            if (vm.selectedDay == '') {
-                vm.showHour = false;
-            }
-            if (isSearchedCampaignInNewData.length == 0 && vm.selectedCampaign != '') {
-                vm.showPlayer = false;
-                vm.showDay = false;
-                vm.showHour = false;
-            } else if (isSearchedPlayerInNewData.length == 0 && vm.selectedFrame != '') {
-                vm.showDay = false;
-                vm.showHour = false;
-            } else if (isSearchedDayInNewData.length == 0 && vm.selectedDay != '') {
-                vm.showHour = false;
-            } else {
-                if (vm.showCampaign) {
-                    vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign');
-                }
-                vm.showPlayer = !_.isUndefined(vm.frameSummary) && vm.frameSummary.length > 0 ? true : false;
-                if (vm.showPlayer && vm.selectedCampaign != '') {
-                    vm.compliantcheck(vm.player.compaliant, vm.player.noncompaliant, 'player');
-                } else {
-                    vm.showPlayer = false;
-                }
-                vm.showDay = !_.isUndefined(vm.daySummary) && vm.daySummary.length > 0 ? true : false;
-                if (vm.showDay && vm.selectedFrame != '') {
-                    vm.compliantcheck(vm.day.compaliant, vm.day.noncompaliant, 'day');
-                } else {
-                    vm.showDay = false;
-                }
-                vm.showHour = !_.isUndefined(vm.spanSummary) && vm.spanSummary.length > 0 ? true : false;
-                if (vm.showHour && vm.selectedDay != '') {
-                    vm.compliantcheck(vm.hour.compaliant, vm.hour.noncompaliant, 'hour');
-                } else {
-                    vm.showHour = false;
                 }
             }
         }
@@ -1695,6 +1609,7 @@
             vm.frameSummary = [];
             vm.daySummary = [];
             vm.spanSummary = [];
+            vm.filters.channels = [];
         }
 
         /**
@@ -1757,10 +1672,10 @@
         function calculateWidthForPlayer(totalRecords) {
             if (totalRecords <= 4) {
                 return totalRecords * 150;
-            } else if (totalRecords <= 100) {
+            } else if (totalRecords <= 300) {
                 return totalRecords * 110;
             } else if (totalRecords <= 500) {
-                return totalRecords * 60;
+                return totalRecords * 100;
             } else {
                 return totalRecords * 50;
             }
@@ -1816,74 +1731,73 @@
             for (var key in vm.filters) {
                 if (vm.filters.hasOwnProperty(key)) {
                     var filter = vm.filters[key];
-                    if (!_.isUndefined(filterName)) {
-                        var exceptFlag = !_.isUndefined(filterName) ? (key !== filterName) : true;
-                        if (!_.isUndefined(filter) && filter.length > 0 && exceptFlag) {
-                            switch (key) {
-                                case 'campaignRef':
-                                    var substringArray = _.map(['SM', 'SB', 'BK'], function (substring) {
-                                        return filter.toUpperCase().indexOf(substring) > -1;
+
+                    var exceptFlag = !_.isUndefined(filterName) ? (key !== filterName) : true;
+                    if (!_.isUndefined(filter) && filter.length > 0 && exceptFlag) {
+                        switch (key) {
+                            case 'campaignRef':
+                                var substringArray = _.map(['SM', 'SB', 'BK'], function (substring) {
+                                    return filter.toUpperCase().indexOf(substring) > -1;
+                                });
+
+                                if (substringArray.indexOf(true) > -1) {
+                                    tempCampaignSummary = tempCampaignSummary.filter(function (obj) {
+                                        return obj.id.indexOf(filter.toUpperCase()) > -1;
                                     });
+                                }
 
-                                    if (substringArray.indexOf(true) > -1) {
-                                        tempCampaignSummary = tempCampaignSummary.filter(function (obj) {
-                                            return obj.id.indexOf(filter.toUpperCase()) > -1;
-                                        });
-                                    }
+                                break;
 
-                                    break;
+                            case 'channels':
 
-                                case 'channels':
+                                var selectedChannels = _.cloneDeep(filter);
+                                tempCampaignSummary = $linq.Enumerable()
+                                    .From(tempCampaignSummary)
+                                    .Where(function (obj) {
+                                        return _.includes(selectedChannels, obj.businessAreaCode);
+                                    }).ToArray();
 
-                                    var selectedChannels = _.cloneDeep(filter);
-                                    tempCampaignSummary = $linq.Enumerable()
-                                        .From(tempCampaignSummary)
-                                        .Where(function (obj) {
-                                            return _.includes(selectedChannels, obj.businessAreaCode);
-                                        }).ToArray();
+                                break;
+                            case 'marketingNames':
 
-                                    break;
-                                case 'marketingNames':
+                                var selectedMarketingNames = [];
+                                filter.forEach(function (element) {
+                                    selectedMarketingNames.push(element.marketingNameId.toString());
+                                });
+                                tempCampaignSummary = $linq.Enumerable()
+                                    .From(tempCampaignSummary)
+                                    .Where(function (obj) {
+                                        return _.intersection(selectedMarketingNames, obj.marketingNameCode).length > 0;
+                                    }).ToArray();
 
-                                    var selectedMarketingNames = [];
-                                    filter.forEach(function (element) {
-                                        selectedMarketingNames.push(element.marketingNameId.toString());
-                                    });
-                                    tempCampaignSummary = $linq.Enumerable()
-                                        .From(tempCampaignSummary)
-                                        .Where(function (obj) {
-                                            return _.intersection(selectedMarketingNames, obj.marketingNameCode).length > 0;
-                                        }).ToArray();
+                                vm.frameSummary = $linq.Enumerable()
+                                    .From(vm.cachedFrameSummary)
+                                    .Where(function (obj) {
+                                        return _.intersection(selectedMarketingNames, obj.marketingNameCode).length > 0;
+                                    }).ToArray();
 
-                                    vm.frameSummary = $linq.Enumerable()
-                                        .From(vm.cachedFrameSummary)
-                                        .Where(function (obj) {
-                                            return _.intersection(selectedMarketingNames, obj.marketingNameCode).length > 0;
-                                        }).ToArray();
+                                break;
+                            case 'specialists':
 
-                                    break;
-                                case 'specialists':
+                                var selectedSpecialists = [];
+                                filter.forEach(function (element) {
+                                    selectedSpecialists.push(element.organisationId);
+                                });
+                                tempCampaignSummary = $linq.Enumerable()
+                                    .From(tempCampaignSummary)
+                                    .Where(function (obj) {
+                                        return _.includes(selectedSpecialists, obj.specialistCode)
+                                    }).ToArray();
 
-                                    var selectedSpecialists = [];
-                                    filter.forEach(function (element) {
-                                        selectedSpecialists.push(element.organisationId);
-                                    });
-                                    tempCampaignSummary = $linq.Enumerable()
-                                        .From(tempCampaignSummary)
-                                        .Where(function (obj) {
-                                            return _.includes(selectedSpecialists, obj.specialistCode)
-                                        }).ToArray();
+                                break;
 
-                                    break;
-
-                                default:
-                                    break;
-                            }
+                            default:
+                                break;
                         }
                     }
+
                 }
             }
-
             vm.campaignSummary = _.cloneDeep(tempCampaignSummary);
         }
 
@@ -1899,16 +1813,18 @@
 
             switch (filterName) {
                 case 'campaignRef':
-
                     if (vm.filters[filterName] && vm.filters[filterName].trim().length >= 1) {
                         var substringArray = _.map(['SM', 'SB', 'BK'], function (substring) {
                             return vm.filters[filterName].toUpperCase().indexOf(substring) > -1;
                         });
-
-                        if (substringArray.indexOf(true) > -1) {
-                            vm.campaignSummary = tempCampaignSummary.filter(function (obj) {
-                                return obj.id.indexOf(vm.filters[filterName].toUpperCase()) > -1;
-                            });
+                        if (substringArray.indexOf(true) > -1) {                            
+                            if (isFiltersApplied(filterName)) {
+                                applyAllFiltersExcept();
+                            } else {
+                                vm.campaignSummary = vm.cachedCampaignSummary.filter(function (obj) {
+                                    return obj.id.indexOf(vm.filters[filterName].toUpperCase()) > -1;
+                                });
+                            }
                         } else {
                             console.log('Please enter valid campaign Reference');
                         }
@@ -1917,10 +1833,10 @@
                             vm.channelSummaryByCampaign = _.cloneDeep(vm.chachedChannelSummaryByAudience);
                             vm.channelSummaryByAudience = _.cloneDeep(vm.chachedChannelSummaryByImpression);
                             vm.campaignSummary = _.cloneDeep(vm.cachedCampaignSummary);
-                            filterSummaries(vm.campaignSummary);
                         } else {
                             applyAllFiltersExcept(filterName);
                         }
+                        filterSummaries(vm.campaignSummary);
                     }
                     break;
                 case 'channels':
@@ -1944,10 +1860,10 @@
                         chachedCampaignSummaryForMultipleChannels = [];
                         if (!isFiltersApplied(filterName)) {
                             vm.campaignSummary = _.cloneDeep(vm.cachedCampaignSummary);
-                            filterSummaries(vm.campaignSummary);
                         } else {
                             applyAllFiltersExcept(filterName);
                         }
+                        filterSummaries(vm.campaignSummary);
                     }
 
                     break;
@@ -1982,10 +1898,10 @@
                         if (!isFiltersApplied(filterName)) {
                             vm.campaignSummary = _.cloneDeep(vm.cachedCampaignSummary);
                             vm.frameSummary = _.cloneDeep(vm.cachedFrameSummary);
-                            filterSummaries(vm.campaignSummary);
                         } else {
                             applyAllFiltersExcept(filterName);
                         }
+                        filterSummaries(vm.campaignSummary);
                     }
 
                     break;
@@ -2012,10 +1928,10 @@
                         chachedCampaignSummaryForMultipleSpecialists = [];
                         if (!isFiltersApplied(filterName)) {
                             vm.campaignSummary = _.cloneDeep(vm.cachedCampaignSummary);
-                            filterSummaries(vm.campaignSummary);
                         } else {
                             applyAllFiltersExcept(filterName);
                         }
+                        filterSummaries(vm.campaignSummary);
                     }
 
                     break;
