@@ -17,12 +17,7 @@
         vm.fullscreenFor = '';
         vm.isZendeskTicketAvailable = false;
 
-        vm.filters = {
-            specialists: [],
-            marketingNames: [],
-            channels: [],
-            campaignRef: ''
-        };
+
         var chachedCampaignSummaryForMultipleChannels = [];
         var chachedCampaignSummaryForMultipleSpecialists = [];
         var chachedCampaignSummaryForMultipleMarketingNames = [];
@@ -1358,8 +1353,8 @@
                                 return obj;
                             });
                             vm.cachedFrameSummary = _.cloneDeep(vm.frameSummary);
+                            applyAllFiltersExcept();
                             generateChart('player', vm.frameSummary, true);
-
                             vm.showPlayer = true;
                         } else {
                             vm.playerData = {};
@@ -1376,7 +1371,6 @@
                                 return obj;
                             });
                             generateChart('day', vm.daySummary, true);
-
                             vm.showDay = true;
                         } else {
                             vm.dayData = {};
@@ -1430,8 +1424,10 @@
                     return obj.label == tooltipModel.dataPoints[0].xLabel;
                 });
 
-                if (tooltipData) {
+                if (tooltipData.length > 0) {
                     tooltipData = tooltipData[0].tooltipData;
+                } else {
+                    return;
                 }
 
                 tooltipEl = document.getElementById('player-tooltip');
@@ -1480,7 +1476,9 @@
          */
         function highlightSelectedBar() {
             var index;
-            if (!_.isUndefined(vm.selectedCampaign) && !_.isNull(vm.selectedCampaign)) {
+            if (!_.isUndefined(vm.selectedCampaign) &&
+                !_.isNull(vm.selectedCampaign) &&
+                !_.isEmpty(vm.selectedCampaign)) {
                 if (!_.isEmpty(vm.campaignData)) {
 
                     // below code is needed, when you select another bar need to reset background color for previous bar
@@ -1549,7 +1547,9 @@
                     }
                 }
             }
-            if (!_.isUndefined(vm.selectedFrame) && !_.isNull(vm.selectedFrame)) {
+            if (!_.isUndefined(vm.selectedFrame) &&
+                !_.isNull(vm.selectedFrame) &&
+                !_.isEmpty(vm.selectedFrame)) {
                 if (!_.isEmpty(vm.playerData)) {
                     // below code is needed, when you select another bar need to reset background color for previous bar
                     vm.playerData.datasets[0].backgroundColor = [];
@@ -1574,7 +1574,8 @@
                 }
 
             }
-            if (!_.isUndefined(vm.selectedDay) && !_.isNull(vm.selectedDay)) {
+            if (!_.isUndefined(vm.selectedDay) && !_.isNull(vm.selectedDay) &&
+                !_.isEmpty(vm.selectedDay)) {
                 if (!_.isEmpty(vm.dayData)) {
                     // below code is needed, when you select another bar need to reset background color for previous bar
                     vm.dayData.datasets[0].backgroundColor = [];
@@ -1609,7 +1610,16 @@
             vm.frameSummary = [];
             vm.daySummary = [];
             vm.spanSummary = [];
-            vm.filters.channels = [];
+            resetFilters();
+        }
+
+        function resetFilters() {
+            vm.filters = {
+                specialists: [],
+                marketingNames: [],
+                channels: [],
+                campaignRef: ''
+            };
         }
 
         /**
@@ -1817,7 +1827,7 @@
                         var substringArray = _.map(['SM', 'SB', 'BK'], function (substring) {
                             return vm.filters[filterName].toUpperCase().indexOf(substring) > -1;
                         });
-                        if (substringArray.indexOf(true) > -1) {                            
+                        if (substringArray.indexOf(true) > -1) {
                             if (isFiltersApplied(filterName)) {
                                 applyAllFiltersExcept();
                             } else {
@@ -1895,14 +1905,15 @@
 
                     if (selectedMarketingNames.length == 0) {
                         chachedCampaignSummaryForMultipleMarketingNames = [];
+                        vm.frameSummary = _.cloneDeep(vm.cachedFrameSummary);
                         if (!isFiltersApplied(filterName)) {
                             vm.campaignSummary = _.cloneDeep(vm.cachedCampaignSummary);
-                            vm.frameSummary = _.cloneDeep(vm.cachedFrameSummary);
                         } else {
                             applyAllFiltersExcept(filterName);
                         }
                         filterSummaries(vm.campaignSummary);
                     }
+                    vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'player', true);
 
                     break;
                 case 'specialists':

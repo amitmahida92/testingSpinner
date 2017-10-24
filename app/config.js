@@ -24,6 +24,6 @@ var CHART_HOVER_TOOLTIP = DEBUG ? 'data/hover_tooltip.json' : '../../Service/pop
 
 var HTTP_METHOD = DEBUG ? "GET" : "POST";
 var CONFIG_URL = SERVICE_BASE_URL + (DEBUG ? INITIAL_CONFIG_URL : INITIAL_CONFIG_URL_BOS);
-var frontEndVersion = "1.1.42";
+var frontEndVersion = "1.1.43";
 // smart content sample url
 // http://smartcontent.jdecaux.com/api/v2/smartbrics/sm_1234532/reporting

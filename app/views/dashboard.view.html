@@ -58,7 +58,7 @@
                 <div class="col s12 m2" style="z-index:1">
                     <label for="">Search Campaign</label>
                     <input id="Search" class="no-margin" ng-model="vm.filters.campaignRef" ng-change="vm.applyFilter('campaignRef')" type="text" placeholder="Search Campaign"
-                        ng-model-options='{ debounce: 550 }' />
+                        ng-model-options='{ debounce: 500 }' />
                 </div>
 
                 <div class="input-field col s12 m2">
@@ -201,7 +201,7 @@
             <div class="chartWrapper">
                 <div class="chartAreaWrapper">
                     <div ng-style="{'width': vm.width}" style="height: 367px;">
-                        <canvas ng-cloak id="player" class="chart chart-bar" chart-data="vm.playerData.datasets[0].data" chart-options="vm.barOptions"
+                        <canvas id="player" class="chart chart-bar" chart-data="vm.playerData.datasets[0].data" chart-options="vm.barOptions"
                             chart-colors="vm.playerData.datasets[0].backgroundColor" chart-labels="vm.playerData.labels" chart-click="vm.onPlayerClick"
                             chart-dataset-override="vm.playerDetails" height="330"></canvas>
                     </div>
