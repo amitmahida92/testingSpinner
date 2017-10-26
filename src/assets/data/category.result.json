@@ -1,0 +1,36 @@
+{
+  "success": "OK",
+  "message": "Request processed successfully",
+  "campaigns": [
+    {
+      "reference": "SB16790",
+      "Advertiser": "Coca cola UK Ltd",
+      "compliance": 109
+    },
+    {
+      "reference": "SB16794",
+      "Advertiser": "AB Inbev",
+      "compliance": 80
+    },
+    {
+      "reference": "SB16795",
+      "Advertiser": "Liverpool John Moore",
+      "compliance": 120
+    },
+    {
+      "reference": "SB16796",
+      "Advertiser": "Statoil",
+      "compliance": 180
+    },
+    {
+      "reference": "SB16797",
+      "Advertiser": "Scottish Open",
+      "compliance": 200
+    },
+    {
+      "reference": "SB16798",
+      "Advertiser": "Cafepod Coffee",
+      "compliance": 140
+    }
+  ]
+}

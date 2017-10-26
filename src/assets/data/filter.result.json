@@ -1,0 +1,15 @@
+{
+  "id": 7677889,
+  "status": "OK",
+  "message": "Request processed successfully",
+  "campaigns": [
+    {
+      "categoryTypeId": 1,
+      "value": 87
+    },
+    {
+      "categoryTypeId": 2,
+      "value": 13
+    }
+  ]
+}
