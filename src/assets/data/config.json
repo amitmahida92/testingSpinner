@@ -1,0 +1,1668 @@
+{
+  "status":"OK",
+  "messageCode":0,
+  "message":"Successfully processed config data",
+  "data":{
+     "defaultStartDate":"2017-07-01",
+     "defaultEndDate":"2017-07-07",
+     "specialists":[
+        {
+           "orgId":11932,
+           "organisationName":"Aviator Media Ltd",
+           "organisationId":"929E8A51-A70C-DE11-A7EC-000C29D542E5",
+           "invoiceStatusCode":"Aviator Media Ltd"
+        },
+        {
+           "orgId":11908,
+           "organisationName":"Billups Worldwide",
+           "organisationId":"3533A8D0-7335-DE11-9793-000C29D542E5",
+           "invoiceStatusCode":"Billups Worldwide"
+        },
+        {
+           "orgId":11956,
+           "organisationName":"Crossmedia",
+           "organisationId":"6EB54BEA-D577-E011-A1BE-0050569F0890",
+           "invoiceStatusCode":"Crossmedia"
+        },
+        {
+           "orgId":132809831,
+           "organisationName":"Exterion Media UK Ltd",
+           "organisationId":"807e5d3a-f035-e511-aaa3-005056870049",
+           "invoiceStatusCode":"Exterion Media UK Ltd"
+        },
+        {
+           "orgId":11951,
+           "organisationName":"Hi-Rezz",
+           "organisationId":"6B871F32-F664-E011-9039-0050569F0890",
+           "invoiceStatusCode":"Hi-Rezz"
+        },
+        {
+           "orgId":11949,
+           "organisationName":"JCDecaux Airport China",
+           "organisationId":"94856ED9-72EE-DF11-8B4E-0050569F0890",
+           "invoiceStatusCode":"JCDecaux Airport China"
+        },
+        {
+           "orgId":11920,
+           "organisationName":"JCDecaux Airport France",
+           "organisationId":"E56ED369-94F7-DD11-A1EF-000C29D542E5",
+           "invoiceStatusCode":"JCDecaux Airport France"
+        },
+        {
+           "orgId":11954,
+           "organisationName":"JCDecaux Airport India",
+           "organisationId":"1684E391-425C-E011-9A47-0050569F0890",
+           "invoiceStatusCode":"JCDecaux Airport India"
+        },
+        {
+           "orgId":5266,
+           "organisationName":"JCDecaux France",
+           "organisationId":"83BFC020-137A-E311-94DA-005056870049",
+           "invoiceStatusCode":"JCDecaux France"
+        },
+        {
+           "orgId":11919,
+           "organisationName":"JCDecaux Group",
+           "organisationId":"07BD7E18-94F7-DD11-A1EF-000C29D542E5",
+           "invoiceStatusCode":"JCDecaux Group"
+        },
+        {
+           "orgId":11921,
+           "organisationName":"JCDecaux North America",
+           "organisationId":"00635781-94F7-DD11-A1EF-000C29D542E5",
+           "invoiceStatusCode":"JCDecaux North America"
+        },
+        {
+           "orgId":11945,
+           "organisationName":"JCDecaux One World",
+           "organisationId":"5F743125-E0D4-E211-BAFA-005056870049",
+           "invoiceStatusCode":"JCDecaux One World"
+        },
+        {
+           "orgId":11943,
+           "organisationName":"Kinetic (Belfast)",
+           "organisationId":"9F250B00-C696-E211-A64F-005056870049",
+           "invoiceStatusCode":"Kinetic (Belfast)"
+        },
+        {
+           "orgId":11914,
+           "organisationName":"Kinetic Worldwide Ltd",
+           "organisationId":"6340C59A-CEF6-DD11-A1EF-000C29D542E5",
+           "invoiceStatusCode":"Kinetic Worldwide Ltd"
+        },
+        {
+           "orgId":11906,
+           "organisationName":"McGread Outdoor Media",
+           "organisationId":"A4B08FA7-195B-DE11-8779-000C29D542E5",
+           "invoiceStatusCode":"McGread Outdoor Media"
+        },
+        {
+           "orgId":11915,
+           "organisationName":"Meridian Outdoor Advertising Ltd",
+           "organisationId":"538E43B6-CFF6-DD11-A1EF-000C29D542E5",
+           "invoiceStatusCode":"Meridian Outdoor Advertising Ltd"
+        },
+        {
+           "orgId":616072,
+           "organisationName":"Mo House",
+           "organisationId":"D420F444-AC14-E311-B15D-00505687005C",
+           "invoiceStatusCode":"Mo House"
+        },
+        {
+           "orgId":11926,
+           "organisationName":"OMG Outdoor GMBH",
+           "organisationId":"0635FA75-DDF9-DD11-A462-000C29D542E5",
+           "invoiceStatusCode":"OMG Outdoor GMBH"
+        },
+        {
+           "orgId":11925,
+           "organisationName":"OPR Media",
+           "organisationId":"8ECA1724-DDF9-DD11-A462-000C29D542E5",
+           "invoiceStatusCode":"OPR Media"
+        },
+        {
+           "orgId":11917,
+           "organisationName":"Open Outdoor Ltd",
+           "organisationId":"19A257D3-91F7-DD11-A1EF-000C29D542E5",
+           "invoiceStatusCode":"Open Outdoor Ltd"
+        },
+        {
+           "orgId":11927,
+           "organisationName":"PSI Advertising Ltd",
+           "organisationId":"B868C70E-A9FA-DD11-A462-000C29D542E5",
+           "invoiceStatusCode":"PSI Advertising Ltd"
+        },
+        {
+           "orgId":29790706,
+           "organisationName":"PSLive",
+           "organisationId":"07ff6169-8519-e411-983c-005056870049",
+           "invoiceStatusCode":"PSLive"
+        },
+        {
+           "orgId":11948,
+           "organisationName":"Pinpoint Out of Home Media Ltd",
+           "organisationId":"30047409-FD4D-DF11-8AC3-0050569F0890",
+           "invoiceStatusCode":"Pinpoint Out of Home Media Ltd"
+        },
+        {
+           "orgId":131790425,
+           "organisationName":"Posterscope Charity",
+           "organisationId":"4e9789c0-6c0b-e511-aaa3-005056870049",
+           "invoiceStatusCode":"Posterscope Charity"
+        },
+        {
+           "orgId":11911,
+           "organisationName":"Posterscope Ltd",
+           "organisationId":"89F8CE43-C8F6-DD11-A1EF-000C29D542E5",
+           "invoiceStatusCode":"Posterscope Ltd"
+        },
+        {
+           "orgId":11923,
+           "organisationName":"Publispazi",
+           "organisationId":"11FA0515-6615-DE11-A3AF-000C29D542E5",
+           "invoiceStatusCode":"Publispazi"
+        },
+        {
+           "orgId":11913,
+           "organisationName":"Rapport Outdoor Ltd",
+           "organisationId":"66A1CC49-C8F6-DD11-A1EF-000C29D542E5",
+           "invoiceStatusCode":"Rapport Outdoor Ltd"
+        },
+        {
+           "orgId":11918,
+           "organisationName":"Source Out of Home Ltd",
+           "organisationId":"3E4BE732-92F7-DD11-A1EF-000C29D542E5",
+           "invoiceStatusCode":"Source Out of Home Ltd"
+        },
+        {
+           "orgId":11940,
+           "organisationName":"Southern Railway Ltd",
+           "organisationId":"7A129CEF-0030-E211-91CB-005056870049",
+           "invoiceStatusCode":"Southern Railway Ltd"
+        },
+        {
+           "orgId":11924,
+           "organisationName":"Talon Outdoor Ltd",
+           "organisationId":"BA5466F1-DAF9-DD11-A462-000C29D542E5",
+           "invoiceStatusCode":"Talon Outdoor Ltd"
+        },
+        {
+           "orgId":11930,
+           "organisationName":"Walker Outdoor Media",
+           "organisationId":"0D1DDBEC-D5FD-DD11-A462-000C29D542E5",
+           "invoiceStatusCode":"Walker Outdoor Media"
+        }
+     ],
+     "marketingNames":[
+        {
+           "marketingNameId":1,
+           "marketingName":"48-sheets"
+        },
+        {
+           "marketingNameId":2,
+           "marketingName":"4-sheets"
+        },
+        {
+           "marketingNameId":3,
+           "marketingName":"6-sheets"
+        },
+        {
+           "marketingNameId":4,
+           "marketingName":"96-sheets"
+        },
+        {
+           "marketingNameId":6,
+           "marketingName":"Ambient"
+        },
+        {
+           "marketingNameId":7,
+           "marketingName":"Asda"
+        },
+        {
+           "marketingNameId":8,
+           "marketingName":"Backlights"
+        },
+        {
+           "marketingNameId":9,
+           "marketingName":"Banners"
+        },
+        {
+           "marketingNameId":10,
+           "marketingName":"Charing Cross Gateway"
+        },
+        {
+           "marketingNameId":11,
+           "marketingName":"Digital 6-sheets"
+        },
+        {
+           "marketingNameId":12,
+           "marketingName":"Digital Escalator Panels"
+        },
+        {
+           "marketingNameId":13,
+           "marketingName":"Euston Gateway"
+        },
+        {
+           "marketingNameId":14,
+           "marketingName":"Motion@Euston"
+        },
+        {
+           "marketingNameId":16,
+           "marketingName":"Floor Media"
+        },
+        {
+           "marketingNameId":17,
+           "marketingName":"Leeds Gateway"
+        },
+        {
+           "marketingNameId":18,
+           "marketingName":"Limelights"
+        },
+        {
+           "marketingNameId":19,
+           "marketingName":"M400"
+        },
+        {
+           "marketingNameId":20,
+           "marketingName":"Morrisons"
+        },
+        {
+           "marketingNameId":21,
+           "marketingName":"M-Vision"
+        },
+        {
+           "marketingNameId":22,
+           "marketingName":"Nameplates"
+        },
+        {
+           "marketingNameId":23,
+           "marketingName":"Other"
+        },
+        {
+           "marketingNameId":24,
+           "marketingName":"Paradise Circus - Birmingham"
+        },
+        {
+           "marketingNameId":25,
+           "marketingName":"Premiere 1000"
+        },
+        {
+           "marketingNameId":26,
+           "marketingName":"Premiere 200"
+        },
+        {
+           "marketingNameId":27,
+           "marketingName":"Premiere 250"
+        },
+        {
+           "marketingNameId":28,
+           "marketingName":"Premiere 400"
+        },
+        {
+           "marketingNameId":29,
+           "marketingName":"Premiere 450"
+        },
+        {
+           "marketingNameId":30,
+           "marketingName":"Premiere 500"
+        },
+        {
+           "marketingNameId":31,
+           "marketingName":"Primetime"
+        },
+        {
+           "marketingNameId":32,
+           "marketingName":"Promotional"
+        },
+        {
+           "marketingNameId":33,
+           "marketingName":"Scrolling 48-sheets"
+        },
+        {
+           "marketingNameId":35,
+           "marketingName":"Sponsorship"
+        },
+        {
+           "marketingNameId":36,
+           "marketingName":"Spotlights"
+        },
+        {
+           "marketingNameId":37,
+           "marketingName":"StreetTalk"
+        },
+        {
+           "marketingNameId":38,
+           "marketingName":"Tesco"
+        },
+        {
+           "marketingNameId":39,
+           "marketingName":"The A3 Tower"
+        },
+        {
+           "marketingNameId":40,
+           "marketingName":"The A40 Spire"
+        },
+        {
+           "marketingNameId":41,
+           "marketingName":"The A40 Tower"
+        },
+        {
+           "marketingNameId":42,
+           "marketingName":"The Birmingham Arch"
+        },
+        {
+           "marketingNameId":43,
+           "marketingName":"The Birmingham Gateway"
+        },
+        {
+           "marketingNameId":44,
+           "marketingName":"The Birmingham Tower"
+        },
+        {
+           "marketingNameId":45,
+           "marketingName":"Clapham Colossus"
+        },
+        {
+           "marketingNameId":46,
+           "marketingName":"The Cromwell Road Digital Gateway"
+        },
+        {
+           "marketingNameId":47,
+           "marketingName":"The Fin"
+        },
+        {
+           "marketingNameId":48,
+           "marketingName":"The Glasgow Arch"
+        },
+        {
+           "marketingNameId":49,
+           "marketingName":"The Glasgow Sail"
+        },
+        {
+           "marketingNameId":50,
+           "marketingName":"The Glasgow Tower"
+        },
+        {
+           "marketingNameId":51,
+           "marketingName":"The Hammersmith Flyover Banner"
+        },
+        {
+           "marketingNameId":52,
+           "marketingName":"The Holland Park Tower"
+        },
+        {
+           "marketingNameId":53,
+           "marketingName":"The Lucozade Landmark"
+        },
+        {
+           "marketingNameId":54,
+           "marketingName":"The M1 Arch"
+        },
+        {
+           "marketingNameId":55,
+           "marketingName":"The M1 Tower"
+        },
+        {
+           "marketingNameId":56,
+           "marketingName":"The M3 Tower"
+        },
+        {
+           "marketingNameId":57,
+           "marketingName":"The M4 London Gateway"
+        },
+        {
+           "marketingNameId":58,
+           "marketingName":"The M4 Torch"
+        },
+        {
+           "marketingNameId":59,
+           "marketingName":"The M4 Tower"
+        },
+        {
+           "marketingNameId":60,
+           "marketingName":"The M5 Tower"
+        },
+        {
+           "marketingNameId":61,
+           "marketingName":"The Mancunian Way Arch"
+        },
+        {
+           "marketingNameId":62,
+           "marketingName":"The Mancunian Way Tower"
+        },
+        {
+           "marketingNameId":63,
+           "marketingName":"The Marylebone Tower"
+        },
+        {
+           "marketingNameId":64,
+           "marketingName":"The Old Street Roundabout"
+        },
+        {
+           "marketingNameId":65,
+           "marketingName":"The Olympic Park Banner"
+        },
+        {
+           "marketingNameId":66,
+           "marketingName":"The Pagoda"
+        },
+        {
+           "marketingNameId":67,
+           "marketingName":"The Quay Street Banner"
+        },
+        {
+           "marketingNameId":68,
+           "marketingName":"The Stratford Sail"
+        },
+        {
+           "marketingNameId":69,
+           "marketingName":"The Stratford Tower"
+        },
+        {
+           "marketingNameId":70,
+           "marketingName":"The Trafford Arch"
+        },
+        {
+           "marketingNameId":71,
+           "marketingName":"The Trafford Tower"
+        },
+        {
+           "marketingNameId":72,
+           "marketingName":"The Wandsworth Roundabout"
+        },
+        {
+           "marketingNameId":73,
+           "marketingName":"The West Cross Tower"
+        },
+        {
+           "marketingNameId":74,
+           "marketingName":"The Westminster Bridge Roundabout"
+        },
+        {
+           "marketingNameId":75,
+           "marketingName":"Tottenham Court Road"
+        },
+        {
+           "marketingNameId":76,
+           "marketingName":"Transvision"
+        },
+        {
+           "marketingNameId":77,
+           "marketingName":"Trivision 48-sheets"
+        },
+        {
+           "marketingNameId":78,
+           "marketingName":"Waitrose"
+        },
+        {
+           "marketingNameId":79,
+           "marketingName":"Wall Wrap"
+        },
+        {
+           "marketingNameId":80,
+           "marketingName":"Motion@Waterloo"
+        },
+        {
+           "marketingNameId":81,
+           "marketingName":"JCDecauxLive"
+        },
+        {
+           "marketingNameId":82,
+           "marketingName":"Trivision 96-sheets"
+        },
+        {
+           "marketingNameId":83,
+           "marketingName":"The Stratford Sail Digital"
+        },
+        {
+           "marketingNameId":84,
+           "marketingName":"Squares"
+        },
+        {
+           "marketingNameId":85,
+           "marketingName":"Vinyls"
+        },
+        {
+           "marketingNameId":86,
+           "marketingName":"Trolleys"
+        },
+        {
+           "marketingNameId":87,
+           "marketingName":"Powerpoles"
+        },
+        {
+           "marketingNameId":88,
+           "marketingName":"Train Wrap"
+        },
+        {
+           "marketingNameId":89,
+           "marketingName":"Pods"
+        },
+        {
+           "marketingNameId":90,
+           "marketingName":"Branding"
+        },
+        {
+           "marketingNameId":91,
+           "marketingName":"Welcome Sites"
+        },
+        {
+           "marketingNameId":92,
+           "marketingName":"Global Gateways"
+        },
+        {
+           "marketingNameId":93,
+           "marketingName":"Exterior 3D"
+        },
+        {
+           "marketingNameId":94,
+           "marketingName":"Digital Small"
+        },
+        {
+           "marketingNameId":95,
+           "marketingName":"Digital Large"
+        },
+        {
+           "marketingNameId":96,
+           "marketingName":"TV's"
+        },
+        {
+           "marketingNameId":97,
+           "marketingName":"The Hammersmith Tower"
+        },
+        {
+           "marketingNameId":98,
+           "marketingName":"Waterloo Gateway"
+        },
+        {
+           "marketingNameId":99,
+           "marketingName":"The A4 Showcase"
+        },
+        {
+           "marketingNameId":100,
+           "marketingName":"SmartScreen"
+        },
+        {
+           "marketingNameId":101,
+           "marketingName":"Columns"
+        },
+        {
+           "marketingNameId":102,
+           "marketingName":"The Original"
+        },
+        {
+           "marketingNameId":103,
+           "marketingName":"The Three Kings"
+        },
+        {
+           "marketingNameId":104,
+           "marketingName":"The Cromwell Road Gateway"
+        },
+        {
+           "marketingNameId":105,
+           "marketingName":"Old Street EC1"
+        },
+        {
+           "marketingNameId":106,
+           "marketingName":"Motion@LiverpoolStreet"
+        },
+        {
+           "marketingNameId":107,
+           "marketingName":"Motion@Victoria"
+        },
+        {
+           "marketingNameId":108,
+           "marketingName":"South Bank SE1"
+        },
+        {
+           "marketingNameId":109,
+           "marketingName":"Building Wraps"
+        },
+        {
+           "marketingNameId":110,
+           "marketingName":"Ticket Barriers"
+        },
+        {
+           "marketingNameId":111,
+           "marketingName":"Arrivals Digital"
+        },
+        {
+           "marketingNameId":112,
+           "marketingName":"Arrivals Bulkhead"
+        },
+        {
+           "marketingNameId":113,
+           "marketingName":"Arrivals Domination"
+        },
+        {
+           "marketingNameId":114,
+           "marketingName":"Arrivals Gateway"
+        },
+        {
+           "marketingNameId":115,
+           "marketingName":"Arrivals Lift Shaft"
+        },
+        {
+           "marketingNameId":116,
+           "marketingName":"Arrivals Optilight"
+        },
+        {
+           "marketingNameId":117,
+           "marketingName":"Arrivals Premiere 200"
+        },
+        {
+           "marketingNameId":118,
+           "marketingName":"Arrivals Premiere 400"
+        },
+        {
+           "marketingNameId":119,
+           "marketingName":"Arrivals Premiere 450"
+        },
+        {
+           "marketingNameId":120,
+           "marketingName":"Arrivals Ramp"
+        },
+        {
+           "marketingNameId":121,
+           "marketingName":"Arrivals Scrollers"
+        },
+        {
+           "marketingNameId":122,
+           "marketingName":"Arrivals Tunnel"
+        },
+        {
+           "marketingNameId":123,
+           "marketingName":"Arrivals Welcome"
+        },
+        {
+           "marketingNameId":124,
+           "marketingName":"Arrivals Wrap"
+        },
+        {
+           "marketingNameId":125,
+           "marketingName":"B - Departures Bulkheads"
+        },
+        {
+           "marketingNameId":126,
+           "marketingName":"B & C Departures Statics"
+        },
+        {
+           "marketingNameId":127,
+           "marketingName":"BA Check-In"
+        },
+        {
+           "marketingNameId":128,
+           "marketingName":"BA Check-In Domination"
+        },
+        {
+           "marketingNameId":129,
+           "marketingName":"BA Lounge Lightbox"
+        },
+        {
+           "marketingNameId":130,
+           "marketingName":"Baggage Belt 6-sheets"
+        },
+        {
+           "marketingNameId":131,
+           "marketingName":"Baggage Domination"
+        },
+        {
+           "marketingNameId":132,
+           "marketingName":"Baggage Reclaim Domination"
+        },
+        {
+           "marketingNameId":133,
+           "marketingName":"Baggage Reclaim Statics"
+        },
+        {
+           "marketingNameId":134,
+           "marketingName":"Baggage Reclaim Wrap"
+        },
+        {
+           "marketingNameId":135,
+           "marketingName":"Business Check-In"
+        },
+        {
+           "marketingNameId":136,
+           "marketingName":"Business Lounge 6-sheets"
+        },
+        {
+           "marketingNameId":137,
+           "marketingName":"C - Arrivals Gateway"
+        },
+        {
+           "marketingNameId":138,
+           "marketingName":"C - Suite"
+        },
+        {
+           "marketingNameId":139,
+           "marketingName":"C - Suite Banners"
+        },
+        {
+           "marketingNameId":140,
+           "marketingName":"Captial Connections"
+        },
+        {
+           "marketingNameId":141,
+           "marketingName":"Car Park Wrap"
+        },
+        {
+           "marketingNameId":142,
+           "marketingName":"Check-In Branding"
+        },
+        {
+           "marketingNameId":143,
+           "marketingName":"Check-In Bulkheads"
+        },
+        {
+           "marketingNameId":144,
+           "marketingName":"Check-In Desk Sponsorship"
+        },
+        {
+           "marketingNameId":145,
+           "marketingName":"Check-In Digital"
+        },
+        {
+           "marketingNameId":146,
+           "marketingName":"Check-In Domination"
+        },
+        {
+           "marketingNameId":147,
+           "marketingName":"Check-In Intergrated Lightbox"
+        },
+        {
+           "marketingNameId":148,
+           "marketingName":"Clock Sponsorship"
+        },
+        {
+           "marketingNameId":149,
+           "marketingName":"Connect On-Board Panels"
+        },
+        {
+           "marketingNameId":151,
+           "marketingName":"Couture 6-sheets"
+        },
+        {
+           "marketingNameId":152,
+           "marketingName":"Couture Banners"
+        },
+        {
+           "marketingNameId":153,
+           "marketingName":"Couture Digital"
+        },
+        {
+           "marketingNameId":154,
+           "marketingName":"Couture Immersion"
+        },
+        {
+           "marketingNameId":155,
+           "marketingName":"Couture Backlights"
+        },
+        {
+           "marketingNameId":156,
+           "marketingName":"Couture Squares"
+        },
+        {
+           "marketingNameId":157,
+           "marketingName":"Couture Towers"
+        },
+        {
+           "marketingNameId":158,
+           "marketingName":"Crosstracks"
+        },
+        {
+           "marketingNameId":159,
+           "marketingName":"CTA Arrivals"
+        },
+        {
+           "marketingNameId":160,
+           "marketingName":"CTA Departures"
+        },
+        {
+           "marketingNameId":161,
+           "marketingName":"DAPs"
+        },
+        {
+           "marketingNameId":162,
+           "marketingName":"Departures Bulkhead"
+        },
+        {
+           "marketingNameId":163,
+           "marketingName":"C - Departures Statics"
+        },
+        {
+           "marketingNameId":164,
+           "marketingName":"Departures Digital"
+        },
+        {
+           "marketingNameId":165,
+           "marketingName":"Departures Domination"
+        },
+        {
+           "marketingNameId":166,
+           "marketingName":"Departures Escalator"
+        },
+        {
+           "marketingNameId":167,
+           "marketingName":"Departures Gateway"
+        },
+        {
+           "marketingNameId":168,
+           "marketingName":"Departures Premiere 200"
+        },
+        {
+           "marketingNameId":169,
+           "marketingName":"Departures Premiere 400"
+        },
+        {
+           "marketingNameId":170,
+           "marketingName":"Departures Premiere 450"
+        },
+        {
+           "marketingNameId":171,
+           "marketingName":"Departures Scrollers"
+        },
+        {
+           "marketingNameId":172,
+           "marketingName":"Departures Tunnel"
+        },
+        {
+           "marketingNameId":173,
+           "marketingName":"Digital On-board Panels"
+        },
+        {
+           "marketingNameId":174,
+           "marketingName":"Digital Totems"
+        },
+        {
+           "marketingNameId":175,
+           "marketingName":"Domestic Arrivals"
+        },
+        {
+           "marketingNameId":176,
+           "marketingName":"Domestic Arrivals Domination"
+        },
+        {
+           "marketingNameId":177,
+           "marketingName":"Domestic Arrivals Gateway"
+        },
+        {
+           "marketingNameId":178,
+           "marketingName":"Domestic Arrivals Lightbox"
+        },
+        {
+           "marketingNameId":179,
+           "marketingName":"Domestic Arrivals Portal"
+        },
+        {
+           "marketingNameId":180,
+           "marketingName":"Domestic Arrivals Welcome Desk"
+        },
+        {
+           "marketingNameId":181,
+           "marketingName":"Domestic Baggage Reclaim"
+        },
+        {
+           "marketingNameId":182,
+           "marketingName":"Domestic Bulkheads"
+        },
+        {
+           "marketingNameId":183,
+           "marketingName":"Domestic Departures"
+        },
+        {
+           "marketingNameId":184,
+           "marketingName":"Domestic Departures Domination"
+        },
+        {
+           "marketingNameId":185,
+           "marketingName":"Domestic Header"
+        },
+        {
+           "marketingNameId":186,
+           "marketingName":"Domestic Pier Lightbox"
+        },
+        {
+           "marketingNameId":187,
+           "marketingName":"Domestic Pier Wrap"
+        },
+        {
+           "marketingNameId":188,
+           "marketingName":"Domestic Portal"
+        },
+        {
+           "marketingNameId":189,
+           "marketingName":"Door Wraps"
+        },
+        {
+           "marketingNameId":190,
+           "marketingName":"East Pier Lightbox"
+        },
+        {
+           "marketingNameId":191,
+           "marketingName":"Etihad Lounge"
+        },
+        {
+           "marketingNameId":192,
+           "marketingName":"European Gateway"
+        },
+        {
+           "marketingNameId":193,
+           "marketingName":"Experiential"
+        },
+        {
+           "marketingNameId":194,
+           "marketingName":"Exterior 48-sheets"
+        },
+        {
+           "marketingNameId":195,
+           "marketingName":"Exterior 96-sheets"
+        },
+        {
+           "marketingNameId":196,
+           "marketingName":"Exterior Backlights"
+        },
+        {
+           "marketingNameId":197,
+           "marketingName":"Exterior Branding"
+        },
+        {
+           "marketingNameId":198,
+           "marketingName":"Exterior Building Wrap"
+        },
+        {
+           "marketingNameId":199,
+           "marketingName":"Exterior Flags"
+        },
+        {
+           "marketingNameId":200,
+           "marketingName":"Fast Track"
+        },
+        {
+           "marketingNameId":201,
+           "marketingName":"Fast Track Optilight"
+        },
+        {
+           "marketingNameId":203,
+           "marketingName":"Floor Vinyls"
+        },
+        {
+           "marketingNameId":204,
+           "marketingName":"Gate 6 Lightbox"
+        },
+        {
+           "marketingNameId":205,
+           "marketingName":"Glass Wall"
+        },
+        {
+           "marketingNameId":206,
+           "marketingName":"Grand View"
+        },
+        {
+           "marketingNameId":207,
+           "marketingName":"Hanging Banners"
+        },
+        {
+           "marketingNameId":208,
+           "marketingName":"Hanging Spectacular"
+        },
+        {
+           "marketingNameId":210,
+           "marketingName":"Heathrow Gateway"
+        },
+        {
+           "marketingNameId":211,
+           "marketingName":"HEX Domination"
+        },
+        {
+           "marketingNameId":212,
+           "marketingName":"Immigration Wrap"
+        },
+        {
+           "marketingNameId":213,
+           "marketingName":"Impact Arrivals"
+        },
+        {
+           "marketingNameId":214,
+           "marketingName":"Impact Departures"
+        },
+        {
+           "marketingNameId":215,
+           "marketingName":"Interior Backlight"
+        },
+        {
+           "marketingNameId":216,
+           "marketingName":"International Arrivals"
+        },
+        {
+           "marketingNameId":217,
+           "marketingName":"International Arrivals Wrap"
+        },
+        {
+           "marketingNameId":218,
+           "marketingName":"International Arrivals Baggage Belts"
+        },
+        {
+           "marketingNameId":219,
+           "marketingName":"International Arrivals Banner"
+        },
+        {
+           "marketingNameId":220,
+           "marketingName":"International Arrivals Bulkhead"
+        },
+        {
+           "marketingNameId":221,
+           "marketingName":"International Arrivals Gateway"
+        },
+        {
+           "marketingNameId":222,
+           "marketingName":"International Arrivals Lightbox"
+        },
+        {
+           "marketingNameId":223,
+           "marketingName":"International Arrivals Portal"
+        },
+        {
+           "marketingNameId":224,
+           "marketingName":"International Arrivals Welcome Desk"
+        },
+        {
+           "marketingNameId":226,
+           "marketingName":"International Baggage Reclaim"
+        },
+        {
+           "marketingNameId":227,
+           "marketingName":"Landside Arrivals"
+        },
+        {
+           "marketingNameId":228,
+           "marketingName":"London Portal"
+        },
+        {
+           "marketingNameId":229,
+           "marketingName":"Long Haul Bulkheads"
+        },
+        {
+           "marketingNameId":230,
+           "marketingName":"Main Doors"
+        },
+        {
+           "marketingNameId":231,
+           "marketingName":"Meeters & Greeters"
+        },
+        {
+           "marketingNameId":232,
+           "marketingName":"Motion"
+        },
+        {
+           "marketingNameId":233,
+           "marketingName":"Motion Digital"
+        },
+        {
+           "marketingNameId":234,
+           "marketingName":"No1 5th Avenue"
+        },
+        {
+           "marketingNameId":235,
+           "marketingName":"Northern Gateway"
+        },
+        {
+           "marketingNameId":236,
+           "marketingName":"On-Board"
+        },
+        {
+           "marketingNameId":237,
+           "marketingName":"On-Board Panels"
+        },
+        {
+           "marketingNameId":238,
+           "marketingName":"Platform 6-sheets"
+        },
+        {
+           "marketingNameId":240,
+           "marketingName":"Post Security Way-Finding Beacons"
+        },
+        {
+           "marketingNameId":241,
+           "marketingName":"Premiere Collection"
+        },
+        {
+           "marketingNameId":242,
+           "marketingName":"Security Wall Wrap"
+        },
+        {
+           "marketingNameId":243,
+           "marketingName":"Security Wraps"
+        },
+        {
+           "marketingNameId":244,
+           "marketingName":"Sky Team Sponsorship"
+        },
+        {
+           "marketingNameId":245,
+           "marketingName":"Special Build"
+        },
+        {
+           "marketingNameId":246,
+           "marketingName":"Star Alliance Sponsorship"
+        },
+        {
+           "marketingNameId":247,
+           "marketingName":"Static France"
+        },
+        {
+           "marketingNameId":248,
+           "marketingName":"Style Lightbox"
+        },
+        {
+           "marketingNameId":249,
+           "marketingName":"T4 Welcome Site"
+        },
+        {
+           "marketingNameId":250,
+           "marketingName":"T5 Welcome Roundabout"
+        },
+        {
+           "marketingNameId":251,
+           "marketingName":"Televisions"
+        },
+        {
+           "marketingNameId":252,
+           "marketingName":"Terminal Doors"
+        },
+        {
+           "marketingNameId":253,
+           "marketingName":"The Fridge"
+        },
+        {
+           "marketingNameId":254,
+           "marketingName":"The Headliner"
+        },
+        {
+           "marketingNameId":255,
+           "marketingName":"The Icon Site"
+        },
+        {
+           "marketingNameId":256,
+           "marketingName":"The Runway"
+        },
+        {
+           "marketingNameId":257,
+           "marketingName":"Towers@T2"
+        },
+        {
+           "marketingNameId":258,
+           "marketingName":"Towers@T5"
+        },
+        {
+           "marketingNameId":259,
+           "marketingName":"TTS Bulkhead"
+        },
+        {
+           "marketingNameId":260,
+           "marketingName":"TTS Sponsorship"
+        },
+        {
+           "marketingNameId":261,
+           "marketingName":"Vinyl Wraps"
+        },
+        {
+           "marketingNameId":262,
+           "marketingName":"Virgin Check-In Welcome Sign"
+        },
+        {
+           "marketingNameId":263,
+           "marketingName":"Virgin Hanging Spectacular"
+        },
+        {
+           "marketingNameId":264,
+           "marketingName":"Virgin Wall Wrap"
+        },
+        {
+           "marketingNameId":265,
+           "marketingName":"Washroom Panels"
+        },
+        {
+           "marketingNameId":266,
+           "marketingName":"The Wayfinder"
+        },
+        {
+           "marketingNameId":267,
+           "marketingName":"Way-Finding Beacons"
+        },
+        {
+           "marketingNameId":268,
+           "marketingName":"Welcome Banners"
+        },
+        {
+           "marketingNameId":269,
+           "marketingName":"Welcome Desk"
+        },
+        {
+           "marketingNameId":270,
+           "marketingName":"Welcome To London"
+        },
+        {
+           "marketingNameId":271,
+           "marketingName":"Welcome To Terminal 3"
+        },
+        {
+           "marketingNameId":272,
+           "marketingName":"Welcome To Terminal 5"
+        },
+        {
+           "marketingNameId":273,
+           "marketingName":"Zonal Beacons"
+        },
+        {
+           "marketingNameId":274,
+           "marketingName":"The Salford Arch"
+        },
+        {
+           "marketingNameId":275,
+           "marketingName":"East Walkway"
+        },
+        {
+           "marketingNameId":276,
+           "marketingName":"Northern Light"
+        },
+        {
+           "marketingNameId":277,
+           "marketingName":"MSCP & Stairwells Wrap"
+        },
+        {
+           "marketingNameId":278,
+           "marketingName":"IDL Vinyls"
+        },
+        {
+           "marketingNameId":279,
+           "marketingName":"Door Vinyls"
+        },
+        {
+           "marketingNameId":280,
+           "marketingName":"Domestic Arrivals Wrap"
+        },
+        {
+           "marketingNameId":281,
+           "marketingName":"Digital Plaza"
+        },
+        {
+           "marketingNameId":282,
+           "marketingName":"Couture Totems"
+        },
+        {
+           "marketingNameId":283,
+           "marketingName":"Couture Immersion Zone"
+        },
+        {
+           "marketingNameId":284,
+           "marketingName":"CAPs"
+        },
+        {
+           "marketingNameId":285,
+           "marketingName":"Arrivals Vinyl"
+        },
+        {
+           "marketingNameId":286,
+           "marketingName":"Arrivals Car Park"
+        },
+        {
+           "marketingNameId":287,
+           "marketingName":"Air Link"
+        },
+        {
+           "marketingNameId":288,
+           "marketingName":"Car Rental Walkway"
+        },
+        {
+           "marketingNameId":289,
+           "marketingName":"Non Digital"
+        },
+        {
+           "marketingNameId":290,
+           "marketingName":"Rosslyn Park D400"
+        },
+        {
+           "marketingNameId":291,
+           "marketingName":"The Gateway"
+        },
+        {
+           "marketingNameId":292,
+           "marketingName":"The Badge"
+        },
+        {
+           "marketingNameId":293,
+           "marketingName":"The 3 Landmarks"
+        },
+        {
+           "marketingNameId":294,
+           "marketingName":"The 4 Kings"
+        },
+        {
+           "marketingNameId":295,
+           "marketingName":"Rosslyn Park D450"
+        },
+        {
+           "marketingNameId":296,
+           "marketingName":"The Western Avenue Tower (Outbound)"
+        },
+        {
+           "marketingNameId":297,
+           "marketingName":"Euston Digital Gateway"
+        },
+        {
+           "marketingNameId":298,
+           "marketingName":"London Oxford Street"
+        },
+        {
+           "marketingNameId":299,
+           "marketingName":"Edinburgh Gateway"
+        },
+        {
+           "marketingNameId":300,
+           "marketingName":"The Swandon Way Landmark"
+        },
+        {
+           "marketingNameId":302,
+           "marketingName":"XAd"
+        },
+        {
+           "marketingNameId":301,
+           "marketingName":"The Putney Bridge Showcase"
+        },
+        {
+           "marketingNameId":304,
+           "marketingName":"MSCP Domination"
+        },
+        {
+           "marketingNameId":303,
+           "marketingName":"Priority Parking"
+        },
+        {
+           "marketingNameId":306,
+           "marketingName":"A3 The Fin"
+        },
+        {
+           "marketingNameId":305,
+           "marketingName":"The M4 Backlit Tower"
+        },
+        {
+           "marketingNameId":308,
+           "marketingName":"Security Tray Sponsorship"
+        },
+        {
+           "marketingNameId":307,
+           "marketingName":"WiFi Sponsorship"
+        },
+        {
+           "marketingNameId":309,
+           "marketingName":"T5 Motion Showcase"
+        },
+        {
+           "marketingNameId":310,
+           "marketingName":"Gateroom DAPs"
+        },
+        {
+           "marketingNameId":311,
+           "marketingName":"BlueFocus"
+        },
+        {
+           "marketingNameId":312,
+           "marketingName":"Digital Backlights"
+        },
+        {
+           "marketingNameId":313,
+           "marketingName":"Couture LEDs"
+        },
+        {
+           "marketingNameId":314,
+           "marketingName":"Schlumberger Screen"
+        },
+        {
+           "marketingNameId":315,
+           "marketingName":"Wandsworth High Street Showcase"
+        },
+        {
+           "marketingNameId":316,
+           "marketingName":"BA Immersion Zone"
+        },
+        {
+           "marketingNameId":317,
+           "marketingName":"Arrivals Elevation"
+        },
+        {
+           "marketingNameId":318,
+           "marketingName":"International Baggage Domination"
+        },
+        {
+           "marketingNameId":319,
+           "marketingName":"Motion Showcase"
+        },
+        {
+           "marketingNameId":320,
+           "marketingName":"Welcome to Aberdeen"
+        },
+        {
+           "marketingNameId":321,
+           "marketingName":"Welcome Scrollers"
+        },
+        {
+           "marketingNameId":322,
+           "marketingName":"Cancellation Digital"
+        },
+        {
+           "marketingNameId":323,
+           "marketingName":"Cancellation Analogue"
+        },
+        {
+           "marketingNameId":324,
+           "marketingName":"E8 Old Street Showcases"
+        },
+        {
+           "marketingNameId":325,
+           "marketingName":"East Hill Tower"
+        },
+        {
+           "marketingNameId":326,
+           "marketingName":"West Hill Tower"
+        },
+        {
+           "marketingNameId":327,
+           "marketingName":"T3 Motion Showcase"
+        },
+        {
+           "marketingNameId":328,
+           "marketingName":"Business Lounge iVision"
+        },
+        {
+           "marketingNameId":329,
+           "marketingName":"The Western Avenue Tower (Inbound)"
+        },
+        {
+           "marketingNameId":330,
+           "marketingName":"The Edinburgh Arch"
+        },
+        {
+           "marketingNameId":331,
+           "marketingName":"The Leeds Towers - City Centre"
+        },
+        {
+           "marketingNameId":332,
+           "marketingName":"Putney Tower"
+        },
+        {
+           "marketingNameId":333,
+           "marketingName":"Western Avenue Landmark (Inbound)"
+        },
+        {
+           "marketingNameId":334,
+           "marketingName":"Western Avenue Landmark (Outbound)"
+        },
+        {
+           "marketingNameId":335,
+           "marketingName":"Marylebone Tower (Inbound)"
+        },
+        {
+           "marketingNameId":336,
+           "marketingName":"The Edinburgh Towers - West Approach"
+        },
+        {
+           "marketingNameId":337,
+           "marketingName":"The Edinburgh Towers - Calder Road"
+        },
+        {
+           "marketingNameId":338,
+           "marketingName":"The Liverpool Towers - City Centre"
+        },
+        {
+           "marketingNameId":339,
+           "marketingName":"The Sheffield Towers - Park Square Roundabout"
+        },
+        {
+           "marketingNameId":340,
+           "marketingName":"Trafford Road Tower"
+        },
+        {
+           "marketingNameId":341,
+           "marketingName":"The Paddington Tower"
+        },
+        {
+           "marketingNameId":342,
+           "marketingName":"The Western Avenue Towers"
+        },
+        {
+           "marketingNameId":343,
+           "marketingName":"T5 Retail Walkway"
+        },
+        {
+           "marketingNameId":344,
+           "marketingName":"T5 Golden Gateway"
+        },
+        {
+           "marketingNameId":345,
+           "marketingName":"Domestic Baggage Domination"
+        },
+        {
+           "marketingNameId":346,
+           "marketingName":"Business Portal"
+        },
+        {
+           "marketingNameId":347,
+           "marketingName":"The Westminster Towers"
+        },
+        {
+           "marketingNameId":348,
+           "marketingName":"The Birmingham Towers - Lee Bank Middleway"
+        },
+        {
+           "marketingNameId":350,
+           "marketingName":"Great West Road (Outbound)"
+        },
+        {
+           "marketingNameId":351,
+           "marketingName":"Taxi Rank Digitals"
+        },
+        {
+           "marketingNameId":349,
+           "marketingName":"The Great West Road Towers"
+        }
+     ],
+     "serviceCalls":{
+        "SESSION_URL":"../../Service/session",
+        "POP_SUMMARY":"../data/summary.json",
+        "CHART_HOVER_TOOLTIP":"../../Service/popboard/zendesk/ticket"
+     },
+     "userBundle":{
+        "common.campaign.compliance.nodata":"No Campaigns Found!",
+        "common.campaign.compliance.summary":"Campaign Compliance Summary",
+        "common.audience.compliance.summary":"Audience Compliance Summary",
+        "popboard.frame.player.tooltip":"This graph shows the percentage of <strong>days</strong> in a campaign that meet the compliance threshold for that player, with the selected date range.\n\n If the value is 100% (i.e. compliant) then it is shown as blue.  If the value is less than 100% (i.e. non-compliant) then it is shown as red. \n\n Example:\n Date range for 5 days is selected.\n\n Campaign is selected in the Campaign Chart (title: % frame above threshold) that has 20 frames.\n\n All 20 players are returned in this chart.\n\n If a player is compliant for all hours for five days for this campaign (i.e. played out 95% or more of what was booked) then it is 100% compliant for all days, and a value of 100% is shown.\n\n If a player is non-compliant for 1 hour on 2 days, then it is compliant for 60% of the days and a value of 60% will be shown.",
+        "common.dateRange":"Select Date Range",
+        "popboard.frame.date.heading":"% hour above threshold",
+        "popboard.time.xAxis.label":"Time",
+        "common.sot.label":"SOT",
+        "common.heading":"POP Dashboard",
+        "popboard.sot.player.tooltip":"This graph shows the performance of a <strong>player</strong> for a campaign.\n\n If the player played 95% or more of what was booked for that campaign (in the selected date range) for all hours then the player is compliant and is coloured blue.\n\n If the player played less than 95% of what was booked for that campaign in one or more hours, the player is non-compliant and coloured red.\n\nExample:\n If a player was booked to play 20,000 seconds for the selected campaign within the selected date range and plays out 22,000 seconds it will show 110% (22,000 is 110% of 20,000).",
+        "popboard.campaign.xAxis.label":"Compliance",
+        "popboard.sot.time.heading":"Hours - Average Performance - % played vs booked",
+        "popboard.player.yAxis.label":"Compliance",
+        "popboard.date.xAxis.label":"Date",
+        "common.specialist.select":"Select Specialist",
+        "popboard.sot.time.tooltip":"This graph shows the performance of a <strong>player in a campaign for each hour of the selected day</strong>.\n\n If the player played 95% or more of what was booked for that campaign in that hour then the hour is compliant and is coloured blue.\n\n If the player played less than 95% of what was booked for that campaign in that hour then the hour is non-compliant and is coloured red.\n\n Example:\n If a player was booked to play 500 seconds for the selected campaign within an hour and played out 750 seconds it will show 150% (750 is 150% of 500).",
+        "popboard.sot.campaign.heading":"Campaigns - Average Performance - % played vs booked",
+        "popboard.player.xAxis.label":"Player",
+        "popboard.frame.campaign.heading":"% frame above threshold",
+        "common.specialist":"Specialist",
+        "common.marketingname.select":"Select Marketing Name",
+        "popboard.frame.date.tooltip":"This graph shows the percentage of <strong>hours</strong> in a campaign that meet the compliance threshold for that player on each day within the selected range.\n\nIf the value is 100% (i.e. compliant) then it is shown as blue.\n\n If the value is less than 100% (i.e. non-compliant) then it is shown as red. \n\nExample:\n Date range for 5 days is selected.\n Campaign is selected in the Campaign Chart (title: % frame above threshold) that has 20 frames.\n\n A frame is selected.\n\nIn this chart, all days that the campaign was booked on this frame within the selected date range are shown.\n\n If a player is compliant for all hours on a day for this campaign (i.e. played out 95% or more of what was booked) then the day shows 100% compliant.\n\n If a player is compliant for half the hours on a day for this campaign (i.e. played out 95% or more of what was booked) then the day shows 50% compliant.",
+        "popboard.campaign.yAxis.label":"Campaigns",
+        "common.frame.label":"Frame",
+        "popboard.frame.player.heading":"% of days above threshold",
+        "popboard.frame.time.heading":"% played vs booked",
+        "common.gauge.tooltip":"Gauges show the % of compliant campaigns within that Business Area Group.\n\nExample, if within Rail there are 50 campaigns in the selected date range (after exclusions, see below), and 49 of them are compliant then the compliance value is 98% (49 is 98% of 50).",
+        "common.gauge.tooltip.audience":"Audience Compliance =\nCampaigns Audience impressions delivered (<=100% planned) on all campaigns Vs Planned Audience impressions to be delivered\n\nThe gauges show a maximum of 100% with the actual value within the gauge.",
+        "common.title.label":"Dashboard",
+        "popboard.sot.player.heading":"Players - Average Performance - % played vs booked",
+        "popboard.time.yAxis.label":"Performance",
+        "common.selectType":"Select Type",
+        "popboard.sot.date.heading":"Days - Average Performance - % played vs booked",
+        "popboard.sot.date.tooltip":"This graph shows the performance of a <strong>day for a player</strong> in a campaign.\n\n If the player played 95% or more of what was booked for that campaign (in the selected date range) for all hours in that day then the player is compliant for that day and the day is coloured blue.\n\n If the player played less than 95% of what was booked for that campaign (in the selected date range) for one or more hours in that day then the player is non-compliant for that day and the day is coloured red.\n\n Example:\n If a player was booked to play 20,000 seconds in a day for the selected campaign within the selected date range and plays out 22,000 seconds it will show 110% (22,000 is 110% of 20,000).",
+        "popboard.frame.campaign.tooltip":"This graph shows the percentage of <strong>frames</strong> in a campaign that meet the compliance threshold.\n\n All (100% of) frames must meet the compliance threshold for the campaign to be determined to be compliant.\n\n If all frames are compliant, the campaign will be coloured blue and the value shown will be 100%\n\n If less than all frames are compliant, the campaign will be coloured red and the value shown will be less than 100%.\n\n Example:\n If a campaign has 100 frames, and 50% of them meet the definition of compliance, this graph will show 50%.",
+        "popboard.date.yAxis.label":"Compliance",
+        "popboard.frame.time.tooltip":"This graph shows the percentage of <strong>what played to what was booked</strong> for every booked hour in a selected day for the selected frame in a selected campaign.\n\n If the hour shows a value of 95% or more it is compliant and shows blue.\n\n If the hour shows a value of less than 95% it is non-compliant and shows red. \n\n Example:\n Campaign, Player, Day are selected.\n\n Each booked hour (for that day, for that player for that campaign) are shown with a performance value (%played vs booked).\n\n If 20% SOT was booked and 30% played out a value of 150% is shown (30% is 150% of 20%).\n\n If 20% SOT was booked and 10% played out a value of 50% is shown (10% is 50% of 20%).",
+        "common.marketingname":"Marketing Name",
+        "common.dashboard.tooltip":"All graphs exclude values from manually scheduled players including:\n Digital Escalator Panels\nHEX Motion\n Old St Roundabout\n Cromwell Road\n Heathrow DAPS Pack A and B\n Heathrow Gateroom DAPS\n\n Compliance Definition:\n A player for a campaign is considered compliant if it has played 95% or more of what was booked for every hour it has been scheduled.\n A campaign is considered compliant if ALL players have played 95% or better of what was booked for every hour it has been scheduled.  Compliance definition has been determined by UK IT team.\n\n NOTE:\n The comparison is for what was played vs what was booked. If a campaign was not booked for an hour but still played, this will not be reported.",
+        "popboard.sot.campaign.tooltip":"This graph shows the performance of a <strong>campaign</strong>.\n\n If all players play 95% or more of what was booked for that campaign (in the selected date range) for all hours then the campaign is compliant and is coloured blue.\n\n If one or more players played less than 95% of what was booked for that campaign in one or more hours, the campaign is non-compliant and coloured red.\n\n Example:\n If a campaign was booked for 20,000 seconds of play within the selected date range and plays out 22,000 seconds it will show 110% (22,000 is 110% of 20,000).",
+        "popboard.impressions.campaign.heading":"Campaign - Average Performance by Impressions",
+        "popboard.impressions.player.heading":"Player - Average Performance by Impressions",
+        "popboard.impressions.date.heading":"Date - Average Performance by Impressions",
+        "popboard.impressions.time.heading":"Time - Average Performance by Impressions",
+        "popboard.impressions.campaign.tooltip":"Campaign - Average Performance by Impressions",
+        "popboard.impressions.player.tooltip":"Player - Average Performance by Impressions",
+        "popboard.impressions.date.tooltip":"Date - Average Performance by Impressions",
+        "popboard.impressions.time.tooltip":"Time - Average Performance by Impressions"
+     },
+     "complainceLevel":95,
+     "userData":{
+        "userName":"brandon.stubbs",
+        "fullName":"Brandon Stubbs ",
+        "firstName":"Brandon",
+        "lastName":"Stubbs",
+        "initials":"BS",
+        "userGroups":[
+           "BricsCM",
+           "BricsSales",
+           "BricsSuperUser",
+           "BricsTrading",
+           "CaptainManager",
+           "CaptainSales",
+           "DataPointEstates",
+           "DataPointIT",
+           "DataPointManager",
+           "DatapointCM",
+           "DigitalIT",
+           "StockManager",
+           "StockManagerAdmin",
+           "StockManagerBrics",
+           "StockManagerCaptain",
+           "StockManagerDatapoint"
+        ],
+        "timeZone":"Europe/London",
+        "locale":"en-gb",
+        "emailAddress":"brandon.stubbs@jcdecaux.com",
+        "internalAccess":true
+     },
+     "systemData":{
+        "version":"3.3.35",
+        "systemTitle":"Stock Manager Eleven38 Development",
+        "systemType":"Development",
+        "systemName":"Stock Manager",
+        "locale":"en_GB",
+        "bookingSystemEnabled":false,
+        "salesOrderEnabled":false,
+        "pipeEnabled":false,
+        "maxInactiveInterval":50,
+        "currencySymbol":"Â£"
+     }
+  }
+}

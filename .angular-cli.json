@@ -19,7 +19,10 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
-        "styles.css"
+        "styles.css", 
+        "../node_modules/animate.css/animate.min.css",
+        "assets/css/material-font.css",
+        "assets/css/responsive.css"
       ],
       "scripts": [],
       "environmentSource": "environments/environment.ts",
