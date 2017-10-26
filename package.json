@@ -5,6 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "prestart": "yarn install",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
