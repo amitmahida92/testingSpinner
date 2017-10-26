@@ -48,31 +48,31 @@
         vm.frontEndVersion = frontEndVersion;
 
         vm.DASHBOARD_TYPES = [{
-                id: 1,
-                name: "Frame Dashboard",
-                image: 'logo0.png',
-                routeURL: 'dashboard'
-            },
-            {
-                id: 2,
-                name: "Share Of Time",
-                image: 'logo1.png',
-                routeURL: 'shareoftime'
-            }
+            id: 1,
+            name: "Frame Dashboard",
+            image: 'logo0.png',
+            routeURL: 'dashboard'
+        },
+        {
+            id: 2,
+            name: "Share Of Time",
+            image: 'logo1.png',
+            routeURL: 'shareoftime'
+        }
         ];
 
         vm.graphOptions = [{
-                id: 1,
-                name: "Frame",
-            },
-            {
-                id: 2,
-                name: "SoT"
-            },
-            {
-                id: 3,
-                name: "Impressions"
-            }
+            id: 1,
+            name: "Frame",
+        },
+        {
+            id: 2,
+            name: "SoT"
+        },
+        {
+            id: 3,
+            name: "Impressions"
+        }
         ];
 
         // Show/Hide flags
@@ -960,27 +960,32 @@
 
 
                     vm.impressionsOptions.animation = {
+                        // condition added for CC-372
                         onProgress: function (chart) {
-                            var sourceCanvas = this.chart.ctx.canvas;
-                            var copyHeight = this.scales['x-axis-0'].height - 4;
-                            var copyWidth = sourceCanvas.width;
-                            var targetCtx = document.getElementById("campaignXAxis2").getContext("2d");
-                            targetCtx.canvas.width = sourceCanvas.width;
-                            targetCtx.canvas.style.width = sourceCanvas.scrollWidth + 'px';
-                            targetCtx.canvas.height = copyHeight;
-                            targetCtx.drawImage(sourceCanvas, 0, 0, copyWidth, copyHeight, 0, 0, copyWidth, copyHeight);
+                            if (this.chart.ctx) {
+                                var sourceCanvas = this.chart.ctx.canvas;
+                                var copyHeight = this.scales['x-axis-0'].height - 4;
+                                var copyWidth = sourceCanvas.width;
+                                var targetCtx = document.getElementById("campaignXAxis2").getContext("2d");
+                                targetCtx.canvas.width = sourceCanvas.width;
+                                targetCtx.canvas.style.width = sourceCanvas.scrollWidth + 'px';
+                                targetCtx.canvas.height = copyHeight;
+                                targetCtx.drawImage(sourceCanvas, 0, 0, copyWidth, copyHeight, 0, 0, copyWidth, copyHeight);
+                            }
                             vm.campaignAudienceYAxisLabel = this.chart.options.scales.yAxes[0].scaleLabel.labelString;
-
                         },
                         onComplete: function (chart) {
-                            var sourceCanvas = this.chart.ctx.canvas;
-                            var copyHeight = this.scales['x-axis-0'].height - 4;
-                            var copyWidth = sourceCanvas.width;
-                            var targetCtx = document.getElementById("campaignXAxis2").getContext("2d");
-                            targetCtx.canvas.width = sourceCanvas.width;
-                            targetCtx.canvas.style.width = sourceCanvas.scrollWidth + 'px';
-                            targetCtx.canvas.height = copyHeight;
-                            targetCtx.drawImage(sourceCanvas, 0, 0, copyWidth, copyHeight, 0, 0, copyWidth, copyHeight);
+                            // condition added for CC-372
+                            if (this.chart.ctx) {
+                                var sourceCanvas = this.chart.ctx.canvas;
+                                var copyHeight = this.scales['x-axis-0'].height - 4;
+                                var copyWidth = sourceCanvas.width;
+                                var targetCtx = document.getElementById("campaignXAxis2").getContext("2d");
+                                targetCtx.canvas.width = sourceCanvas.width;
+                                targetCtx.canvas.style.width = sourceCanvas.scrollWidth + 'px';
+                                targetCtx.canvas.height = copyHeight;
+                                targetCtx.drawImage(sourceCanvas, 0, 0, copyWidth, copyHeight, 0, 0, copyWidth, copyHeight);
+                            }
                             vm.campaignAudienceYAxisLabel = this.chart.options.scales.yAxes[0].scaleLabel.labelString;
                         }
                     };
@@ -1107,25 +1112,29 @@
 
                     vm.barOptions.animation = {
                         onComplete: function (chart) {
-                            var sourceCanvas = this.chart.ctx.canvas;
-                            var copyHeight = sourceCanvas.height;
-                            var copyWidth = this.scales['y-axis-0'].width + 5;
-                            var targetCtx = document.getElementById("playerAxis").getContext("2d");
-                            targetCtx.canvas.width = copyWidth;
-                            targetCtx.canvas.style.height = sourceCanvas.offsetHeight + 'px';
-                            targetCtx.canvas.height = copyHeight;
-                            targetCtx.drawImage(sourceCanvas, 0, 0, copyWidth, copyHeight, 0, 0, copyWidth, copyHeight);
+                            if (this.chart.ctx) {
+                                var sourceCanvas = this.chart.ctx.canvas;
+                                var copyHeight = sourceCanvas.height;
+                                var copyWidth = this.scales['y-axis-0'].width + 5;
+                                var targetCtx = document.getElementById("playerAxis").getContext("2d");
+                                targetCtx.canvas.width = copyWidth;
+                                targetCtx.canvas.style.height = sourceCanvas.offsetHeight + 'px';
+                                targetCtx.canvas.height = copyHeight;
+                                targetCtx.drawImage(sourceCanvas, 0, 0, copyWidth, copyHeight, 0, 0, copyWidth, copyHeight);
+                            }
                             vm.playerXAxisLabel = this.chart.options.scales.xAxes[0].scaleLabel.labelString;
                         },
                         onProgress: function (chart) {
-                            var sourceCanvas = this.chart.ctx.canvas;
-                            var copyHeight = sourceCanvas.height;
-                            var copyWidth = this.scales['y-axis-0'].width + 5;
-                            var targetCtx = document.getElementById("playerAxis").getContext("2d");
-                            targetCtx.canvas.width = copyWidth;
-                            targetCtx.canvas.style.height = sourceCanvas.offsetHeight + 'px';
-                            targetCtx.canvas.height = copyHeight;
-                            targetCtx.drawImage(sourceCanvas, 0, 0, copyWidth, copyHeight, 0, 0, copyWidth, copyHeight);
+                            if (this.chart.ctx) {
+                                var sourceCanvas = this.chart.ctx.canvas;
+                                var copyHeight = sourceCanvas.height;
+                                var copyWidth = this.scales['y-axis-0'].width + 5;
+                                var targetCtx = document.getElementById("playerAxis").getContext("2d");
+                                targetCtx.canvas.width = copyWidth;
+                                targetCtx.canvas.style.height = sourceCanvas.offsetHeight + 'px';
+                                targetCtx.canvas.height = copyHeight;
+                                targetCtx.drawImage(sourceCanvas, 0, 0, copyWidth, copyHeight, 0, 0, copyWidth, copyHeight);
+                            }
                             vm.playerXAxisLabel = this.chart.options.scales.xAxes[0].scaleLabel.labelString;
                         }
                     };
@@ -1337,6 +1346,7 @@
                             });
                             vm.cachedCampaignSummary = _.cloneDeep(vm.campaignSummary);
                             vm.compliantcheck(vm.campaign.compaliant, vm.campaign.noncompaliant, 'campaign', true);
+                            vm.campaignBar = {}; // CC-383, Nishit
                         } else {
                             vm.campaignSummary = [];
                             vm.campaignData = {};

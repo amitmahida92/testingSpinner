@@ -14,7 +14,7 @@ var BLUE_COLOR = {
 };
 var GREEN_COLOR = "#9be52a";
 var DARK_GREEN_COLOR = "#008000";
-var SERVICE_BASE_URL = ''; // 'https://cc-dashboard.uat.develop.farm/'; // 'http://172.16.5.32:8081/';
+var SERVICE_BASE_URL =  ''; // 'http://172.16.5.32:8081/'; // 'https://cc-dashboard.uat.develop.farm/';
 var INITIAL_CONFIG_URL =  false ? 'Service/popboard/config' : 'data/config.json'; //  'config';
 var INITIAL_CONFIG_URL_BOS = '../../Service/popboard/config'; // 'http://172.16.3.241:8082/Service/popboard/';
 var CCP_LINK = '/Service/popboard/ccplink?campaignId=';
