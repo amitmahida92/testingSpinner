@@ -18,6 +18,13 @@ export class AppComponent implements OnInit {
   private frontEndVersion: string;
   private systemData: Object;
   private showFilter = true;
+  private title= 'campaign';
+
+  private chartOptions = {
+    type: 'line',
+    xAxis: 'Day',
+    yAxis: 'Tempreature'
+  };
 
   constructor(
     private appService: AppService,
