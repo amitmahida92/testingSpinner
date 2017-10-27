@@ -2,9 +2,9 @@
 <nav class="darken-4">
     <div class="nav-wrapper">
         <div class="brand-logo capitalize">
-            <img src="images/logo0.png" alt="Logo"> {{vm.userBundle['common.impressions.label']}}
+            <img src="../src/assets/images/logo0.png" alt="Logo"> 
             <span>
-                {{vm.userBundle['common.title.label']}}
+               
             </span>
         </div>
 
@@ -12,7 +12,7 @@
 
         <ul id="nav-mobile" class="right">
             <li>
-                <a href="javascript:void(0)" ng-click="vm.showHideFilters()">
+                <a href="javascript:void(0)">
                     <i ng-show="vm.showFilter" class="material-icons">expand_less</i>
                     <i ng-show="!vm.showFilter" class="material-icons">expand_more</i>
                 </a>
@@ -24,6 +24,10 @@
         </div>
     </div>
 </nav>
+
+<div style="height: 80px">
+    <app-chart [title]="title" [options]="chartOptions"></app-chart>
+</div>
 <!-- <div class="white filter_block" id="filtersArea">
     <div class="row">
         <form class="col s12">
@@ -312,7 +316,7 @@
 
 <div class="row sticky-footer">
     <div class="col s12 m12 footer">
-        Back End Version {{vm.configData.systemData.version}} | Front End Version {{vm.frontEndVersion}}
+        <!-- Back End Version {{vm.configData.systemData.version}} | Front End Version {{vm.frontEndVersion}} -->
     </div>
 </div>
 

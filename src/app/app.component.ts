@@ -7,4 +7,10 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'app';
+  chartOptions = {
+    type: 'line',
+    xAxis: 'Day',
+    yAxis: 'Tempreature'
+  };
+
 }
