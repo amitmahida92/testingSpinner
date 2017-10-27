@@ -1,0 +1,11 @@
+<div class="modal-header" [style.background-color]="_titleBackgroundColor">
+  <h4 class="modal-title">{{_title}}</h4>
+  <button type="button" class="modal_close" aria-label="Close" (click)="close()">x</button>
+</div>
+<div class="modal-body">
+  <ng-content></ng-content>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-primary" (click)="save()">OK</button>
+</div>
+
