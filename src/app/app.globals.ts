@@ -5,6 +5,7 @@ import { environment } from './../environments/environment';
 export let GLOBAL;
 const SERVICE_BASE_URL = 'https://cc-dashboard.uat.develop.farm/'; // 'http://172.16.5.32:8081/';
 GLOBAL = {
+    BOS_SESSION_ID: 0,
     SERVICE_BASE_URL: SERVICE_BASE_URL,
     HTTP_METHOD: '',
     fronEndVersion: '2.0.0',

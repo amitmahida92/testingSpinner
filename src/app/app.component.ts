@@ -14,12 +14,16 @@ import { Observable } from 'rxjs/Observable';
 })
 export class AppComponent implements OnInit {
 
-  private userBundle: any;
+  private userBundle: any = {};
+  private frontEndVersion: string;
+  private systemData: Object;
+  private showFilter = true;
 
   constructor(
     private appService: AppService,
     private dataShareService: DataShareService
   ) {
+    this.frontEndVersion = GLOBAL.frontEndVersion;
 
   }
 
@@ -32,6 +36,7 @@ export class AppComponent implements OnInit {
       if (response.status === 'OK') {
         this.dataShareService.setInitialConfig(response.data);
         this.userBundle = this.dataShareService.getInitialConfigByKey('userBundle');
+        this.systemData = this.dataShareService.getInitialConfigByKey('systemData');
       }
     }, (error: Error) => {
       console.log(error);

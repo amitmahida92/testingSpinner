@@ -3,8 +3,6 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { AppService } from './app.service';
-
-
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 // Services
@@ -13,11 +11,13 @@ import {
   SbModalPopupModule
 } from './shared/shared.module';
 import { InterceptorService } from './shared/services/interceptor.service';
+import { FiltersComponent } from './filters/filters.component';
 
 @NgModule({
   declarations: [
-    AppComponent
-  ],
+    AppComponent,
+    FiltersComponent
+],
   imports: [
     BrowserModule,
     HttpClientModule,
